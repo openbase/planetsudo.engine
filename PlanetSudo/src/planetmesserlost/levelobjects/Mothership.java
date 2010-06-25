@@ -20,7 +20,7 @@ import planetmesserlost.level.Level;
 public class Mothership extends AbstractLevelObject{
 
 	public final static int DEFAULT_START_FUEL = 10000;
-	public final static int DEFAULT_AGENT_COUNT = 1000; // range 0-9999
+	public final static int DEFAULT_AGENT_COUNT = 5; // range 0-9999
 
 	private final Team team;
 	private ActionPoints actionPoints;

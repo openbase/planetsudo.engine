@@ -13,6 +13,7 @@ import planetmesserlost.game.Team;
 import planetmesserlost.level.SimpleWorld;
 import planetmesserlost.main.GUIController;
 import planetmesserlost.game.strategy.DefaultStategy;
+import planetmesserlost.level.MarioWorld1;
 
 /**
  *
@@ -39,7 +40,7 @@ public class GameManager implements Runnable {
 	}
 
 	public void setupTestGame() {
-		setLevel(new SimpleWorld());
+		setLevel(new MarioWorld1());
 		addTeam(new Team(0, "Piranjas", DefaultStategy.class));
 		addTeam(new Team(1, "BlackHeath", DefaultStategy.class));
 		startGame();
