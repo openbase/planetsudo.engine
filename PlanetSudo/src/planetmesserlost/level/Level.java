@@ -22,7 +22,7 @@ import planetmesserlost.levelobjects.Agent;
  */
 public abstract class Level implements Runnable {
 
-	public final static long DEFAULT_GAME_SPEED = 0;
+	public final static long DEFAULT_GAME_SPEED = 12;
 
 	private final String name;
 	private final LinkedList<Mothership> motherships;

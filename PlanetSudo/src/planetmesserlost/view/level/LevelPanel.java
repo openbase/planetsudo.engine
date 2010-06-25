@@ -28,7 +28,7 @@ public class LevelPanel extends AbstractResourcePanel<Level, LevelPanel> impleme
 		boundingBox = resource.getLevelBorderPolygon().getBounds2D();
 		updateBounds();
 		loadMothershipPanels();
-		new Timer(25, this).start();
+		new Timer(12, this).start();
 		parentPanel.setDoubleBuffered(true);
 
 	}
