@@ -9,11 +9,9 @@ import java.beans.PropertyChangeEvent;
 import java.util.Vector;
 import logging.Logger;
 import planetmesserlost.level.Level;
-import planetmesserlost.game.Team;
 import planetmesserlost.level.SimpleWorld;
 import planetmesserlost.main.GUIController;
 import planetmesserlost.game.strategy.DefaultStategy;
-import planetmesserlost.level.MarioWorld1;
 
 /**
  *
@@ -40,7 +38,7 @@ public class GameManager implements Runnable {
 	}
 
 	public void setupTestGame() {
-		setLevel(new MarioWorld1());
+		setLevel(new SimpleWorld());
 		addTeam(new Team(0, "Piranjas", DefaultStategy.class));
 		addTeam(new Team(1, "BlackHeath", DefaultStategy.class));
 		startGame();

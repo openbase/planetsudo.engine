@@ -6,6 +6,7 @@
 package planetmesserlost.game;
 
 import logging.Logger;
+import planetmesserlost.level.Level;
 
 /**
  *
@@ -21,7 +22,7 @@ public class ActionPoints {
 	public void addActionPoint() {
 		synchronized(this) {
 			points++;
-			this.notifyAll();
+			this.notify();
 		}
 	}
 
@@ -29,15 +30,15 @@ public class ActionPoints {
 		getActionPoint(1);
 	}
 
-	public synchronized void getActionPoint(int orderedPoints) {
-		synchronized(this) {
-			while(true) {
+	public void getActionPoint(int orderedPoints) {
+		while(true) {
+			synchronized(this) {
 				if(points >= orderedPoints) {
-					points -= orderedPoints;
+					points -= orderedPoints; // TODO ckeck if this is the right shortcut
 					return;
 				}
 				try {
-					wait();
+					this.wait();
 				} catch (InterruptedException ex) {
 					Logger.warn(this, "", ex);
 				}

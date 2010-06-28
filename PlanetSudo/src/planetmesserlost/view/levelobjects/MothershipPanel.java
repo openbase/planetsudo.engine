@@ -7,8 +7,9 @@ package planetmesserlost.view.levelobjects;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import planetmesserlost.levelobjects.Agent;
 import planetmesserlost.levelobjects.Mothership;
 import planetmesserlost.view.level.LevelPanel;

@@ -17,13 +17,12 @@ import planetmesserlost.level.Level;
  *
  * @author divine
  */
-public class Mothership extends AbstractLevelObject{
+public class Mothership extends AbstractLevelObject {
 
-	public final static int DEFAULT_START_FUEL = 10000;
-	public final static int DEFAULT_AGENT_COUNT = 5; // range 0-9999
+	public final static int DEFAULT_START_FUEL = 1000;
+	public final static int DEFAULT_AGENT_COUNT = 500; // range 0-9999
 
 	private final Team team;
-	private ActionPoints actionPoints;
 	private int fuel;
 	private int agentMaxCount;
 
@@ -35,8 +34,6 @@ public class Mothership extends AbstractLevelObject{
 		this.team = team;
 		this.agents = new HashMap<Integer, Agent>();
 		this.reset();
-		this.loadAgents();
-		
 	}
 
 	@ Override
@@ -46,15 +43,21 @@ public class Mothership extends AbstractLevelObject{
 			agent.kill();
 		}
 		agentMaxCount = DEFAULT_AGENT_COUNT;
-		actionPoints = new ActionPoints();
+		loadAgents();
 	}
 
 	public void loadAgents() {
 		Agent agent;
 		for(int i=0;i<agentMaxCount;i++) {
 			agent = new Agent(team.getName()+"Agent", this);
-			agents.put(agent.getID(), agent);
+			Agent replacedAgent = agents.put(agent.getID(), agent);
+			if(replacedAgent != null){
+				Logger.error(this, "Add agent with same id like an other one! Kill old one.");
+				replacedAgent.kill();
+			}
 		}
+		agentKeyArray = new Integer[agents.size()];
+		agentKeyArray = agents.keySet().toArray(agentKeyArray);
 	}
 
 	public synchronized int orderFuel(int fuel) {
@@ -97,20 +100,11 @@ public class Mothership extends AbstractLevelObject{
 		}
 	}
 
+	private int agentIndex = 0;
+	private Integer[] agentKeyArray;
 	public void addActionPoint() {
-		actionPoints.addActionPoint();
-	}
-
-	public void getActionPoint() {
-		actionPoints.getActionPoint();
-	}
-
-	public void getActionPoint(int points) {
-		actionPoints.getActionPoint(points);
-	}
-
-	public int getActionPoints() {
-		return actionPoints.getActionPoints();
+		agents.get(agentKeyArray[agentIndex]).getActionPoints().addActionPoint();
+		agentIndex = (agentIndex+1) % (agents.size());
 	}
 
 	public Team getTeam() {
@@ -120,7 +114,7 @@ public class Mothership extends AbstractLevelObject{
 	public synchronized int registerAgent() {
 		int i;
 		for(i=0;i<=agents.size();i++) {
-			if(!agents.containsKey(i)) {
+			if(!agents.containsKey(getID()*10000+i)) {
 				break;
 			}
 		}

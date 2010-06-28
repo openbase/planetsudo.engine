@@ -10,9 +10,9 @@ import data.Point2D;
 import exceptions.NotValidException;
 import java.awt.geom.Rectangle2D;
 import java.lang.reflect.Constructor;
-import java.util.logging.Level;
 import logging.Logger;
 import math.RandomGenerator;
+import planetmesserlost.game.ActionPoints;
 import planetmesserlost.game.strategy.AbstractStrategy;
 
 /**
@@ -23,6 +23,7 @@ public class Agent extends AbstractLevelObject {
 
 	public final static int DEFAULT_START_FUEL = 100;
 	protected final Mothership mothership;
+	protected final ActionPoints actionPoints;
 	protected Direction2D direction;
 	protected int fuel;
 	private boolean disabled;
@@ -31,6 +32,7 @@ public class Agent extends AbstractLevelObject {
 		super(mothership.registerAgent(), name, mothership.getLevel(), mothership.getAgentHomePosition(), 50, 50, ObjectShape.Oval);
 		Logger.info(this, "Create "+this);
 		this.mothership = mothership;
+		this.actionPoints = new ActionPoints();
 		if(id == -1) { // check if valid
 			kill();
 			return;
@@ -48,6 +50,10 @@ public class Agent extends AbstractLevelObject {
 		position = mothership.getAgentHomePosition();
 		direction = new Direction2D(45);
 		disabled = false;
+	}
+
+	public ActionPoints getActionPoints() {
+		return actionPoints;
 	}
 
 	public int getFuel() {
@@ -85,6 +91,7 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	protected void startGame() {
+		Logger.info(this, "startAgend"+this);
 		// ############## Load strategy #########################
 		Constructor<? extends AbstractStrategy> constructor;
 		try {
@@ -107,23 +114,27 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	public void goStraightAhead() {
-		mothership.getActionPoint();
+		actionPoints.getActionPoint();
 		position.translate(direction);
 	}
 
 	public void turnAround() {
+		actionPoints.getActionPoint();
 		direction.invert();
 	}
 
 	public void turnLeft(int beta) {
+		actionPoints.getActionPoint();
 		direction.setAngle(direction.getAngle()-beta);
 	}
 
 	public void turnRight(int beta) {
+		actionPoints.getActionPoint();
 		direction.setAngle(direction.getAngle()+beta);
 	}
 
 	public void turnRandom() {
+		actionPoints.getActionPoint();
 		try {
 			turnRight(RandomGenerator.getRandom(1, 360));
 		} catch (NotValidException ex) {

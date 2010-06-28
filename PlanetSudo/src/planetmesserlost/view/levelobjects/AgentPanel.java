@@ -7,9 +7,7 @@ package planetmesserlost.view.levelobjects;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.Timer;
+import logging.Logger;
 import planetmesserlost.levelobjects.Agent;
 
 /**
@@ -21,8 +19,7 @@ public class AgentPanel extends AbstractLevelObjectPanel<Agent, MothershipPanel>
 
 	public AgentPanel(Agent resource, MothershipPanel parentResourcePanel) {
 		super(resource, parentResourcePanel);
-		
-//		Logger.info(this, "paint agent on pos["+((int)resource.getPosition().getX()-AGENT_SIZE)+"|"+((int)resource.getPosition().getY()-AGENT_SIZE)+"]");
+		Logger.info(this, "Create AgentPanel of "+resource);
 	}
 
 	@Override
