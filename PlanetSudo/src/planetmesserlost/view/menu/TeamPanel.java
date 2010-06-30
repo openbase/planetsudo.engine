@@ -11,16 +11,24 @@
 
 package planetmesserlost.view.menu;
 
+import planetmesserlost.game.Team;
+
 /**
  *
  * @author noxus
  */
 public class TeamPanel extends javax.swing.JPanel {
 
+	private Team team;
+
     /** Creates new form TeamPanel */
     public TeamPanel() {
         initComponents();
     }
+
+	public TeamPanel(Team team) {
+
+	}
 
     /** This method is called from within the constructor to
      * initialize the form.
