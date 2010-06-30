@@ -5,6 +5,7 @@
 
 package planetmesserlost.game;
 
+import java.awt.Color;
 import planetmesserlost.game.strategy.AbstractStrategy;
 import concepts.Manageable;
 
@@ -16,11 +17,14 @@ public class Team implements Manageable {
 
 	private final int id;
 	private final String name;
+	private final Color teamColor;
 	private Class<? extends AbstractStrategy> strategy;
 
-	public Team(int id, String name, Class<? extends AbstractStrategy> strategy) {
+
+	public Team(int id, String name, Color teamColor, Class<? extends AbstractStrategy> strategy) {
 		this.id = id;
 		this.name = name;
+		this.teamColor = teamColor;
 		this.strategy = strategy;
 	}
 
@@ -42,5 +46,7 @@ public class Team implements Manageable {
 		return name;
 	}
 
-
+	public Color getTeamColor() {
+		return teamColor;
+	}
 }

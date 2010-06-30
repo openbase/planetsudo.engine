@@ -16,15 +16,17 @@ import planetmesserlost.levelobjects.Agent;
  */
 public class AgentPanel extends AbstractLevelObjectPanel<Agent, MothershipPanel> {
 	
+	private final Color teamColor;
 
 	public AgentPanel(Agent resource, MothershipPanel parentResourcePanel) {
 		super(resource, parentResourcePanel);
+		this.teamColor = resource.getMothership().getTeam().getTeamColor();
 		Logger.info(this, "Create AgentPanel of "+resource);
 	}
 
 	@Override
 	protected void paintComponent(Graphics2D g2) {
-		g2.setColor(Color.BLUE);
+		g2.setColor(teamColor);
 		paintShape(g2);
 		g2.setColor(Color.RED);
 		g2.drawLine((int) resource.getPosition().getX(),

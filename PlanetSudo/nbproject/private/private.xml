@@ -11,5 +11,9 @@
         <file>file:/home/divine/workspace/PlanetSudo/src/planetmesserlost/game/ActionPoints.java</file>
         <file>file:/home/divine/workspace/PlanetSudo/src/planetmesserlost/level/LevelLoader.java</file>
         <file>file:/home/divine/workspace/PlanetSudo/src/planetmesserlost/levelobjects/Agent.java</file>
+        <file>file:/home/divine/workspace/PlanetSudo/src/planetmesserlost/view/levelobjects/AgentPanel.java</file>
+        <file>file:/home/divine/workspace/PlanetSudo/src/planetmesserlost/view/levelobjects/MothershipPanel.java</file>
+        <file>file:/home/divine/workspace/PlanetSudo/src/planetmesserlost/levelobjects/Resource.java</file>
+        <file>file:/home/divine/workspace/PlanetSudo/src/planetmesserlost/game/Team.java</file>
     </open-files>
 </project-private>

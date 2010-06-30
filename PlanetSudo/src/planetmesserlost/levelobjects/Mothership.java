@@ -9,7 +9,6 @@ import data.Point2D;
 import java.util.HashMap;
 import java.util.Iterator;
 import logging.Logger;
-import planetmesserlost.game.ActionPoints;
 import planetmesserlost.game.Team;
 import planetmesserlost.level.Level;
 
@@ -20,7 +19,7 @@ import planetmesserlost.level.Level;
 public class Mothership extends AbstractLevelObject {
 
 	public final static int DEFAULT_START_FUEL = 1000;
-	public final static int DEFAULT_AGENT_COUNT = 500; // range 0-9999
+	public final static int DEFAULT_AGENT_COUNT = 100; // range 0-9999
 
 	private final Team team;
 	private int fuel;

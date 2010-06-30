@@ -5,6 +5,7 @@
 
 package planetmesserlost.game;
 
+import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.util.Vector;
 import logging.Logger;
@@ -39,8 +40,8 @@ public class GameManager implements Runnable {
 
 	public void setupTestGame() {
 		setLevel(new SimpleWorld());
-		addTeam(new Team(0, "Piranjas", DefaultStategy.class));
-		addTeam(new Team(1, "BlackHeath", DefaultStategy.class));
+		addTeam(new Team(0, "Piranjas", Color.BLUE, DefaultStategy.class));
+		addTeam(new Team(1, "BlackHeath", Color.MAGENTA, DefaultStategy.class));
 		startGame();
 	}
 
