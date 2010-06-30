@@ -88,7 +88,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="mothershipFuelProgressBar" pref="242" max="32767" attributes="0"/>
-                      <Component id="jLabel2" alignment="0" pref="242" max="32767" attributes="0"/>
+                      <Component id="mothershipStatusLabel" alignment="0" pref="242" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -99,7 +99,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <Component id="mothershipFuelProgressBar" min="-2" max="-2" attributes="0"/>
                   <EmptySpace pref="19" max="32767" attributes="0"/>
-                  <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                  <Component id="mothershipStatusLabel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -112,7 +112,7 @@
             <Property name="stringPainted" type="boolean" value="true"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel2">
+        <Component class="javax.swing.JLabel" name="mothershipStatusLabel">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" value="Status"/>
@@ -210,7 +210,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTextArea" name="jTextArea1">
+        <Component class="javax.swing.JTextArea" name="developementTextArea">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ee" green="ee" red="ee" type="rgb"/>

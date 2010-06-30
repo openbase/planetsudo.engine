@@ -25,9 +25,9 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jProgressBar2" min="-2" pref="87" max="-2" attributes="0"/>
+              <Component id="agentFuelProgressBar" min="-2" pref="87" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jLabel3" min="-2" max="-2" attributes="1"/>
+              <Component id="agentActionLabel" min="-2" max="-2" attributes="1"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -36,8 +36,8 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jProgressBar2" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="agentFuelProgressBar" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="agentActionLabel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
@@ -45,13 +45,13 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JProgressBar" name="jProgressBar2">
+    <Component class="javax.swing.JProgressBar" name="agentFuelProgressBar">
       <Properties>
         <Property name="string" type="java.lang.String" value="Treibstoff"/>
         <Property name="stringPainted" type="boolean" value="true"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel3">
+    <Component class="javax.swing.JLabel" name="agentActionLabel">
       <Properties>
         <Property name="text" type="java.lang.String" value="Aktion"/>
       </Properties>

@@ -34,7 +34,7 @@ public class TeamPanel extends javax.swing.JPanel {
         teamNameLabel = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         mothershipFuelProgressBar = new javax.swing.JProgressBar();
-        jLabel2 = new javax.swing.JLabel();
+        mothershipStatusLabel = new javax.swing.JLabel();
         teamColorPanel = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         agentPanel1 = new planetmesserlost.view.menu.AgentPanel();
@@ -42,7 +42,7 @@ public class TeamPanel extends javax.swing.JPanel {
         agentPanel3 = new planetmesserlost.view.menu.AgentPanel();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        developementTextArea = new javax.swing.JTextArea();
 
         teamNameLabel.setText("Team");
 
@@ -51,8 +51,8 @@ public class TeamPanel extends javax.swing.JPanel {
         mothershipFuelProgressBar.setString("Treibstoff");
         mothershipFuelProgressBar.setStringPainted(true);
 
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Status");
+        mothershipStatusLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        mothershipStatusLabel.setText("Status");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -62,7 +62,7 @@ public class TeamPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(mothershipFuelProgressBar, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE))
+                    .addComponent(mothershipStatusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -70,7 +70,7 @@ public class TeamPanel extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(mothershipFuelProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
-                .addComponent(jLabel2)
+                .addComponent(mothershipStatusLabel)
                 .addContainerGap())
         );
 
@@ -118,12 +118,12 @@ public class TeamPanel extends javax.swing.JPanel {
 
         jScrollPane1.setBorder(null);
 
-        jTextArea1.setBackground(new java.awt.Color(238, 238, 238));
-        jTextArea1.setColumns(20);
-        jTextArea1.setEditable(false);
-        jTextArea1.setRows(5);
-        jTextArea1.setBorder(null);
-        jScrollPane1.setViewportView(jTextArea1);
+        developementTextArea.setBackground(new java.awt.Color(238, 238, 238));
+        developementTextArea.setColumns(20);
+        developementTextArea.setEditable(false);
+        developementTextArea.setRows(5);
+        developementTextArea.setBorder(null);
+        jScrollPane1.setViewportView(developementTextArea);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -174,13 +174,13 @@ public class TeamPanel extends javax.swing.JPanel {
     private planetmesserlost.view.menu.AgentPanel agentPanel1;
     private planetmesserlost.view.menu.AgentPanel agentPanel2;
     private planetmesserlost.view.menu.AgentPanel agentPanel3;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JTextArea developementTextArea;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JProgressBar mothershipFuelProgressBar;
+    private javax.swing.JLabel mothershipStatusLabel;
     private javax.swing.JPanel teamColorPanel;
     private javax.swing.JLabel teamNameLabel;
     // End of variables declaration//GEN-END:variables

@@ -31,15 +31,15 @@ public class AgentPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jProgressBar2 = new javax.swing.JProgressBar();
-        jLabel3 = new javax.swing.JLabel();
+        agentFuelProgressBar = new javax.swing.JProgressBar();
+        agentActionLabel = new javax.swing.JLabel();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder("Name"));
 
-        jProgressBar2.setString("Treibstoff");
-        jProgressBar2.setStringPainted(true);
+        agentFuelProgressBar.setString("Treibstoff");
+        agentFuelProgressBar.setStringPainted(true);
 
-        jLabel3.setText("Aktion");
+        agentActionLabel.setText("Aktion");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -47,25 +47,25 @@ public class AgentPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jProgressBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(agentFuelProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3)
+                .addComponent(agentActionLabel)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jProgressBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
+                    .addComponent(agentFuelProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(agentActionLabel))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JProgressBar jProgressBar2;
+    private javax.swing.JLabel agentActionLabel;
+    private javax.swing.JProgressBar agentFuelProgressBar;
     // End of variables declaration//GEN-END:variables
 
 }
