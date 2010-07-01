@@ -15,10 +15,10 @@ package planetmesserlost.view.menu;
  *
  * @author noxus
  */
-public class AgentPanel extends javax.swing.JPanel {
+public class AgentMenuPanel extends javax.swing.JPanel {
 
     /** Creates new form AgentPanel */
-    public AgentPanel() {
+    public AgentMenuPanel() {
         initComponents();
     }
 
@@ -35,6 +35,7 @@ public class AgentPanel extends javax.swing.JPanel {
         agentActionLabel = new javax.swing.JLabel();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder("Name"));
+        setOpaque(false);
 
         agentFuelProgressBar.setString("Treibstoff");
         agentFuelProgressBar.setStringPainted(true);
@@ -47,10 +48,10 @@ public class AgentPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(agentFuelProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(agentFuelProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(agentActionLabel)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(agentActionLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

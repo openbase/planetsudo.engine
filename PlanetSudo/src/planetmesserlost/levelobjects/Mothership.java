@@ -8,6 +8,7 @@ package planetmesserlost.levelobjects;
 import data.Point2D;
 import java.util.HashMap;
 import java.util.Iterator;
+import javax.swing.ImageIcon;
 import logging.Logger;
 import planetmesserlost.game.Team;
 import planetmesserlost.level.Level;
@@ -26,6 +27,7 @@ public class Mothership extends AbstractLevelObject {
 	private int agentMaxCount;
 
 	private final HashMap<Integer, Agent> agents;
+	
 
 	public Mothership(int id, Team team, Level level) {
 		super(id, team.getName()+Mothership.class.getSimpleName(), level, level.getMothershipHomePosition(id), 100, 100, ObjectShape.Rec);

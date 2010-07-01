@@ -19,15 +19,16 @@ public class AgentPanel extends AbstractLevelObjectPanel<Agent, MothershipPanel>
 	private final Color teamColor;
 
 	public AgentPanel(Agent resource, MothershipPanel parentResourcePanel) {
-		super(resource, parentResourcePanel);
+		super(resource, parentResourcePanel, "res/img/agent.png");
 		this.teamColor = resource.getMothership().getTeam().getTeamColor();
 		Logger.info(this, "Create AgentPanel of "+resource);
 	}
 
 	@Override
 	protected void paintComponent(Graphics2D g2) {
-		g2.setColor(teamColor);
-		paintShape(g2);
+		//g2.setColor(teamColor);
+		//paintShape(g2);
+		paintImageRotated(resource.getDirection(), g2);
 		g2.setColor(Color.RED);
 		g2.drawLine((int) resource.getPosition().getX(),
 					(int) resource.getPosition().getY(),

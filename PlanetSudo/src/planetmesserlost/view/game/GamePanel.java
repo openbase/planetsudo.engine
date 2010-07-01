@@ -38,15 +38,21 @@ public class GamePanel extends javax.swing.JPanel {
     private void initComponents() {
 
         levelDisplayPanel = new planetmesserlost.view.level.LevelDisplayPanel();
+        teamMenuPanel1 = new planetmesserlost.view.menu.TeamMenuPanel();
+        teamMenuPanel2 = new planetmesserlost.view.menu.TeamMenuPanel();
 
-        setBackground(new java.awt.Color(0, 0, 0));
+        setBackground(new java.awt.Color(255, 153, 0));
         setLayout(new java.awt.BorderLayout(5, 5));
         add(levelDisplayPanel, java.awt.BorderLayout.CENTER);
+        add(teamMenuPanel1, java.awt.BorderLayout.LINE_START);
+        add(teamMenuPanel2, java.awt.BorderLayout.LINE_END);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private planetmesserlost.view.level.LevelDisplayPanel levelDisplayPanel;
+    private planetmesserlost.view.menu.TeamMenuPanel teamMenuPanel1;
+    private planetmesserlost.view.menu.TeamMenuPanel teamMenuPanel2;
     // End of variables declaration//GEN-END:variables
 
 }

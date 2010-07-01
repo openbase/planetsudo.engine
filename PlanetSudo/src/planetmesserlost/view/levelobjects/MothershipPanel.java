@@ -6,10 +6,11 @@
 package planetmesserlost.view.levelobjects;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import planetmesserlost.levelobjects.Agent;
 import planetmesserlost.levelobjects.Mothership;
 import planetmesserlost.view.level.LevelPanel;
@@ -20,8 +21,9 @@ import planetmesserlost.view.level.LevelPanel;
  */
 public class MothershipPanel extends AbstractLevelObjectPanel<Mothership, LevelPanel> {
 
+
 	public MothershipPanel(Mothership resource, LevelPanel parentResourcePanel) {
-		super(resource, parentResourcePanel);
+		super(resource, parentResourcePanel, "res/img/mothership.png");
 		loadAgentPanels();
 	}
 
@@ -36,8 +38,9 @@ public class MothershipPanel extends AbstractLevelObjectPanel<Mothership, LevelP
 
 	@Override
 	protected void paintComponent(Graphics2D g2) {
-		g2.setColor(Color.YELLOW);
+		g2.setColor(resource.getTeam().getTeamColor());
 		boundingBox = resource.getBounds();
 		paintShape(g2);
+		paintImage(g2);
 	}
 }

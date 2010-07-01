@@ -42,8 +42,8 @@ public class LevelPanel extends AbstractResourcePanel<Level, LevelPanel> impleme
 
 	@Override
 	protected void paintComponent(Graphics2D g2) {
-		g2.setColor(Color.GREEN);
-		g2.draw(resource.getLevelBorderPolygon());
+		g2.setColor(Color.BLACK);
+		g2.fill(resource.getLevelBorderPolygon());
 	}
 
 	@Override
