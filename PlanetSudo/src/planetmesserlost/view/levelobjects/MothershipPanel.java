@@ -23,7 +23,7 @@ public class MothershipPanel extends AbstractLevelObjectPanel<Mothership, LevelP
 
 
 	public MothershipPanel(Mothership resource, LevelPanel parentResourcePanel) {
-		super(resource, parentResourcePanel, "res/img/mothership.png");
+		super(resource, parentResourcePanel, "res/img/mothership2.png");
 		loadAgentPanels();
 	}
 
@@ -40,8 +40,8 @@ public class MothershipPanel extends AbstractLevelObjectPanel<Mothership, LevelP
 	protected void paintComponent(Graphics2D g2) {
 		boundingBox = resource.getBounds();
 		//paintShape(g2);
-		paintImage(g2);
 		g2.setColor(resource.getTeam().getTeamColor());
-		g2.fillRect((int)boundingBox.getCenterX()-20, (int)boundingBox.getCenterY()-20, 40, 40);
+		g2.fillRect((int)boundingBox.getCenterX()-45, (int)boundingBox.getCenterY()-45, 90,90);
+		paintImage(g2);
 	}
 }
