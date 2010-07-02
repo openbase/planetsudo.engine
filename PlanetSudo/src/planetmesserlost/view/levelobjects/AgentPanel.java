@@ -19,6 +19,9 @@ public class AgentPanel extends AbstractLevelObjectPanel<Agent, MothershipPanel>
 	
 	private final Color teamColor;
 	public final static Color FUEL_BACKGROUND = new Color(255,20,20);
+	public final static double FUEL_BAR_STATIC_WIDTH = 40;
+	public final static double FUEL_BAR_STATIC_POSITION_Y = 32;
+	public final static int FUEL_BAR_STATIC_HEIGHT = 4;
 
 	public AgentPanel(Agent resource, MothershipPanel parentResourcePanel) {
 		super(resource, parentResourcePanel, "res/img/agent.png");
@@ -56,22 +59,18 @@ public class AgentPanel extends AbstractLevelObjectPanel<Agent, MothershipPanel>
 
 
 		// Paint FuelBarBackground
-		Graphics2D g3 = (Graphics2D) g2.create();
-		g3.setColor(FUEL_BACKGROUND);
-		g3.fillRect((int) resource.getPosition().getX()-20,
-					(int) resource.getPosition().getY()-32,
-		//			(int) resource.getFuel()/10*4,
-					40,
-					4);
+		g2.setColor(FUEL_BACKGROUND);
+		g2.fillRect((int) (resource.getPosition().getX()-FUEL_BAR_STATIC_WIDTH/2),
+					(int) (resource.getPosition().getY()-FUEL_BAR_STATIC_POSITION_Y),
+					(int) FUEL_BAR_STATIC_WIDTH,
+					(int) FUEL_BAR_STATIC_HEIGHT);
 
 		// Paint FuelBar
-		Graphics2D g4 = (Graphics2D) g2.create();
-		g4.setColor(Color.GREEN);
-		g4.fillRect((int) resource.getPosition().getX()-20,
-					(int) resource.getPosition().getY()-32,
-		//			(int) resource.getFuel()/10*4,
-					26,
-					4);
+		g2.setColor(Color.GREEN);
+		g2.fillRect((int) (resource.getPosition().getX()-FUEL_BAR_STATIC_WIDTH/2),
+					(int) (resource.getPosition().getY()-FUEL_BAR_STATIC_POSITION_Y),
+					(int) (FUEL_BAR_STATIC_WIDTH/Agent.DEFAULT_START_FUEL*resource.getFuel()),
+					(int) FUEL_BAR_STATIC_HEIGHT);
 		
 	}
 }
