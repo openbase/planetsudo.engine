@@ -8,10 +8,10 @@ package planetmesserlost.levelobjects;
 import data.Point2D;
 import java.util.HashMap;
 import java.util.Iterator;
-import javax.swing.ImageIcon;
 import logging.Logger;
 import planetmesserlost.game.Team;
 import planetmesserlost.level.Level;
+import planetmesserlost.level.LevelView;
 
 /**
  *
@@ -25,6 +25,7 @@ public class Mothership extends AbstractLevelObject {
 	private final Team team;
 	private int fuel;
 	private int agentMaxCount;
+	private LevelView levelView;
 
 	private final HashMap<Integer, Agent> agents;
 	
@@ -34,6 +35,7 @@ public class Mothership extends AbstractLevelObject {
 		Logger.info(this, "Create "+this);
 		this.team = team;
 		this.agents = new HashMap<Integer, Agent>();
+		this.levelView = new LevelView(this);
 		this.reset();
 	}
 

@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
+import planetmesserlost.levelobjects.Mothership;
 
 /**
  *
@@ -17,13 +18,15 @@ import java.awt.geom.Rectangle2D;
  */
 public class LevelView {
 	private Level level;
+	private Mothership mothership;
 	private int[][] levelRepresentation;
 	private final int width, height, rasterSize;
 
 
-	public LevelView(Level level) {
-		this.level = level;
-		this.rasterSize = 1;
+	public LevelView(Mothership mothership) {
+		this.mothership = mothership;
+		this.level = mothership.getLevel();
+		this.rasterSize = 50;
 		this.width  = ((int)level.getLevelBorderPolygon().getBounds().getWidth()/rasterSize);
 		this.height = ((int)level.getLevelBorderPolygon().getBounds().getHeight()/rasterSize);
 		this.levelRepresentation = new int[width][height];
@@ -60,9 +63,9 @@ public class LevelView {
 			for(int yr=0;yr<height;yr++) {
 				Rectangle2D rasterElement = new Rectangle2D.Double(x+xr*rasterSize, y+yr*rasterSize, rasterSize, rasterSize);
 				if(level.getLevelBorderPolygon().contains(rasterElement)) {
-					levelRepresentation[xr][yr] = 0;
+					levelRepresentation[xr][yr] = 255;
 				} else {
-					levelRepresentation[xr][yr] =  255;
+					levelRepresentation[xr][yr] =  0;
 				}
 
 				int value = levelRepresentation[xr][yr];

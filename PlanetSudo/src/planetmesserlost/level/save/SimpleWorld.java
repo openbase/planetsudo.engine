@@ -3,10 +3,11 @@
  * and open the template in the editor.
  */
 
-package planetmesserlost.level;
+package planetmesserlost.level.save;
 
 import data.Point2D;
 import java.awt.Polygon;
+import planetmesserlost.level.Level;
 
 /**
  *

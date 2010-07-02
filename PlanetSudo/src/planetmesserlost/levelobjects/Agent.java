@@ -10,6 +10,7 @@ import data.Point2D;
 import exceptions.NotValidException;
 import java.awt.geom.Rectangle2D;
 import java.lang.reflect.Constructor;
+import java.util.logging.Level;
 import logging.Logger;
 import math.RandomGenerator;
 import planetmesserlost.game.ActionPoints;
@@ -48,7 +49,11 @@ public class Agent extends AbstractLevelObject {
 	protected void reset() {
 		fuel = DEFAULT_START_FUEL;
 		position = mothership.getAgentHomePosition();
-		direction = new Direction2D(45);
+		try {
+			direction = new Direction2D(RandomGenerator.getRandom(1, 360));
+		} catch (NotValidException ex) {
+			java.util.logging.Logger.getLogger(Agent.class.getName()).log(Level.SEVERE, null, ex);
+		}
 		disabled = false;
 	}
 
@@ -62,6 +67,14 @@ public class Agent extends AbstractLevelObject {
 
 	public boolean hasFuel() {
 		return fuel > 0;
+	}
+
+	private boolean useFuel() {
+		if(fuel == 0) {
+			return false;
+		}
+		fuel--;
+		return true;
 	}
 
 	public boolean isDisabled() {
@@ -78,7 +91,6 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	public boolean collisionDetected() {
-
 		return level.collisionDetected(this);
 	}
 
@@ -119,24 +131,32 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	public void turnAround() {
-		actionPoints.getActionPoint();
-		direction.invert();
+		if(useFuel()) {
+			actionPoints.getActionPoint();
+			direction.invert();
+		}
 	}
 
 	public void turnLeft(int beta) {
-		actionPoints.getActionPoint();
-		direction.setAngle(direction.getAngle()-beta);
+		if(useFuel()) {
+			actionPoints.getActionPoint();
+			direction.setAngle(direction.getAngle()-beta);
+		}
 	}
 
 	public void turnRight(int beta) {
-		actionPoints.getActionPoint();
-		direction.setAngle(direction.getAngle()+beta);
+		if(useFuel()) {
+			actionPoints.getActionPoint();
+			direction.setAngle(direction.getAngle()+beta);
+		}
 	}
 
 	public void turnRandom() {
-		actionPoints.getActionPoint();
 		try {
-			turnRight(RandomGenerator.getRandom(1, 360));
+			if(useFuel()) {
+				actionPoints.getActionPoint();
+				direction.setAngle(RandomGenerator.getRandom(1, 360));
+			}
 		} catch (NotValidException ex) {
 			Logger.error(this, "Could not turn random.", ex);
 		}

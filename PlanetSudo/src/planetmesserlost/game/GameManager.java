@@ -10,7 +10,7 @@ import java.beans.PropertyChangeEvent;
 import java.util.Vector;
 import logging.Logger;
 import planetmesserlost.level.Level;
-import planetmesserlost.level.SimpleWorld;
+import planetmesserlost.level.save.SimpleWorld;
 import planetmesserlost.main.GUIController;
 import planetmesserlost.game.strategy.DefaultStategy;
 

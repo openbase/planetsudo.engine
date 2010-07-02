@@ -24,8 +24,6 @@ import view.components.draw.ResourceDisplayPanel;
  */
 public class LevelPanel extends AbstractResourcePanel<Level, LevelPanel> implements ActionListener {
 
-	private LevelView levelView;
-
 	public LevelPanel(Level resource, ResourceDisplayPanel parentPanel) {
 		super(resource, parentPanel);
 		boundingBox = resource.getLevelBorderPolygon().getBounds2D();
@@ -33,7 +31,7 @@ public class LevelPanel extends AbstractResourcePanel<Level, LevelPanel> impleme
 		loadMothershipPanels();
 		new Timer(12, this).start();
 		parentPanel.setDoubleBuffered(true);
-		//this.levelView = new LevelView(resource);
+		
 	}
 
 	private void loadMothershipPanels() {
@@ -46,10 +44,10 @@ public class LevelPanel extends AbstractResourcePanel<Level, LevelPanel> impleme
 	@Override
 	protected void paintComponent(Graphics2D g2) {
 		
-		//g2.fill(resource.getLevelBorderPolygon());
-		//levelView.drawLevelView((int)boundingBox.getX(), (int)boundingBox.getY(), g2);
-		g2.setColor(Color.BLACK);
 		g2.fill(resource.getLevelBorderPolygon());
+		//levelView.drawLevelView((int)boundingBox.getX(), (int)boundingBox.getY(), g2);
+		//g2.setColor(Color.BLACK);
+		//g2.fill(resource.getLevelBorderPolygon());
 	}
 
 	@Override
