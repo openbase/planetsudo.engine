@@ -19,13 +19,31 @@ import planetmesserlost.game.GameManager;
  */
 public class GamePanel extends javax.swing.JPanel {
 
+	private boolean displayTeamPanel;
+
     /** Creates new form GamePanel */
     public GamePanel() {
-        initComponents();
+        this.initComponents();
+		this.displayTeamPanel = false;
     }
 
 	public void updateDynamicComponents() {
 		levelDisplayPanel.setLevel(GameManager.getInstance().getLevel());
+		updateTeamPanelDisplayState();	
+	}
+
+	public void displayTeamPanel(boolean visible) {
+		displayTeamPanel = visible;
+		updateTeamPanelDisplayState();
+	}
+	
+	public boolean isTeamPanelDisplayed() {
+		return displayTeamPanel;
+	}
+
+	public void updateTeamPanelDisplayState() {
+		teamMenuPanel1.setVisible(displayTeamPanel);
+		teamMenuPanel2.setVisible(displayTeamPanel);
 	}
 
     /** This method is called from within the constructor to

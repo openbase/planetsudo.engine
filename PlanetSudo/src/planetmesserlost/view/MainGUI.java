@@ -77,6 +77,7 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 				((CardLayout) mainPanel.getLayout()).show(mainPanel, CONFIGURATION_PANEL);
 				setFullScreenMode(DEFAULT_FULLSCREENMODE);
 				guiController.addPropertyChangeListener(instance);
+				displayTeamPanelCheckBoxMenuItem.setSelected(gamePanel.isTeamPanelDisplayed());
 			}
 		});
 	}
@@ -205,6 +206,9 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         exitMenuItem = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
+        displayTeamPanelCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jCheckBoxMenuItem2 = new javax.swing.JCheckBoxMenuItem();
@@ -256,6 +260,20 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
         menuBar.add(fileMenu);
 
         editMenu.setText("Ansicht");
+
+        jMenu2.setText("Spiel");
+
+        displayTeamPanelCheckBoxMenuItem.setSelected(true);
+        displayTeamPanelCheckBoxMenuItem.setText("Teamanzeige");
+        displayTeamPanelCheckBoxMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                displayTeamPanelCheckBoxMenuItemActionPerformed(evt);
+            }
+        });
+        jMenu2.add(displayTeamPanelCheckBoxMenuItem);
+
+        editMenu.add(jMenu2);
+        editMenu.add(jSeparator1);
 
         jCheckBoxMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, java.awt.event.InputEvent.ALT_MASK));
         jCheckBoxMenuItem1.setText("Vollbild");
@@ -326,6 +344,10 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 		Logger.setDebugEnable(jCheckBoxMenuItem2.isSelected());
 	}//GEN-LAST:event_jCheckBoxMenuItem2ActionPerformed
 
+	private void displayTeamPanelCheckBoxMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_displayTeamPanelCheckBoxMenuItemActionPerformed
+		gamePanel.displayTeamPanel(displayTeamPanelCheckBoxMenuItem.isSelected());
+	}//GEN-LAST:event_displayTeamPanelCheckBoxMenuItemActionPerformed
+
     /**
     * @param args the command line arguments
     */
@@ -342,6 +364,7 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JMenuItem contentsMenuItem;
+    private javax.swing.JCheckBoxMenuItem displayTeamPanelCheckBoxMenuItem;
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
@@ -350,8 +373,10 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem2;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;

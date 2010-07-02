@@ -38,9 +38,10 @@ public class MothershipPanel extends AbstractLevelObjectPanel<Mothership, LevelP
 
 	@Override
 	protected void paintComponent(Graphics2D g2) {
-		g2.setColor(resource.getTeam().getTeamColor());
 		boundingBox = resource.getBounds();
-		paintShape(g2);
+		//paintShape(g2);
 		paintImage(g2);
+		g2.setColor(resource.getTeam().getTeamColor());
+		g2.fillRect((int)boundingBox.getCenterX()-20, (int)boundingBox.getCenterY()-20, 40, 40);
 	}
 }

@@ -6,8 +6,10 @@
 package planetmesserlost.view.levelobjects;
 
 import data.Direction2D;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Dimension2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +24,7 @@ import view.components.draw.AbstractResourcePanel;
  */
 public abstract class AbstractLevelObjectPanel<R extends AbstractLevelObject, PRP extends AbstractResourcePanel> extends AbstractResourcePanel<R, PRP> {
 
-	private BufferedImage image;
+	protected BufferedImage image;
 
 	public AbstractLevelObjectPanel(R resource, PRP parentResourcePanel, String imageURI) {
 		super(resource, parentResourcePanel);
@@ -45,18 +47,29 @@ public abstract class AbstractLevelObjectPanel<R extends AbstractLevelObject, PR
 	}
 
 	protected void paintImage(Graphics2D g2) {
-		g2.drawImage(image, getTransformation(), parentPanel);
+		g2.drawImage(image, getSkaleImageToBoundsTransformation(), parentPanel);
 	}
 
 	protected void paintImageRotated(Direction2D direction, Graphics2D g2) {
-		AffineTransform transformation = getTransformation();
-		transformation.rotate(	(Math.toRadians(direction.getAngle()+90)),
-								image.getWidth() / 2.0,
-								image.getHeight() / 2.0);
+		AffineTransform transformation = getSkaleImageToBoundsTransformation();
+		transformation = rotateTransformation(direction, image.getWidth(), image.getHeight(), transformation);
 		g2.drawImage(image, transformation, parentPanel);
 	}
 
-	public AffineTransform getTransformation() {
+	private Dimension2D dimension2D = new Dimension();
+	public AffineTransform rotateTransformation(Direction2D direction, int width, int height, AffineTransform affineTransform) {
+		dimension2D.setSize(width, height);
+		return getRotationTransformation(direction, dimension2D, affineTransform);
+	}
+
+	public AffineTransform getRotationTransformation(Direction2D direction, Dimension2D dimension, AffineTransform affineTransform) {
+		affineTransform.rotate(Math.toRadians(direction.getAngle()+90),
+								dimension.getWidth() / 2.0,
+								dimension.getHeight() / 2.0);
+		return affineTransform;
+	}
+
+	public AffineTransform getSkaleImageToBoundsTransformation() {
 		return new AffineTransform(
 					boundingBox.getWidth()/image.getWidth(), 0,
 					0, boundingBox.getHeight()/image.getHeight(),
