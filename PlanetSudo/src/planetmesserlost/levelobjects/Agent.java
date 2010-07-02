@@ -22,7 +22,7 @@ import planetmesserlost.game.strategy.AbstractStrategy;
  */
 public class Agent extends AbstractLevelObject {
 
-	public final static int DEFAULT_START_FUEL = 100;
+	public final static int DEFAULT_START_FUEL = 10000;
 	protected final Mothership mothership;
 	protected final ActionPoints actionPoints;
 	protected Direction2D direction;
@@ -126,8 +126,10 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	public void goStraightAhead() {
-		actionPoints.getActionPoint();
-		position.translate(direction);
+		if(useFuel()) {
+			actionPoints.getActionPoint();
+			position.translate(direction);
+		}
 	}
 
 	public void turnAround() {
