@@ -13,6 +13,7 @@ import planetmesserlost.level.Level;
 import planetmesserlost.level.save.SimpleWorld;
 import planetmesserlost.main.GUIController;
 import planetmesserlost.game.strategy.DefaultStategy;
+import planetmesserlost.level.save.MarioWorld1;
 
 /**
  *

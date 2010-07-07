@@ -6,7 +6,6 @@
 package planetmesserlost.view.level;
 
 import planetmesserlost.view.levelobjects.MothershipPanel;
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,14 +23,14 @@ import view.components.draw.ResourceDisplayPanel;
  */
 public class LevelPanel extends AbstractResourcePanel<Level, LevelPanel> implements ActionListener {
 
+
 	public LevelPanel(Level resource, ResourceDisplayPanel parentPanel) {
 		super(resource, parentPanel);
 		boundingBox = resource.getLevelBorderPolygon().getBounds2D();
 		updateBounds();
 		loadMothershipPanels();
-		new Timer(12, this).start();
+		new Timer(50, this).start();
 		parentPanel.setDoubleBuffered(true);
-		
 	}
 
 	private void loadMothershipPanels() {
@@ -45,7 +44,6 @@ public class LevelPanel extends AbstractResourcePanel<Level, LevelPanel> impleme
 	protected void paintComponent(Graphics2D g2) {
 		
 		g2.fill(resource.getLevelBorderPolygon());
-		//levelView.drawLevelView((int)boundingBox.getX(), (int)boundingBox.getY(), g2);
 		//g2.setColor(Color.BLACK);
 		//g2.fill(resource.getLevelBorderPolygon());
 	}

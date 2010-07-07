@@ -14,8 +14,7 @@ import planetmesserlost.levelobjects.Agent;
 public class DefaultStategy extends AbstractStrategy {
 
 	public DefaultStategy(Agent agent) {
-		super(agent);
-	}
+		super(agent);	}
 
 	@Override
 	protected void loadRules() {

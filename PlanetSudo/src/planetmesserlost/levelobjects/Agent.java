@@ -22,7 +22,7 @@ import planetmesserlost.game.strategy.AbstractStrategy;
  */
 public class Agent extends AbstractLevelObject {
 
-	public final static int DEFAULT_START_FUEL = 10000;
+	public final static int DEFAULT_START_FUEL = 1000;
 	protected final Mothership mothership;
 	protected final ActionPoints actionPoints;
 	protected Direction2D direction;
@@ -71,6 +71,7 @@ public class Agent extends AbstractLevelObject {
 
 	private boolean useFuel() {
 		if(fuel == 0) {
+			disabled = true;
 			return false;
 		}
 		fuel--;

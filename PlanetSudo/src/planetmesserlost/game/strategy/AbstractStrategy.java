@@ -1,3 +1,4 @@
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -33,6 +34,8 @@ public abstract class AbstractStrategy implements Runnable {
 		while(agent.hasFuel()) {
 			if(!agent.isDisabled()) {
 				executeRule();
+			} else {
+				break;
 			}
 			try {
 				Thread.sleep(50);

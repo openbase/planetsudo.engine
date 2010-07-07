@@ -20,7 +20,7 @@ import planetmesserlost.level.LevelView;
 public class Mothership extends AbstractLevelObject {
 
 	public final static int DEFAULT_START_FUEL = 1000;
-	public final static int DEFAULT_AGENT_COUNT = 3; // range 0-9999
+	public final static int DEFAULT_AGENT_COUNT = 10; // range 0-9999
 
 	private final Team team;
 	private int fuel;
@@ -142,6 +142,10 @@ public class Mothership extends AbstractLevelObject {
 
 	public Iterator<Agent> getAgends() {
 		return agents.values().iterator();
+	}
+
+	public LevelView getLevelView() {
+		return levelView;
 	}
 
 }
