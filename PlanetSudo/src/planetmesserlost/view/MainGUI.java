@@ -25,6 +25,7 @@ import logging.Logger.Channel;
 import planetmesserlost.main.GUIController;
 import planetmesserlost.game.GameManager;
 import planetmesserlost.game.GameManager.GameState;
+import planetmesserlost.level.LevelView;
 
 /**
  *
@@ -212,6 +213,7 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
         jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jCheckBoxMenuItem2 = new javax.swing.JCheckBoxMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         contentsMenuItem = new javax.swing.JMenuItem();
         aboutMenuItem = new javax.swing.JMenuItem();
@@ -235,6 +237,7 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SPACE, 0));
         jMenuItem1.setText("Start");
+        jMenuItem1.setEnabled(false);
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
@@ -296,6 +299,14 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
         });
         jMenu1.add(jCheckBoxMenuItem2);
 
+        jMenuItem3.setText("jMenuItem3");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem3);
+
         menuBar.add(jMenu1);
 
         helpMenu.setText("Help");
@@ -348,6 +359,19 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 		gamePanel.displayTeamPanel(displayTeamPanelCheckBoxMenuItem.isSelected());
 	}//GEN-LAST:event_displayTeamPanelCheckBoxMenuItemActionPerformed
 
+	public static LevelView levelView;
+	private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+		Thread runner = new Thread() {
+			@Override
+			public void run() {
+				levelView.dijkstraTest();
+			}
+		};
+		runner.setPriority(Thread.MIN_PRIORITY);
+		runner.start();
+
+	}//GEN-LAST:event_jMenuItem3ActionPerformed
+
     /**
     * @param args the command line arguments
     */
@@ -376,6 +400,7 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPanel mainPanel;

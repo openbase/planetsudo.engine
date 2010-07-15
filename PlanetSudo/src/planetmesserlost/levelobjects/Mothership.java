@@ -19,13 +19,12 @@ import planetmesserlost.level.LevelView;
  */
 public class Mothership extends AbstractLevelObject {
 
-	public final static int DEFAULT_START_FUEL = 1000;
+	public final static int DEFAULT_START_FUEL = 10000;
 	public final static int DEFAULT_AGENT_COUNT = 10; // range 0-9999
 
 	private final Team team;
 	private int fuel;
 	private int agentMaxCount;
-	private LevelView levelView;
 
 	private final HashMap<Integer, Agent> agents;
 	
@@ -35,7 +34,6 @@ public class Mothership extends AbstractLevelObject {
 		Logger.info(this, "Create "+this);
 		this.team = team;
 		this.agents = new HashMap<Integer, Agent>();
-		this.levelView = new LevelView(this);
 		this.reset();
 	}
 
@@ -73,7 +71,7 @@ public class Mothership extends AbstractLevelObject {
 				notify();
 			}
 		} else {
-			this.fuel =- fuel;
+			this.fuel -= fuel;
 		}
 		return fuel;
 	}
@@ -143,9 +141,4 @@ public class Mothership extends AbstractLevelObject {
 	public Iterator<Agent> getAgends() {
 		return agents.values().iterator();
 	}
-
-	public LevelView getLevelView() {
-		return levelView;
-	}
-
 }

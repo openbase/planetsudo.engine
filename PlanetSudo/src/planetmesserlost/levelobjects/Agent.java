@@ -11,10 +11,12 @@ import exceptions.NotValidException;
 import java.awt.geom.Rectangle2D;
 import java.lang.reflect.Constructor;
 import java.util.logging.Level;
+import javax.print.DocFlavor.STRING;
 import logging.Logger;
 import math.RandomGenerator;
 import planetmesserlost.game.ActionPoints;
 import planetmesserlost.game.strategy.AbstractStrategy;
+import planetmesserlost.level.LevelView;
 
 /**
  *
@@ -23,14 +25,16 @@ import planetmesserlost.game.strategy.AbstractStrategy;
 public class Agent extends AbstractLevelObject {
 
 	public final static int DEFAULT_START_FUEL = 1000;
+	public final static int AGENT_SIZE = 50;
 	protected final Mothership mothership;
+	private LevelView levelView;
 	protected final ActionPoints actionPoints;
 	protected Direction2D direction;
 	protected int fuel;
 	private boolean disabled;
 
 	public Agent(String name, Mothership mothership) {
-		super(mothership.registerAgent(), name, mothership.getLevel(), mothership.getAgentHomePosition(), 50, 50, ObjectShape.Oval);
+		super(mothership.registerAgent(), name, mothership.getLevel(), mothership.getAgentHomePosition(), AGENT_SIZE, AGENT_SIZE, ObjectShape.Oval);
 		Logger.info(this, "Create "+this);
 		this.mothership = mothership;
 		this.actionPoints = new ActionPoints();
@@ -39,6 +43,7 @@ public class Agent extends AbstractLevelObject {
 			return;
 		}
 		reset();
+		this.levelView = new LevelView(this);
 	}
 
 	public Direction2D getDirection() {
@@ -84,6 +89,10 @@ public class Agent extends AbstractLevelObject {
 
 	public Mothership getMothership() {
 		return mothership;
+	}
+
+	public LevelView getLevelView() {
+		return levelView;
 	}
 
 	protected void kill() {
@@ -163,5 +172,24 @@ public class Agent extends AbstractLevelObject {
 		} catch (NotValidException ex) {
 			Logger.error(this, "Could not turn random.", ex);
 		}
+	}
+
+	public void moveOneStepInTheMothershipDirection() {
+		direction.setAngle(levelView.getAbsolutAngleToLevelObject(mothership));
+		goStraightAhead();
+	}
+
+	public boolean isAtMothership() {
+		return mothership.getBounds().contains(getBounds());
+	}
+
+	public void orderFuel(int percent) {
+		if(percent < 0 || percent > 100) {
+			Logger.error(this, "Could not refill fuel! Percent value["+percent+"] is not in bounds! Valuerange 0-100");
+			return;
+		}
+		int toOrder = ((DEFAULT_START_FUEL*percent)/100) - fuel;
+
+		fuel += mothership.orderFuel(toOrder);
 	}
 }

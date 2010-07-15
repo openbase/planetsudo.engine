@@ -33,7 +33,11 @@ public abstract class AbstractStrategy implements Runnable {
 	public void run() {
 		while(agent.hasFuel()) {
 			if(!agent.isDisabled()) {
-				executeRule();
+				try {
+					executeRule();
+				} catch(Exception ex) {
+					Logger.error(this, "Could not execute rule!", ex);
+				}
 			} else {
 				break;
 			}

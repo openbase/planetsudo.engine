@@ -8,7 +8,7 @@ package planetmesserlost.level;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
+import planetmesserlost.levelobjects.Agent;
 
 /**
  *
@@ -18,14 +18,15 @@ public class LevelRasterElement implements Comparable<LevelRasterElement> {
 	private final int index, x, y;
 	private final int xLevelPosition;
 	private final int yLevelPosition;
-	Rectangle2D rasterLevelRectangle;
-	//private final Point2D levelRasterCenterPoint;
+	private final Rectangle2D rasterLevelRectangle;
 	private final int size;
 	private final boolean partOfWall;
+	private final boolean nextToWall;
+	private final LevelView levelView;
+	private final ArrayList<LevelRasterElementNeigbour> neigbours;
+	
 	private boolean visited;
 	private Integer distance;
-	private LevelView levelView;
-	private ArrayList<LevelRasterElementNeigbour> neigbours;
 
 	public LevelRasterElement(int index, LevelView levelView) {
 		this.index = index;
@@ -33,21 +34,15 @@ public class LevelRasterElement implements Comparable<LevelRasterElement> {
 		this.x = index % levelView.getWidth();
 		this.y = index / levelView.getWidth();
 		this.size = levelView.getRasterSize();
-		this.xLevelPosition = x*size+size/2;
-		this.yLevelPosition = y*size+size/2;
+		this.xLevelPosition = (int) levelView.getAgent().getMothership().getLevel().getX()+(x*size+size/2);
+		this.yLevelPosition = (int) levelView.getAgent().getMothership().getLevel().getY()+(y*size+size/2);
 		this.rasterLevelRectangle = new Rectangle2D.Double(xLevelPosition-size/2, yLevelPosition-size/2, size, size);
-		this.partOfWall = !levelView.getLevel().getLevelBorderPolygon().intersects(rasterLevelRectangle);
+		Rectangle2D agentBoundsRectangle = new Rectangle2D.Double(xLevelPosition-Agent.AGENT_SIZE, yLevelPosition-Agent.AGENT_SIZE, Agent.AGENT_SIZE*2, Agent.AGENT_SIZE*2);
+		this.partOfWall = !levelView.getAgent().getMothership().getLevel().getLevelBorderPolygon().contains(rasterLevelRectangle);
+		this.nextToWall = !levelView.getAgent().getMothership().getLevel().getLevelBorderPolygon().contains(agentBoundsRectangle);
 		this.visited = false;
 		this.distance = Integer.MAX_VALUE;
-		this.neigbours = new ArrayList<LevelRasterElementNeigbour>() {
-			@Override
-			public boolean add(LevelRasterElementNeigbour neigbour) {
-				if(neigbour.getElement().isPartOfWall()) {
-					return false;
-				}
-				return super.add(neigbour);
-			}
-		};
+		this.neigbours = new ArrayList<LevelRasterElementNeigbour>();
 	}
 
 	protected void reset(LevelRasterElement source) {
@@ -69,6 +64,10 @@ public class LevelRasterElement implements Comparable<LevelRasterElement> {
 
 	public boolean isPartOfWall() {
 		return partOfWall;
+	}
+
+	public boolean isNextToWall() {
+		return nextToWall;
 	}
 
 	public Rectangle2D getRasterLevelRectangle() {
@@ -113,25 +112,73 @@ public class LevelRasterElement implements Comparable<LevelRasterElement> {
 	}
 
 	protected void calculateNeigbours() {
-		// NORTH
+		int weight = 0;
+		// North
 		if(y!=0) {
-			neigbours.add(new LevelRasterElementNeigbour(levelView.get(x, y-1), 2));
+			weight = levelView.get(x, y-1).isNextToWall() ? 50 : 2;
+			//weight += levelView.get(x, y-1).isPartOfWall() ? Integer.MAX_VALUE : 0;
+			addNeigbour(new LevelRasterElementNeigbour(levelView.get(x, y-1), weight, LevelRasterElementNeigbour.NeigbourType.North));
 		}
-		// EAST
+
+		// NorthEast
+		if(x!=levelView.getWidth()-1 && y!=0) {
+			weight = levelView.get(x+1, y-1).isNextToWall() ? 75 : 3;
+			//weight += levelView.get(x, y-1).isPartOfWall() ? Integer.MAX_VALUE : 0;
+			addNeigbour(new LevelRasterElementNeigbour(levelView.get(x+1, y-1), weight, LevelRasterElementNeigbour.NeigbourType.NorthEast));
+		}
+
+		// East
 		if(x!=levelView.getWidth()-1) {
-			neigbours.add(new LevelRasterElementNeigbour(levelView.get(x+1, y), 2));
+			weight = levelView.get(x+1, y).isNextToWall() ? 50 : 2;
+			//weight += levelView.get(x+1, y).isPartOfWall() ? Integer.MAX_VALUE : 0;
+			addNeigbour(new LevelRasterElementNeigbour(levelView.get(x+1, y), weight, LevelRasterElementNeigbour.NeigbourType.East));
 		}
-		// SOUTH
+
+		// SouthEast
+		if(x!=levelView.getWidth()-1 && y!=levelView.getHeight()-1) {
+			weight = levelView.get(x+1, y+1).isNextToWall() ? 75 : 3;
+			//weight += levelView.get(x+1, y).isPartOfWall() ? Integer.MAX_VALUE : 0;
+			addNeigbour(new LevelRasterElementNeigbour(levelView.get(x+1, y+1), weight, LevelRasterElementNeigbour.NeigbourType.SouthEast));
+		}
+		// South
 		if(y!=levelView.getHeight()-1) {
-			neigbours.add(new LevelRasterElementNeigbour(levelView.get(x, y+1), 2));
+			weight = levelView.get(x, y+1).isNextToWall() ? 50 : 2;
+			//weight += levelView.get(x, y+1).isPartOfWall() ? Integer.MAX_VALUE : 0;
+			addNeigbour(new LevelRasterElementNeigbour(levelView.get(x, y+1), weight, LevelRasterElementNeigbour.NeigbourType.South));
 		}
-		// WEST
+		// SouthWest
+		if(x!=0 && y!=levelView.getHeight()-1) {
+			weight = levelView.get(x-1, y+1).isNextToWall() ? 75 : 3;
+			//weight += levelView.get(x, y+1).isPartOfWall() ? Integer.MAX_VALUE : 0;
+			addNeigbour(new LevelRasterElementNeigbour(levelView.get(x-1, y+1), weight, LevelRasterElementNeigbour.NeigbourType.SouthWest));
+		}
+		// West
 		if(x!=0) {
-			neigbours.add(new LevelRasterElementNeigbour(levelView.get(x-1, y), 2));
+			weight = levelView.get(x-1, y).isNextToWall() ? 50 : 2;
+			//weight += levelView.get(x-1, y).isPartOfWall() ? Integer.MAX_VALUE : 0;
+			addNeigbour(new LevelRasterElementNeigbour(levelView.get(x-1, y), weight, LevelRasterElementNeigbour.NeigbourType.West));
 		}
+		// NorthWest
+		if(x!=0 && y!=0) {
+			weight = levelView.get(x-1, y-1).isNextToWall() ? 75 : 3;
+			//weight += levelView.get(x-1, y).isPartOfWall() ? Integer.MAX_VALUE : 0;
+			addNeigbour(new LevelRasterElementNeigbour(levelView.get(x-1, y-1), weight, LevelRasterElementNeigbour.NeigbourType.NorthWest));
+		}
+	}
+
+	private boolean addNeigbour(LevelRasterElementNeigbour neigbour) {
+		if(neigbour.getElement().isPartOfWall()) {
+			return false;
+		}
+		return neigbours.add(neigbour);
 	}
 
 	public Collection<LevelRasterElementNeigbour> getNeigbours() {
 		return neigbours;
+	}
+
+	@Override
+	public String toString() {
+		return LevelRasterElement.class.getSimpleName()+"[Distance:"+distance+"|visited:"+visited+"|neigbours:"+neigbours.size()+"]";
 	}
 }

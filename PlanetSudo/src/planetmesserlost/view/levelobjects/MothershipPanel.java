@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 import java.util.Iterator;
 import planetmesserlost.levelobjects.Agent;
 import planetmesserlost.levelobjects.Mothership;
+import planetmesserlost.view.MainGUI;
 import planetmesserlost.view.level.LevelPanel;
 
 /**
@@ -39,8 +40,5 @@ public class MothershipPanel extends AbstractLevelObjectPanel<Mothership, LevelP
 		g2.setColor(resource.getTeam().getTeamColor());
 		g2.fillRect((int)boundingBox.getCenterX()-45, (int)boundingBox.getCenterY()-45, 90,90);
 		paintImage(g2);
-		if(resource.getTeam().getID() == 0) {
-			resource.getLevelView().drawLevelView((int)parentResourcePanel.getBoundingBox().getX(), (int)parentResourcePanel.getBoundingBox().getY(), g2);
-		}
 	}
 }

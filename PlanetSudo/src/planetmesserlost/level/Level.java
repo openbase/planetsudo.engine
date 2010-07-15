@@ -13,7 +13,6 @@ import java.util.LinkedList;
 import logging.Logger;
 import planetmesserlost.levelobjects.Mothership;
 import planetmesserlost.game.Team;
-import planetmesserlost.levelobjects.AbstractLevelObject;
 import planetmesserlost.levelobjects.Agent;
 
 /**
@@ -26,14 +25,18 @@ public abstract class Level implements Runnable {
 
 	private final String name;
 	private final LinkedList<Mothership> motherships;
-	private long gameSpeed;
-	private Polygon levelBorderPolygon;
+	private final long gameSpeed;
+	private final Polygon levelBorderPolygon;
+	private final int x, y;
 
 	public Level() {
 		this.name = this.getClass().getSimpleName();
 		this.levelBorderPolygon = this.getLevelBorderPolygon();
 		this.motherships = new LinkedList<Mothership>();
 		this.gameSpeed = DEFAULT_GAME_SPEED;
+		Point2D base = updateBasePosition();
+		this.x = (int) base.getX();
+		this.y = (int) base.getY();
 	}
 
 	@Override
@@ -98,6 +101,28 @@ public abstract class Level implements Runnable {
 
 	public Iterator<Mothership> getMotherships() {
 		return motherships.iterator();
+	}
+
+	private Point2D updateBasePosition() {
+		int x = Integer.MAX_VALUE;
+		int y = Integer.MAX_VALUE;
+		for(int i=0; i<levelBorderPolygon.npoints; i++) {
+			if(levelBorderPolygon.xpoints[i] < x) {
+				x = levelBorderPolygon.xpoints[i];
+			}
+			if(levelBorderPolygon.ypoints[i] < y) {
+				y = levelBorderPolygon.xpoints[i];
+			}
+		}
+		return new Point2D(x, y);
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
 	}
 	
 	@ Override

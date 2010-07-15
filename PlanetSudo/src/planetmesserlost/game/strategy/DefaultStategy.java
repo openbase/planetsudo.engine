@@ -30,7 +30,29 @@ public class DefaultStategy extends AbstractStrategy {
 			}
 		});
 		//-------------------------------------------->
-		createRule(new Rule(1, "Avoid Wall") {
+		createRule(new Rule(2, "GoBackToMothership") {
+			@ Override
+			protected boolean constraint() {
+				return agent.getFuel() < 300;
+			}
+			@ Override
+			protected void action() {
+				agent.moveOneStepInTheMothershipDirection();
+			}
+		});
+		//-------------------------------------------->
+		createRule(new Rule(4, "OrderFuel") {
+			@ Override
+			protected boolean constraint() {
+				return (agent.getFuel() < 300) & (agent.isAtMothership());
+			}
+			@ Override
+			protected void action() {
+				agent.orderFuel(100);
+			}
+		});
+		//-------------------------------------------->
+		createRule(new Rule(1000, "AvoidWall") {
 			@ Override
 			protected boolean constraint() {
 				return agent.collisionDetected();
@@ -41,5 +63,6 @@ public class DefaultStategy extends AbstractStrategy {
 			}
 		});
 		//-------------------------------------------->
+		
 	}
 }

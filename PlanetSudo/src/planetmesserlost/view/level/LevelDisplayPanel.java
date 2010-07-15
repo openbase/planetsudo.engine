@@ -11,6 +11,7 @@
 
 package planetmesserlost.view.level;
 
+import java.util.logging.Logger;
 import planetmesserlost.level.Level;
 import view.components.draw.ResourceDisplayPanel;
 
@@ -18,15 +19,18 @@ import view.components.draw.ResourceDisplayPanel;
  *
  * @author divine
  */
-public class LevelDisplayPanel extends ResourceDisplayPanel<LevelPanel> {
+public class LevelDisplayPanel extends ResourceDisplayPanel<LevelPanel> implements Runnable {
 
     /** Creates new form LevelDisplayPanel */
     public LevelDisplayPanel() {
         initComponents();
+		new Thread(this, "GameVideoThread").start();
+		
     }
 	
 	public void setLevel(Level level) {
 		setVisibleResourcePanel(new LevelPanel(level, this));
+		
 	}
 
 
@@ -53,6 +57,20 @@ public class LevelDisplayPanel extends ResourceDisplayPanel<LevelPanel> {
             .addGap(0, 300, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
+
+	@Override
+	public void run() {
+		while(true) {
+			if(visibleResourcePanel != null) {
+				repaint();
+			}
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException ex) {
+				Logger.getLogger(LevelDisplayPanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+			}
+		}
+	}
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

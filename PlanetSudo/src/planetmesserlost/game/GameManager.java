@@ -13,7 +13,9 @@ import planetmesserlost.level.Level;
 import planetmesserlost.level.save.SimpleWorld;
 import planetmesserlost.main.GUIController;
 import planetmesserlost.game.strategy.DefaultStategy;
+import planetmesserlost.level.LevelLoader;
 import planetmesserlost.level.save.MarioWorld1;
+import planetmesserlost.level.save.Wonderland;
 
 /**
  *
@@ -40,7 +42,7 @@ public class GameManager implements Runnable {
 	}
 
 	public void setupTestGame() {
-		setLevel(new SimpleWorld());
+		LevelLoader.getInstance();
 		addTeam(new Team(0, "Piranjas", Color.BLUE, DefaultStategy.class));
 		addTeam(new Team(1, "BlackHeath", Color.MAGENTA, DefaultStategy.class));
 		startGame();
