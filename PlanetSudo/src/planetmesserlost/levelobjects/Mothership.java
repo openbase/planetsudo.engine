@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import logging.Logger;
 import planetmesserlost.game.Team;
-import planetmesserlost.level.Level;
+import planetmesserlost.level.AbstractLevel;
 import planetmesserlost.level.LevelView;
 
 /**
@@ -29,7 +29,7 @@ public class Mothership extends AbstractLevelObject {
 	private final HashMap<Integer, Agent> agents;
 	
 
-	public Mothership(int id, Team team, Level level) {
+	public Mothership(int id, Team team, AbstractLevel level) {
 		super(id, team.getName()+Mothership.class.getSimpleName(), level, level.getMothershipHomePosition(id), 100, 100, ObjectShape.Rec);
 		Logger.info(this, "Create "+this);
 		this.team = team;

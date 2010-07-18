@@ -7,13 +7,16 @@ package planetmesserlost.level.save;
 
 import data.Point2D;
 import java.awt.Polygon;
-import planetmesserlost.level.Level;
+import planetmesserlost.level.AbstractLevel;
+import planetmesserlost.level.ResourceGausOval;
+import planetmesserlost.level.ResourcePlacement;
+import planetmesserlost.level.ResourceRandomRectangle;
 
 /**
  *
  * @author divine
  */
-public class SimpleWorld extends Level {
+public class SimpleWorld extends AbstractLevel {
 
 	public SimpleWorld() {
 	}
@@ -42,4 +45,10 @@ public class SimpleWorld extends Level {
 		return homePosition;
 	}
 
+	@Override
+	public ResourcePlacement[] getResourcePlacement() {
+		ResourcePlacement[] resourcePlacement = new ResourcePlacement[1];
+		resourcePlacement[0] = new ResourceRandomRectangle(0, 0, 1000, 1000, 5);
+		return resourcePlacement;
+	}
 }

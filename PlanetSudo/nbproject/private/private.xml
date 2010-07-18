@@ -6,15 +6,4 @@
             <line>34</line>
         </file>
     </editor-bookmarks>
-    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
-        <file>file:/home/divine/workspace/PlanetSudo/src/planetmesserlost/view/configuration/ConfigurationPanel.java</file>
-        <file>file:/home/divine/workspace/PlanetSudo/src/planetmesserlost/view/game/GamePanel.java</file>
-        <file>file:/home/divine/workspace/PlanetSudo/src/planetmesserlost/view/MainGUI.java</file>
-        <file>file:/home/divine/workspace/PlanetSudo/src/planetmesserlost/level/LevelView.java</file>
-        <file>file:/home/divine/workspace/PlanetSudo/src/planetmesserlost/level/LevelRasterElement.java</file>
-        <file>file:/home/divine/workspace/PlanetSudo/src/planetmesserlost/level/Level.java</file>
-        <file>file:/home/divine/workspace/PlanetSudo/src/planetmesserlost/game/strategy/DefaultStategy.java</file>
-        <file>file:/home/divine/workspace/PlanetSudo/src/planetmesserlost/levelobjects/Agent.java</file>
-        <file>file:/home/divine/workspace/PlanetSudo/src/planetmesserlost/level/LevelRasterElementNeigbour.java</file>
-    </open-files>
 </project-private>

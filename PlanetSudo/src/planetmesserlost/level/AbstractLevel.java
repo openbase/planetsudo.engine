@@ -7,32 +7,38 @@ package planetmesserlost.level;
 
 import data.Point2D;
 import java.awt.Polygon;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import logging.Logger;
 import planetmesserlost.levelobjects.Mothership;
 import planetmesserlost.game.Team;
+import planetmesserlost.level.ResourcePlacement;
 import planetmesserlost.levelobjects.Agent;
+import planetmesserlost.levelobjects.Resource;
 
 /**
  *
  * @author divine
  */
-public abstract class Level implements Runnable {
+public abstract class AbstractLevel implements Runnable {
 
 	public final static long DEFAULT_GAME_SPEED = 12/Mothership.DEFAULT_AGENT_COUNT; // Optimised Game Speed
 
 	private final String name;
 	private final LinkedList<Mothership> motherships;
+	private final ArrayList<Resource> resources;
 	private final long gameSpeed;
 	private final Polygon levelBorderPolygon;
 	private final int x, y;
+	private int resourceCounter;
 
-	public Level() {
+	public AbstractLevel() {
 		this.name = this.getClass().getSimpleName();
 		this.levelBorderPolygon = this.getLevelBorderPolygon();
 		this.motherships = new LinkedList<Mothership>();
+		this.resources = new ArrayList<Resource>();
 		this.gameSpeed = DEFAULT_GAME_SPEED;
 		Point2D base = updateBasePosition();
 		this.x = (int) base.getX();
@@ -64,6 +70,17 @@ public abstract class Level implements Runnable {
 			mothership.reset();
 			motherships.remove(mothership);
 		}
+		for(Resource resource : resources) {
+			resources.remove(resource);
+		}
+		resourceCounter = 0;
+		Logger.info(this, "Place resources in "+this);
+		placeResources();
+		Logger.info(this, "Add "+resources.size()+" Resources");
+	}
+
+	protected int generateNewResourceID() {
+		return resourceCounter++;
 	}
 
 	public void setTeams(Collection<Team> teams) {
@@ -94,6 +111,7 @@ public abstract class Level implements Runnable {
 
 	public abstract Polygon getLevelBorderPolygon();
 	public abstract Point2D[] getHomePositions();
+	public abstract ResourcePlacement[] getResourcePlacement();
 
 	public Point2D getMothershipHomePosition(int mothershipID) {
 		return getHomePositions()[mothershipID];
@@ -101,6 +119,11 @@ public abstract class Level implements Runnable {
 
 	public Iterator<Mothership> getMotherships() {
 		return motherships.iterator();
+	}
+
+	public Iterator<Resource> getResources() {
+		Logger.info(this, "orderResources");
+		return resources.iterator();
 	}
 
 	private Point2D updateBasePosition() {
@@ -128,5 +151,12 @@ public abstract class Level implements Runnable {
 	@ Override
 	public String toString() {
 		return name;
+	}
+
+	private void placeResources() {
+		ResourcePlacement[] resourcePlacements = getResourcePlacement();
+		for(ResourcePlacement resourcePlacement : resourcePlacements) {
+			resources.addAll(resourcePlacement.getResources(this));
+		}
 	}
 }

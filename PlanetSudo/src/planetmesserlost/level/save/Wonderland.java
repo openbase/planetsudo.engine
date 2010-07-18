@@ -7,14 +7,17 @@ package planetmesserlost.level.save;
 
 import data.Point2D;
 import java.awt.Polygon;
-import planetmesserlost.level.Level;
+import planetmesserlost.level.AbstractLevel;
+import planetmesserlost.level.ResourceGausOval;
+import planetmesserlost.level.ResourcePlacement;
+import planetmesserlost.level.ResourceRandomRectangle;
 
 
 /**
  *
  * @author divine
  */
-public class Wonderland extends Level {
+public class Wonderland extends AbstractLevel {
 
 	@Override
 	public Polygon getLevelBorderPolygon() {Polygon levelBorders = new Polygon();
@@ -67,4 +70,11 @@ public class Wonderland extends Level {
 		return homePosition;
 	}
 
+	@Override
+	public ResourcePlacement[] getResourcePlacement() {
+		ResourcePlacement[] resourcePlacement = new ResourcePlacement[2];
+		resourcePlacement[0] = new ResourceRandomRectangle(0, 0, 100, 100, 100);
+		resourcePlacement[1] = new ResourceGausOval(50, 50, 100, 100, 100);
+		return resourcePlacement;
+	}
 }

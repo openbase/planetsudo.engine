@@ -8,7 +8,7 @@ package planetmesserlost.levelobjects;
 import concepts.Manageable;
 import data.Point2D;
 import java.awt.geom.Rectangle2D;
-import planetmesserlost.level.Level;
+import planetmesserlost.level.AbstractLevel;
 
 /**
  *
@@ -20,13 +20,13 @@ public abstract class AbstractLevelObject implements Manageable {
 
 	protected final int id;
 	protected final String name;
-	protected final Level level;
+	protected final AbstractLevel level;
 	protected Point2D position;
 	protected final ObjectShape shape;
 	protected double width;
 	protected double height;
 
-	public AbstractLevelObject(int id, String name, Level level, Point2D position, double width, double height, ObjectShape shape) {
+	public AbstractLevelObject(int id, String name, AbstractLevel level, Point2D position, double width, double height, ObjectShape shape) {
 		this.id = id;
 		this.name = name;
 		this.level = level;
@@ -41,7 +41,7 @@ public abstract class AbstractLevelObject implements Manageable {
 		return id;
 	}
 
-	public Level getLevel() {
+	public AbstractLevel getLevel() {
 		return level;
 	}
 

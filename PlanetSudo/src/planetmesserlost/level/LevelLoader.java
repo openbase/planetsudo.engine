@@ -17,7 +17,7 @@ import logging.Logger;
 public class LevelLoader {
 	public final static String LEVEL_PATH= "planetmesserlost.level";
 	private static LevelLoader instance;
-	private TreeMap<String, Class<? extends Level>> levelMap;
+	private TreeMap<String, Class<? extends AbstractLevel>> levelMap;
 
 	public LevelLoader() {
 		instance = this;
@@ -27,12 +27,12 @@ public class LevelLoader {
 	private void update() {
 		// Read Levelfiles
 		String[] levelClassNameList = new File("build/classes/planetmesserlost/level/save/").list();
-		levelMap = new TreeMap<String, Class<? extends Level>>();
+		levelMap = new TreeMap<String, Class<? extends AbstractLevel>>();
 		for(String levelClassName : levelClassNameList) {
 			levelClassName = levelClassName.replace(".class", "");
 			Logger.info(this, "Found Level: "+levelClassName);
 			try {
-				levelMap.put(levelClassName, (Class<? extends Level>) getClass().getClassLoader().loadClass(getClass().getPackage().getName()+".save."+levelClassName));
+				levelMap.put(levelClassName, (Class<? extends AbstractLevel>) getClass().getClassLoader().loadClass(getClass().getPackage().getName()+".save."+levelClassName));
 			} catch (ClassNotFoundException ex) {
 				Logger.error(this, "Could not load level binary file!", ex);
 			}
@@ -44,7 +44,7 @@ public class LevelLoader {
 		return levelMap.keySet();
 	}
 
-	public Level loadLevel(String name) {
+	public AbstractLevel loadLevel(String name) {
 		try {
 			return levelMap.get(name).newInstance();
 		} catch (Exception ex) {

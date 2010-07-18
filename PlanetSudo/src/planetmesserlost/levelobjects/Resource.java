@@ -6,7 +6,8 @@
 package planetmesserlost.levelobjects;
 
 import data.Point2D;
-import planetmesserlost.level.Level;
+import logging.Logger;
+import planetmesserlost.level.AbstractLevel;
 
 /**
  *
@@ -14,11 +15,26 @@ import planetmesserlost.level.Level;
  */
 public class Resource extends AbstractLevelObject {
 
-	public Resource(int id, Level level, Point2D position) {
+	public enum ResourceType {NORMAL};
+	private ResourceType type;
+	private boolean owned;
+
+	public Resource(int id, ResourceType type, AbstractLevel level, Point2D position) {
 		super(id, Resource.class.getSimpleName()+"["+id+"]", level, position, 5, 5, ObjectShape.Oval);
+		this.type = type;
+		this.owned = false;
+		Logger.info(this, "Create "+this);
 	}
 
 	@Override
 	public void reset() {
+	}
+
+	public boolean isOwned() {
+		return owned;
+	}
+
+	public ResourceType getType() {
+		return type;
 	}
 }

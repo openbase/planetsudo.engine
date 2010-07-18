@@ -10,10 +10,10 @@ import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Iterator;
-import javax.swing.Timer;
 import planetmesserlost.levelobjects.Mothership;
-import planetmesserlost.level.Level;
-import planetmesserlost.level.LevelView;
+import planetmesserlost.level.AbstractLevel;
+import planetmesserlost.levelobjects.Resource;
+import planetmesserlost.view.levelobjects.ResourcePanel;
 import view.components.draw.AbstractResourcePanel;
 import view.components.draw.ResourceDisplayPanel;
 
@@ -21,16 +21,23 @@ import view.components.draw.ResourceDisplayPanel;
  *
  * @author divine
  */
-public class LevelPanel extends AbstractResourcePanel<Level, LevelPanel> implements ActionListener {
+public class LevelPanel extends AbstractResourcePanel<AbstractLevel, LevelPanel> implements ActionListener {
 
 
-	public LevelPanel(Level resource, ResourceDisplayPanel parentPanel) {
+	public LevelPanel(AbstractLevel resource, ResourceDisplayPanel parentPanel) {
 		super(resource, parentPanel);
 		boundingBox = resource.getLevelBorderPolygon().getBounds2D();
 		updateBounds();
+		loadResourcePanels();
 		loadMothershipPanels();
-		//new Timer(50, this).start();
 		parentPanel.setDoubleBuffered(true);
+	}
+
+	private void loadResourcePanels() {
+		Iterator<Resource> resourceIterator = resource.getResources();
+		while(resourceIterator.hasNext()) {
+			new ResourcePanel(resourceIterator.next(), this);
+		}
 	}
 
 	private void loadMothershipPanels() {
@@ -42,10 +49,7 @@ public class LevelPanel extends AbstractResourcePanel<Level, LevelPanel> impleme
 
 	@Override
 	protected void paintComponent(Graphics2D g2) {
-		
 		g2.fill(resource.getLevelBorderPolygon());
-		//g2.setColor(Color.BLACK);
-		//g2.fill(resource.getLevelBorderPolygon());
 	}
 
 	@Override

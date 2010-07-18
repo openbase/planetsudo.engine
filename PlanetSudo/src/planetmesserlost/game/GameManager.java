@@ -9,7 +9,7 @@ import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.util.Vector;
 import logging.Logger;
-import planetmesserlost.level.Level;
+import planetmesserlost.level.AbstractLevel;
 import planetmesserlost.level.save.SimpleWorld;
 import planetmesserlost.main.GUIController;
 import planetmesserlost.game.strategy.DefaultStategy;
@@ -29,7 +29,7 @@ public class GameManager implements Runnable {
 
 	public final Vector teams;
 	public final Thread gameThread;
-	public Level level;
+	public AbstractLevel level;
 	public GameState gameState;
 
 	public GameManager() {
@@ -79,7 +79,7 @@ public class GameManager implements Runnable {
 		return teams.add(team);
 	}
 
-	public void setLevel(Level level) {
+	public void setLevel(AbstractLevel level) {
 		if(gameState != GameState.Configuration) {
 			Logger.warn(this, "Could not set level in "+gameState.name()+" State.");
 			return;
@@ -133,7 +133,7 @@ public class GameManager implements Runnable {
 		return gameState;
 	}
 
-	public Level getLevel() {
+	public AbstractLevel getLevel() {
 		return level;
 	}
 

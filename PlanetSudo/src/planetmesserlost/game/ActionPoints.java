@@ -6,7 +6,7 @@
 package planetmesserlost.game;
 
 import logging.Logger;
-import planetmesserlost.level.Level;
+import planetmesserlost.level.AbstractLevel;
 
 /**
  *

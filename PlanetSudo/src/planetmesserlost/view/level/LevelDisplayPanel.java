@@ -12,7 +12,7 @@
 package planetmesserlost.view.level;
 
 import java.util.logging.Logger;
-import planetmesserlost.level.Level;
+import planetmesserlost.level.AbstractLevel;
 import view.components.draw.ResourceDisplayPanel;
 
 /**
@@ -28,7 +28,7 @@ public class LevelDisplayPanel extends ResourceDisplayPanel<LevelPanel> implemen
 		
     }
 	
-	public void setLevel(Level level) {
+	public void setLevel(AbstractLevel level) {
 		setVisibleResourcePanel(new LevelPanel(level, this));
 		
 	}
