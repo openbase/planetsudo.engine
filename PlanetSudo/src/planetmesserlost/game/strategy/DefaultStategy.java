@@ -5,7 +5,7 @@
 
 package planetmesserlost.game.strategy;
 
-import planetmesserlost.levelobjects.Agent;
+import planetmesserlost.level.levelobjects.Agent;
 
 /**
  *

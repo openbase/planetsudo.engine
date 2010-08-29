@@ -6,7 +6,7 @@
 package planetmesserlost.level;
 
 import java.util.ArrayList;
-import planetmesserlost.levelobjects.Resource;
+import planetmesserlost.level.levelobjects.Resource;
 
 /**
  *

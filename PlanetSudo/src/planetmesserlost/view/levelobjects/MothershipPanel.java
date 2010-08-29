@@ -7,8 +7,8 @@ package planetmesserlost.view.levelobjects;
 
 import java.awt.Graphics2D;
 import java.util.Iterator;
-import planetmesserlost.levelobjects.Agent;
-import planetmesserlost.levelobjects.Mothership;
+import planetmesserlost.level.levelobjects.Agent;
+import planetmesserlost.level.levelobjects.Mothership;
 import planetmesserlost.view.MainGUI;
 import planetmesserlost.view.level.LevelPanel;
 

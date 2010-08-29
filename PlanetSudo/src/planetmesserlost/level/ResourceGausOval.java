@@ -8,7 +8,7 @@ package planetmesserlost.level;
 import data.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-import planetmesserlost.levelobjects.Resource;
+import planetmesserlost.level.levelobjects.Resource;
 
 /**
  *

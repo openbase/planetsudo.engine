@@ -8,7 +8,7 @@ package planetmesserlost.level;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collection;
-import planetmesserlost.levelobjects.Agent;
+import planetmesserlost.level.levelobjects.Agent;
 
 /**
  *
@@ -34,12 +34,12 @@ public class LevelRasterElement implements Comparable<LevelRasterElement> {
 		this.x = index % levelView.getWidth();
 		this.y = index / levelView.getWidth();
 		this.size = levelView.getRasterSize();
-		this.xLevelPosition = (int) levelView.getAgent().getMothership().getLevel().getX()+(x*size+size/2);
-		this.yLevelPosition = (int) levelView.getAgent().getMothership().getLevel().getY()+(y*size+size/2);
+		this.xLevelPosition = (int) levelView.getLevelObject().getLevel().getX()+(x*size+size/2);
+		this.yLevelPosition = (int) levelView.getLevelObject().getLevel().getY()+(y*size+size/2);
 		this.rasterLevelRectangle = new Rectangle2D.Double(xLevelPosition-size/2, yLevelPosition-size/2, size, size);
 		Rectangle2D agentBoundsRectangle = new Rectangle2D.Double(xLevelPosition-Agent.AGENT_SIZE, yLevelPosition-Agent.AGENT_SIZE, Agent.AGENT_SIZE*2, Agent.AGENT_SIZE*2);
-		this.partOfWall = !levelView.getAgent().getMothership().getLevel().getLevelBorderPolygon().contains(rasterLevelRectangle);
-		this.nextToWall = !levelView.getAgent().getMothership().getLevel().getLevelBorderPolygon().contains(agentBoundsRectangle);
+		this.partOfWall = !levelView.getLevelObject().getLevel().getLevelBorderPolygon().contains(rasterLevelRectangle);
+		this.nextToWall = !levelView.getLevelObject().getLevel().getLevelBorderPolygon().contains(agentBoundsRectangle);
 		this.visited = false;
 		this.distance = Integer.MAX_VALUE;
 		this.neigbours = new ArrayList<LevelRasterElementNeigbour>();

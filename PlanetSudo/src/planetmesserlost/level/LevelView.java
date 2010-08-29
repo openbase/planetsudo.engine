@@ -11,8 +11,7 @@ import java.util.ArrayList;
 import java.util.PriorityQueue;
 import java.util.TreeMap;
 import logging.Logger;
-import planetmesserlost.levelobjects.AbstractLevelObject;
-import planetmesserlost.levelobjects.Agent;
+import planetmesserlost.level.levelobjects.AbstractLevelObject;
 
 /**
  *
@@ -22,22 +21,30 @@ public class LevelView {
 
 	public final static int RASTER_SIZE = 10;
 
-	private final Agent agent;
+	private final AbstractLevelObject levelObject;
 	private final LevelRasterElement[] levelRepresentation;
 	private final int width, height, rasterSize;
 
-	public LevelView(Agent agent) {
-		this.agent = agent;
+	public LevelView(AbstractLevel level) {
+		this(level, null);
+	}
+
+	public LevelView(AbstractLevelObject levelObject) {
+		this(levelObject.getLevel(), levelObject);
+	}
+
+	public LevelView(AbstractLevel level, AbstractLevelObject levelObject) {
+		this.levelObject = levelObject;
 		this.rasterSize = RASTER_SIZE;
-		double widthCast = (int) agent.getMothership().getLevel().getLevelBorderPolygon().getBounds().getWidth()/rasterSize;
-		double heightCast = (int) agent.getMothership().getLevel().getLevelBorderPolygon().getBounds().getHeight()/rasterSize;
+		double widthCast = (int) level.getLevelBorderPolygon().getBounds().getWidth()/rasterSize;
+		double heightCast = (int) level.getLevelBorderPolygon().getBounds().getHeight()/rasterSize;
 		
-		if(widthCast < agent.getMothership().getLevel().getLevelBorderPolygon().getBounds().getWidth()/rasterSize) {
+		if(widthCast < level.getLevelBorderPolygon().getBounds().getWidth()/rasterSize) {
 			this.width = ((int) heightCast)+1;
 		} else {
 			this.width = (int) widthCast;
 		}
-		if(heightCast < agent.getMothership().getLevel().getLevelBorderPolygon().getBounds().getHeight()/rasterSize) {
+		if(heightCast < level.getLevelBorderPolygon().getBounds().getHeight()/rasterSize) {
 			this.height = ((int) heightCast)+1;
 		} else {
 			this.height = (int) heightCast;
@@ -81,12 +88,12 @@ public class LevelView {
 		return get(((int)levelObject.getPosition().getX()-levelObject.getLevel().getX())/rasterSize, ((int)levelObject.getPosition().getY()-levelObject.getLevel().getY())/rasterSize);
 	} 
 
-	public int getAbsolutAngleToLevelObject(AbstractLevelObject levelObject) {
-		return getAngle(calcLevelRasterElement(agent), calcLevelRasterElement(levelObject));
+	public int getAbsolutAngle(AbstractLevelObject levelObject) {
+		return getAngle(calcLevelRasterElement(levelObject), calcLevelRasterElement(this.levelObject));
 	}
 
-	public int getDistanceToLevelObject(AbstractLevelObject levelObject) {
-		return getDistance(calcLevelRasterElement(agent), calcLevelRasterElement(levelObject));
+	public int getDistance(AbstractLevelObject levelObject) {
+		return getDistance(calcLevelRasterElement(levelObject), calcLevelRasterElement(this.levelObject));
 	}
 
 	public void dijkstraTest() {
@@ -113,10 +120,12 @@ public class LevelView {
 		return neigbourNextToDestination.getAngle();
 	}
 
-	private boolean dijkstraCalculated = false;
+	public void updateObjectMovement() {
+		dijkstra(null, calcLevelRasterElement(levelObject));
+	}
+
 	private void dijkstra2(LevelRasterElement position, LevelRasterElement destination) {
-		if(dijkstraCalculated) return;
-		dijkstraCalculated = true;
+		if(levelObject.isStatic()) return;
 		assert !destination.isPartOfWall();
 		// Initialisation
 		TreeMap<Integer, ArrayList<LevelRasterElement>> distanceQueue = new TreeMap<Integer, ArrayList<LevelRasterElement>>();
@@ -149,9 +158,7 @@ public class LevelView {
 	}
 
 	private void dijkstra(LevelRasterElement position, LevelRasterElement destination) {
-		if(dijkstraCalculated) return;
-		dijkstraCalculated = true;
-		assert !destination.isPartOfWall();
+		if(levelObject.isStatic()) return;
 
 		// Initialisation
 		PriorityQueue<LevelRasterElement> distanceQueue = new PriorityQueue<LevelRasterElement>();
@@ -172,7 +179,7 @@ public class LevelView {
 				}
 			}
 			element = distanceQueue.poll();
-		} while(element != null); // element != position &&
+		} while(element != null && element != position);
 	}
 
 
@@ -192,7 +199,7 @@ public class LevelView {
 		return width;
 	}
 
-	protected Agent getAgent() {
-		return agent;
+	protected AbstractLevelObject getLevelObject() {
+		return levelObject;
 	}
 }

@@ -8,7 +8,7 @@ package planetmesserlost.view.levelobjects;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import logging.Logger;
-import planetmesserlost.levelobjects.Resource;
+import planetmesserlost.level.levelobjects.Resource;
 import planetmesserlost.view.level.LevelPanel;
 
 /**
@@ -26,7 +26,7 @@ public class ResourcePanel extends AbstractLevelObjectPanel<Resource, LevelPanel
 	protected void paintComponent(Graphics2D g2) {
 		switch(resource.getType()) {
 			case NORMAL:
-				g2.setColor(Color.pink);
+				g2.setColor(Color.blue);
 				//g2.fillOval(50, 50, 100, 100);
 				g2.fillOval((int)resource.getPosition().getX(), (int)resource.getPosition().getY(), (int)resource.getWidth(), (int)resource.getHeight());
 		}

@@ -9,7 +9,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import logging.Logger;
-import planetmesserlost.levelobjects.Agent;
+import planetmesserlost.level.levelobjects.Agent;
 import planetmesserlost.view.MainGUI;
 
 /**

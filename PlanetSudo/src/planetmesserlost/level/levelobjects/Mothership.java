@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package planetmesserlost.levelobjects;
+package planetmesserlost.level.levelobjects;
 
 import data.Point2D;
 import java.util.HashMap;
@@ -30,7 +30,7 @@ public class Mothership extends AbstractLevelObject {
 	
 
 	public Mothership(int id, Team team, AbstractLevel level) {
-		super(id, team.getName()+Mothership.class.getSimpleName(), level, level.getMothershipHomePosition(id), 100, 100, ObjectShape.Rec);
+		super(id, team.getName()+Mothership.class.getSimpleName(), STATIC_OBJECT, level, level.getMothershipHomePosition(id), 100, 100, ObjectShape.Rec);
 		Logger.info(this, "Create "+this);
 		this.team = team;
 		this.agents = new HashMap<Integer, Agent>();

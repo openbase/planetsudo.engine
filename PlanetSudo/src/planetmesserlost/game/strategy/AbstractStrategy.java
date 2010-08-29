@@ -6,8 +6,8 @@
 
 package planetmesserlost.game.strategy;
 
-import planetmesserlost.levelobjects.Mothership;
-import planetmesserlost.levelobjects.Agent;
+import planetmesserlost.level.levelobjects.Mothership;
+import planetmesserlost.level.levelobjects.Agent;
 import java.util.TreeMap;
 import logging.Logger;
 

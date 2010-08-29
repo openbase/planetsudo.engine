@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package planetmesserlost.levelobjects;
+package planetmesserlost.level.levelobjects;
 
 import data.Point2D;
 import logging.Logger;
@@ -20,7 +20,7 @@ public class Resource extends AbstractLevelObject {
 	private boolean owned;
 
 	public Resource(int id, ResourceType type, AbstractLevel level, Point2D position) {
-		super(id, Resource.class.getSimpleName()+"["+id+"]", level, position, 5, 5, ObjectShape.Oval);
+		super(id, Resource.class.getSimpleName()+"["+id+"]",STATIC_OBJECT, level, position, 25, 25, ObjectShape.Oval);
 		this.type = type;
 		this.owned = false;
 		Logger.info(this, "Create "+this);

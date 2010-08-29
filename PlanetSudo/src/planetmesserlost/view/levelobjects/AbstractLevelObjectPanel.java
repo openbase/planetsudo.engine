@@ -15,7 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import logging.Logger;
-import planetmesserlost.levelobjects.AbstractLevelObject;
+import planetmesserlost.level.levelobjects.AbstractLevelObject;
 import view.components.draw.AbstractResourcePanel;
 
 /**

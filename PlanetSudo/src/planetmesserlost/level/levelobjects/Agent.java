@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package planetmesserlost.levelobjects;
+package planetmesserlost.level.levelobjects;
 
 import data.Direction2D;
 import data.Point2D;
@@ -11,7 +11,6 @@ import exceptions.NotValidException;
 import java.awt.geom.Rectangle2D;
 import java.lang.reflect.Constructor;
 import java.util.logging.Level;
-import javax.print.DocFlavor.STRING;
 import logging.Logger;
 import math.RandomGenerator;
 import planetmesserlost.game.ActionPoints;
@@ -27,14 +26,14 @@ public class Agent extends AbstractLevelObject {
 	public final static int DEFAULT_START_FUEL = 1000;
 	public final static int AGENT_SIZE = 50;
 	protected final Mothership mothership;
-	private LevelView levelView;
+	
 	protected final ActionPoints actionPoints;
 	protected Direction2D direction;
 	protected int fuel;
 	private boolean disabled;
 
 	public Agent(String name, Mothership mothership) {
-		super(mothership.registerAgent(), name, mothership.getLevel(), mothership.getAgentHomePosition(), AGENT_SIZE, AGENT_SIZE, ObjectShape.Oval);
+		super(mothership.registerAgent(), name, DYNAMIC_OBJECT, mothership.getLevel(), mothership.getAgentHomePosition(), AGENT_SIZE, AGENT_SIZE, ObjectShape.Oval);
 		Logger.info(this, "Create "+this);
 		this.mothership = mothership;
 		this.actionPoints = new ActionPoints();
@@ -43,7 +42,6 @@ public class Agent extends AbstractLevelObject {
 			return;
 		}
 		reset();
-		this.levelView = new LevelView(this);
 	}
 
 	public Direction2D getDirection() {
@@ -89,10 +87,6 @@ public class Agent extends AbstractLevelObject {
 
 	public Mothership getMothership() {
 		return mothership;
-	}
-
-	public LevelView getLevelView() {
-		return levelView;
 	}
 
 	protected void kill() {
@@ -175,7 +169,7 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	public void moveOneStepInTheMothershipDirection() {
-		direction.setAngle(levelView.getAbsolutAngleToLevelObject(mothership));
+		direction.setAngle(mothership.getLevelView().getAbsolutAngle(this));
 		goStraightAhead();
 	}
 

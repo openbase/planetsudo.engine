@@ -72,9 +72,8 @@ public class Wonderland extends AbstractLevel {
 
 	@Override
 	public ResourcePlacement[] getResourcePlacement() {
-		ResourcePlacement[] resourcePlacement = new ResourcePlacement[2];
-		resourcePlacement[0] = new ResourceRandomRectangle(0, 0, 100, 100, 100);
-		resourcePlacement[1] = new ResourceGausOval(50, 50, 100, 100, 100);
+		ResourcePlacement[] resourcePlacement = new ResourcePlacement[1];
+		resourcePlacement[0] = new ResourceRandomRectangle(0, 0, 1000, 1000, 50);
 		return resourcePlacement;
 	}
 }
