@@ -265,6 +265,7 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 
         jMenu2.setText("Spiel");
 
+        displayTeamPanelCheckBoxMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
         displayTeamPanelCheckBoxMenuItem.setSelected(true);
         displayTeamPanelCheckBoxMenuItem.setText("Teamanzeige");
         displayTeamPanelCheckBoxMenuItem.addActionListener(new java.awt.event.ActionListener() {

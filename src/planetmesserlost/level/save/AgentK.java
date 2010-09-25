@@ -25,11 +25,11 @@ public class AgentK extends AbstractLevel {
 		levelBorders.addPoint(0, 0);
 		levelBorders.addPoint(500, 0);
 		levelBorders.addPoint(500, 500);
-		levelBorders.addPoint(1200, 0);
+		levelBorders.addPoint(1100, 0);
 		levelBorders.addPoint(1600, 0);
 		levelBorders.addPoint(500, 1000);
 		levelBorders.addPoint(1600, 2000);
-		levelBorders.addPoint(1200, 2000);
+		levelBorders.addPoint(1100, 2000);
 		levelBorders.addPoint(500, 1500);
 		levelBorders.addPoint(500, 2000);
 		levelBorders.addPoint(0, 2000);
