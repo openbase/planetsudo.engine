@@ -8,6 +8,7 @@ package planetmesserlost.game;
 import java.awt.Color;
 import planetmesserlost.game.strategy.AbstractStrategy;
 import concepts.Manageable;
+import planetmesserlost.level.levelobjects.Mothership;
 
 /**
  *
@@ -18,6 +19,7 @@ public class Team implements Manageable {
 	private final int id;
 	private final String name;
 	private final Color teamColor;
+	private Mothership mothership;
 	private Class<? extends AbstractStrategy> strategy;
 
 
@@ -35,6 +37,14 @@ public class Team implements Manageable {
 
 	public String getName() {
 		return name;
+	}
+
+	public Mothership getMothership() {
+		return mothership;
+	}
+
+	public void setMothership(Mothership mothership) {
+		this.mothership = mothership;
 	}
 
 	public Class<? extends AbstractStrategy> getStrategy() {

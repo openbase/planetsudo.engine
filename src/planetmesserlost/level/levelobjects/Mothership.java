@@ -36,6 +36,7 @@ public class Mothership extends AbstractLevelObject {
 		super(id, team.getName()+Mothership.class.getSimpleName(), STATIC_OBJECT, level, level.getMothershipHomePosition(id), 100, 100, ObjectShape.Rec);
 		Logger.info(this, "Create "+this);
 		this.team = team;
+		this.team.setMothership(this);
 		this.agents = new HashMap<Integer, Agent>();
 		this.reset();
 	}
