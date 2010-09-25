@@ -5,6 +5,7 @@
 
 package planetmesserlost.level.save;
 
+
 import data.Point2D;
 import java.awt.Polygon;
 import planetmesserlost.level.AbstractLevel;
@@ -16,31 +17,29 @@ import planetmesserlost.level.ResourceRandomRectangle;
  *
  * @author noxus
  */
-public class MarioWorld1 extends AbstractLevel {
-
-	@Override
+public class AgentK extends AbstractLevel {
+	
+		@Override
 	public Polygon getLevelBorderPolygon() {
 		Polygon levelBorders = new Polygon();
 		levelBorders.addPoint(0, 0);
-		levelBorders.addPoint(500, 400);
-		levelBorders.addPoint(1000, 0);
-		levelBorders.addPoint(1000, 1000);
-		levelBorders.addPoint(800, 1000);
-		levelBorders.addPoint(800, 700);
+		levelBorders.addPoint(500, 0);
+		levelBorders.addPoint(500, 500);
+		levelBorders.addPoint(1200, 0);
+		levelBorders.addPoint(1600, 0);
 		levelBorders.addPoint(500, 1000);
-		levelBorders.addPoint(200, 700);
-		levelBorders.addPoint(200, 1000);
-		levelBorders.addPoint(0, 1000);
+		levelBorders.addPoint(1600, 2000);
+		levelBorders.addPoint(1200, 2000);
+		levelBorders.addPoint(500, 1500);
+		levelBorders.addPoint(500, 2000);
+		levelBorders.addPoint(0, 2000);
 		return levelBorders;
-	} 
-
-
-
-	@Override
+	}
+			@Override
 	public Point2D[] getHomePositions() {
 		Point2D[] homePosition = new Point2D[2];
 		homePosition[0] = new Point2D(200, 300);
-		homePosition[1] = new Point2D(500, 600);
+		homePosition[1] = new Point2D(200, 1200);
 		return homePosition;
 	}
 
@@ -51,3 +50,7 @@ public class MarioWorld1 extends AbstractLevel {
 		return resourcePlacement;
 	}
 }
+/*
+ *
+ * @author noxus
+ */

@@ -218,7 +218,6 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
 			red = 255;
 			green = (int) (255 * (mothershipFuelProgressBar.getPercentComplete()) * 2);
 		}
-		Logger.info(this, "Red: " + red + "Green: " + green);
 		mothershipFuelProgressBar.setForeground(new Color(red, green, 0));
 	}
 
