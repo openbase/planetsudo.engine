@@ -8,6 +8,9 @@ package planetmesserlost.game;
 import java.awt.Color;
 import planetmesserlost.game.strategy.AbstractStrategy;
 import concepts.Manageable;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import logging.Logger;
 import planetmesserlost.level.levelobjects.Mothership;
 
 /**
@@ -16,12 +19,16 @@ import planetmesserlost.level.levelobjects.Mothership;
  */
 public class Team implements Manageable {
 
+	public final static String POINT_STATE_CHANGE = "PointStateChange";
+
 	private final int id;
 	private final String name;
 	private final Color teamColor;
 	private Mothership mothership;
 	private Class<? extends AbstractStrategy> strategy;
 	private int points;
+	
+	protected final PropertyChangeSupport changes;
 
 	public Team(int id, String name, Color teamColor, Class<? extends AbstractStrategy> strategy) {
 		this.id = id;
@@ -29,6 +36,7 @@ public class Team implements Manageable {
 		this.teamColor = teamColor;
 		this.strategy = strategy;
 		this.points = 0;
+		this.changes = new PropertyChangeSupport(this);
 	}
 
 	@Override
@@ -46,6 +54,7 @@ public class Team implements Manageable {
 
 	public void addPoint() {
 		points++;
+		changes.firePropertyChange(POINT_STATE_CHANGE, null, points);
 	}
 
 	public Mothership getMothership() {
@@ -67,5 +76,15 @@ public class Team implements Manageable {
 
 	public Color getTeamColor() {
 		return teamColor;
+	}
+
+	public void addPropertyChangeListener(PropertyChangeListener l) {
+	    changes.addPropertyChangeListener(l);
+	    Logger.debug(this, "Add "+l.getClass()+" as new PropertyChangeListener.");
+	}
+
+	public void removePropertyChangeListener(PropertyChangeListener l) {
+	    changes.removePropertyChangeListener(l);
+	    Logger.debug(this, "Remove PropertyChangeListener "+l.getClass()+".");
 	}
 }
