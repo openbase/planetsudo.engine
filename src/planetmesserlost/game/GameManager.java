@@ -27,7 +27,7 @@ public class GameManager implements Runnable {
 
 	private static GameManager instance;
 
-	public final Vector teams;
+	public final Vector<Team> teams;
 	public final Thread gameThread;
 	public AbstractLevel level;
 	public GameState gameState;
@@ -137,7 +137,7 @@ public class GameManager implements Runnable {
 		return level;
 	}
 
-	public Vector getTeams() {
+	public Vector<Team> getTeams() {
 		return teams;
 	}
 

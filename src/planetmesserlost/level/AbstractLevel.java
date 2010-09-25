@@ -27,7 +27,6 @@ public abstract class AbstractLevel implements Runnable {
 	public final static long DEFAULT_GAME_SPEED = 12/Mothership.DEFAULT_AGENT_COUNT; // Optimised Game Speed
 
 	private final String name;
-	//private final LevelView levelView;
 	private final LinkedList<Mothership> motherships;
 	private final ArrayList<Resource> resources;
 	private final long gameSpeed;

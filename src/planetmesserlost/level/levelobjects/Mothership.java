@@ -8,6 +8,7 @@ package planetmesserlost.level.levelobjects;
 import data.Point2D;
 import java.util.HashMap;
 import java.util.Iterator;
+import javax.swing.event.ChangeEvent;
 import logging.Logger;
 import planetmesserlost.game.Team;
 import planetmesserlost.level.AbstractLevel;
@@ -18,6 +19,8 @@ import planetmesserlost.level.LevelView;
  * @author divine
  */
 public class Mothership extends AbstractLevelObject {
+
+	public final static String FUEL_STATE_CHANGE = "FuelStateChange";
 
 	public final static int DEFAULT_START_FUEL = 10000;
 	public final static int DEFAULT_AGENT_COUNT = 10; // range 0-9999
@@ -62,6 +65,7 @@ public class Mothership extends AbstractLevelObject {
 	}
 
 	public synchronized int orderFuel(int fuel) {
+		int oldFuel = this.fuel;
 		if(fuel ==  0) { // fuel emty
 			fuel = 0;
 		} else if(this.fuel < fuel) { // use last fuel
@@ -73,6 +77,7 @@ public class Mothership extends AbstractLevelObject {
 		} else {
 			this.fuel -= fuel;
 		}
+		changes.firePropertyChange(FUEL_STATE_CHANGE, oldFuel, this.fuel);
 		return fuel;
 	}
 

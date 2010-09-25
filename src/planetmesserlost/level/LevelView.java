@@ -182,7 +182,6 @@ public class LevelView {
 		} while(element != null && element != position);
 	}
 
-
 	protected int getHeight() {
 		return height;
 	}

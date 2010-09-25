@@ -8,6 +8,9 @@ package planetmesserlost.level.levelobjects;
 import concepts.Manageable;
 import data.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import logging.Logger;
 import planetmesserlost.level.AbstractLevel;
 import planetmesserlost.level.LevelView;
 
@@ -29,6 +32,8 @@ public abstract class AbstractLevelObject implements Manageable {
 	protected final ObjectShape shape;
 	protected double width;
 	protected double height;
+	protected final PropertyChangeSupport changes;
+
 	private boolean isStatic;
 
 	public AbstractLevelObject(int id, String name, boolean isStatic, AbstractLevel level, Point2D position, double width, double height, ObjectShape shape) {
@@ -41,6 +46,7 @@ public abstract class AbstractLevelObject implements Manageable {
 		this.shape = shape;
 		this.levelView = new LevelView(this);
 		this.isStatic = DYNAMIC_OBJECT;
+		this.changes = new PropertyChangeSupport(this);
 		setStatic(isStatic);
 	}
 
@@ -98,6 +104,16 @@ public abstract class AbstractLevelObject implements Manageable {
 
 	public double getWidth() {
 		return width;
+	}
+
+	public void addPropertyChangeListener(PropertyChangeListener l) {
+	    changes.addPropertyChangeListener(l);
+	    Logger.debug(this, "Add "+l.getClass()+" as new PropertyChangeListener.");
+	}
+
+	public void removePropertyChangeListener(PropertyChangeListener l) {
+	    changes.removePropertyChangeListener(l);
+	    Logger.debug(this, "Remove PropertyChangeListener "+l.getClass()+".");
 	}
 
 	@ Override

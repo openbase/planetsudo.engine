@@ -12,6 +12,7 @@
 package planetmesserlost.view.game;
 
 import planetmesserlost.game.GameManager;
+import planetmesserlost.view.menu.TeamMenuPanel;
 
 /**
  *
@@ -29,6 +30,8 @@ public class GamePanel extends javax.swing.JPanel {
 
 	public void updateDynamicComponents() {
 		levelDisplayPanel.setLevel(GameManager.getInstance().getLevel());
+		teamMenuPanel1 = new TeamMenuPanel(GameManager.getInstance().getTeams().get(0));
+		teamMenuPanel2 = new TeamMenuPanel(GameManager.getInstance().getTeams().get(1));
 		updateTeamPanelDisplayState();	
 	}
 
