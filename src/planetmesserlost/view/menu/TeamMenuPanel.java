@@ -25,14 +25,13 @@ public class TeamMenuPanel extends javax.swing.JPanel {
     public TeamMenuPanel() {
         initComponents();
     }
-
-	public TeamMenuPanel(Team team) {
-		 initComponents();
-		 updateComponents();
-	}
 	
 	private void updateComponents() {
+		teamColorPanel.setBackground(team.getTeamColor());
 		teamNameLabel.setText(team.getName());
+		mothershipFuelProgressBar.setValue(100);
+		mothershipStatusLabel.setText(team.getName());
+		teamResourceLabel.setText(team.getName());
 	}
 
 //	private int add(int a, int b) {
@@ -67,7 +66,7 @@ public class TeamMenuPanel extends javax.swing.JPanel {
         mothershipStatusLabel = new javax.swing.JLabel();
         teamColorPanel = new javax.swing.JPanel();
         teamRessourceLabel2 = new javax.swing.JLabel();
-        teamRessourceLabel = new javax.swing.JLabel();
+        teamResourceLabel = new javax.swing.JLabel();
 
         setOpaque(false);
 
@@ -120,8 +119,8 @@ public class TeamMenuPanel extends javax.swing.JPanel {
 
         teamRessourceLabel2.setText("Gesammelte Rohstoffe:");
 
-        teamRessourceLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        teamRessourceLabel.setText("0");
+        teamResourceLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        teamResourceLabel.setText("0");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -142,7 +141,7 @@ public class TeamMenuPanel extends javax.swing.JPanel {
                         .addContainerGap()
                         .addComponent(teamRessourceLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(teamRessourceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(teamResourceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -157,11 +156,16 @@ public class TeamMenuPanel extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(teamRessourceLabel2)
-                    .addComponent(teamRessourceLabel))
+                    .addComponent(teamResourceLabel))
                 .addContainerGap(206, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+	
+	public void setTeam(Team team) {
+		this.team = team;
+		updateComponents();
+	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JProgressBar mothershipFuelProgressBar;
@@ -169,7 +173,7 @@ public class TeamMenuPanel extends javax.swing.JPanel {
     private javax.swing.JPanel teamColorPanel;
     private javax.swing.JPanel teamMothershipPanel;
     private javax.swing.JLabel teamNameLabel;
-    private javax.swing.JLabel teamRessourceLabel;
+    private javax.swing.JLabel teamResourceLabel;
     private javax.swing.JLabel teamRessourceLabel2;
     // End of variables declaration//GEN-END:variables
 
