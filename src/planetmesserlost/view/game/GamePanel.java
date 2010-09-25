@@ -25,7 +25,7 @@ public class GamePanel extends javax.swing.JPanel {
     /** Creates new form GamePanel */
     public GamePanel() {
         this.initComponents();
-		this.displayTeamPanel = false;
+		this.displayTeamPanel = true;
     }
 
 	public void updateDynamicComponents() {
