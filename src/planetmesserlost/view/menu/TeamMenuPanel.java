@@ -18,7 +18,7 @@ import planetmesserlost.game.Team;
  * @author noxus
  */
 public class TeamMenuPanel extends javax.swing.JPanel {
-
+	
 	private Team team;
 
     /** Creates new form TeamPanel */
@@ -27,8 +27,30 @@ public class TeamMenuPanel extends javax.swing.JPanel {
     }
 
 	public TeamMenuPanel(Team team) {
-
+		 initComponents();
+		 updateComponents();
 	}
+	
+	private void updateComponents() {
+		teamNameLabel.setText(team.getName());
+	}
+
+//	private int add(int a, int b) {
+//		return a+b;
+//	}
+//
+//	private int alter;
+//
+//	public int getAlter() {
+//		return alter;
+//	}
+//
+//	public void setAlter(int alterNeu) {
+//		this.alter = alterNeu;
+//	}
+
+
+	
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -40,21 +62,19 @@ public class TeamMenuPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         teamNameLabel = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
+        teamMothershipPanel = new javax.swing.JPanel();
         mothershipFuelProgressBar = new javax.swing.JProgressBar();
         mothershipStatusLabel = new javax.swing.JLabel();
         teamColorPanel = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        agentPanel1 = new planetmesserlost.view.menu.AgentMenuPanel();
-        agentPanel2 = new planetmesserlost.view.menu.AgentMenuPanel();
-        agentPanel3 = new planetmesserlost.view.menu.AgentMenuPanel();
+        teamRessourceLabel2 = new javax.swing.JLabel();
+        teamRessourceLabel = new javax.swing.JLabel();
 
         setOpaque(false);
 
         teamNameLabel.setText("Team");
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Mutterschiff"));
-        jPanel1.setOpaque(false);
+        teamMothershipPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Mutterschiff"));
+        teamMothershipPanel.setOpaque(false);
 
         mothershipFuelProgressBar.setString("Treibstoff");
         mothershipFuelProgressBar.setStringPainted(true);
@@ -62,24 +82,26 @@ public class TeamMenuPanel extends javax.swing.JPanel {
         mothershipStatusLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         mothershipStatusLabel.setText("Status");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout teamMothershipPanelLayout = new javax.swing.GroupLayout(teamMothershipPanel);
+        teamMothershipPanel.setLayout(teamMothershipPanelLayout);
+        teamMothershipPanelLayout.setHorizontalGroup(
+            teamMothershipPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, teamMothershipPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(mothershipStatusLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
-                    .addComponent(mothershipFuelProgressBar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE))
+                .addGroup(teamMothershipPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(mothershipStatusLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
+                    .addComponent(mothershipFuelProgressBar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE))
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        teamMothershipPanelLayout.setVerticalGroup(
+            teamMothershipPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(teamMothershipPanelLayout.createSequentialGroup()
                 .addComponent(mothershipFuelProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(mothershipStatusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 15, Short.MAX_VALUE))
         );
+
+        mothershipStatusLabel.getAccessibleContext().setAccessibleParent(null);
 
         teamColorPanel.setBackground(new java.awt.Color(51, 102, 255));
         teamColorPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
@@ -96,49 +118,31 @@ public class TeamMenuPanel extends javax.swing.JPanel {
             .addGap(0, 12, Short.MAX_VALUE)
         );
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Agenten"));
-        jPanel3.setOpaque(false);
+        teamRessourceLabel2.setText("Gesammelte Rohstoffe:");
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(agentPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(agentPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(agentPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addComponent(agentPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
-                .addComponent(agentPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(agentPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        teamRessourceLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        teamRessourceLabel.setText("0");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(11, 11, 11)
-                        .addComponent(teamColorPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(teamNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addGap(11, 11, 11)
+                            .addComponent(teamColorPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(teamNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(teamMothershipPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(teamRessourceLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(teamRessourceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -149,24 +153,24 @@ public class TeamMenuPanel extends javax.swing.JPanel {
                     .addComponent(teamNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(teamColorPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(teamMothershipPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(teamRessourceLabel2)
+                    .addComponent(teamRessourceLabel))
+                .addContainerGap(206, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private planetmesserlost.view.menu.AgentMenuPanel agentPanel1;
-    private planetmesserlost.view.menu.AgentMenuPanel agentPanel2;
-    private planetmesserlost.view.menu.AgentMenuPanel agentPanel3;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JProgressBar mothershipFuelProgressBar;
     private javax.swing.JLabel mothershipStatusLabel;
     private javax.swing.JPanel teamColorPanel;
+    private javax.swing.JPanel teamMothershipPanel;
     private javax.swing.JLabel teamNameLabel;
+    private javax.swing.JLabel teamRessourceLabel;
+    private javax.swing.JLabel teamRessourceLabel2;
     // End of variables declaration//GEN-END:variables
 
 }
