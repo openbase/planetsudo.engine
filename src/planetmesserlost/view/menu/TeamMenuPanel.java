@@ -11,25 +11,30 @@
 
 package planetmesserlost.view.menu;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import planetmesserlost.game.Team;
+import planetmesserlost.level.levelobjects.Mothership;
 
 /**
  *
  * @author noxus
  */
-public class TeamMenuPanel extends javax.swing.JPanel {
+public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeListener {
 	
 	private Team team;
 
     /** Creates new form TeamPanel */
     public TeamMenuPanel() {
         initComponents();
+		mothershipFuelProgressBar.setMinimum(0);
+		mothershipFuelProgressBar.setMaximum(Mothership.DEFAULT_START_FUEL);
     }
 	
 	private void updateComponents() {
 		teamColorPanel.setBackground(team.getTeamColor());
 		teamNameLabel.setText(team.getName());
-		mothershipFuelProgressBar.setValue(100);
+		mothershipFuelProgressBar.setValue(team.getMothership().getFuel());
 		mothershipStatusLabel.setText(team.getName());
 		teamResourceLabel.setText(team.getName());
 	}
@@ -164,6 +169,7 @@ public class TeamMenuPanel extends javax.swing.JPanel {
 	
 	public void setTeam(Team team) {
 		this.team = team;
+		team.getMothership().addPropertyChangeListener(this);
 		updateComponents();
 	}
 
@@ -176,5 +182,13 @@ public class TeamMenuPanel extends javax.swing.JPanel {
     private javax.swing.JLabel teamResourceLabel;
     private javax.swing.JLabel teamRessourceLabel2;
     // End of variables declaration//GEN-END:variables
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		if(evt.getPropertyName().equals(Mothership.FUEL_STATE_CHANGE)) {
+			mothershipFuelProgressBar.setValue((Integer) evt.getNewValue());
+			mothershipFuelProgressBar.setString("Treibstoff " + (int) (mothershipFuelProgressBar.getPercentComplete()*100)+"%");
+		}
+	}
 
 }
