@@ -162,8 +162,10 @@ public abstract class AbstractLevel implements Runnable {
 		}
 	}
 
-	public Object isCloseTo(AbstractLevelObject levelObject) {
-		//TODO here we go again...
+	public Object isCloseToResource(AbstractLevelObject levelObject) {
+		for(Resource resource : resources) {
+			
+		}
 		return null;
 	}
 }

@@ -188,6 +188,6 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	public boolean closeToResource() {
-		 return level.isCloseTo(this) != null;
+		 return level.isCloseToResource(this) != null;
 	}
 }
