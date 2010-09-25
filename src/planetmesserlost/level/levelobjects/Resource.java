@@ -37,4 +37,8 @@ public class Resource extends AbstractLevelObject {
 	public ResourceType getType() {
 		return type;
 	}
+
+	public void use() {
+
+	}
 }

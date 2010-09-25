@@ -21,13 +21,14 @@ public class Team implements Manageable {
 	private final Color teamColor;
 	private Mothership mothership;
 	private Class<? extends AbstractStrategy> strategy;
-
+	private int points;
 
 	public Team(int id, String name, Color teamColor, Class<? extends AbstractStrategy> strategy) {
 		this.id = id;
 		this.name = name;
 		this.teamColor = teamColor;
 		this.strategy = strategy;
+		this.points = 0;
 	}
 
 	@Override
@@ -37,6 +38,14 @@ public class Team implements Manageable {
 
 	public String getName() {
 		return name;
+	}
+
+	public int getPoints() {
+		return points;
+	}
+
+	public void addPoint() {
+		points++;
 	}
 
 	public Mothership getMothership() {

@@ -8,11 +8,9 @@ package planetmesserlost.level.levelobjects;
 import data.Point2D;
 import java.util.HashMap;
 import java.util.Iterator;
-import javax.swing.event.ChangeEvent;
 import logging.Logger;
 import planetmesserlost.game.Team;
 import planetmesserlost.level.AbstractLevel;
-import planetmesserlost.level.LevelView;
 
 /**
  *
@@ -142,6 +140,11 @@ public class Mothership extends AbstractLevelObject {
 
 	public Point2D getAgentHomePosition() {
 		return position.clone();
+	}
+
+	protected void addResource(Resource resource) {
+		team.addPoint();
+		resource.use();
 	}
 
 	public Iterator<Agent> getAgends() {

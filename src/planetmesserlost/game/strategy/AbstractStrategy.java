@@ -64,7 +64,7 @@ public abstract class AbstractStrategy implements Runnable {
 	protected void executeRule() {
 		for(Rule rule : rules.values()) {
 			if(rule.constraint()) {
-				Logger.debug(this, "Select "+rule);
+				//Logger.debug(this, "Select "+rule);
 				rule.action();
 				break;
 			}

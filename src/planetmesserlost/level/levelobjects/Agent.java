@@ -186,4 +186,8 @@ public class Agent extends AbstractLevelObject {
 
 		fuel += mothership.orderFuel(toOrder);
 	}
+
+	public boolean closeToResource() {
+		 return level.isCloseTo(this) != null;
+	}
 }

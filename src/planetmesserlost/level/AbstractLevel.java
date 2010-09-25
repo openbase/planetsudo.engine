@@ -15,6 +15,7 @@ import logging.Logger;
 import planetmesserlost.level.levelobjects.Mothership;
 import planetmesserlost.game.Team;
 import planetmesserlost.level.ResourcePlacement;
+import planetmesserlost.level.levelobjects.AbstractLevelObject;
 import planetmesserlost.level.levelobjects.Agent;
 import planetmesserlost.level.levelobjects.Resource;
 
@@ -159,5 +160,10 @@ public abstract class AbstractLevel implements Runnable {
 		for(ResourcePlacement resourcePlacement : resourcePlacements) {
 			resources.addAll(resourcePlacement.getResources(this));
 		}
+	}
+
+	public Object isCloseTo(AbstractLevelObject levelObject) {
+		//TODO here we go again...
+		return null;
 	}
 }
