@@ -30,7 +30,51 @@ public class DefaultStategy extends AbstractStrategy {
 			}
 		});
 		//-------------------------------------------->
-		createRule(new Rule(2, "GoBackToMothership") {
+		createRule(new Rule(20, "Search Resources") {
+			@ Override
+			protected boolean constraint() {
+				return agent.seeResource();
+			}
+			@ Override
+			protected void action() {
+				agent.goToResource();
+			}
+		});
+		//-------------------------------------------->
+		createRule(new Rule(30, "PickUp Resource") {
+			@ Override
+			protected boolean constraint() {
+				return agent.toucheResource();
+			}
+			@ Override
+			protected void action() {
+				agent.pickupResource();
+			}
+		});
+		//-------------------------------------------->
+		createRule(new Rule(40, "Save Resource") {
+			@ Override
+			protected boolean constraint() {
+				return agent.isCarringResource();
+			}
+			@ Override
+			protected void action() {
+				agent.moveOneStepInTheMothershipDirection();
+			}
+		});
+		//-------------------------------------------->
+		createRule(new Rule(50, "Pass Resource") {
+			@ Override
+			protected boolean constraint() {
+				return agent.isCarringResource() && agent.isAtMothership();
+			}
+			@ Override
+			protected void action() {
+				agent.deliverResourceToMothership();
+			}
+		});
+		//-------------------------------------------->
+		createRule(new Rule(200, "GoBackToMothership") {
 			@ Override
 			protected boolean constraint() {
 				return agent.getFuel() < 300;
@@ -41,10 +85,10 @@ public class DefaultStategy extends AbstractStrategy {
 			}
 		});
 		//-------------------------------------------->
-		createRule(new Rule(4, "OrderFuel") {
+		createRule(new Rule(400, "OrderFuel") {
 			@ Override
 			protected boolean constraint() {
-				return (agent.getFuel() < 300) & (agent.isAtMothership());
+				return (agent.getFuel() < 300) && (agent.isAtMothership());
 			}
 			@ Override
 			protected void action() {
@@ -63,6 +107,5 @@ public class DefaultStategy extends AbstractStrategy {
 			}
 		});
 		//-------------------------------------------->
-		
 	}
 }

@@ -14,8 +14,6 @@ import java.util.LinkedList;
 import logging.Logger;
 import planetmesserlost.level.levelobjects.Mothership;
 import planetmesserlost.game.Team;
-import planetmesserlost.level.ResourcePlacement;
-import planetmesserlost.level.levelobjects.AbstractLevelObject;
 import planetmesserlost.level.levelobjects.Agent;
 import planetmesserlost.level.levelobjects.Resource;
 
@@ -162,9 +160,34 @@ public abstract class AbstractLevel implements Runnable {
 		}
 	}
 
-	public Object isCloseToResource(AbstractLevelObject levelObject) {
+	public void removeResource(Resource resource) {
+		resources.remove(resource);
+	}
+
+	/**
+	 * WARNING: method returns null in case of no close resource.
+	 * @param agent
+	 * @return
+	 */
+	public Resource getCloseResource(Agent agent) {
 		for(Resource resource : resources) {
-			
+			if(resource.getBounds().intersects(agent.getViewBounds())) {
+				return resource;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * WARNING: method returns null in case of no touchable resource.
+	 * @param agent
+	 * @return
+	 */
+	public Resource getTouchableResource(Agent agent) {
+		for(Resource resource : resources) {
+			if(resource.getBounds().intersects(agent.getBounds())) {
+				return resource;
+			}
 		}
 		return null;
 	}

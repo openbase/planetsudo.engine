@@ -54,11 +54,13 @@ public class AgentPanel extends AbstractLevelObjectPanel<Agent, MothershipPanel>
 		
 
 		// Paint Laser
-		g2.setColor(Color.RED);
-		g2.drawLine((int) resource.getPosition().getX(),
-					(int) resource.getPosition().getY(),
-					(int) (resource.getPosition().getX()+(resource.getDirection().getDirection().getX()*resource.getWidth())),
-					(int) (resource.getPosition().getY()+(resource.getDirection().getDirection().getY()*resource.getHeight())));
+//		g2.setColor(Color.RED);
+//		g2.drawLine((int) resource.getPosition().getX(),
+//					(int) resource.getPosition().getY(),
+//					(int) (resource.getPosition().getX()+(resource.getDirection().getDirection().getX()*resource.getWidth())),
+//					(int) (resource.getPosition().getY()+(resource.getDirection().getDirection().getY()*resource.getHeight())));
+//		g2.draw(resource.getViewBounds());
+
 
 		// Paint FuelBarBackground
 		g2.setColor(FUEL_BACKGROUND);
@@ -68,7 +70,6 @@ public class AgentPanel extends AbstractLevelObjectPanel<Agent, MothershipPanel>
 					(int) FUEL_BAR_STATIC_HEIGHT);
 
 		// Paint FuelBar
-
 		g2.setColor(Color.GREEN);
 		g2.fillRect((int) (resource.getPosition().getX()-FUEL_BAR_STATIC_WIDTH/2),
 					(int) (resource.getPosition().getY()-FUEL_BAR_STATIC_POSITION_Y),

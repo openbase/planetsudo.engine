@@ -38,7 +38,22 @@ public class Resource extends AbstractLevelObject {
 		return type;
 	}
 
-	public void use() {
+	protected boolean own(Agent agent) {
+		if(owned) {
+			return false;
+		}
+		owned = true;
+		position = agent.getPosition();
+		return true;
+	}
 
+	protected void release() {
+		owned = false;
+		position = new Point2D(position);
+	}
+
+	public void use() {
+		position = new Point2D(position);
+		level.removeResource(this);
 	}
 }

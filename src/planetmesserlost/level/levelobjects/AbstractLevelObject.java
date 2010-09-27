@@ -85,7 +85,7 @@ public abstract class AbstractLevelObject implements Manageable {
 		isStatic = enable;
 	}
 
-	public Rectangle2D getBounds() {
+	public Rectangle2D.Double getBounds() {
 		return new Rectangle2D.Double(	(int)position.getX()-(width/2),
 										(int)position.getY()-(height/2),
 										width,

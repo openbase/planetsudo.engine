@@ -142,9 +142,12 @@ public class Mothership extends AbstractLevelObject {
 		return position.clone();
 	}
 
-	protected void addResource(Resource resource) {
-		team.addPoint();
-		resource.use();
+	protected void passResource(Agent agent) {
+		Resource resource = agent.getResource();
+		if(resource != null) {
+			team.addPoint();
+			resource.use();
+		}
 	}
 
 	public Iterator<Agent> getAgends() {

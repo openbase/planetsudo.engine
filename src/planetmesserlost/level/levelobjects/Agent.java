@@ -8,6 +8,7 @@ package planetmesserlost.level.levelobjects;
 import data.Direction2D;
 import data.Point2D;
 import exceptions.NotValidException;
+import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import java.lang.reflect.Constructor;
 import java.util.logging.Level;
@@ -15,22 +16,25 @@ import logging.Logger;
 import math.RandomGenerator;
 import planetmesserlost.game.ActionPoints;
 import planetmesserlost.game.strategy.AbstractStrategy;
-import planetmesserlost.level.LevelView;
 
 /**
  *
- * @author divine
+ * @author divineactionPoints.getActionPoint();
  */
 public class Agent extends AbstractLevelObject {
 
 	public final static int DEFAULT_START_FUEL = 1000;
 	public final static int AGENT_SIZE = 50;
+	public final static int AGENT_VIEW_DISTANCE = AGENT_SIZE;
+	public final static int AGENT_SPEED = 50;
+
 	protected final Mothership mothership;
 	
 	protected final ActionPoints actionPoints;
 	protected Direction2D direction;
 	protected int fuel;
 	private boolean disabled;
+	private Resource resource;
 
 	public Agent(String name, Mothership mothership) {
 		super(mothership.registerAgent(), name, DYNAMIC_OBJECT, mothership.getLevel(), mothership.getAgentHomePosition(), AGENT_SIZE, AGENT_SIZE, ObjectShape.Oval);
@@ -60,6 +64,11 @@ public class Agent extends AbstractLevelObject {
 		disabled = false;
 	}
 
+	public Rectangle2D.Double getViewBounds() {
+		Point2D point = direction.translate(new Point2D(position), AGENT_VIEW_DISTANCE);
+		return new Rectangle2D.Double(point.getX()-AGENT_VIEW_DISTANCE, point.getY()-AGENT_VIEW_DISTANCE, AGENT_VIEW_DISTANCE*2, AGENT_VIEW_DISTANCE*2);
+	}
+
 	public ActionPoints getActionPoints() {
 		return actionPoints;
 	}
@@ -85,8 +94,18 @@ public class Agent extends AbstractLevelObject {
 		return disabled;
 	}
 
+	public boolean isCarringResource() {
+		return resource != null;
+	}
+
 	public Mothership getMothership() {
 		return mothership;
+	}
+
+	public Resource getResource() {
+		Resource tmpResource = resource;
+		resource = null;
+		return tmpResource;
 	}
 
 	protected void kill() {
@@ -99,7 +118,7 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	public Rectangle2D getFutureBounds() {
-		Point2D futurePosition = direction.translate(position.clone());
+		Point2D futurePosition = direction.translate(position.clone(), AGENT_SPEED);
 		return new Rectangle2D.Double(	(int)futurePosition.getX()-(width/2),
 					(int)futurePosition.getY()-(height/2),
 					width,
@@ -132,7 +151,7 @@ public class Agent extends AbstractLevelObject {
 	public void goStraightAhead() {
 		if(useFuel()) {
 			actionPoints.getActionPoint();
-			position.translate(direction);
+			position.translate(direction, AGENT_SPEED);
 		}
 	}
 
@@ -187,7 +206,43 @@ public class Agent extends AbstractLevelObject {
 		fuel += mothership.orderFuel(toOrder);
 	}
 
-	public boolean closeToResource() {
-		 return level.isCloseToResource(this) != null;
+	public boolean seeResource() {
+		return level.getCloseResource(this) != null;
+	}
+
+	public void goToResource() {
+		actionPoints.getActionPoint();
+		Resource resourceToGo = level.getCloseResource(this);
+		if(resourceToGo  != null) {
+			direction.turnTo(position, resourceToGo.position);
+			position.translate(direction, AGENT_SPEED);
+		}
+	}
+
+	public void deliverResourceToMothership() {
+		actionPoints.getActionPoint();
+		if(isCarringResource()) {
+			mothership.passResource(this);
+		}
+	}
+
+	public boolean toucheResource() {
+		return  level.getTouchableResource(this) != null;
+	}
+
+	public void pickupResource() {
+		actionPoints.getActionPoint();
+		Resource resourceToCollect =  level.getTouchableResource(this);
+		if(resourceToCollect  != null) {
+			this.carryResource(resourceToCollect);
+		}
+	}
+
+	private void carryResource(Resource resource) {
+		if(resource != null) {
+			if(resource.own(this)) {
+				this.resource = resource;
+			}
+		}
 	}
 }

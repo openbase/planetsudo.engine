@@ -5,5 +5,9 @@
             <url>src/planetmesserlost/game/GameManager.java</url>
             <line>34</line>
         </file>
+        <file>
+            <url>src/planetmesserlost/game/strategy/DefaultStategy.java</url>
+            <line>61</line>
+        </file>
     </editor-bookmarks>
 </project-private>

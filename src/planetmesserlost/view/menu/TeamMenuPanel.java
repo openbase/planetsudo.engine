@@ -176,9 +176,11 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
 	
 	public void setTeam(Team team) {
 		if(team != null) {
+			team.removePropertyChangeListener(this);
 			team.getMothership().removePropertyChangeListener(this);
 		}
 		this.team = team;
+		team.addPropertyChangeListener(this);
 		team.getMothership().addPropertyChangeListener(this);
 		updateComponents();
 		timer.stop();
@@ -204,7 +206,7 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
 				timer.start();
 			}
 		}
-		if(evt.getPropertyName().equals(Team.POINT_STATE_CHANGE)) {
+		else if(evt.getPropertyName().equals(Team.POINT_STATE_CHANGE)) {
 			teamResourceLabel.setText(evt.getNewValue().toString());
 		}
 	}
