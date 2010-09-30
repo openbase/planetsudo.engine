@@ -162,6 +162,7 @@ public abstract class AbstractLevel implements Runnable {
 
 	public void removeResource(Resource resource) {
 		resources.remove(resource);
+
 	}
 
 	/**
@@ -171,12 +172,13 @@ public abstract class AbstractLevel implements Runnable {
 	 */
 	public Resource getCloseResource(Agent agent) {
 		for(Resource resource : resources) {
-			if(resource.getBounds().intersects(agent.getViewBounds())) {
-				return resource;
-			}
-//			if(resource.getBounds().intersects(agent.getViewBounds()) && resource.getOwner().getTeam() != agent.getTeam()) {
+//			if(resource.getBounds().intersects(agent.getViewBounds())) {
 //				return resource;
 //			}
+			if(resource.getBounds().intersects(agent.getViewBounds()) && 
+					(resource.getOwner() == null || resource.getOwner().getTeam() != agent.getTeam())) {
+				return resource;
+			}
 		}
 		return null;
 	}
@@ -188,7 +190,8 @@ public abstract class AbstractLevel implements Runnable {
 	 */
 	public Resource getTouchableResource(Agent agent) {
 		for(Resource resource : resources) {
-			if(resource.getBounds().intersects(agent.getBounds())) {
+			if(resource.getBounds().intersects(agent.getBounds()) &&
+					(resource.getOwner() == null || resource.getOwner().getTeam() != agent.getTeam())) {
 				return resource;
 			}
 		}

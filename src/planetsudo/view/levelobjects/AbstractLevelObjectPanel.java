@@ -6,14 +6,13 @@
 package planetsudo.view.levelobjects;
 
 import data.Direction2D;
+import data.ImageLoader;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Dimension2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import javax.imageio.ImageIO;
 import logging.Logger;
 import planetsudo.level.levelobjects.AbstractLevelObject;
 import view.components.draw.AbstractResourcePanel;
@@ -28,10 +27,12 @@ public abstract class AbstractLevelObjectPanel<R extends AbstractLevelObject, PR
 
 	public AbstractLevelObjectPanel(R resource, PRP parentResourcePanel, String imageURI) {
 		super(resource, parentResourcePanel);
-		try {
-			this.image = ImageIO.read(new File(imageURI));
-		} catch (IOException ex) {
-			Logger.error(this, "Could not read image["+imageURI+"]", ex);
+		if(imageURI != null) {
+			try {
+				this.image = ImageLoader.getInstance().loadImage(imageURI);
+			} catch (IOException ex) {
+				Logger.error(this, "Could not load "+this+" image.", ex);
+			}
 		}
 	}
 

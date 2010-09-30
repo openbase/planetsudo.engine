@@ -6,7 +6,6 @@
 package planetsudo.level.levelobjects;
 
 import data.Point2D;
-import java.util.logging.Level;
 import logging.Logger;
 import planetsudo.level.AbstractLevel;
 
@@ -15,6 +14,8 @@ import planetsudo.level.AbstractLevel;
  * @author divine
  */
 public class Resource extends AbstractLevelObject {
+
+	public final static String KILL_EVENT = "KillEvent";
 
 	public enum ResourceType {NORMAL};
 	private ResourceType type;
@@ -75,5 +76,6 @@ public class Resource extends AbstractLevelObject {
 	public void use() {
 		position = new Point2D(position);
 		level.removeResource(this);
+		changes.firePropertyChange(KILL_EVENT, null, null);
 	}
 }
