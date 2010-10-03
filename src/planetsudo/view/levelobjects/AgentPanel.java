@@ -10,6 +10,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import logging.Logger;
+import planetsudo.level.levelobjects.AbstractLevelObject;
 import planetsudo.level.levelobjects.Agent;
 
 /**
@@ -35,6 +36,8 @@ public class AgentPanel extends AbstractLevelObjectPanel<Agent, MothershipPanel>
 //		}
 	}
 
+	private AbstractLevelObject levelObject;
+
 	@Override
 	protected void paintComponent(Graphics2D g2) {
 		boundingBox = resource.getBounds();
@@ -57,12 +60,23 @@ public class AgentPanel extends AbstractLevelObjectPanel<Agent, MothershipPanel>
 		
 
 		// Paint Laser
-//		g2.setColor(Color.RED);
-//		g2.drawLine((int) resource.getPosition().getX(),
-//					(int) resource.getPosition().getY(),
-//					(int) (resource.getPosition().getX()+(resource.getDirection().getDirection().getX()*resource.getWidth())),
-//					(int) (resource.getPosition().getY()+(resource.getDirection().getDirection().getY()*resource.getHeight())));
-//		g2.draw(resource.getViewBounds());
+		levelObject = resource.isFightingWith();
+		if(levelObject != null) {
+			g22.setColor(resource.getMothership().getTeam().getTeamColor());
+			g2.fillOval((int) resource.getPosition().getX()-10,
+						(int) resource.getPosition().getY()-10,
+						20,
+						20);
+			g2.drawLine((int) resource.getPosition().getX(),
+						(int) resource.getPosition().getY(),
+						(int) (levelObject.getPosition().getX()+(resource.getDirection().getDirection().getX()*resource.getWidth()/3)),
+						(int) (levelObject.getPosition().getY()+(resource.getDirection().getDirection().getY()*resource.getHeight()/3)));
+			g22.setColor(resource.getMothership().getTeam().getTeamColor());
+			g2.fillOval((int) resource.getPosition().getX()-10,
+						(int) resource.getPosition().getY()-10,
+						20,
+						20);
+		}
 
 
 		// Paint FuelBarBackground

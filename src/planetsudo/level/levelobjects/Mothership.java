@@ -6,8 +6,8 @@
 package planetsudo.level.levelobjects;
 
 import data.Point2D;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import logging.Logger;
 import planetsudo.game.Team;
 import planetsudo.level.AbstractLevel;
@@ -20,12 +20,13 @@ public class Mothership extends AbstractLevelObject {
 
 	public final static String FUEL_STATE_CHANGE = "FuelStateChange";
 
-	public final static int DEFAULT_START_FUEL = 10000;
+	public final static int DEFAULT_START_FUEL = 30000;
 	public final static int DEFAULT_AGENT_COUNT = 10; // range 0-9999
 
 	private final Team team;
 	private int fuel;
 	private int agentMaxCount;
+	private int shield;
 
 	private final HashMap<Integer, Agent> agents;
 	
@@ -47,6 +48,7 @@ public class Mothership extends AbstractLevelObject {
 		}
 		agentMaxCount = DEFAULT_AGENT_COUNT;
 		loadAgents();
+		this.shield = 100;
 	}
 
 	public void loadAgents() {
@@ -150,7 +152,38 @@ public class Mothership extends AbstractLevelObject {
 		}
 	}
 
-	public Iterator<Agent> getAgends() {
-		return agents.values().iterator();
+	public Collection<Agent> getAgends() {
+		return agents.values();
 	}
+
+	public synchronized void attack() {
+		if(shield > 0) {
+			shield--;
+		}
+	}
+
+	public synchronized void repaire() {
+		if(shield < 100) {
+			shield++;
+		}
+	}
+
+	public boolean isBurning() {
+		return shield < 33;
+	}
+
+	public int getShieldForce() {
+		return shield;
+	}
+
+	public boolean isMaxDamaged() {
+		return shield == 0;
+	}
+
+	public boolean isDamaged() {
+		return shield < 100;
+	}
+
+
+
 }

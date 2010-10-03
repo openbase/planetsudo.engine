@@ -25,13 +25,10 @@ public class MothershipPanel extends AbstractLevelObjectPanel<Mothership, LevelP
 	}
 
 	private void loadAgentPanels() {
-		Iterator<Agent> agentIterator = resource.getAgends();
-		while(agentIterator.hasNext()) {
-			new AgentPanel(agentIterator.next(), this);
+		for(Agent agent : resource.getAgends()) {
+			new AgentPanel(agent, this);
 		}
 	}
-
-	public final static int MOTHERSHIP_SIZE = 100;
 
 	@Override
 	protected void paintComponent(Graphics2D g2) {

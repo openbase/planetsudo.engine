@@ -23,7 +23,7 @@ import planetsudo.game.strategy.AbstractStrategy;
  */
 public class Agent extends AbstractLevelObject {
 
-	public final static int DEFAULT_START_FUEL = 1000;
+	public final static int DEFAULT_START_FUEL = 2000;
 	public final static int AGENT_SIZE = 50;
 	public final static int AGENT_VIEW_DISTANCE = AGENT_SIZE;
 	public final static int DEFAULT_AGENT_SPEED = 5;
@@ -34,8 +34,10 @@ public class Agent extends AbstractLevelObject {
 	protected Direction2D direction;
 	protected int fuel;
 	private boolean disabled;
+	private boolean alive;
 	private Resource resource;
 	private String lastAction;
+	private AbstractLevelObject adversaryObject;
 
 	public Agent(String name, Mothership mothership) {
 		super(mothership.registerAgent(), name, DYNAMIC_OBJECT, mothership.getLevel(), mothership.getAgentHomePosition(), AGENT_SIZE, AGENT_SIZE, ObjectShape.Oval);
@@ -43,6 +45,7 @@ public class Agent extends AbstractLevelObject {
 		this.lastAction = "Init";
 		this.mothership = mothership;
 		this.actionPoints = new ActionPoints();
+		this.alive = true;
 		if(id == -1) { // check if valid
 			kill();
 			return;
@@ -55,7 +58,7 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	public String getLastAction() {
-		return lastAction;
+		return lastAction+" ["+actionPoints.getActionPoints()+"]";
 	}
 
 	public void setLastAction(String lastAction) {
@@ -72,6 +75,7 @@ public class Agent extends AbstractLevelObject {
 			java.util.logging.Logger.getLogger(Agent.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		disabled = false;
+		alive = true;
 	}
 
 	public Rectangle2D.Double getViewBounds() {
@@ -99,13 +103,32 @@ public class Agent extends AbstractLevelObject {
 		return isCarringResource() ? DEFAULT_AGENT_SPEED/2 : DEFAULT_AGENT_SPEED;
 	}
 
+
 	private boolean useFuel() {
-		if(fuel == 0) {
-			disabled = true;
-			return false;
+		return useFuel(1) == 1;
+	}
+
+	private void disable() {
+		disabled = true;
+		if(isCarringResource()) {
+			resource.release();
 		}
-		fuel--;
-		return true;
+		adversaryObject = null;
+	}
+
+	private synchronized int useFuel(int value) {
+		if(fuel == 0) {
+			disable();
+			return 0;
+		} else if(fuel < value) {
+			value = fuel;
+			fuel = 0;
+			disable();
+			return value;
+		} else {
+			fuel -= value;
+			return value;
+		}
 	}
 
 	public boolean isDisabled() {
@@ -120,6 +143,10 @@ public class Agent extends AbstractLevelObject {
 		return mothership;
 	}
 
+	public void releaseResource() {
+		resource.release();
+	}
+
 	public Resource getResource() {
 		Resource tmpResource = resource;
 		resource = null;
@@ -129,10 +156,15 @@ public class Agent extends AbstractLevelObject {
 	protected void kill() {
 		Logger.info(this, "Kill "+name);
 		mothership.removeAgent(this);
+		alive = false;
+	}
+
+	public boolean isAlive() {
+		return alive;
 	}
 
 	public boolean collisionDetected() {
-		return level.collisionDetected(this);
+		return level.collisionDetected(getFutureBounds());
 	}
 
 	public Rectangle2D getFutureBounds() {
@@ -167,37 +199,41 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	public void goStraightAhead() {
+		actionPoints.getActionPoint(3);
 		if(useFuel()) {
-			actionPoints.getActionPoint();
 			position.translate(direction, calcSpeed());
+			if(level.collisionDetected(getBounds())) { // Is collied with wall?
+				this.disabled = true;
+				this.alive = false;
+			}
 		}
 	}
 
 	public void turnAround() {
+		actionPoints.getActionPoint();
 		if(useFuel()) {
-			actionPoints.getActionPoint();
 			direction.invert();
 		}
 	}
 
 	public void turnLeft(int beta) {
+		actionPoints.getActionPoint();
 		if(useFuel()) {
-			actionPoints.getActionPoint();
 			direction.setAngle(direction.getAngle()-beta);
 		}
 	}
 
 	public void turnRight(int beta) {
+		actionPoints.getActionPoint();
 		if(useFuel()) {
-			actionPoints.getActionPoint();
 			direction.setAngle(direction.getAngle()+beta);
 		}
 	}
 
 	public void turnRandom() {
+		actionPoints.getActionPoint();
 		try {
 			if(useFuel()) {
-				actionPoints.getActionPoint();
 				direction.setAngle(RandomGenerator.getRandom(1, 360));
 			}
 		} catch (NotValidException ex) {
@@ -215,13 +251,16 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	public void orderFuel(int percent) {
+		actionPoints.getActionPoint(50);
 		if(percent < 0 || percent > 100) {
 			Logger.error(this, "Could not refill fuel! Percent value["+percent+"] is not in bounds! Valuerange 0-100");
 			return;
 		}
 		int toOrder = ((DEFAULT_START_FUEL*percent)/100) - fuel;
-
-		fuel += mothership.orderFuel(toOrder);
+		for(int i = mothership.orderFuel(toOrder); i>0;i--) {
+			actionPoints.getActionPoint(3);
+			fuel++;
+		}
 	}
 
 	public boolean seeResource() {
@@ -230,10 +269,12 @@ public class Agent extends AbstractLevelObject {
 
 	public void goToResource() {
 		actionPoints.getActionPoint();
-		Resource resourceToGo = level.getCloseResource(this);
-		if(resourceToGo  != null) {
-			direction.turnTo(position, resourceToGo.position);
-			position.translate(direction, calcSpeed());
+		if(useFuel()) {
+			Resource resourceToGo = level.getCloseResource(this);
+			if(resourceToGo  != null) {
+				direction.turnTo(position, resourceToGo.position);
+				position.translate(direction, calcSpeed());
+			}
 		}
 	}
 
@@ -249,7 +290,7 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	public void pickupResource() {
-		actionPoints.getActionPoint();
+		actionPoints.getActionPoint(200);
 		Resource resourceToCollect =  level.getTouchableResource(this);
 		if(resourceToCollect  != null) {
 			this.carryResource(resourceToCollect);
@@ -262,5 +303,70 @@ public class Agent extends AbstractLevelObject {
 				this.resource = resource;
 			}
 		}
+	}
+
+	public boolean seeAdversaryAgent() {
+		return level.getAdversaryAgent(this) != null;
+	}
+
+	public boolean seeAdversaryMothership() {
+		return level.getAdversaryMothership(this) != null;
+	}
+
+	public void fightWithAdversaryAgent() {
+		actionPoints.getActionPoint();
+		if(useFuel()) {
+			Agent adversaryAgent = level.getAdversaryAgent(this);
+			adversaryObject = adversaryAgent;
+			if(adversaryAgent != null) {
+				actionPoints.getActionPoint(20);
+				direction.turnTo(position, adversaryAgent.position);
+				if(adversaryAgent.hasFuel()) {
+					fuel += (adversaryAgent.useFuel((DEFAULT_START_FUEL/100)*2)/2);
+				} 
+			}
+		}
+		adversaryObject = null;
+	}
+
+	public void fightWithAdversaryMothership() {
+		actionPoints.getActionPoint();
+		if(useFuel()) {
+			Mothership adversaryMothership = level.getAdversaryMothership(this);
+			adversaryObject = adversaryMothership;
+			if(adversaryMothership != null) {
+				actionPoints.getActionPoint(20);
+				direction.turnTo(position, adversaryMothership.position);
+				adversaryMothership.attack();
+			}
+		}
+		adversaryObject = null;
+	}
+
+	public boolean isFighting() {
+		return adversaryObject != null;
+	}
+
+	public AbstractLevelObject isFightingWith() {
+		return adversaryObject;
+	}
+
+	public boolean seeLostTeamAgent() {
+		return level.getLostTeamAgent(this) != null;
+	}
+
+	public void spendFuelTeamAgend(int value) {
+		actionPoints.getActionPoint();
+		if(useFuel()) {
+			Agent teamAgent = level.getLostTeamAgent(this);
+			if(teamAgent  != null) {
+				teamAgent.fuel += value;
+				teamAgent.disabled = true;
+			}
+		}
+	}
+
+	public void repaireMothership() {
+		mothership.repaire();
 	}
 }

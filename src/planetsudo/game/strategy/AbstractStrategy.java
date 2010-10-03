@@ -31,15 +31,19 @@ public abstract class AbstractStrategy implements Runnable {
 
 	@ Override
 	public void run() {
-		while(agent.hasFuel()) {
-			if(!agent.isDisabled()) {
+		while(agent.isAlive()) {
+			if(agent.hasFuel()) {
 				try {
 					executeRule();
 				} catch(Exception ex) {
-					Logger.error(this, "Could not execute rule!", ex);
+					Logger.error(this, "Could not execute rule["+agent.getLastAction()+"]!", ex);
 				}
 			} else {
-				break;
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException ex) {
+					Logger.warn(this, "", ex);
+				}
 			}
 			try {
 				Thread.sleep(50);

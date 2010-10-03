@@ -74,6 +74,61 @@ public class DefaultStategy extends AbstractStrategy {
 			}
 		});
 		//-------------------------------------------->
+		createRule(new Rule(60, "HelpLostAgent") {
+			@ Override
+			protected boolean constraint() {
+				return agent.seeLostTeamAgent();
+			}
+			@ Override
+			protected void action() {
+				agent.spendFuelTeamAgend(300);
+			}
+		});
+		//-------------------------------------------->
+		createRule(new Rule(90, "FightAgainstMothership") {
+			@ Override
+			protected boolean constraint() {
+				return agent.seeAdversaryMothership();
+			}
+			@ Override
+			protected void action() {
+				agent.fightWithAdversaryMothership();
+			}
+		});
+		//-------------------------------------------->
+		createRule(new Rule(100, "FightagainstAgent") {
+			@ Override
+			protected boolean constraint() {
+				return agent.seeAdversaryAgent();
+			}
+			@ Override
+			protected void action() {
+				agent.fightWithAdversaryAgent();
+			}
+		});
+		//-------------------------------------------->
+		createRule(new Rule(110, "SaveMothership") {
+			@ Override
+			protected boolean constraint() {
+				return agent.getMothership().isDamaged();
+			}
+			@ Override
+			protected void action() {
+				agent.moveOneStepInTheMothershipDirection();
+			}
+		});
+		//-------------------------------------------->
+		createRule(new Rule(120, "RepaireMothership") {
+			@ Override
+			protected boolean constraint() {
+				return agent.getMothership().isDamaged() && agent.isAtMothership();
+			}
+			@ Override
+			protected void action() {
+				agent.repaireMothership();
+			}
+		});
+		//-------------------------------------------->
 		createRule(new Rule(200, "GoBackToMothership") {
 			@ Override
 			protected boolean constraint() {

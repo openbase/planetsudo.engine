@@ -39,15 +39,15 @@ public class MarioWorld1 extends AbstractLevel {
 	@Override
 	public Point2D[] getHomePositions() {
 		Point2D[] homePosition = new Point2D[2];
-		homePosition[0] = new Point2D(200, 300);
-		homePosition[1] = new Point2D(500, 600);
+		homePosition[0] = new Point2D(100, 950);
+		homePosition[1] = new Point2D(900, 950);
 		return homePosition;
 	}
 
 	@Override
 	public ResourcePlacement[] getResourcePlacement() {
 		ResourcePlacement[] resourcePlacement = new ResourcePlacement[1];
-		resourcePlacement[0] = new ResourceRandomRectangle(0, 0, 100, 100, 3);
+		resourcePlacement[0] = new ResourceRandomRectangle(0, 0, 100, 100, 20);
 		return resourcePlacement;
 	}
 }

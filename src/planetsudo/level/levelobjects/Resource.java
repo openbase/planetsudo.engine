@@ -22,7 +22,7 @@ public class Resource extends AbstractLevelObject {
 	private Agent owner;
 
 	public Resource(int id, ResourceType type, AbstractLevel level, Point2D position) {
-		super(id, Resource.class.getSimpleName()+"["+id+"]",STATIC_OBJECT, level, position, 25, 25, ObjectShape.Oval);
+		super(id, Resource.class.getSimpleName()+"["+id+"]",STATIC_OBJECT, level, position, 50, 50, ObjectShape.Rec);
 		this.type = type;
 		this.owner = null;
 		Logger.info(this, "Create "+this);
@@ -61,7 +61,7 @@ public class Resource extends AbstractLevelObject {
 	private long getCapturingTime() {
 		switch(type) {
 			case NORMAL:
-				return 5000;
+				return 2000;
 			default:
 				Logger.error(this, "Could not calculate capturing time because resource type is unknown!");
 				return 5000;

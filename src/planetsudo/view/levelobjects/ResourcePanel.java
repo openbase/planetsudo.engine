@@ -20,19 +20,17 @@ import planetsudo.view.level.LevelPanel;
 public class ResourcePanel extends AbstractLevelObjectPanel<Resource, LevelPanel> implements PropertyChangeListener {
 
 	public ResourcePanel(Resource resource, LevelPanel parentResourcePanel) {
-		super(resource, parentResourcePanel, "res/img/resossurce.png");
+		super(resource, parentResourcePanel, "res/img/agent.png");
 		Logger.info(this, "Create "+this);
 		resource.addPropertyChangeListener(this);
 	}
 
 	@Override
 	protected void paintComponent(Graphics2D g2) {
-		switch(resource.getType()) {
-			case NORMAL:
-				g2.setColor(Color.blue);
-				//g2.fillOval(50, 50, 100, 100);
-				paintImage(g2);
-				//g2.fillOval((int)resource.getPosition().getX()-(int)resource.getWidth()/2, (int)resource.getPosition().getY()-(int)resource.getHeight()/2, (int)resource.getWidth(), (int)resource.getHeight());
+		//g2.setColor(Color.blue);
+		g2.drawImage(image, (int)resource.getPosition().getX()-(int)resource.getWidth()/2, (int)resource.getPosition().getY()-(int)resource.getHeight()/2, parentPanel);
+		paintImage(g2);
+		//g2.fillOval((int)resource.getPosition().getX()-(int)resource.getWidth()/2, (int)resource.getPosition().getY()-(int)resource.getHeight()/2, (int)resource.getWidth(), (int)resource.getHeight());
 //				if(resource.isOwned()) {
 //					resource.getOwner().getDirection(
 //					//					(int) (resource.getPosition().getX()+(resource.getDirection().getDirection().getX()*resource.getWidth())),
@@ -42,7 +40,7 @@ public class ResourcePanel extends AbstractLevelObjectPanel<Resource, LevelPanel
 //
 //				}
 
-		}
+		
 	}
 
 	@Override

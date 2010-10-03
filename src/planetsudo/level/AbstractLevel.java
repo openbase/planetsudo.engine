@@ -7,6 +7,7 @@ package planetsudo.level;
 
 import data.Point2D;
 import java.awt.Polygon;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -26,8 +27,8 @@ public abstract class AbstractLevel implements Runnable {
 	public final static long DEFAULT_GAME_SPEED = 12/Mothership.DEFAULT_AGENT_COUNT; // Optimised Game Speed
 
 	private final String name;
-	private final LinkedList<Mothership> motherships;
-	private final ArrayList<Resource> resources;
+	private final LinkedList<Mothership> motherships; // TODO: Threadsave implementation!
+	private final ArrayList<Resource> resources;	  // TODO: Threadsave implementation!
 	private final long gameSpeed;
 	private final Polygon levelBorderPolygon;
 	private final int x, y;
@@ -90,8 +91,8 @@ public abstract class AbstractLevel implements Runnable {
 		}
 	}
 
-	public boolean collisionDetected(Agent agent) {
-		return !levelBorderPolygon.contains(agent.getFutureBounds());
+	public boolean collisionDetected(Rectangle2D bounds) {
+		return !levelBorderPolygon.contains(bounds);
 	}
 
 	public void waitTillGameOver() {
@@ -172,9 +173,6 @@ public abstract class AbstractLevel implements Runnable {
 	 */
 	public Resource getCloseResource(Agent agent) {
 		for(Resource resource : resources) {
-//			if(resource.getBounds().intersects(agent.getViewBounds())) {
-//				return resource;
-//			}
 			if(resource.getBounds().intersects(agent.getViewBounds()) && 
 					(resource.getOwner() == null || resource.getOwner().getTeam() != agent.getTeam())) {
 				return resource;
@@ -193,6 +191,44 @@ public abstract class AbstractLevel implements Runnable {
 			if(resource.getBounds().intersects(agent.getBounds()) &&
 					(resource.getOwner() == null || resource.getOwner().getTeam() != agent.getTeam())) {
 				return resource;
+			}
+		}
+		return null;
+	}
+
+	public Mothership getAdversaryMothership(Agent agent) {
+		
+		for(Mothership mothership : motherships) {
+			if((mothership.getTeam() != agent.getTeam()) &&
+					mothership.hasFuel() &&
+					mothership.getBounds().intersects(agent.getViewBounds())) {
+				return mothership;
+			}
+		}
+		return null;
+	}
+
+	public Agent getAdversaryAgent(Agent agent) {
+		for(Mothership mothership : motherships) {
+			if(mothership.getTeam() != agent.getTeam()) {
+				for(Agent adversaryAgent : mothership.getAgends()) {
+					if(adversaryAgent.hasFuel() && adversaryAgent.getBounds().intersects(agent.getViewBounds())) {
+						return adversaryAgent;
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+	public Agent getLostTeamAgent(Agent agent) {
+		for(Mothership mothership : motherships) {
+			if(mothership.getTeam() == agent.getTeam()) {
+				for(Agent teamAgent : mothership.getAgends()) {
+					if(!teamAgent.hasFuel()) {
+						return teamAgent;
+					}
+				}
 			}
 		}
 		return null;

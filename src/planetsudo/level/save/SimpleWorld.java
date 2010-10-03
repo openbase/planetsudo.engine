@@ -41,14 +41,14 @@ public class SimpleWorld extends AbstractLevel {
 	public Point2D[] getHomePositions() {
 		Point2D[] homePosition = new Point2D[2];
 		homePosition[0] = new Point2D(200, 200);
-		homePosition[1] = new Point2D(700, 700);
+		homePosition[1] = new Point2D(800, 200);
 		return homePosition;
 	}
 
 	@Override
 	public ResourcePlacement[] getResourcePlacement() {
 		ResourcePlacement[] resourcePlacement = new ResourcePlacement[1];
-		resourcePlacement[0] = new ResourceRandomRectangle(0, 0, 1000, 1000, 5);
+		resourcePlacement[0] = new ResourceRandomRectangle(0, 0, 1000, 1000, 50);
 		return resourcePlacement;
 	}
 }
