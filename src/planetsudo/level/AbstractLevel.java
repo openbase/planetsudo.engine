@@ -10,8 +10,10 @@ import java.awt.Polygon;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import logging.Logger;
 import planetsudo.level.levelobjects.Mothership;
 import planetsudo.game.Team;
@@ -27,8 +29,8 @@ public abstract class AbstractLevel implements Runnable {
 	public final static long DEFAULT_GAME_SPEED = 12/Mothership.DEFAULT_AGENT_COUNT; // Optimised Game Speed
 
 	private final String name;
-	private final LinkedList<Mothership> motherships; // TODO: Threadsave implementation!
-	private final ArrayList<Resource> resources;	  // TODO: Threadsave implementation!
+	private final List<Mothership> motherships;
+	private final List<Resource> resources;
 	private final long gameSpeed;
 	private final Polygon levelBorderPolygon;
 	private final int x, y;
@@ -37,8 +39,8 @@ public abstract class AbstractLevel implements Runnable {
 	public AbstractLevel() {
 		this.name = this.getClass().getSimpleName();
 		this.levelBorderPolygon = this.getLevelBorderPolygon();
-		this.motherships = new LinkedList<Mothership>();
-		this.resources = new ArrayList<Resource>();
+		this.motherships = Collections.synchronizedList(new LinkedList<Mothership>());
+		this.resources = Collections.synchronizedList(new LinkedList<Resource>());
 		this.gameSpeed = DEFAULT_GAME_SPEED;
 		Point2D base = updateBasePosition();
 		this.x = (int) base.getX();
@@ -65,7 +67,7 @@ public abstract class AbstractLevel implements Runnable {
 		}
 	}
 
-	public void reset() {
+	public synchronized void reset() {
 		Logger.info(this, "Load default values.");
 		for(Mothership mothership : motherships) {
 			mothership.reset();
@@ -80,7 +82,7 @@ public abstract class AbstractLevel implements Runnable {
 		Logger.info(this, "Add "+resources.size()+" Resources");
 	}
 
-	protected int generateNewResourceID() {
+	protected synchronized int generateNewResourceID() {
 		return resourceCounter++;
 	}
 
@@ -155,14 +157,18 @@ public abstract class AbstractLevel implements Runnable {
 	}
 
 	private void placeResources() {
-		ResourcePlacement[] resourcePlacements = getResourcePlacement();
-		for(ResourcePlacement resourcePlacement : resourcePlacements) {
-			resources.addAll(resourcePlacement.getResources(this));
+		synchronized(resources) {
+			ResourcePlacement[] resourcePlacements = getResourcePlacement();
+			for(ResourcePlacement resourcePlacement : resourcePlacements) {
+				resources.addAll(resourcePlacement.getResources(this));
+			}
 		}
 	}
 
 	public void removeResource(Resource resource) {
-		resources.remove(resource);
+		synchronized(resources) {
+			resources.remove(resource);
+		}
 
 	}
 
@@ -172,10 +178,12 @@ public abstract class AbstractLevel implements Runnable {
 	 * @return
 	 */
 	public Resource getCloseResource(Agent agent) {
-		for(Resource resource : resources) {
-			if(resource.getBounds().intersects(agent.getViewBounds()) && 
-					(resource.getOwner() == null || resource.getOwner().getTeam() != agent.getTeam())) {
-				return resource;
+		synchronized(resources) {
+			for(Resource resource : resources) {
+				if(resource.getBounds().intersects(agent.getViewBounds()) &&
+						(resource.getOwner() == null || resource.getOwner().getTeam() != agent.getTeam())) {
+					return resource;
+				}
 			}
 		}
 		return null;
@@ -186,21 +194,22 @@ public abstract class AbstractLevel implements Runnable {
 	 * @param agent
 	 * @return
 	 */
-	public Resource getTouchableResource(Agent agent) {
-		for(Resource resource : resources) {
-			if(resource.getBounds().intersects(agent.getBounds()) &&
-					(resource.getOwner() == null || resource.getOwner().getTeam() != agent.getTeam())) {
-				return resource;
+	public synchronized Resource getTouchableResource(Agent agent) {
+		synchronized(resources) {
+			for(Resource resource : resources) {
+				if(resource.getBounds().intersects(agent.getBounds()) &&
+						(resource.getOwner() == null || resource.getOwner().getTeam() != agent.getTeam())) {
+					return resource;
+				}
 			}
 		}
 		return null;
 	}
 
 	public Mothership getAdversaryMothership(Agent agent) {
-		
 		for(Mothership mothership : motherships) {
 			if((mothership.getTeam() != agent.getTeam()) &&
-					mothership.hasFuel() &&
+					!mothership.isMaxDamaged() &&
 					mothership.getBounds().intersects(agent.getViewBounds())) {
 				return mothership;
 			}
@@ -225,12 +234,16 @@ public abstract class AbstractLevel implements Runnable {
 		for(Mothership mothership : motherships) {
 			if(mothership.getTeam() == agent.getTeam()) {
 				for(Agent teamAgent : mothership.getAgends()) {
-					if(!teamAgent.hasFuel()) {
+					if(!teamAgent.hasFuel() && teamAgent.getBounds().intersects(agent.getViewBounds())) {
 						return teamAgent;
 					}
 				}
 			}
 		}
 		return null;
+	}
+
+	public String getName() {
+		return name;
 	}
 }

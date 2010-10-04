@@ -17,7 +17,6 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.Timer;
-import logging.Logger;
 import planetsudo.game.Team;
 import planetsudo.level.levelobjects.Mothership;
 
@@ -32,9 +31,9 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
 
     /** Creates new form TeamPanel */
     public TeamMenuPanel() {
-        initComponents();
-		mothershipFuelProgressBar.setMinimum(0);
-		mothershipFuelProgressBar.setMaximum(Mothership.DEFAULT_START_FUEL);
+        this.initComponents();
+		this.mothershipFuelProgressBar.setMinimum(0);
+		this.mothershipFuelProgressBar.setMaximum(Mothership.DEFAULT_START_FUEL);
 		this.timer = new Timer(300, this);
 		
     }
@@ -44,10 +43,17 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
 		teamNameLabel.setText(team.getName());
 		mothershipFuelProgressBar.setForeground(Color.BLACK);
 		mothershipFuelProgressBar.setValue(team.getMothership().getFuel());
-		mothershipStatusLabel.setText(team.getName());
+		shieldProgressBar.setValue(team.getMothership().getShieldForce());
 		teamResourceLabel.setText(team.getPoints()+"");
-		mothershipFuelProgressBar.setString("Treibstoff " + (int) (mothershipFuelProgressBar.getPercentComplete()*100)+"%");
-		updateProgressColor();
+		updateFuelProgressBar();
+		updateShieldProgressBar();
+
+		String memberList = "<html>";
+		for(String member : team.getMembers()) {
+			memberList += member+"<br>";
+		}
+		memberList += "</html>";
+		teamMemberLabel.setText(memberList);
 	}
 
 //	private int add(int a, int b) {
@@ -76,10 +82,12 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
         teamNameLabel = new javax.swing.JLabel();
         teamMothershipPanel = new javax.swing.JPanel();
         mothershipFuelProgressBar = new javax.swing.JProgressBar();
-        mothershipStatusLabel = new javax.swing.JLabel();
+        shieldProgressBar = new javax.swing.JProgressBar();
         teamColorPanel = new javax.swing.JPanel();
         teamRessourceLabel2 = new javax.swing.JLabel();
         teamResourceLabel = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        teamMemberLabel = new javax.swing.JLabel();
 
         setOpaque(false);
 
@@ -91,8 +99,8 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
         mothershipFuelProgressBar.setString("Treibstoff");
         mothershipFuelProgressBar.setStringPainted(true);
 
-        mothershipStatusLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        mothershipStatusLabel.setText("Status");
+        shieldProgressBar.setString("Schutzschild");
+        shieldProgressBar.setStringPainted(true);
 
         javax.swing.GroupLayout teamMothershipPanelLayout = new javax.swing.GroupLayout(teamMothershipPanel);
         teamMothershipPanel.setLayout(teamMothershipPanelLayout);
@@ -101,7 +109,7 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, teamMothershipPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(teamMothershipPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(mothershipStatusLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
+                    .addComponent(shieldProgressBar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
                     .addComponent(mothershipFuelProgressBar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -110,10 +118,9 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
             .addGroup(teamMothershipPanelLayout.createSequentialGroup()
                 .addComponent(mothershipFuelProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(mothershipStatusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 15, Short.MAX_VALUE))
+                .addComponent(shieldProgressBar, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
+                .addContainerGap())
         );
-
-        mothershipStatusLabel.getAccessibleContext().setAccessibleParent(null);
 
         teamColorPanel.setBackground(new java.awt.Color(51, 102, 255));
         teamColorPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
@@ -135,6 +142,11 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
         teamResourceLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         teamResourceLabel.setText("0");
 
+        jLabel1.setText("Entwickler:");
+
+        teamMemberLabel.setText("Member");
+        teamMemberLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -142,18 +154,22 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(teamMothershipPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(11, 11, 11)
                         .addComponent(teamColorPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(teamNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(teamMothershipPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(teamRessourceLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(teamResourceLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(teamRessourceLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(teamMemberLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
+                            .addComponent(teamResourceLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -165,11 +181,18 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
                     .addComponent(teamColorPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(teamMothershipPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(teamRessourceLabel2)
                     .addComponent(teamResourceLabel))
-                .addContainerGap(206, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(211, 211, 211))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(teamMemberLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -187,9 +210,11 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
 	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JProgressBar mothershipFuelProgressBar;
-    private javax.swing.JLabel mothershipStatusLabel;
+    private javax.swing.JProgressBar shieldProgressBar;
     private javax.swing.JPanel teamColorPanel;
+    private javax.swing.JLabel teamMemberLabel;
     private javax.swing.JPanel teamMothershipPanel;
     private javax.swing.JLabel teamNameLabel;
     private javax.swing.JLabel teamResourceLabel;
@@ -200,18 +225,21 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
 	public void propertyChange(PropertyChangeEvent evt) {
 		if(evt.getPropertyName().equals(Mothership.FUEL_STATE_CHANGE)) {
 			mothershipFuelProgressBar.setValue((Integer) evt.getNewValue());
-			mothershipFuelProgressBar.setString("Treibstoff " + (int) (mothershipFuelProgressBar.getPercentComplete() * 100) + "%");
-			updateProgressColor();
-			if(mothershipFuelProgressBar.getPercentComplete() < 0.25) {
-				timer.start();
-			}
-		}
-		else if(evt.getPropertyName().equals(Team.POINT_STATE_CHANGE)) {
+			updateFuelProgressBar();
+		} else if(evt.getPropertyName().equals(Mothership.SHIELD_STATE_CHANGE)) {
+			shieldProgressBar.setValue((Integer) evt.getNewValue());
+			updateShieldProgressBar();
+		} else if(evt.getPropertyName().equals(Team.POINT_STATE_CHANGE)) {
 			teamResourceLabel.setText(evt.getNewValue().toString());
 		}
 	}
 	
-	private void updateProgressColor() {
+	private void updateFuelProgressBar() {
+
+		mothershipFuelProgressBar.setString("Treibstoff " + (int) (mothershipFuelProgressBar.getPercentComplete() * 100) + "%");
+			if(mothershipFuelProgressBar.getPercentComplete() < 0.25) {
+				timer.start();
+			}
 		int green, red;
 		if (mothershipFuelProgressBar.getPercentComplete() >= 0.5) {
 			red = (int) (255 - (255 * (mothershipFuelProgressBar.getPercentComplete() - 0.5) * 2));
@@ -223,15 +251,48 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
 		mothershipFuelProgressBar.setForeground(new Color(red, green, 0));
 	}
 
+	private void updateShieldProgressBar() {
+
+		shieldProgressBar.setString("Schutzschild " + (int) (shieldProgressBar.getPercentComplete() * 100) + "%");
+			if(shieldProgressBar.getPercentComplete() < 0.33) {
+				timer.start();
+			}
+		int blue, red;
+		if (shieldProgressBar.getPercentComplete() >= 0.5) {
+			red = (int) (255 - (255 * (shieldProgressBar.getPercentComplete() - 0.5) * 2));
+			blue = 255;
+		} else {
+			red = 255;
+			blue = (int) (255 * (shieldProgressBar.getPercentComplete()) * 2);
+		}
+		shieldProgressBar.setForeground(new Color(red, 0, blue));
+	}
+
 	private boolean blink;
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(blink) {
-			mothershipFuelProgressBar.setForeground(Color.BLACK);
-		} else {
-			updateProgressColor();
+		if(shieldProgressBar.getPercentComplete() < 0.33) {
+			if(blink) {
+				shieldProgressBar.setForeground(Color.BLACK);
+			} else {
+				updateShieldProgressBar();
+			}
+		}
+
+		if(mothershipFuelProgressBar.getPercentComplete() < 0.25) {
+			if(blink) {
+				mothershipFuelProgressBar.setForeground(Color.BLACK);
+			} else {
+				updateFuelProgressBar();
+			}
 		}
 		blink = !blink;
+
+		if(mothershipFuelProgressBar.getPercentComplete() > 0.25 && shieldProgressBar.getPercentComplete() > 0.33) {
+			timer.stop();
+			updateShieldProgressBar();
+			updateFuelProgressBar();
+		}
 	}
 }

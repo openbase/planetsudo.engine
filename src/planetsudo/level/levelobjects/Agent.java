@@ -33,7 +33,6 @@ public class Agent extends AbstractLevelObject {
 	protected final ActionPoints actionPoints;
 	protected Direction2D direction;
 	protected int fuel;
-	private boolean disabled;
 	private boolean alive;
 	private Resource resource;
 	private String lastAction;
@@ -44,7 +43,7 @@ public class Agent extends AbstractLevelObject {
 		Logger.info(this, "Create "+this);
 		this.lastAction = "Init";
 		this.mothership = mothership;
-		this.actionPoints = new ActionPoints();
+		this.actionPoints = new ActionPoints(this);
 		this.alive = true;
 		if(id == -1) { // check if valid
 			kill();
@@ -74,7 +73,6 @@ public class Agent extends AbstractLevelObject {
 		} catch (NotValidException ex) {
 			java.util.logging.Logger.getLogger(Agent.class.getName()).log(Level.SEVERE, null, ex);
 		}
-		disabled = false;
 		alive = true;
 	}
 
@@ -109,7 +107,6 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	private void disable() {
-		disabled = true;
 		if(isCarringResource()) {
 			resource.release();
 		}
@@ -132,7 +129,7 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	public boolean isDisabled() {
-		return disabled;
+		return !isAlive() || !hasFuel() ;
 	}
 
 	public boolean isCarringResource() {
@@ -203,7 +200,6 @@ public class Agent extends AbstractLevelObject {
 		if(useFuel()) {
 			position.translate(direction, calcSpeed());
 			if(level.collisionDetected(getBounds())) { // Is collied with wall?
-				this.disabled = true;
 				this.alive = false;
 			}
 		}
@@ -251,7 +247,7 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	public void orderFuel(int percent) {
-		actionPoints.getActionPoint(50);
+		actionPoints.getActionPoint(20);
 		if(percent < 0 || percent > 100) {
 			Logger.error(this, "Could not refill fuel! Percent value["+percent+"] is not in bounds! Valuerange 0-100");
 			return;
@@ -286,13 +282,15 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	public boolean toucheResource() {
-		return  level.getTouchableResource(this) != null;
+		return level.getTouchableResource(this) != null;
 	}
 
 	public void pickupResource() {
-		actionPoints.getActionPoint(200);
-		Resource resourceToCollect =  level.getTouchableResource(this);
-		if(resourceToCollect  != null) {
+		actionPoints.getActionPoint(10);
+		Resource resourceToCollect = level.getTouchableResource(this);
+		if(resourceToCollect != null && resourceToCollect.setBusy(getTeam())) {
+			direction.turnTo(position, resourceToCollect.position);
+			actionPoints.getActionPoint(resourceToCollect.getCapturingActionPoints());
 			this.carryResource(resourceToCollect);
 		}
 	}
@@ -313,6 +311,7 @@ public class Agent extends AbstractLevelObject {
 		return level.getAdversaryMothership(this) != null;
 	}
 
+	private int catchedfuel;
 	public void fightWithAdversaryAgent() {
 		actionPoints.getActionPoint();
 		if(useFuel()) {
@@ -322,7 +321,10 @@ public class Agent extends AbstractLevelObject {
 				actionPoints.getActionPoint(20);
 				direction.turnTo(position, adversaryAgent.position);
 				if(adversaryAgent.hasFuel()) {
-					fuel += (adversaryAgent.useFuel((DEFAULT_START_FUEL/100)*2)/2);
+					catchedfuel = (adversaryAgent.useFuel((DEFAULT_START_FUEL/100)*2)/2);
+					if(fuel+catchedfuel <= DEFAULT_START_FUEL) {
+					fuel += catchedfuel;
+					}
 				} 
 			}
 		}
@@ -356,12 +358,13 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	public void spendFuelTeamAgend(int value) {
-		actionPoints.getActionPoint();
+		actionPoints.getActionPoint(10);
 		if(useFuel()) {
 			Agent teamAgent = level.getLostTeamAgent(this);
 			if(teamAgent  != null) {
-				teamAgent.fuel += value;
-				teamAgent.disabled = true;
+				direction.turnTo(position, teamAgent.position);
+				actionPoints.getActionPoint(value);
+				teamAgent.fuel += useFuel(value);
 			}
 		}
 	}

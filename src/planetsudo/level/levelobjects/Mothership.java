@@ -19,9 +19,10 @@ import planetsudo.level.AbstractLevel;
 public class Mothership extends AbstractLevelObject {
 
 	public final static String FUEL_STATE_CHANGE = "FuelStateChange";
+	public final static String SHIELD_STATE_CHANGE = "ShieldStateChange";
 
 	public final static int DEFAULT_START_FUEL = 30000;
-	public final static int DEFAULT_AGENT_COUNT = 10; // range 0-9999
+	public final static int DEFAULT_AGENT_COUNT = 50; // range 0-9999
 
 	private final Team team;
 	private int fuel;
@@ -159,12 +160,14 @@ public class Mothership extends AbstractLevelObject {
 	public synchronized void attack() {
 		if(shield > 0) {
 			shield--;
+			changes.firePropertyChange(SHIELD_STATE_CHANGE, null, shield);
 		}
 	}
 
 	public synchronized void repaire() {
 		if(shield < 100) {
 			shield++;
+			changes.firePropertyChange(SHIELD_STATE_CHANGE, null, shield);
 		}
 	}
 
@@ -183,7 +186,4 @@ public class Mothership extends AbstractLevelObject {
 	public boolean isDamaged() {
 		return shield < 100;
 	}
-
-
-
 }

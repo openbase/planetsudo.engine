@@ -6,7 +6,7 @@
 package planetsudo.game;
 
 import logging.Logger;
-import planetsudo.level.AbstractLevel;
+import planetsudo.level.levelobjects.Agent;
 
 /**
  *
@@ -14,15 +14,19 @@ import planetsudo.level.AbstractLevel;
  */
 public class ActionPoints {
 	private int points;
+	private Agent agent;
 
-	public ActionPoints() {
+	public ActionPoints(Agent agent) {
 		this.points = 0;
+		this.agent = agent;
 	}
 
 	public void addActionPoint() {
-		synchronized(this) {
-			points++;
-			this.notify();
+		if(!agent.isDisabled()) {
+			synchronized(this) {
+				points++;
+				this.notify();
+			}
 		}
 	}
 

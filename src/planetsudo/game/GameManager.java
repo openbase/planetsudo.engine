@@ -7,15 +7,13 @@ package planetsudo.game;
 
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
 import java.util.Vector;
 import logging.Logger;
 import planetsudo.level.AbstractLevel;
-import planetsudo.level.save.SimpleWorld;
 import planetsudo.main.GUIController;
 import planetsudo.game.strategy.DefaultStategy;
 import planetsudo.level.LevelLoader;
-import planetsudo.level.save.MarioWorld1;
-import planetsudo.level.save.Wonderland;
 
 /**
  *
@@ -43,8 +41,13 @@ public class GameManager implements Runnable {
 
 	public void setupTestGame() {
 		LevelLoader.getInstance();
-		addTeam(new Team(0, "Piranjas", Color.BLUE, DefaultStategy.class));
-		addTeam(new Team(1, "BlackHeath", Color.MAGENTA, DefaultStategy.class));
+		ArrayList<String> team0 = new ArrayList<String>(), team1 = new ArrayList<String>();
+		team0.add("OptimusPrime");
+		team0.add("Divine");
+		team1.add("Messer");
+		team1.add("Noxus");
+		addTeam(new Team(0, "Piranjas", Color.BLUE, DefaultStategy.class, team0));
+		addTeam(new Team(1, "BlackHeath", Color.MAGENTA, DefaultStategy.class, team1));
 		startGame();
 	}
 

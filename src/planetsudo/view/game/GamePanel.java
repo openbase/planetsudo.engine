@@ -12,7 +12,8 @@
 package planetsudo.view.game;
 
 import planetsudo.game.GameManager;
-import planetsudo.view.menu.TeamMenuPanel;
+import planetsudo.view.level.LevelPanel;
+import planetsudo.view.menu.LevelMenuPanel;
 
 /**
  *
@@ -21,10 +22,13 @@ import planetsudo.view.menu.TeamMenuPanel;
 public class GamePanel extends javax.swing.JPanel {
 
 	private boolean displayTeamPanel;
+	private LevelMenuPanel levelMenuPanel;
 
     /** Creates new form GamePanel */
     public GamePanel() {
         this.initComponents();
+		this.levelMenuPanel = new LevelMenuPanel();
+		this.add(levelMenuPanel, java.awt.BorderLayout.NORTH);
 		this.displayTeamPanel = true;
     }
 
@@ -32,6 +36,7 @@ public class GamePanel extends javax.swing.JPanel {
 		levelDisplayPanel.setLevel(GameManager.getInstance().getLevel());
 		teamMenuPanel1.setTeam(GameManager.getInstance().getTeams().get(0));
 		teamMenuPanel2.setTeam(GameManager.getInstance().getTeams().get(1));
+		levelMenuPanel.setLevel(GameManager.getInstance().getLevel());
 		updateTeamPanelDisplayState();	
 	}
 

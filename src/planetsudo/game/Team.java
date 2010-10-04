@@ -10,6 +10,8 @@ import planetsudo.game.strategy.AbstractStrategy;
 import concepts.Manageable;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
+import java.util.Collection;
 import logging.Logger;
 import planetsudo.level.levelobjects.Mothership;
 
@@ -27,16 +29,19 @@ public class Team implements Manageable {
 	private Mothership mothership;
 	private Class<? extends AbstractStrategy> strategy;
 	private int points;
+	private ArrayList<String> members;
 	
 	protected final PropertyChangeSupport changes;
 
-	public Team(int id, String name, Color teamColor, Class<? extends AbstractStrategy> strategy) {
+	public Team(int id, String name, Color teamColor, Class<? extends AbstractStrategy> strategy, Collection<String> members) {
 		this.id = id;
 		this.name = name;
 		this.teamColor = teamColor;
 		this.strategy = strategy;
 		this.points = 0;
 		this.changes = new PropertyChangeSupport(this);
+		this.members = new ArrayList<String>();
+		this.members.addAll(members);
 	}
 
 	@Override
@@ -76,6 +81,10 @@ public class Team implements Manageable {
 
 	public Color getTeamColor() {
 		return teamColor;
+	}
+
+	public ArrayList<String> getMembers() {
+		return members;
 	}
 
 	public void addPropertyChangeListener(PropertyChangeListener l) {

@@ -51,7 +51,7 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 	 * Create the frame
 	 */
 	public MainGUI(GUIController guiController) {
-		super("PlanetMesserLost");
+		super("PlanetSudo");
 		instance = this;
 		this.screenDim = new Dimension(X_DIM, Y_DIM);
 		this.guiController = guiController;

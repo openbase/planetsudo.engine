@@ -29,6 +29,8 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		new Logger(DEBUG);
+		Logger.setPrintExceptionStackTrace(true);
+		Logger.setPrintExceptionStackTrace(true);
 		new Main();
 	}
 
