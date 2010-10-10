@@ -11,6 +11,11 @@
 
 package planetsudo.view.loading;
 
+import planetsudo.game.GameManager;
+import planetsudo.level.AbstractLevel;
+
+
+
 /**
  *
  * @author divine
@@ -22,8 +27,9 @@ public class LevelTitleLoadingPanel extends javax.swing.JPanel {
         initComponents();
     }
 	
-	public void setLevelName(String name) {
-		titleLabel.setText("Loading "+name);
+	public void updateDynamicComponents() {
+		titleLabel.setText("Loading "+GameManager.getInstance().getLevel().getName());
+		titleLabel.setForeground(GameManager.getInstance().getLevel().getColor());
 	}
 
 
@@ -38,6 +44,8 @@ public class LevelTitleLoadingPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         titleLabel = new javax.swing.JLabel();
+
+        setBackground(new java.awt.Color(0, 0, 0));
 
         titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         titleLabel.setText("Loading Level");

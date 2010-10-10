@@ -18,6 +18,9 @@ import planetsudo.view.MainGUI;
  */
 public class GUIController {
 	public final static String GAME_STATE_CHANGE = "GameStateChange";
+	public final static String LOADING_STATE_CHANGE = "GameLoadingState";
+	public final static String LOADING_STEP = "GameLoadingStep";
+
 
 	private PropertyChangeSupport changes;
 	private static GUIController instance;

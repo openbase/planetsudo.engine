@@ -66,8 +66,8 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 	public static MainGUI instance;
 	public final static int X_LOCATION = 0;
 	public final static int Y_LOCATION = 0;
-	public final static int X_DIM = 640;
-	public final static int Y_DIM = 400;
+	public final static int X_DIM = 800;
+	public final static int Y_DIM = 600;
 	public final static boolean DEFAULT_FULLSCREENMODE = false;
 
 	private Dimension screenDim;
@@ -163,16 +163,21 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 			if(changeEvent.getPropertyName().equals(GUIController.GAME_STATE_CHANGE)) {
 				updateButtons((GameState) changeEvent.getNewValue());
 				if(changeEvent.getNewValue() == GameState.Configuration) {
+					gamePanel.setVideoThreadCommand(VideoThreadCommand.Stop);
 					((CardLayout) mainPanel.getLayout()).show(mainPanel, CONFIGURATION_PANEL);
-					gamePanel.setVideoThreadCommand(VideoThreadCommand.Stop);
 				} else if(changeEvent.getNewValue() == GameState.Initialisation) {
-					((CardLayout) mainPanel.getLayout()).show(mainPanel, LOADING_PANEL);
+					levelLoadingPanel.updateDynamicComponents();
 					gamePanel.setVideoThreadCommand(VideoThreadCommand.Stop);
+					((CardLayout) mainPanel.getLayout()).show(mainPanel, LOADING_PANEL);
 				} else if(changeEvent.getNewValue() == GameState.Running) {
 					gamePanel.updateDynamicComponents();
 					((CardLayout) mainPanel.getLayout()).show(mainPanel, GAME_PANEL);
 					gamePanel.setVideoThreadCommand(VideoThreadCommand.Start);
 				}
+			} else if(changeEvent.getPropertyName().equals(GUIController.LOADING_STATE_CHANGE)) {
+
+			} else if(changeEvent.getPropertyName().equals(GUIController.LOADING_STEP)) {
+
 			} else {
 				Logger.warn(this, "Event ["+changeEvent.getPropertyName()+"] is an bad property change event!");
 			}

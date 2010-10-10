@@ -8,12 +8,14 @@ package planetsudo.level.levelobjects;
 import data.Point2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
 import java.util.Collection;
 import java.util.HashMap;
 import javax.swing.Timer;
 import logging.Logger;
 import planetsudo.game.Team;
 import planetsudo.level.AbstractLevel;
+import planetsudo.main.GUIController;
 
 /**
  *
@@ -44,12 +46,13 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 		this.team.setMothership(this);
 		this.agents = new HashMap<Integer, Agent>();
 		this.reset();
-		timer = new Timer(50, this);
+		this.timer = new Timer(50, this);
 
 	}
 
 	@ Override
 	public void reset() {
+		GUIController.setEvent(new PropertyChangeEvent(this, GUIController.LOADING_STATE_CHANGE, 1, "Lade "+team.getName()+" Mutterschiff"));
 		fuel = DEFAULT_START_FUEL;
 		for(Agent agent : agents.values()) {
 			agent.kill();
@@ -59,9 +62,11 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 		this.shield = 100;
 	}
 
-	public void loadAgents() {
+	private void loadAgents() {
+		GUIController.setEvent(new PropertyChangeEvent(this, GUIController.LOADING_STATE_CHANGE, agentMaxCount, "Lade "+team.getName()+" Agenten"));
 		Agent agent;
 		for(int i=0;i<agentMaxCount;i++) {
+			GUIController.setEvent(new PropertyChangeEvent(this, GUIController.LOADING_STEP, null, i));
 			agent = new Agent(team.getName()+"Agent", this);
 			Agent replacedAgent = agents.put(agent.getID(), agent);
 			if(replacedAgent != null){

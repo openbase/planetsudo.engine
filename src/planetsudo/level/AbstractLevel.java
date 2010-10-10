@@ -6,6 +6,7 @@
 package planetsudo.level;
 
 import data.Point2D;
+import java.awt.Color;
 import java.awt.Polygon;
 import java.awt.geom.Rectangle2D;
 import java.util.Collection;
@@ -28,17 +29,27 @@ public abstract class AbstractLevel implements Runnable {
 	//public final static long DEFAULT_GAME_SPEED = 12/Mothership.DEFAULT_AGENT_COUNT; // Optimised Game Speed
 	public final static long DEFAULT_GAME_SPEED = 12/10;
 
+
+	private final Polygon levelBorderPolygon;
+	private final Point2D[] homePositions;
+	private final ResourcePlacement[] resourcePlacement;
+	private final Color color;
+
 	private final String name;
 	private final List<Mothership> motherships;
 	private final List<Resource> resources;
 	private final long gameSpeed;
-	private final Polygon levelBorderPolygon;
+	
 	private final int x, y;
 	private int resourceCounter;
 
 	public AbstractLevel() {
-		this.name = this.getClass().getSimpleName();
-		this.levelBorderPolygon = this.getLevelBorderPolygon();
+		this.name = getClass().getSimpleName();
+		this.levelBorderPolygon = loadLevelBorderPolygon();
+		this.homePositions = loadHomePositions();
+		this.resourcePlacement = loadResourcePlacement();
+		this.color = loadLevelColor();
+		
 		this.motherships = Collections.synchronizedList(new LinkedList<Mothership>());
 		this.resources = Collections.synchronizedList(new LinkedList<Resource>());
 		this.gameSpeed = DEFAULT_GAME_SPEED;
@@ -112,9 +123,26 @@ public abstract class AbstractLevel implements Runnable {
 		return true;
 	}
 
-	public abstract Polygon getLevelBorderPolygon();
-	public abstract Point2D[] getHomePositions();
-	public abstract ResourcePlacement[] getResourcePlacement();
+
+	protected abstract Polygon loadLevelBorderPolygon();
+	protected abstract Point2D[] loadHomePositions();
+	protected abstract ResourcePlacement[] loadResourcePlacement();
+	protected abstract Color loadLevelColor();
+
+	public Polygon getLevelBorderPolygon() {
+		return levelBorderPolygon;
+	}
+	public Point2D[] getHomePositions() {
+		return homePositions;
+	}
+	public ResourcePlacement[] getResourcePlacement() {
+		return resourcePlacement;
+	}
+	public Color getColor() {
+		return color;
+	}
+
+
 
 	public Point2D getMothershipHomePosition(int mothershipID) {
 		return getHomePositions()[mothershipID];
@@ -125,7 +153,6 @@ public abstract class AbstractLevel implements Runnable {
 	}
 
 	public Iterator<Resource> getResources() {
-		Logger.info(this, "orderResources");
 		return resources.iterator();
 	}
 

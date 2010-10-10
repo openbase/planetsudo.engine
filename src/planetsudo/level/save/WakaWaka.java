@@ -6,6 +6,7 @@
 package planetsudo.level.save;
 
 import data.Point2D;
+import java.awt.Color;
 import java.awt.Polygon;
 import planetsudo.level.AbstractLevel;
 import planetsudo.level.ResourcePlacement;
@@ -17,7 +18,7 @@ import planetsudo.level.ResourceRandomRectangle;
  */
 public class WakaWaka extends AbstractLevel{
 @Override
-	public Polygon getLevelBorderPolygon() {
+	public Polygon loadLevelBorderPolygon() {
 		Polygon levelBorders = new Polygon();
 		levelBorders.addPoint(50, 50);
 		levelBorders.addPoint(350, 50);
@@ -139,7 +140,7 @@ public class WakaWaka extends AbstractLevel{
 	}
 
 	@Override
-	public Point2D[] getHomePositions() {
+	protected Point2D[] loadHomePositions() {
 		Point2D[] homePosition = new Point2D[2];
 		homePosition[0] = new Point2D(100, 100);
 		homePosition[1] = new Point2D(1450, 1450);
@@ -147,10 +148,14 @@ public class WakaWaka extends AbstractLevel{
 	}
 
 	@Override
-	public ResourcePlacement[] getResourcePlacement() {
+	protected ResourcePlacement[] loadResourcePlacement() {
 		ResourcePlacement[] resourcePlacement = new ResourcePlacement[1];
 		resourcePlacement[0] = new ResourceRandomRectangle(0, 0, 1000, 1000, 5);
 		return resourcePlacement;
 	}
 
+	@Override
+	protected Color loadLevelColor() {
+		return Color.MAGENTA;
+	}
 }

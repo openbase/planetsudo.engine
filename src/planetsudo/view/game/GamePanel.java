@@ -11,6 +11,7 @@
 
 package planetsudo.view.game;
 
+import java.awt.Color;
 import planetsudo.game.GameManager;
 import planetsudo.view.level.LevelDisplayPanel.VideoThreadCommand;
 import planetsudo.view.level.LevelPanel;
@@ -38,6 +39,7 @@ public class GamePanel extends javax.swing.JPanel {
 		teamMenuPanel1.setTeam(GameManager.getInstance().getTeams().get(0));
 		teamMenuPanel2.setTeam(GameManager.getInstance().getTeams().get(1));
 		levelMenuPanel.setLevel(GameManager.getInstance().getLevel());
+		setBackground(GameManager.getInstance().getLevel().getColor());
 		updateTeamPanelDisplayState();	
 	}
 
@@ -72,7 +74,6 @@ public class GamePanel extends javax.swing.JPanel {
         teamMenuPanel1 = new planetsudo.view.menu.TeamMenuPanel();
         teamMenuPanel2 = new planetsudo.view.menu.TeamMenuPanel();
 
-        setBackground(new java.awt.Color(255, 153, 0));
         setLayout(new java.awt.BorderLayout(5, 5));
         add(levelDisplayPanel, java.awt.BorderLayout.CENTER);
         add(teamMenuPanel1, java.awt.BorderLayout.LINE_START);

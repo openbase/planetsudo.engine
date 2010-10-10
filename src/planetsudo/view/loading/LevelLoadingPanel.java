@@ -17,6 +17,7 @@ import view.components.LoadingAnimation;
 public class LevelLoadingPanel extends JPanel {
 
 	private LevelTitleLoadingPanel titlePanel;
+	private JPanel mainPanel;
 	private MenuLoadingPanel menuPanel;
 	private LoadingAnimation completeLoadingProgress, nextLoadingProgress;
 
@@ -29,14 +30,31 @@ public class LevelLoadingPanel extends JPanel {
 		setLayout(new BorderLayout());
 
 		titlePanel = new LevelTitleLoadingPanel();
+		mainPanel = new JPanel();
 		menuPanel = new MenuLoadingPanel();
 		completeLoadingProgress = new LoadingAnimation();
 		nextLoadingProgress = new LoadingAnimation();
+
+		mainPanel.add(completeLoadingProgress, BorderLayout.EAST);
+		mainPanel.add(nextLoadingProgress, BorderLayout.WEST);
+
+		add(titlePanel, BorderLayout.PAGE_START);
+		add(mainPanel, BorderLayout.CENTER);
+		add(menuPanel, BorderLayout.PAGE_END);
 		
-		add(titlePanel, BorderLayout.NORTH);
-		add(menuPanel, BorderLayout.SOUTH);
-		add(completeLoadingProgress, BorderLayout.EAST);
-		add(nextLoadingProgress, BorderLayout.WEST);
 	}
+
+	public void updateDynamicComponents() {
+		titlePanel.updateDynamicComponents();
+	}
+	
+	public void setLoadStateChange(String name, int stepCount) {
+		
+	}
+
+	public void setLoadingStep(int counter) {
+
+	}
+
 
 }
