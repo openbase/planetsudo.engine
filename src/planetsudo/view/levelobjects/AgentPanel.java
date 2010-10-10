@@ -5,6 +5,7 @@
 
 package planetsudo.view.levelobjects;
 
+import data.Direction2D;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -55,29 +56,25 @@ public class AgentPanel extends AbstractLevelObjectPanel<Agent, MothershipPanel>
 			g2.drawRect((int)boundingBox.getCenterX()-7, (int)boundingBox.getCenterY()-7, 14, 14);
 		g22.dispose();
 
-		//paintShape(g2);
-		paintImageRotated(resource.getDirection(), g2);
-		
-
 		// Paint Laser
 		levelObject = resource.isFightingWith();
 		if(levelObject != null) {
+			Direction2D side;
 			g22.setColor(resource.getMothership().getTeam().getTeamColor());
-			g2.fillOval((int) resource.getPosition().getX()-10,
-						(int) resource.getPosition().getY()-10,
-						20,
-						20);
-			g2.drawLine((int) resource.getPosition().getX(),
-						(int) resource.getPosition().getY(),
-						(int) (levelObject.getPosition().getX()+(resource.getDirection().getDirection().getX()*resource.getWidth()/3)),
-						(int) (levelObject.getPosition().getY()+(resource.getDirection().getDirection().getY()*resource.getHeight()/3)));
-			g22.setColor(resource.getMothership().getTeam().getTeamColor());
-			g2.fillOval((int) resource.getPosition().getX()-10,
-						(int) resource.getPosition().getY()-10,
-						20,
-						20);
+			side = new Direction2D(resource.getDirection().getAngle()+90);
+			g2.drawLine((int) (resource.getPosition().getX()+(side.getVector().getX()*resource.getWidth()/2)),
+						(int) (resource.getPosition().getY()+(side.getVector().getY()*resource.getHeight()/3)),
+						(int) (levelObject.getPosition().getX()),
+						(int) (levelObject.getPosition().getY()));
+			side = new Direction2D(resource.getDirection().getAngle()-90);
+			g2.drawLine((int) (resource.getPosition().getX()+(side.getVector().getX()*resource.getWidth()/2)),
+						(int) (resource.getPosition().getY()+(side.getVector().getY()*resource.getHeight()/3)),
+						(int) (levelObject.getPosition().getX()),
+						(int) (levelObject.getPosition().getY()));
 		}
 
+		//paintShape(g2);
+		paintImageRotated(resource.getDirection(), g2);
 
 		// Paint FuelBarBackground
 		g2.setColor(FUEL_BACKGROUND);
@@ -96,7 +93,7 @@ public class AgentPanel extends AbstractLevelObjectPanel<Agent, MothershipPanel>
 		// Paint StateLable
 		if(showStateLabel) {
 			g2.setColor(Color.WHITE);
-			g2.setFont(new Font( Font.SERIF, Font.PLAIN, 25 ));
+			g2.setFont(new Font(Font.SERIF, Font.PLAIN, 25 ));
 			g2.drawString(resource.getLastAction(),
 					(int) (resource.getPosition().getX()),
 					(int) (resource.getPosition().getY()));

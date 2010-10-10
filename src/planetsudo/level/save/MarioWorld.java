@@ -16,7 +16,7 @@ import planetsudo.level.ResourceRandomRectangle;
  *
  * @author noxus
  */
-public class MarioWorld1 extends AbstractLevel {
+public class MarioWorld extends AbstractLevel {
 
 	@Override
 	public Polygon getLevelBorderPolygon() {

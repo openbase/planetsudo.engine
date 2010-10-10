@@ -12,6 +12,7 @@
 package planetsudo.view.game;
 
 import planetsudo.game.GameManager;
+import planetsudo.view.level.LevelDisplayPanel.VideoThreadCommand;
 import planetsudo.view.level.LevelPanel;
 import planetsudo.view.menu.LevelMenuPanel;
 
@@ -52,6 +53,10 @@ public class GamePanel extends javax.swing.JPanel {
 	public void updateTeamPanelDisplayState() {
 		teamMenuPanel1.setVisible(displayTeamPanel);
 		teamMenuPanel2.setVisible(displayTeamPanel);
+	}
+
+	public void setVideoThreadCommand(VideoThreadCommand command) {
+		levelDisplayPanel.setVideoThreadCommand(command);
 	}
 
     /** This method is called from within the constructor to

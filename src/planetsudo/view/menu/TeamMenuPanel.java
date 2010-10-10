@@ -254,7 +254,7 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
 	private void updateShieldProgressBar() {
 
 		shieldProgressBar.setString("Schutzschild " + (int) (shieldProgressBar.getPercentComplete() * 100) + "%");
-			if(shieldProgressBar.getPercentComplete() < 0.33) {
+			if(shieldProgressBar.getPercentComplete() < Mothership.BURNING_MOTHERSHIP/100) {
 				timer.start();
 			}
 		int blue, red;
@@ -272,7 +272,7 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(shieldProgressBar.getPercentComplete() < 0.33) {
+		if(shieldProgressBar.getPercentComplete() < Mothership.BURNING_MOTHERSHIP/100) {
 			if(blink) {
 				shieldProgressBar.setForeground(Color.BLACK);
 			} else {
@@ -289,7 +289,7 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
 		}
 		blink = !blink;
 
-		if(mothershipFuelProgressBar.getPercentComplete() > 0.25 && shieldProgressBar.getPercentComplete() > 0.33) {
+		if(mothershipFuelProgressBar.getPercentComplete() > 0.25 && shieldProgressBar.getPercentComplete() > Mothership.BURNING_MOTHERSHIP/100) {
 			timer.stop();
 			updateShieldProgressBar();
 			updateFuelProgressBar();

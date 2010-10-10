@@ -6,8 +6,11 @@
 package planetsudo.level.levelobjects;
 
 import data.Point2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.HashMap;
+import javax.swing.Timer;
 import logging.Logger;
 import planetsudo.game.Team;
 import planetsudo.level.AbstractLevel;
@@ -16,18 +19,20 @@ import planetsudo.level.AbstractLevel;
  *
  * @author divine
  */
-public class Mothership extends AbstractLevelObject {
+public class Mothership extends AbstractLevelObject implements ActionListener {
 
 	public final static String FUEL_STATE_CHANGE = "FuelStateChange";
 	public final static String SHIELD_STATE_CHANGE = "ShieldStateChange";
 
 	public final static int DEFAULT_START_FUEL = 30000;
-	public final static int DEFAULT_AGENT_COUNT = 50; // range 0-9999
+	public final static int MAX_AGENT_COUNT = 10; // range 0-9999
+	public final static int BURNING_MOTHERSHIP = 50;
 
 	private final Team team;
 	private int fuel;
 	private int agentMaxCount;
 	private int shield;
+	private Timer timer;
 
 	private final HashMap<Integer, Agent> agents;
 	
@@ -39,6 +44,8 @@ public class Mothership extends AbstractLevelObject {
 		this.team.setMothership(this);
 		this.agents = new HashMap<Integer, Agent>();
 		this.reset();
+		timer = new Timer(50, this);
+
 	}
 
 	@ Override
@@ -47,7 +54,7 @@ public class Mothership extends AbstractLevelObject {
 		for(Agent agent : agents.values()) {
 			agent.kill();
 		}
-		agentMaxCount = DEFAULT_AGENT_COUNT;
+		agentMaxCount = team.getAgentCount();
 		loadAgents();
 		this.shield = 100;
 	}
@@ -68,7 +75,7 @@ public class Mothership extends AbstractLevelObject {
 
 	public synchronized int orderFuel(int fuel) {
 		int oldFuel = this.fuel;
-		if(fuel ==  0) { // fuel emty
+		if(fuel <=  0) { // fuel emty
 			fuel = 0;
 		} else if(this.fuel < fuel) { // use last fuel
 			fuel = this.fuel;
@@ -160,6 +167,11 @@ public class Mothership extends AbstractLevelObject {
 	public synchronized void attack() {
 		if(shield > 0) {
 			shield--;
+			if(shield <= BURNING_MOTHERSHIP) {
+				if(!timer.isRunning()) {
+					timer.start();
+				}
+			}
 			changes.firePropertyChange(SHIELD_STATE_CHANGE, null, shield);
 		}
 	}
@@ -167,12 +179,15 @@ public class Mothership extends AbstractLevelObject {
 	public synchronized void repaire() {
 		if(shield < 100) {
 			shield++;
+			if(shield > BURNING_MOTHERSHIP && timer.isRunning()) {
+				timer.stop();
+			} 
 			changes.firePropertyChange(SHIELD_STATE_CHANGE, null, shield);
 		}
 	}
 
 	public boolean isBurning() {
-		return shield < 33;
+		return shield < BURNING_MOTHERSHIP;
 	}
 
 	public int getShieldForce() {
@@ -185,5 +200,10 @@ public class Mothership extends AbstractLevelObject {
 
 	public boolean isDamaged() {
 		return shield < 100;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		orderFuel(BURNING_MOTHERSHIP-shield);
 	}
 }

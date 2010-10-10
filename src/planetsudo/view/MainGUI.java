@@ -11,6 +11,8 @@
 
 package planetsudo.view;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Level;
 import planetsudo.view.configuration.ConfigurationPanel;
 import planetsudo.view.game.GamePanel;
 import java.awt.CardLayout;
@@ -26,7 +28,9 @@ import planetsudo.main.GUIController;
 import planetsudo.game.GameManager;
 import planetsudo.game.GameManager.GameState;
 import planetsudo.level.LevelView;
+import planetsudo.view.level.LevelDisplayPanel.VideoThreadCommand;
 import planetsudo.view.levelobjects.AgentPanel;
+import planetsudo.view.loading.LevelLoadingPanel;
 
 /**
  *
@@ -35,10 +39,12 @@ import planetsudo.view.levelobjects.AgentPanel;
 public class MainGUI extends javax.swing.JFrame implements PropertyChangeListener {
 
 	public final static String GAME_PANEL="GamePanel";
+	public final static String LOADING_PANEL="LoadingPanel";
 	public final static String CONFIGURATION_PANEL="ConfigurationPanel";
 
 
 	private ConfigurationPanel configurationPanel;
+	private LevelLoadingPanel levelLoadingPanel;
 	private GamePanel gamePanel;
 
 
@@ -66,16 +72,20 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 
 	private Dimension screenDim;
 	private GUIController guiController;
+	private CardLayout cardLayout;
 	private boolean fullscreenMode;
 
 	public void initialize() {
 		SwingUtilities.invokeLater(new Runnable() {
+
 			@Override
 			public void run() {
 				initComponents();
 				configurationPanel = new ConfigurationPanel();
+				levelLoadingPanel = new LevelLoadingPanel();
 				gamePanel = new GamePanel();
 				mainPanel.add(configurationPanel, CONFIGURATION_PANEL);
+				mainPanel.add(levelLoadingPanel, LOADING_PANEL);
 				mainPanel.add(gamePanel, GAME_PANEL);
 				((CardLayout) mainPanel.getLayout()).show(mainPanel, CONFIGURATION_PANEL);
 				setFullScreenMode(DEFAULT_FULLSCREENMODE);
@@ -151,33 +161,18 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 		Logger.print(Channel.DEBUG, this, "PropertyChange input: "+changeEvent.getPropertyName());
 		try {
 			if(changeEvent.getPropertyName().equals(GUIController.GAME_STATE_CHANGE)) {
+				updateButtons((GameState) changeEvent.getNewValue());
 				if(changeEvent.getNewValue() == GameState.Configuration) {
 					((CardLayout) mainPanel.getLayout()).show(mainPanel, CONFIGURATION_PANEL);
-				} else {
-					((CardLayout) mainPanel.getLayout()).show(mainPanel, GAME_PANEL);
+					gamePanel.setVideoThreadCommand(VideoThreadCommand.Stop);
+				} else if(changeEvent.getNewValue() == GameState.Initialisation) {
+					((CardLayout) mainPanel.getLayout()).show(mainPanel, LOADING_PANEL);
+					gamePanel.setVideoThreadCommand(VideoThreadCommand.Stop);
+				} else if(changeEvent.getNewValue() == GameState.Running) {
 					gamePanel.updateDynamicComponents();
+					((CardLayout) mainPanel.getLayout()).show(mainPanel, GAME_PANEL);
+					gamePanel.setVideoThreadCommand(VideoThreadCommand.Start);
 				}
-//			} //else if (changeEvent.getPropertyName().equals(GuiController.CONNECTING)){
-//			} else if (changeEvent.getPropertyName().equals(GuiController.CONNECTION_IN_ACTIVITY)){
-//				this.systemMenuPanel.getConnectionStatePanel().setConnectionInfo(ConnectionInfo.Inactivity);
-//			} else if (changeEvent.getPropertyName().equals(GuiController.CONNECTION_OUT_ACTIVITY)){
-//				this.systemMenuPanel.getConnectionStatePanel().setConnectionInfo(ConnectionInfo.Outactivity);
-//			} else if (changeEvent.getPropertyName().equals(GuiController.ADD_BASE_CUBE_ONE)){
-//				baseCubeOneChooser.addBaseCubeOneConnector((BaseCubeOneConnector) changeEvent.getNewValue());
-//			} else if (changeEvent.getPropertyName().equals(GuiController.BASE_CUBE_ONE_INITIALIZED)){
-//				startScreenPanel.setProcess(75);
-//				startScreenPanel.setText("Visualise Interface");
-//				startScreenPanel.waitOnProcess();
-//				startScreenPanel.setProcess(100);
-//				startScreenPanel.setText("Finished");
-//				startScreenPanel.waitOnProcess();
-//				mainCardLayout.show(mainPanel, DISPLAY_PANEL);
-//			} else if (changeEvent.getPropertyName().equals(GuiController.BASE_CUBE_ONE_ERROR)){
-//				startScreenPanel.setTextForeground(Color.RED);
-//				startScreenPanel.setText("Error: "+((Exception)changeEvent.getNewValue()).getMessage());
-//				startScreenPanel.waitOnProcess();
-//				Thread.sleep(10000);
-//				shutdown(1);
 			} else {
 				Logger.warn(this, "Event ["+changeEvent.getPropertyName()+"] is an bad property change event!");
 			}
@@ -185,6 +180,35 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 		catch (Exception e) {
 			Logger.print(Channel.DEBUG, this, "Exception from PropertyChange");
 		}
+	}
+
+	public void updateButtons(GameState state) {
+		switch(state) {
+			case Configuration:
+				startPauseMenuItem.setText("Starte Spiel");
+				startPauseMenuItem.setEnabled(true);
+				stopMenuItem.setEnabled(false);
+				break;
+			case Initialisation:
+				startPauseMenuItem.setEnabled(false);
+				stopMenuItem.setEnabled(false);
+				break;
+			case Running:
+				startPauseMenuItem.setText("Pause");
+				startPauseMenuItem.setEnabled(true);
+				stopMenuItem.setEnabled(true);
+				break;
+			case Break:
+				startPauseMenuItem.setText("Weiter");
+				startPauseMenuItem.setEnabled(true);
+				stopMenuItem.setEnabled(true);
+				break;
+		}
+	}
+
+	public void showLoadingPanel() {
+		Logger.info(this, "ShowLoadingPanel");
+		((CardLayout) mainPanel.getLayout()).show(mainPanel, LOADING_PANEL);
 	}
 
 	public static MainGUI getInstance() {
@@ -204,8 +228,8 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
         mainPanel = new javax.swing.JPanel();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        startPauseMenuItem = new javax.swing.JMenuItem();
+        stopMenuItem = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         exitMenuItem = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
@@ -237,20 +261,25 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 
         fileMenu.setText("Spiel");
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SPACE, 0));
-        jMenuItem1.setText("Start");
-        jMenuItem1.setEnabled(false);
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        startPauseMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SPACE, 0));
+        startPauseMenuItem.setText("Start");
+        startPauseMenuItem.setEnabled(false);
+        startPauseMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                startPauseMenuItemActionPerformed(evt);
             }
         });
-        fileMenu.add(jMenuItem1);
+        fileMenu.add(startPauseMenuItem);
 
-        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0));
-        jMenuItem2.setText("Stop");
-        jMenuItem2.setEnabled(false);
-        fileMenu.add(jMenuItem2);
+        stopMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0));
+        stopMenuItem.setText("Stop");
+        stopMenuItem.setEnabled(false);
+        stopMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stopMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(stopMenuItem);
         fileMenu.add(jSeparator2);
 
         exitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
@@ -352,9 +381,9 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 		setFullScreenMode(jCheckBoxMenuItem1.isSelected());
 	}//GEN-LAST:event_jCheckBoxMenuItem1ActionPerformed
 
-	private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+	private void startPauseMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startPauseMenuItemActionPerformed
 		GameManager.getInstance().startGame();
-	}//GEN-LAST:event_jMenuItem1ActionPerformed
+	}//GEN-LAST:event_startPauseMenuItemActionPerformed
 
 	private void jCheckBoxMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem2ActionPerformed
 		Logger.setDebugEnable(jCheckBoxMenuItem2.isSelected());
@@ -367,6 +396,10 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 	private void jCheckBoxMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem3ActionPerformed
 		AgentPanel.showStateLabel = jCheckBoxMenuItem3.isSelected();
 	}//GEN-LAST:event_jCheckBoxMenuItem3ActionPerformed
+
+	private void stopMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopMenuItemActionPerformed
+		GameManager.getInstance().setGameState(GameState.Configuration);
+	}//GEN-LAST:event_stopMenuItemActionPerformed
 
 	public static LevelView levelView;
     /**
@@ -396,12 +429,12 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
     private javax.swing.JFrame jFrame1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenuItem startPauseMenuItem;
+    private javax.swing.JMenuItem stopMenuItem;
     // End of variables declaration//GEN-END:variables
 
 }

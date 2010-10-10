@@ -16,18 +16,24 @@ import planetsudo.level.ResourceRandomRectangle;
  *
  * @author divine
  */
-public class SimpleWorld extends AbstractLevel {
+public class UTurn extends AbstractLevel {
 
-	public SimpleWorld() {
+	public UTurn() {
 	}
 
 	@Override
 	public Polygon getLevelBorderPolygon() {
 		Polygon levelBorders = new Polygon();
 		levelBorders.addPoint(0, 0);
+		levelBorders.addPoint(0, 800);
+		levelBorders.addPoint(200, 1000);
+		levelBorders.addPoint(800, 1000);
+		levelBorders.addPoint(1000, 800);
 		levelBorders.addPoint(1000, 0);
-		levelBorders.addPoint(1000, 1000);
-		levelBorders.addPoint(0, 1000);
+		levelBorders.addPoint(600, 0);
+		levelBorders.addPoint(600, 500);
+		levelBorders.addPoint(400, 500);
+		levelBorders.addPoint(400, 0);
 		return levelBorders;
 	}
 

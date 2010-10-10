@@ -76,4 +76,9 @@ public abstract class AbstractLevelObjectPanel<R extends AbstractLevelObject, PR
 					0, boundingBox.getHeight()/image.getHeight(),
 					boundingBox.getX(), boundingBox.getY());
 	}
+
+	@Override
+	public String toString() {
+		return getClass().getSimpleName()+"["+resource.getID()+"]";
+	}
 }

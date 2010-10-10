@@ -6,9 +6,9 @@
 package planetsudo.level.levelobjects;
 
 import data.Point2D;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 import logging.Logger;
 import planetsudo.game.Team;
 import planetsudo.level.AbstractLevel;
@@ -24,13 +24,13 @@ public class Resource extends AbstractLevelObject {
 	public enum ResourceType {NORMAL};
 	private ResourceType type;
 	private Agent owner;
-	private final Set<Integer> conquerors;
+	private final List<Integer> conquerors;
 
 	public Resource(int id, ResourceType type, AbstractLevel level, Point2D position) {
 		super(id, Resource.class.getSimpleName()+"["+id+"]",STATIC_OBJECT, level, position, 25, 25, ObjectShape.Rec);
 		this.type = type;
 		this.owner = null;
-		this.conquerors = Collections.synchronizedSet(new HashSet<Integer>());
+		this.conquerors = Collections.synchronizedList(new ArrayList<Integer>());
 		Logger.info(this, "Create "+this);
 	}
 
@@ -67,9 +67,7 @@ public class Resource extends AbstractLevelObject {
 		owner = agent;
 		position = agent.getPosition();
 		synchronized(conquerors) {
-			for(int teamID : conquerors) {
-				conquerors.remove(teamID);
-			}
+			conquerors.clear();
 		}
 		return true;
 	}

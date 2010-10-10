@@ -38,7 +38,7 @@ public class ActionPoints {
 		while(true) {
 			synchronized(this) {
 				if(points >= orderedPoints) {
-					points -= orderedPoints; // TODO ckeck if this is the right shortcut
+					points -= orderedPoints;
 					return;
 				}
 				try {

@@ -13,6 +13,7 @@ package planetsudo.view.configuration;
 
 import planetsudo.game.GameManager;
 import planetsudo.level.LevelLoader;
+import planetsudo.view.MainGUI;
 
 /**
  *
@@ -158,6 +159,7 @@ public class ConfigurationPanel extends javax.swing.JPanel {
 	}//GEN-LAST:event_LevelChooserComboBoxActionPerformed
 
 	private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+		MainGUI.getInstance().showLoadingPanel();
 		GameManager.getInstance().setupTestGame();
 	}//GEN-LAST:event_jButton1ActionPerformed
 

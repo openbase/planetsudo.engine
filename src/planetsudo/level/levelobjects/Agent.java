@@ -129,7 +129,7 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	public boolean isDisabled() {
-		return !isAlive() || !hasFuel() ;
+		return !isAlive() || !hasFuel();
 	}
 
 	public boolean isCarringResource() {
@@ -196,11 +196,11 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	public void goStraightAhead() {
-		actionPoints.getActionPoint(3);
+		actionPoints.getActionPoint(4);
 		if(useFuel()) {
 			position.translate(direction, calcSpeed());
 			if(level.collisionDetected(getBounds())) { // Is collied with wall?
-				this.alive = false;
+				kill();
 			}
 		}
 	}
@@ -247,15 +247,17 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	public void orderFuel(int percent) {
-		actionPoints.getActionPoint(20);
+//		if(actionPoints.getActionPoints() > 20) {
+				actionPoints.getActionPoint(20);
+//		}
 		if(percent < 0 || percent > 100) {
 			Logger.error(this, "Could not refill fuel! Percent value["+percent+"] is not in bounds! Valuerange 0-100");
 			return;
 		}
-		int toOrder = ((DEFAULT_START_FUEL*percent)/100) - fuel;
-		for(int i = mothership.orderFuel(toOrder); i>0;i--) {
-			actionPoints.getActionPoint(3);
-			fuel++;
+
+		for(int toOrder = ((DEFAULT_START_FUEL*percent)/100) - fuel; toOrder>0;toOrder--) {
+			fuel += mothership.orderFuel(1);
+			actionPoints.getActionPoint(2);
 		}
 	}
 
@@ -275,7 +277,7 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	public void deliverResourceToMothership() {
-		actionPoints.getActionPoint();
+		actionPoints.getActionPoint(10);
 		if(isCarringResource()) {
 			mothership.passResource(this);
 		}
@@ -328,7 +330,6 @@ public class Agent extends AbstractLevelObject {
 				} 
 			}
 		}
-		adversaryObject = null;
 	}
 
 	public void fightWithAdversaryMothership() {
@@ -337,12 +338,11 @@ public class Agent extends AbstractLevelObject {
 			Mothership adversaryMothership = level.getAdversaryMothership(this);
 			adversaryObject = adversaryMothership;
 			if(adversaryMothership != null) {
-				actionPoints.getActionPoint(20);
+				actionPoints.getActionPoint(10);
 				direction.turnTo(position, adversaryMothership.position);
 				adversaryMothership.attack();
 			}
 		}
-		adversaryObject = null;
 	}
 
 	public boolean isFighting() {
@@ -350,7 +350,9 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	public AbstractLevelObject isFightingWith() {
-		return adversaryObject;
+		AbstractLevelObject adversary = adversaryObject;
+		adversaryObject = null;
+		return adversary;
 	}
 
 	public boolean seeLostTeamAgent() {
@@ -358,7 +360,7 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	public void spendFuelTeamAgend(int value) {
-		actionPoints.getActionPoint(10);
+		actionPoints.getActionPoint(20);
 		if(useFuel()) {
 			Agent teamAgent = level.getLostTeamAgent(this);
 			if(teamAgent  != null) {
@@ -370,6 +372,9 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	public void repaireMothership() {
-		mothership.repaire();
+		actionPoints.getActionPoint(50);
+		if(useFuel()) {
+			mothership.repaire();
+		}
 	}
 }

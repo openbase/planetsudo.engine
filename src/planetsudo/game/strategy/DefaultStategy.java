@@ -96,17 +96,6 @@ public class DefaultStategy extends AbstractStrategy {
 			}
 		});
 		//-------------------------------------------->
-		createRule(new Rule(100, "FightagainstAgent") {
-			@ Override
-			protected boolean constraint() {
-				return agent.seeAdversaryAgent();
-			}
-			@ Override
-			protected void action() {
-				agent.fightWithAdversaryAgent();
-			}
-		});
-		//-------------------------------------------->
 		createRule(new Rule(110, "SaveMothership") {
 			@ Override
 			protected boolean constraint() {
@@ -126,6 +115,17 @@ public class DefaultStategy extends AbstractStrategy {
 			@ Override
 			protected void action() {
 				agent.repaireMothership();
+			}
+		});
+		//-------------------------------------------->
+		createRule(new Rule(190, "FightAgainstAgent") {
+			@ Override
+			protected boolean constraint() {
+				return agent.seeAdversaryAgent();
+			}
+			@ Override
+			protected void action() {
+				agent.fightWithAdversaryAgent();
 			}
 		});
 		//-------------------------------------------->

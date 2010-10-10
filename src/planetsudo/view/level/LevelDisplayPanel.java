@@ -11,7 +11,7 @@
 
 package planetsudo.view.level;
 
-import java.util.logging.Logger;
+import logging.Logger;
 import planetsudo.level.AbstractLevel;
 import view.components.draw.ResourceDisplayPanel;
 
@@ -21,16 +21,44 @@ import view.components.draw.ResourceDisplayPanel;
  */
 public class LevelDisplayPanel extends ResourceDisplayPanel<LevelPanel> implements Runnable {
 
+	public enum VideoThreadCommand {Start, Stop, Pause, Resume};
+	public Thread videoThread;
+	private boolean isRunning, stop;
+
     /** Creates new form LevelDisplayPanel */
     public LevelDisplayPanel() {
         initComponents();
-		new Thread(this, "GameVideoThread").start();
-		
+		isRunning = false;
     }
 	
 	public void setLevel(AbstractLevel level) {
 		setVisibleResourcePanel(new LevelPanel(level, this));
 		
+	}
+
+
+	
+	public synchronized  void setVideoThreadCommand(VideoThreadCommand command) {
+		switch(command) {
+			case Start:
+				if(!isRunning) {
+					isRunning = true;
+					stop = false;
+					videoThread = new Thread(this, "VideoVideoThread");
+					videoThread.setPriority(Thread.NORM_PRIORITY+1);
+					videoThread.start();
+				} else {
+					Logger.debug(this, "VideoThread allready started.");
+				}
+				break;
+			case Stop:
+				if(isRunning) {
+					stop = true;
+				} else {
+					Logger.debug(this, "VideoThread allready stopped.");
+				}
+				break;
+		}
 	}
 
 
@@ -60,16 +88,19 @@ public class LevelDisplayPanel extends ResourceDisplayPanel<LevelPanel> implemen
 
 	@Override
 	public void run() {
-		while(true) {
+		Logger.info(this, "VideoThread started.");
+		while(!stop) {
 			if(visibleResourcePanel != null) {
 				repaint();
 			}
 			try {
 				Thread.sleep(50);
 			} catch (InterruptedException ex) {
-				Logger.getLogger(LevelDisplayPanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+				Logger.warn(this, "VideoThread interruped!", ex);
 			}
 		}
+		isRunning = false;
+		Logger.info(this, "VideoThread stopped.");
 	}
 
 

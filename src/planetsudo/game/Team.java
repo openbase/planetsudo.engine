@@ -29,16 +29,23 @@ public class Team implements Manageable {
 	private Mothership mothership;
 	private Class<? extends AbstractStrategy> strategy;
 	private int points;
+	private int agentCount;
 	private ArrayList<String> members;
 	
 	protected final PropertyChangeSupport changes;
 
-	public Team(int id, String name, Color teamColor, Class<? extends AbstractStrategy> strategy, Collection<String> members) {
+	public Team(int id, String name, Color teamColor, Class<? extends AbstractStrategy> strategy, int agentCount, Collection<String> members) {
 		this.id = id;
 		this.name = name;
 		this.teamColor = teamColor;
 		this.strategy = strategy;
 		this.points = 0;
+		this.agentCount = agentCount;
+		if(agentCount <= Mothership.MAX_AGENT_COUNT && agentCount > 00){
+			Logger.info(this, "Bad agent count! Corrected to "+Mothership.MAX_AGENT_COUNT);
+			this.agentCount = Mothership.MAX_AGENT_COUNT;
+		}
+		this.agentCount = agentCount;
 		this.changes = new PropertyChangeSupport(this);
 		this.members = new ArrayList<String>();
 		this.members.addAll(members);
@@ -55,6 +62,10 @@ public class Team implements Manageable {
 
 	public int getPoints() {
 		return points;
+	}
+
+	public int getAgentCount() {
+		return agentCount;
 	}
 
 	public void addPoint() {

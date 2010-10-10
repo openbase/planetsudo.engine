@@ -8,7 +8,6 @@ package planetsudo.level;
 import data.Point2D;
 import java.awt.Polygon;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -26,7 +25,8 @@ import planetsudo.level.levelobjects.Resource;
  */
 public abstract class AbstractLevel implements Runnable {
 
-	public final static long DEFAULT_GAME_SPEED = 12/Mothership.DEFAULT_AGENT_COUNT; // Optimised Game Speed
+	//public final static long DEFAULT_GAME_SPEED = 12/Mothership.DEFAULT_AGENT_COUNT; // Optimised Game Speed
+	public final static long DEFAULT_GAME_SPEED = 12/10;
 
 	private final String name;
 	private final List<Mothership> motherships;

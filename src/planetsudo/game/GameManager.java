@@ -21,7 +21,7 @@ import planetsudo.level.LevelLoader;
  */
 public class GameManager implements Runnable {
 
-	public enum GameState{Configuration, Initialisation, Running};
+	public enum GameState{Configuration, Initialisation, Running, Break};
 
 	private static GameManager instance;
 
@@ -46,8 +46,8 @@ public class GameManager implements Runnable {
 		team0.add("Divine");
 		team1.add("Messer");
 		team1.add("Noxus");
-		addTeam(new Team(0, "Piranjas", Color.BLUE, DefaultStategy.class, team0));
-		addTeam(new Team(1, "BlackHeath", Color.MAGENTA, DefaultStategy.class, team1));
+		addTeam(new Team(0, "Piranjas", Color.BLUE, DefaultStategy.class, 3, team0));
+		addTeam(new Team(1, "BlackHeath", Color.MAGENTA, DefaultStategy.class, 10, team1));
 		startGame();
 	}
 
@@ -92,35 +92,42 @@ public class GameManager implements Runnable {
 	}
 	
 	public void startGame() {
-		Logger.info(this, "Init game start...");
-		if(gameState != GameState.Configuration) {
-			Logger.error(this, "Abord gamestart because Game manager is in state "+gameState.name()+".");
-			return;
-		}
+		Thread gameStartThread = new Thread("Gamestart Thread") {
+			@Override
+			public void run() {
+				Logger.info(this, "Init game start...");
+				if(gameState != GameState.Configuration) {
+					Logger.error(this, "Abord gamestart because Game manager is in state "+gameState.name()+".");
+					return;
+				}
 
-		setGameState(GameState.Initialisation);
+				setGameState(GameState.Initialisation);
 
-		if(level == null) {
-			Logger.error(this, "Abord gamestart: No level set!");
-			setGameState(GameState.Configuration);
-			return;
-		}
-		if(teams.size() < 2) {
-			Logger.error(this, "Abord gamestart: Not enough teams set!");
-			setGameState(GameState.Configuration);
-			return;
-		}
+				if(level == null) {
+					Logger.error(this, "Abord gamestart: No level set!");
+					setGameState(GameState.Configuration);
+					return;
+				}
+				if(teams.size() < 2) {
+					Logger.error(this, "Abord gamestart: Not enough teams set!");
+					setGameState(GameState.Configuration);
+					return;
+				}
 
-		level.setTeams(teams);
-		new Thread(level, "Levelrunner").start();
+				level.setTeams(teams);
+				new Thread(level, "Levelrunner").start();
+				
 
-		setGameState(GameState.Running);
-		synchronized(this) {
-			this.notify();
-		}
-		Logger.info(this, "Game is Running.");
-
-
+				setGameState(GameState.Running);
+				synchronized(this) {
+					this.notify();
+				}
+				Logger.info(this, "Game is Running.");
+			}
+		};
+		gameStartThread.setPriority(4);
+		gameStartThread.start();
+		
 	}
 
 	public void setGameState(GameState state) {

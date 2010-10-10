@@ -35,7 +35,7 @@ public class ResourcePanel extends AbstractLevelObjectPanel<Resource, LevelPanel
 			paintImage(g2);
 		} else {
 			gg2 = (Graphics2D) g2.create();
-			gg2.translate(-owner.getDirection().getDirection().getX()*owner.getWidth()*0.35, -owner.getDirection().getDirection().getY()*owner.getHeight()*0.35);
+			gg2.translate(-owner.getDirection().getVector().getX()*owner.getWidth()*0.35, -owner.getDirection().getVector().getY()*owner.getHeight()*0.35);
 			paintImageRotated(owner.getDirection(), gg2);
 			gg2.dispose();
 		}

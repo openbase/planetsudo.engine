@@ -9,6 +9,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import logging.Logger;
+import planetsudo.game.GameManager;
 import planetsudo.view.MainGUI;
 
 /**
@@ -17,12 +18,6 @@ import planetsudo.view.MainGUI;
  */
 public class GUIController {
 	public final static String GAME_STATE_CHANGE = "GameStateChange";
-//	public final static String CONNECTING = "Connecting";
-//	public final static String CONNECTION_IN_ACTIVITY = "ConnectionInActivity";
-//	public final static String CONNECTION_OUT_ACTIVITY = "ConnectionOutActivity";
-//	public final static String ADD_BASE_CUBE_ONE = "AddBaseCubeOne";
-//	public final static String BASE_CUBE_ONE_INITIALIZED = "BaseCubeOneInitialized";
-//	public final static String BASE_CUBE_ONE_ERROR = "BaseCubeOneError";
 
 	private PropertyChangeSupport changes;
 	private static GUIController instance;
@@ -42,6 +37,7 @@ public class GUIController {
 		new MainGUI(this).initialize();
 
 		started = true;
+		changes.firePropertyChange(new PropertyChangeEvent(this, GUIController.GAME_STATE_CHANGE, null, GameManager.getInstance().getGameState()));
 	}
 
 	public PropertyChangeSupport getPropertyChangeSupport() {

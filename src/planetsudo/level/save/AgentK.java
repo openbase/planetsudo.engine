@@ -9,7 +9,6 @@ package planetsudo.level.save;
 import data.Point2D;
 import java.awt.Polygon;
 import planetsudo.level.AbstractLevel;
-import planetsudo.level.ResourceGausOval;
 import planetsudo.level.ResourcePlacement;
 import planetsudo.level.ResourceRandomRectangle;
 
