@@ -11,8 +11,6 @@
 
 package planetsudo.view;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.logging.Level;
 import planetsudo.view.configuration.ConfigurationPanel;
 import planetsudo.view.game.GamePanel;
 import java.awt.CardLayout;
@@ -31,6 +29,8 @@ import planetsudo.level.LevelView;
 import planetsudo.view.level.LevelDisplayPanel.VideoThreadCommand;
 import planetsudo.view.levelobjects.AgentPanel;
 import planetsudo.view.loading.LevelLoadingPanel;
+import planetsudo.view.menu.GameContext;
+import planetsudo.view.menu.HelpFrame;
 
 /**
  *
@@ -348,16 +348,23 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 
         menuBar.add(jMenu1);
 
-        helpMenu.setText("Help");
-        helpMenu.setEnabled(false);
+        helpMenu.setText("Info");
 
         contentsMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
-        contentsMenuItem.setText("Contents");
-        contentsMenuItem.setEnabled(false);
+        contentsMenuItem.setText("Spielablauf");
+        contentsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                contentsMenuItemActionPerformed(evt);
+            }
+        });
         helpMenu.add(contentsMenuItem);
 
-        aboutMenuItem.setText("About");
-        aboutMenuItem.setEnabled(false);
+        aboutMenuItem.setText("Über PlanetSudo");
+        aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aboutMenuItemActionPerformed(evt);
+            }
+        });
         helpMenu.add(aboutMenuItem);
 
         menuBar.add(helpMenu);
@@ -405,6 +412,14 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 	private void stopMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopMenuItemActionPerformed
 		GameManager.getInstance().setGameState(GameState.Configuration);
 	}//GEN-LAST:event_stopMenuItemActionPerformed
+
+	private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
+		new HelpFrame().setVisible(true);
+	}//GEN-LAST:event_aboutMenuItemActionPerformed
+
+	private void contentsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contentsMenuItemActionPerformed
+		new GameContext().setVisible(true);
+	}//GEN-LAST:event_contentsMenuItemActionPerformed
 
 	public static LevelView levelView;
     /**

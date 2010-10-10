@@ -43,6 +43,7 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
 		teamNameLabel.setText(team.getName());
 		mothershipFuelProgressBar.setForeground(Color.BLACK);
 		mothershipFuelProgressBar.setValue(team.getMothership().getFuel());
+		teamAgentLabel.setText(team.getAgentCount()+" viecher");
 		shieldProgressBar.setValue(team.getMothership().getShieldForce());
 		teamResourceLabel.setText(team.getPoints()+"");
 		updateFuelProgressBar();
@@ -50,7 +51,7 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
 
 		String memberList = "<html>";
 		for(String member : team.getMembers()) {
-			memberList += member+"<br>";
+			memberList += member+"<br />";
 		}
 		memberList += "</html>";
 		teamMemberLabel.setText(memberList);
@@ -86,8 +87,10 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
         teamColorPanel = new javax.swing.JPanel();
         teamRessourceLabel2 = new javax.swing.JLabel();
         teamResourceLabel = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        teamMemberLabel2 = new javax.swing.JLabel();
         teamMemberLabel = new javax.swing.JLabel();
+        teamAgentLabel2 = new javax.swing.JLabel();
+        teamAgentLabel = new javax.swing.JLabel();
 
         setOpaque(false);
 
@@ -142,10 +145,15 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
         teamResourceLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         teamResourceLabel.setText("0");
 
-        jLabel1.setText("Entwickler:");
+        teamMemberLabel2.setText("Entwickler:");
 
         teamMemberLabel.setText("Member");
         teamMemberLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+
+        teamAgentLabel2.setText("Agenten:");
+
+        teamAgentLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        teamAgentLabel.setText("0");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -163,11 +171,13 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
                         .addComponent(teamNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(teamRessourceLabel2))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(teamAgentLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(teamMemberLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(teamRessourceLabel2, javax.swing.GroupLayout.Alignment.LEADING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(teamAgentLabel)
                             .addComponent(teamMemberLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
                             .addComponent(teamResourceLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE))))
                 .addContainerGap())
@@ -186,9 +196,13 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
                     .addComponent(teamRessourceLabel2)
                     .addComponent(teamResourceLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(teamAgentLabel2)
+                    .addComponent(teamAgentLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addComponent(teamMemberLabel2)
                         .addGap(211, 211, 211))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(teamMemberLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
@@ -210,11 +224,13 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
 	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JProgressBar mothershipFuelProgressBar;
     private javax.swing.JProgressBar shieldProgressBar;
+    private javax.swing.JLabel teamAgentLabel;
+    private javax.swing.JLabel teamAgentLabel2;
     private javax.swing.JPanel teamColorPanel;
     private javax.swing.JLabel teamMemberLabel;
+    private javax.swing.JLabel teamMemberLabel2;
     private javax.swing.JPanel teamMothershipPanel;
     private javax.swing.JLabel teamNameLabel;
     private javax.swing.JLabel teamResourceLabel;

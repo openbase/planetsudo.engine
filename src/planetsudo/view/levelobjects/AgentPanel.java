@@ -29,7 +29,7 @@ public class AgentPanel extends AbstractLevelObjectPanel<Agent, MothershipPanel>
 
 	//public static boolean viewFlag = true;
 	public AgentPanel(Agent resource, MothershipPanel parentResourcePanel) {
-		super(resource, parentResourcePanel, "res/img/agent.png");
+		super(resource, parentResourcePanel, "res/img/agent1.png");
 		Logger.info(this, "Create AgentPanel of "+resource);
 //		if(resource.getMothership().getTeam().getID() == 0 && viewFlag) {
 //			viewFlag = false;

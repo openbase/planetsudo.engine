@@ -33,12 +33,14 @@
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Component id="teamAgentLabel2" alignment="0" max="32767" attributes="0"/>
+                          <Component id="teamMemberLabel2" alignment="0" max="32767" attributes="1"/>
                           <Component id="teamRessourceLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="teamAgentLabel" min="-2" max="-2" attributes="0"/>
                           <Component id="teamMemberLabel" pref="139" max="32767" attributes="0"/>
                           <Component id="teamResourceLabel" alignment="0" pref="139" max="32767" attributes="0"/>
                       </Group>
@@ -64,9 +66,14 @@
                   <Component id="teamResourceLabel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="teamAgentLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="teamAgentLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                      <Component id="teamMemberLabel2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="211" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
@@ -174,7 +181,7 @@
         <Property name="text" type="java.lang.String" value="0"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel1">
+    <Component class="javax.swing.JLabel" name="teamMemberLabel2">
       <Properties>
         <Property name="text" type="java.lang.String" value="Entwickler:"/>
       </Properties>
@@ -183,6 +190,19 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Member"/>
         <Property name="verticalAlignment" type="int" value="1"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="teamAgentLabel2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Agenten:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="teamAgentLabel">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Dialog" size="14" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="0"/>
       </Properties>
     </Component>
   </SubComponents>
