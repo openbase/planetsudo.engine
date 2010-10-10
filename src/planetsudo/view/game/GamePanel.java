@@ -11,10 +11,8 @@
 
 package planetsudo.view.game;
 
-import java.awt.Color;
 import planetsudo.game.GameManager;
 import planetsudo.view.level.LevelDisplayPanel.VideoThreadCommand;
-import planetsudo.view.level.LevelPanel;
 import planetsudo.view.menu.LevelMenuPanel;
 
 /**
@@ -59,6 +57,14 @@ public class GamePanel extends javax.swing.JPanel {
 
 	public void setVideoThreadCommand(VideoThreadCommand command) {
 		levelDisplayPanel.setVideoThreadCommand(command);
+		switch(command) {
+			case Start:
+			case Resume:
+				levelMenuPanel.startTimer();
+			case Stop:
+			case Pause:
+				levelMenuPanel.stopTimer();
+		}
 	}
 
     /** This method is called from within the constructor to

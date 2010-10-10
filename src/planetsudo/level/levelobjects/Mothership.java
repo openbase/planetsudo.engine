@@ -63,7 +63,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 	}
 
 	private void loadAgents() {
-		GUIController.setEvent(new PropertyChangeEvent(this, GUIController.LOADING_STATE_CHANGE, agentMaxCount, "Lade "+team.getName()+" Agenten"));
+		GUIController.setEvent(new PropertyChangeEvent(this, GUIController.LOADING_STATE_CHANGE, agentMaxCount, "Lade "+team.getName()+" Agentens"));
 		Agent agent;
 		for(int i=0;i<agentMaxCount;i++) {
 			GUIController.setEvent(new PropertyChangeEvent(this, GUIController.LOADING_STEP, null, i));

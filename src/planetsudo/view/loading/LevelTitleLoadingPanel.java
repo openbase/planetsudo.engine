@@ -29,7 +29,7 @@ public class LevelTitleLoadingPanel extends javax.swing.JPanel {
 	
 	public void updateDynamicComponents() {
 		titleLabel.setText("Loading "+GameManager.getInstance().getLevel().getName());
-		titleLabel.setForeground(GameManager.getInstance().getLevel().getColor());
+		setBackground(GameManager.getInstance().getLevel().getColor());
 	}
 
 

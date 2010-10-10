@@ -11,21 +11,54 @@
 
 package planetsudo.view.menu;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.Timer;
 import planetsudo.level.AbstractLevel;
 
 /**
  *
  * @author divine
  */
-public class LevelMenuPanel extends javax.swing.JPanel {
+public class LevelMenuPanel extends javax.swing.JPanel implements ActionListener {
+
+	private int minutes, secunds;
+	private Timer timer;
+	private String levelName;
 
     /** Creates new form LevelMenuPanel */
     public LevelMenuPanel() {
         initComponents();
+		this.minutes = 0;
+		this.secunds = 0;
+		this.levelName = "Level";
+		this.timer = new Timer(1000, this);
     }
 
 	public void setLevel(AbstractLevel level) {
-		nameAndTimeLabel.setText(level.getName()+" [00:00]");
+		levelName = level.getName();
+		updateTitle();
+	}
+
+	private void updateTitle() {
+		nameAndTimeLabel.setText(levelName+" ["+minutes+":"+secunds+"]");
+	}
+
+	public void startTimer() {
+		if(!timer.isRunning())
+		timer.start();
+	}
+
+	public void stopTimer() {
+		if(timer.isRunning()) {
+			timer.stop();
+		}
+	}
+
+	public void reset() {
+		stopTimer();
+		secunds = 0;
+		minutes = 0;
 	}
 
     /** This method is called from within the constructor to
@@ -66,4 +99,14 @@ public class LevelMenuPanel extends javax.swing.JPanel {
     private javax.swing.JLabel nameAndTimeLabel;
     // End of variables declaration//GEN-END:variables
 
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(secunds >= 60) {
+			minutes++;
+			secunds = 0;
+		} else {
+			secunds++;
+		}
+		updateTitle();
+	}
 }

@@ -38,9 +38,7 @@ public class MenuLoadingPanel extends javax.swing.JPanel {
         jButton2 = new javax.swing.JButton();
         jCheckBox1 = new javax.swing.JCheckBox();
 
-        setBackground(new java.awt.Color(0, 0, 0));
-
-        jPanel1.setBackground(new java.awt.Color(0, 0, 0));
+        jPanel1.setOpaque(false);
 
         jButton1.setText("Start Game");
         jButton1.setEnabled(false);
@@ -54,10 +52,10 @@ public class MenuLoadingPanel extends javax.swing.JPanel {
         });
         jPanel1.add(jButton2);
 
-        jCheckBox1.setBackground(new java.awt.Color(0, 0, 0));
         jCheckBox1.setSelected(true);
         jCheckBox1.setText("Autostart");
         jCheckBox1.setEnabled(false);
+        jCheckBox1.setOpaque(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

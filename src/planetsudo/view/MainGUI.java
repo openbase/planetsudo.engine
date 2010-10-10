@@ -175,9 +175,9 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 					gamePanel.setVideoThreadCommand(VideoThreadCommand.Start);
 				}
 			} else if(changeEvent.getPropertyName().equals(GUIController.LOADING_STATE_CHANGE)) {
-
+				levelLoadingPanel.setLoadingStateChange((String) changeEvent.getNewValue(), (Integer) changeEvent.getOldValue());
 			} else if(changeEvent.getPropertyName().equals(GUIController.LOADING_STEP)) {
-
+				levelLoadingPanel.setLoadingStep((Integer) changeEvent.getNewValue());
 			} else {
 				Logger.warn(this, "Event ["+changeEvent.getPropertyName()+"] is an bad property change event!");
 			}
