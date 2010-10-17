@@ -33,10 +33,13 @@ public class LevelDisplayPanel extends ResourceDisplayPanel<LevelPanel> implemen
 	
 	public void setLevel(AbstractLevel level) {
 		setVisibleResourcePanel(new LevelPanel(level, this));
-		
 	}
 
-
+	public void displayLevelObjects() {
+		if(visibleResourcePanel != null) {
+			visibleResourcePanel.loadLevelObjects();
+		}
+	}
 	
 	public synchronized  void setVideoThreadCommand(VideoThreadCommand command) {
 		switch(command) {
@@ -45,7 +48,7 @@ public class LevelDisplayPanel extends ResourceDisplayPanel<LevelPanel> implemen
 					isRunning = true;
 					stop = false;
 					videoThread = new Thread(this, "VideoVideoThread");
-					videoThread.setPriority(Thread.NORM_PRIORITY+1);
+					videoThread.setPriority(Thread.NORM_PRIORITY+2);
 					videoThread.start();
 				} else {
 					Logger.debug(this, "VideoThread allready started.");
@@ -60,8 +63,6 @@ public class LevelDisplayPanel extends ResourceDisplayPanel<LevelPanel> implemen
 				break;
 		}
 	}
-
-
 
     /** This method is called from within the constructor to
      * initialize the form.

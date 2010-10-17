@@ -80,7 +80,7 @@ public class MenuLoadingPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
 	private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-		GameManager.getInstance().setGameState(GameManager.GameState.Configuration);
+		GameManager.getInstance().switchGameState(GameManager.GameState.Configuration);
 	}//GEN-LAST:event_jButton2ActionPerformed
 
 

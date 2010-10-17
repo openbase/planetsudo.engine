@@ -44,7 +44,9 @@ public abstract class AbstractLevelObject implements Manageable {
 		this.width = width;
 		this.height = height;
 		this.shape = shape;
-		this.levelView = new LevelView(this);
+		if(!(this instanceof Resource)) {
+			this.levelView = new LevelView(this);
+		}
 		this.isStatic = DYNAMIC_OBJECT;
 		this.changes = new PropertyChangeSupport(this);
 		setStatic(isStatic);
@@ -80,7 +82,9 @@ public abstract class AbstractLevelObject implements Manageable {
 			if(isStatic()) {
 				return;
 			}
-			levelView.updateObjectMovement();
+			if(levelView != null) {
+				levelView.updateObjectMovement();
+			}
 		}
 		isStatic = enable;
 	}

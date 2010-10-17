@@ -9,6 +9,7 @@ import data.Point2D;
 import java.awt.Color;
 import java.awt.Polygon;
 import java.awt.geom.Rectangle2D;
+import java.beans.PropertyChangeEvent;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -19,6 +20,7 @@ import planetsudo.level.levelobjects.Mothership;
 import planetsudo.game.Team;
 import planetsudo.level.levelobjects.Agent;
 import planetsudo.level.levelobjects.Resource;
+import planetsudo.main.GUIController;
 
 /**
  *
@@ -31,6 +33,7 @@ public abstract class AbstractLevel implements Runnable {
 
 
 	private final Polygon levelBorderPolygon;
+	private final Polygon[] levelWallPolygons;
 	private final Point2D[] homePositions;
 	private final ResourcePlacement[] resourcePlacement;
 	private final Color color;
@@ -41,15 +44,15 @@ public abstract class AbstractLevel implements Runnable {
 	private final long gameSpeed;
 	
 	private final int x, y;
-	private int resourceCounter;
+	private int resourceKeyCounter;
 
 	public AbstractLevel() {
 		this.name = getClass().getSimpleName();
 		this.levelBorderPolygon = loadLevelBorderPolygon();
+		this.levelWallPolygons = loadLevelWallPolygons();
 		this.homePositions = loadHomePositions();
 		this.resourcePlacement = loadResourcePlacement();
 		this.color = loadLevelColor();
-		
 		this.motherships = Collections.synchronizedList(new LinkedList<Mothership>());
 		this.resources = Collections.synchronizedList(new LinkedList<Resource>());
 		this.gameSpeed = DEFAULT_GAME_SPEED;
@@ -87,14 +90,14 @@ public abstract class AbstractLevel implements Runnable {
 		for(Resource resource : resources) {
 			resources.remove(resource);
 		}
-		resourceCounter = 0;
+		resourceKeyCounter = 0;
 		Logger.info(this, "Place resources in "+this);
 		placeResources();
 		Logger.info(this, "Add "+resources.size()+" Resources");
 	}
 
 	protected synchronized int generateNewResourceID() {
-		return resourceCounter++;
+		return resourceKeyCounter++;
 	}
 
 	public void setTeams(Collection<Team> teams) {
@@ -104,8 +107,20 @@ public abstract class AbstractLevel implements Runnable {
 		}
 	}
 
-	public boolean collisionDetected(Rectangle2D bounds) {
+	public boolean containsWall(Rectangle2D bounds) {
+		Logger.debug(this, "CalcWallContain");
+		if(levelWallPolygons != null) {
+			for(Polygon wall : levelWallPolygons) {
+				if(wall.intersects(bounds) | wall.contains(bounds)) {
+					return true;
+				}
+			}
+		}
 		return !levelBorderPolygon.contains(bounds);
+	}
+
+	public boolean collisionDetected(Rectangle2D bounds) {
+		return containsWall(bounds);
 	}
 
 	public void waitTillGameOver() {
@@ -125,6 +140,7 @@ public abstract class AbstractLevel implements Runnable {
 
 
 	protected abstract Polygon loadLevelBorderPolygon();
+	protected abstract Polygon[] loadLevelWallPolygons();
 	protected abstract Point2D[] loadHomePositions();
 	protected abstract ResourcePlacement[] loadResourcePlacement();
 	protected abstract Color loadLevelColor();
@@ -132,6 +148,11 @@ public abstract class AbstractLevel implements Runnable {
 	public Polygon getLevelBorderPolygon() {
 		return levelBorderPolygon;
 	}
+
+	public Polygon[] getLevelWallPolygons() {
+		return levelWallPolygons;
+	}
+
 	public Point2D[] getHomePositions() {
 		return homePositions;
 	}
@@ -186,8 +207,15 @@ public abstract class AbstractLevel implements Runnable {
 	private void placeResources() {
 		synchronized(resources) {
 			ResourcePlacement[] resourcePlacements = getResourcePlacement();
-			for(ResourcePlacement resourcePlacement : resourcePlacements) {
-				resources.addAll(resourcePlacement.getResources(this));
+
+			int resourceCounter = 0;
+			for(ResourcePlacement placement : resourcePlacements) {
+				resourceCounter += placement.getResourceCount();
+			}
+			GUIController.setEvent(new PropertyChangeEvent(this, GUIController.LOADING_STATE_CHANGE, resourceCounter, "Lade Resourcen"));
+			
+			for(ResourcePlacement placement : resourcePlacements) {
+				resources.addAll(placement.getResources(this));
 			}
 		}
 	}

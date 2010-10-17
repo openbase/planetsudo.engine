@@ -5,8 +5,10 @@
 
 package planetsudo.view.level;
 
+import java.awt.Color;
 import planetsudo.view.levelobjects.MothershipPanel;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Iterator;
@@ -23,14 +25,19 @@ import view.components.draw.ResourceDisplayPanel;
  */
 public class LevelPanel extends AbstractResourcePanel<AbstractLevel, LevelPanel> implements ActionListener {
 
+	private final boolean hasInternalWalls;
 
 	public LevelPanel(AbstractLevel resource, ResourceDisplayPanel parentPanel) {
 		super(resource, parentPanel);
+		hasInternalWalls = resource.getLevelWallPolygons() != null;
 		boundingBox = resource.getLevelBorderPolygon().getBounds2D();
 		updateBounds();
+		parentPanel.setDoubleBuffered(true);
+	}
+
+	public void loadLevelObjects() {
 		loadResourcePanels();
 		loadMothershipPanels();
-		parentPanel.setDoubleBuffered(true);
 	}
 
 	private void loadResourcePanels() {
@@ -50,6 +57,12 @@ public class LevelPanel extends AbstractResourcePanel<AbstractLevel, LevelPanel>
 	@Override
 	protected void paintComponent(Graphics2D g2) {
 		g2.fill(resource.getLevelBorderPolygon());
+		if(hasInternalWalls) {
+			g2.setColor(resource.getColor());
+			for(Polygon wall : resource.getLevelWallPolygons()) {
+				g2.fill(wall);
+			}
+		}
 	}
 
 	@Override

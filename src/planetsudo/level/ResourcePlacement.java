@@ -14,4 +14,5 @@ import planetsudo.level.levelobjects.Resource;
  */
 public interface ResourcePlacement {
 	public ArrayList<Resource> getResources(AbstractLevel level);
+	public int getResourceCount();
 }

@@ -11,7 +11,9 @@
 
 package planetsudo.view.configuration;
 
+import javax.swing.ImageIcon;
 import planetsudo.game.GameManager;
+import planetsudo.level.AbstractLevel;
 import planetsudo.level.LevelLoader;
 import planetsudo.view.MainGUI;
 
@@ -24,6 +26,7 @@ public class ConfigurationPanel extends javax.swing.JPanel {
     /** Creates new form ConfigurationPanel */
     public ConfigurationPanel() {
         initComponents();
+		logoLabel.setIcon(new ImageIcon("res/img/PlanetSudoLogoMedium.png"));
 		initDynamicComponents();
     }
 
@@ -53,6 +56,9 @@ public class ConfigurationPanel extends javax.swing.JPanel {
         jPanel2 = new javax.swing.JPanel();
         LevelChooserComboBox = new javax.swing.JComboBox();
         jButton1 = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        levelPreviewDisplayPanel = new planetsudo.view.level.LevelDisplayPanel();
+        logoLabel = new javax.swing.JLabel();
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Team Einstellungen"));
         jPanel1.setLayout(new java.awt.GridBagLayout());
@@ -126,35 +132,81 @@ public class ConfigurationPanel extends javax.swing.JPanel {
             }
         });
 
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Vorschau"));
+
+        javax.swing.GroupLayout levelPreviewDisplayPanelLayout = new javax.swing.GroupLayout(levelPreviewDisplayPanel);
+        levelPreviewDisplayPanel.setLayout(levelPreviewDisplayPanelLayout);
+        levelPreviewDisplayPanelLayout.setHorizontalGroup(
+            levelPreviewDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 353, Short.MAX_VALUE)
+        );
+        levelPreviewDisplayPanelLayout.setVerticalGroup(
+            levelPreviewDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 291, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(levelPreviewDisplayPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(levelPreviewDisplayPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        logoLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        logoLabel.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        logoLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        logoLabel.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(80, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(logoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
-                .addContainerGap(86, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(logoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
 	private void LevelChooserComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LevelChooserComboBoxActionPerformed
 		if (LevelChooserComboBox.getSelectedItem() != null) {
-			GameManager.getInstance()
-				.setLevel(LevelLoader.getInstance().loadLevel(LevelChooserComboBox.getSelectedItem().toString()));
+			AbstractLevel level = LevelLoader.getInstance().loadLevel(LevelChooserComboBox.getSelectedItem().toString());
+			GameManager.getInstance().setLevel(level);
+			levelPreviewDisplayPanel.setLevel(level);
+			levelPreviewDisplayPanel.setOpaque(true);
+			levelPreviewDisplayPanel.setBackground(level.getColor());
 		}
 	}//GEN-LAST:event_LevelChooserComboBoxActionPerformed
 
@@ -174,6 +226,9 @@ public class ConfigurationPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private planetsudo.view.level.LevelDisplayPanel levelPreviewDisplayPanel;
+    private javax.swing.JLabel logoLabel;
     // End of variables declaration//GEN-END:variables
 
 

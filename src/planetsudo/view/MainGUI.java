@@ -19,6 +19,7 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 import logging.Logger;
 import logging.Logger.Channel;
@@ -61,6 +62,7 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 		instance = this;
 		this.screenDim = new Dimension(X_DIM, Y_DIM);
 		this.guiController = guiController;
+		this.setIconImage(new ImageIcon("res/img/PlanetSudoLogoIcon.png").getImage());
 	}
 
 	public static MainGUI instance;
@@ -173,6 +175,9 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 					gamePanel.updateDynamicComponents();
 					((CardLayout) mainPanel.getLayout()).show(mainPanel, GAME_PANEL);
 					gamePanel.setVideoThreadCommand(VideoThreadCommand.Start);
+				} else if(changeEvent.getNewValue() == GameState.Break) {
+					((CardLayout) mainPanel.getLayout()).show(mainPanel, GAME_PANEL);
+					gamePanel.setVideoThreadCommand(VideoThreadCommand.Pause);
 				}
 			} else if(changeEvent.getPropertyName().equals(GUIController.LOADING_STATE_CHANGE)) {
 				levelLoadingPanel.setLoadingStateChange((String) changeEvent.getNewValue(), (Integer) changeEvent.getOldValue());
@@ -192,10 +197,6 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 			case Configuration:
 				startPauseMenuItem.setText("Starte Spiel");
 				startPauseMenuItem.setEnabled(true);
-				stopMenuItem.setEnabled(false);
-				break;
-			case Initialisation:
-				startPauseMenuItem.setEnabled(false);
 				stopMenuItem.setEnabled(false);
 				break;
 			case Running:
@@ -261,6 +262,7 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("PlanetSudo - The Force Of Life");
 
         mainPanel.setLayout(new java.awt.CardLayout());
 
@@ -394,7 +396,17 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 	}//GEN-LAST:event_jCheckBoxMenuItem1ActionPerformed
 
 	private void startPauseMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startPauseMenuItemActionPerformed
-		GameManager.getInstance().startGame();
+		switch(GameManager.getInstance().getGameState()) {
+			case Configuration:
+				GameManager.getInstance().startGame();
+				break;
+			case Running:
+				GameManager.getInstance().switchGameState(GameState.Break);
+				break;
+			case Break:
+				GameManager.getInstance().switchGameState(GameState.Running);
+				break;
+		}
 	}//GEN-LAST:event_startPauseMenuItemActionPerformed
 
 	private void jCheckBoxMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem2ActionPerformed
@@ -410,7 +422,7 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 	}//GEN-LAST:event_jCheckBoxMenuItem3ActionPerformed
 
 	private void stopMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopMenuItemActionPerformed
-		GameManager.getInstance().setGameState(GameState.Configuration);
+		GameManager.getInstance().switchGameState(GameState.Configuration);
 	}//GEN-LAST:event_stopMenuItemActionPerformed
 
 	private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed

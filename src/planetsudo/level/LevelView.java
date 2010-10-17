@@ -34,6 +34,7 @@ public class LevelView {
 	}
 
 	public LevelView(AbstractLevel level, AbstractLevelObject levelObject) {
+		Logger.debug(this, "Create new levelview.");
 		this.levelObject = levelObject;
 		this.rasterSize = RASTER_SIZE;
 		double widthCast = (int) level.getLevelBorderPolygon().getBounds().getWidth()/rasterSize;
@@ -54,6 +55,7 @@ public class LevelView {
 	}
 
 	public void initLevelRepresentation() {
+		Logger.debug(this, "initLevelRepresentation");
 		for(int i=0;i<levelRepresentation.length;i++) {
 			levelRepresentation[i] = new LevelRasterElement(i, this);
 		}
@@ -68,6 +70,7 @@ public class LevelView {
 	}
 
 	public void drawLevelView(int x, int y, Graphics2D g2) {
+		Logger.debug(this, "Draw LevelView");
 		int greyValue;
 		for(LevelRasterElement element : levelRepresentation) {
 			if(element.isPartOfWall()) {
@@ -85,27 +88,35 @@ public class LevelView {
 	}
 
 	private LevelRasterElement calcLevelRasterElement(AbstractLevelObject levelObject) {
+		Logger.debug(this, "CalcLevelRasterElement");
 		return get(((int)levelObject.getPosition().getX()-levelObject.getLevel().getX())/rasterSize, ((int)levelObject.getPosition().getY()-levelObject.getLevel().getY())/rasterSize);
 	} 
 
 	public int getAbsolutAngle(AbstractLevelObject levelObject) {
-		return getAngle(calcLevelRasterElement(levelObject), calcLevelRasterElement(this.levelObject));
+		Logger.debug(this, "BEGIN: GetAbsoluteAngle");
+		int angle = getAngle(calcLevelRasterElement(levelObject), calcLevelRasterElement(this.levelObject));
+		Logger.debug(this, "END: GetAbsoluteAngle");
+		return angle;
 	}
 
 	public int getDistance(AbstractLevelObject levelObject) {
+		Logger.debug(this, "GetDistance");
 		return getDistance(calcLevelRasterElement(levelObject), calcLevelRasterElement(this.levelObject));
 	}
 
 	public void dijkstraTest() {
+		Logger.debug(this, "dijkstraTest");
 		dijkstra(levelRepresentation[0], levelRepresentation[(width*height)-1]);
 	}
 
 	private int getDistance(LevelRasterElement position, LevelRasterElement destination) {
+		Logger.debug(this, "getDistance");
 		dijkstra(position, destination);
 		return position.getDistance();
 	}
 
 	private int getAngle(LevelRasterElement position, LevelRasterElement destination) {
+		Logger.debug(this, "getAngle");
 		dijkstra(position, destination);
 		LevelRasterElementNeigbour neigbourNextToDestination = null;
 		for(LevelRasterElementNeigbour neigbour : position.getNeigbours()) {
@@ -121,6 +132,7 @@ public class LevelView {
 	}
 
 	public void updateObjectMovement() {
+		Logger.debug(this, "UpdateObjectMovement");
 		dijkstra(null, calcLevelRasterElement(levelObject));
 	}
 
@@ -159,7 +171,8 @@ public class LevelView {
 
 	private void dijkstra(LevelRasterElement position, LevelRasterElement destination) {
 		if(levelObject.isStatic()) return;
-
+		Logger.debug(this, "BEGINN: dijkstra new calc.");
+		long startTime = System.currentTimeMillis();
 		// Initialisation
 		PriorityQueue<LevelRasterElement> distanceQueue = new PriorityQueue<LevelRasterElement>();
 		for(LevelRasterElement element : levelRepresentation) {
@@ -180,6 +193,7 @@ public class LevelView {
 			}
 			element = distanceQueue.poll();
 		} while(element != null && element != position);
+		Logger.debug(this, "END["+(System.currentTimeMillis()-startTime)+"]: dijkstra new calc.");
 	}
 
 	protected int getHeight() {

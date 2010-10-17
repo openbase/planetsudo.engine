@@ -103,6 +103,14 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 		return fuel > 0;
 	}
 
+	protected void spendFuel(int value) {
+		if(value+fuel > DEFAULT_START_FUEL) {
+			fuel = DEFAULT_START_FUEL;
+		} else {
+			fuel += value;
+		}
+	}
+
 	public void waitTillFuelRunsOut() {
 		synchronized(this) {Logger.info(this, "Create "+this);
 			if(fuel == 0) return;
@@ -160,8 +168,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 	protected void passResource(Agent agent) {
 		Resource resource = agent.getResource();
 		if(resource != null) {
-			team.addPoint();
-			resource.use();
+			team.addPoints(resource.use(agent));
 		}
 	}
 

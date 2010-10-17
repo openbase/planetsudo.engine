@@ -11,6 +11,7 @@ import java.beans.PropertyChangeListener;
 import logging.Logger;
 import planetsudo.level.levelobjects.Agent;
 import planetsudo.level.levelobjects.Resource;
+import planetsudo.level.levelobjects.Resource.ResourceType;
 import planetsudo.view.level.LevelPanel;
 
 /**
@@ -20,9 +21,28 @@ import planetsudo.view.level.LevelPanel;
 public class ResourcePanel extends AbstractLevelObjectPanel<Resource, LevelPanel> implements PropertyChangeListener {
 
 	public ResourcePanel(Resource resource, LevelPanel parentResourcePanel) {
-		super(resource, parentResourcePanel, "res/img/resource.png");
+		super(resource, parentResourcePanel, getImageURI(resource.getType()));
 		Logger.info(this, "Create "+this);
 		resource.addPropertyChangeListener(this);
+	}
+
+	private static String getImageURI(ResourceType type) {
+		switch(type) {
+			case Normal:
+				return "res/img/resource1.png";
+			case DoublePoints:
+				return "res/img/resource3.png";
+			case ExtremPoint:
+				return "res/img/resource6.png";
+			case ExtraAgentFuel:
+				return "res/img/resource5.png";
+			case ExtraMothershipFuel:
+				return "res/img/resource2.png";
+			case Bomb:
+				return "res/img/resource4.png";
+			default:
+				return null;
+		}
 	}
 
 	private Agent owner;

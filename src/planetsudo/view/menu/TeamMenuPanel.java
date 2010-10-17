@@ -43,7 +43,7 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
 		teamNameLabel.setText(team.getName());
 		mothershipFuelProgressBar.setForeground(Color.BLACK);
 		mothershipFuelProgressBar.setValue(team.getMothership().getFuel());
-		teamAgentLabel.setText(team.getAgentCount()+" viecher");
+		teamAgentLabel.setText(team.getAgentCount()+"");
 		shieldProgressBar.setValue(team.getMothership().getShieldForce());
 		teamResourceLabel.setText(team.getPoints()+"");
 		updateFuelProgressBar();

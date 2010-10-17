@@ -130,9 +130,17 @@ public class GameManager implements Runnable {
 		
 	}
 
-	public void setGameState(GameState state) {
+	private void setGameState(GameState state) {
 		GUIController.setEvent(new PropertyChangeEvent(this, GUIController.GAME_STATE_CHANGE, gameState, state));
 		this.gameState = state;
+	}
+
+	public void switchGameState(GameState state) {
+		switch(state) {
+			default:
+				setGameState(state);
+		}
+
 	}
 
 	public static GameManager getInstance() {

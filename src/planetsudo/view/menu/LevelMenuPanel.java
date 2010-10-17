@@ -40,8 +40,18 @@ public class LevelMenuPanel extends javax.swing.JPanel implements ActionListener
 		updateTitle();
 	}
 
+	private String text;
 	private void updateTitle() {
-		nameAndTimeLabel.setText(levelName+" ["+minutes+":"+secunds+"]");
+		text = levelName+" [";
+		if(minutes < 9) {
+			text += "0";
+		}
+		text += minutes+":";
+		if(secunds < 9) {
+			text += "0";
+		}
+		text += secunds+"]";
+		nameAndTimeLabel.setText(text);
 	}
 
 	public void startTimer() {

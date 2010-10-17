@@ -69,7 +69,11 @@ public class Team implements Manageable {
 	}
 
 	public void addPoint() {
-		points++;
+		addPoints(1);
+	}
+
+	public void addPoints(int points) {
+		points += points;
 		changes.firePropertyChange(POINT_STATE_CHANGE, null, points);
 	}
 

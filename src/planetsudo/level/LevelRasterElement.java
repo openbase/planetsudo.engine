@@ -38,8 +38,8 @@ public class LevelRasterElement implements Comparable<LevelRasterElement> {
 		this.yLevelPosition = (int) levelView.getLevelObject().getLevel().getY()+(y*size+size/2);
 		this.rasterLevelRectangle = new Rectangle2D.Double(xLevelPosition-size/2, yLevelPosition-size/2, size, size);
 		Rectangle2D agentBoundsRectangle = new Rectangle2D.Double(xLevelPosition-Agent.AGENT_SIZE, yLevelPosition-Agent.AGENT_SIZE, Agent.AGENT_SIZE*2, Agent.AGENT_SIZE*2);
-		this.partOfWall = !levelView.getLevelObject().getLevel().getLevelBorderPolygon().contains(rasterLevelRectangle);
-		this.nextToWall = !levelView.getLevelObject().getLevel().getLevelBorderPolygon().contains(agentBoundsRectangle);
+		this.partOfWall = levelView.getLevelObject().getLevel().containsWall(rasterLevelRectangle);
+		this.nextToWall = levelView.getLevelObject().getLevel().containsWall(agentBoundsRectangle);
 		this.visited = false;
 		this.distance = Integer.MAX_VALUE;
 		this.neigbours = new ArrayList<LevelRasterElementNeigbour>();

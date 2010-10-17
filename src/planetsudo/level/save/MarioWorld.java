@@ -11,6 +11,7 @@ import java.awt.Polygon;
 import planetsudo.level.AbstractLevel;
 import planetsudo.level.ResourcePlacement;
 import planetsudo.level.ResourceRandomRectangle;
+import planetsudo.level.levelobjects.Resource.ResourceType;
 
 /**
  *
@@ -47,12 +48,17 @@ public class MarioWorld extends AbstractLevel {
 	@Override
 	protected ResourcePlacement[] loadResourcePlacement() {
 		ResourcePlacement[] resourcePlacement = new ResourcePlacement[1];
-		resourcePlacement[0] = new ResourceRandomRectangle(0, 0, 100, 100, 20);
+		resourcePlacement[0] = new ResourceRandomRectangle(0, 0, 100, 100, 20, ResourceType.Normal);
 		return resourcePlacement;
 	}
 
 	@Override
 	protected Color loadLevelColor() {
 		return Color.RED;
+	}
+
+	@Override
+	protected Polygon[] loadLevelWallPolygons() {
+		return null;
 	}
 }

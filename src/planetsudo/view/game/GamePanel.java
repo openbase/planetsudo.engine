@@ -34,6 +34,7 @@ public class GamePanel extends javax.swing.JPanel {
 
 	public void updateDynamicComponents() {
 		levelDisplayPanel.setLevel(GameManager.getInstance().getLevel());
+		levelDisplayPanel.displayLevelObjects();
 		teamMenuPanel1.setTeam(GameManager.getInstance().getTeams().get(0));
 		teamMenuPanel2.setTeam(GameManager.getInstance().getTeams().get(1));
 		levelMenuPanel.setLevel(GameManager.getInstance().getLevel());
@@ -61,9 +62,11 @@ public class GamePanel extends javax.swing.JPanel {
 			case Start:
 			case Resume:
 				levelMenuPanel.startTimer();
+				break;
 			case Stop:
 			case Pause:
 				levelMenuPanel.stopTimer();
+				break;
 		}
 	}
 

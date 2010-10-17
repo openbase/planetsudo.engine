@@ -26,8 +26,15 @@ public class ResourceGausOval extends Rectangle2D.Double implements ResourcePlac
 	public ArrayList<Resource> getResources(AbstractLevel level) {
 		ArrayList<Resource> resources = new ArrayList<Resource>();
 		for(int i=0; i<resourceCount;i++) {
-			resources.add(new Resource(level.generateNewResourceID(), Resource.ResourceType.NORMAL, level, new Point2D(getCenterX(), getCenterY())));
+			resources.add(new Resource(level.generateNewResourceID(), Resource.ResourceType.Normal, level, new Point2D(getCenterX(), getCenterY())));
 		}
 		return resources;
 	}
+
+	@Override
+	public int getResourceCount() {
+		return resourceCount;
+	}
+
+
 }

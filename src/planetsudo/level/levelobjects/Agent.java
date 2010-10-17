@@ -64,6 +64,14 @@ public class Agent extends AbstractLevelObject {
 		this.lastAction = lastAction;
 	}
 
+	protected void spendFuel(int value) {
+		if(value+fuel > DEFAULT_START_FUEL) {
+			fuel = DEFAULT_START_FUEL;
+		} else {
+			fuel += value;
+		}
+	}
+
 	@ Override
 	protected void reset() {
 		fuel = DEFAULT_START_FUEL;
@@ -293,7 +301,7 @@ public class Agent extends AbstractLevelObject {
 		if(resourceToCollect != null && resourceToCollect.setBusy(getTeam())) {
 			direction.turnTo(position, resourceToCollect.position);
 			actionPoints.getActionPoint(resourceToCollect.getCapturingActionPoints());
-			this.carryResource(resourceToCollect);
+			carryResource(resourceToCollect);
 		}
 	}
 
