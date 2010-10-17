@@ -10,7 +10,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import javax.swing.Timer;
 import logging.Logger;
 import planetsudo.game.Team;
@@ -36,7 +38,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 	private int shield;
 	private Timer timer;
 
-	private final HashMap<Integer, Agent> agents;
+	private final Map<Integer, Agent> agents;
 	
 
 	public Mothership(int id, Team team, AbstractLevel level) {
@@ -44,7 +46,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 		Logger.info(this, "Create "+this);
 		this.team = team;
 		this.team.setMothership(this);
-		this.agents = new HashMap<Integer, Agent>();
+		this.agents = Collections.synchronizedMap(new HashMap<Integer, Agent>());
 		this.reset();
 		this.timer = new Timer(50, this);
 
@@ -74,6 +76,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 				replacedAgent.kill();
 			}
 		}
+		agentCount = agents.size();
 		agentKeyArray = new Integer[agents.size()];
 		agentKeyArray = agents.keySet().toArray(agentKeyArray);
 	}
@@ -130,27 +133,38 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 
 	private int agentIndex = 0;
 	private Integer[] agentKeyArray;
+	private Agent nextAgent;
+	private int agentCount = 0;
 	public void addActionPoint() {
-		agents.get(agentKeyArray[agentIndex]).getActionPoints().addActionPoint();
-		agentIndex = (agentIndex+1) % (agents.size());
+		//synchronized(agents) {
+		if(agentCount != 0) {
+			agentIndex = (agentIndex+1) % (agents.size());
+			nextAgent = agents.get(agentKeyArray[agentIndex]);
+			if(nextAgent != null) {
+				nextAgent.getActionPoints().addActionPoint();
+			}
+		}
+		//}
 	}
 
 	public Team getTeam() {
 		return team;
 	}
 
-	public synchronized int registerAgent() {
-		int i;
-		for(i=0;i<=agents.size();i++) {
-			if(!agents.containsKey(getID()*10000+i)) {
-				break;
+	public int registerAgent() {
+		synchronized(agents) {
+			int i;
+			for(i=0;i<=agents.size();i++) {
+				if(!agents.containsKey(getID()*10000+i)) {
+					break;
+				}
 			}
+			if(i>=agentMaxCount || i>9999) {
+				Logger.error(this, "Already to many agents alive.");
+				return -1;
+			}
+			return getID()*10000+i;
 		}
-		if(i>=agentMaxCount || i>9999) {
-			Logger.error(this, "Already to many agents alive.");
-			return -1;
-		}
-		return getID()*10000+i;
 	}
 
 	public void getAgentCount() {
@@ -158,7 +172,10 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 	}
 
 	protected void removeAgent(Agent agent) {
-		agents.remove(agent.getID());
+		synchronized(agents) {
+			agents.remove(agent.getID());
+			agentCount = agents.size();
+		}
 	}
 
 	public Point2D getAgentHomePosition() {

@@ -297,6 +297,9 @@ public class Agent extends AbstractLevelObject {
 
 	public void pickupResource() {
 		actionPoints.getActionPoint(10);
+		if(isCarringResource()) {
+			getResource().release();
+		}
 		Resource resourceToCollect = level.getTouchableResource(this);
 		if(resourceToCollect != null && resourceToCollect.setBusy(getTeam())) {
 			direction.turnTo(position, resourceToCollect.position);
@@ -367,7 +370,7 @@ public class Agent extends AbstractLevelObject {
 		return level.getLostTeamAgent(this) != null;
 	}
 
-	public void spendFuelTeamAgend(int value) {
+	public void spendFuelTeamAgent(int value) {
 		actionPoints.getActionPoint(20);
 		if(useFuel()) {
 			Agent teamAgent = level.getLostTeamAgent(this);

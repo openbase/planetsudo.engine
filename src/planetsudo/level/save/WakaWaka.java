@@ -28,7 +28,7 @@ public class WakaWaka extends AbstractLevel{
 		levelBorders.addPoint(700, 350);
 		levelBorders.addPoint(700, 200);
 		levelBorders.addPoint(600, 300);
-		levelBorders.addPoint(500, 300);
+		levelBorders.addPoint(550, 300);
 		levelBorders.addPoint(450, 200); //
 		levelBorders.addPoint(450, 50);
 		levelBorders.addPoint(800, 50);
@@ -68,7 +68,7 @@ public class WakaWaka extends AbstractLevel{
 //		levelBorders.addPoint(1250, 400);
 //		levelBorders.addPoint(1350, 300);
 //		levelBorders.addPoint(1500, 300);
-		levelBorders.addPoint(1500, 050);
+		levelBorders.addPoint(1500, 50);
 		levelBorders.addPoint(1500, 600);
 		levelBorders.addPoint(1450, 600);
 		levelBorders.addPoint(1450, 650);
@@ -151,14 +151,18 @@ public class WakaWaka extends AbstractLevel{
 
 	@Override
 	protected ResourcePlacement[] loadResourcePlacement() {
-		ResourcePlacement[] resourcePlacement = new ResourcePlacement[1];
-		resourcePlacement[0] = new ResourceRandomRectangle(0, 0, 1000, 1000, 5, ResourceType.Normal);
+		ResourcePlacement[] resourcePlacement = new ResourcePlacement[5];
+		resourcePlacement[0] = new ResourceRandomRectangle(50, 50, 1500, 1500, 50, ResourceType.Normal);
+		resourcePlacement[1] = new ResourceRandomRectangle(450, 50, 1500, 1100, 25, ResourceType.DoublePoints);
+		resourcePlacement[2] = new ResourceRandomRectangle(1000, 50, 1500, 550, 10, ResourceType.ExtremPoint);
+		resourcePlacement[3] = new ResourceRandomRectangle(50, 50, 1500, 1100, 20, ResourceType.ExtraAgentFuel);
+		resourcePlacement[4] = new ResourceRandomRectangle(50, 50, 1500, 1100, 10, ResourceType.ExtraMothershipFuel);
 		return resourcePlacement;
 	}
 
 	@Override
 	protected Color loadLevelColor() {
-		return Color.MAGENTA;
+		return new Color(10,125,0);
 	}
 
 	@Override

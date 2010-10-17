@@ -13,6 +13,7 @@ import logging.Logger;
 import planetsudo.level.AbstractLevel;
 import planetsudo.main.GUIController;
 import planetsudo.game.strategy.DefaultStategy;
+import planetsudo.game.strategy.MarcosStrategy;
 import planetsudo.level.LevelLoader;
 
 /**
@@ -47,7 +48,8 @@ public class GameManager implements Runnable {
 		team1.add("Messer");
 		team1.add("Noxus");
 		addTeam(new Team(0, "Piranjas", Color.BLUE, DefaultStategy.class, 3, team0));
-		addTeam(new Team(1, "BlackHeath", Color.MAGENTA, DefaultStategy.class, 10, team1));
+		//addTeam(new Team(1, "BlackHeath", Color.MAGENTA, DefaultStategy.class, 10, team1));
+		addTeam(new Team(2, "Legions of Iron", new Color(255,210,20), MarcosStrategy.class, 5, team1));
 		startGame();
 	}
 

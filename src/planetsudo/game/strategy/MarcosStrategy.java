@@ -11,15 +11,16 @@ import planetsudo.level.levelobjects.Agent;
  *
  * @author divine
  */
-public class DefaultStategy extends AbstractStrategy {
+public class MarcosStrategy extends AbstractStrategy {
 
-	public DefaultStategy(Agent agent) {
-		super(agent);	}
+	public MarcosStrategy(Agent agent) {
+		super(agent);	
+	}
 
 	@Override
 	protected void loadRules() {
 		//-------------------------------------------->
-		createRule(new Rule(0, "Just Go") {
+		createRule(new Rule(10, "Fly") {
 			@ Override
 			protected boolean constraint() {
 				return true;
@@ -27,10 +28,11 @@ public class DefaultStategy extends AbstractStrategy {
 			@ Override
 			protected void action() {
 				agent.goStraightAhead();
+				agent.turnRight(1);
 			}
 		});
-		//-------------------------------------------->
-		createRule(new Rule(20, "Search Resources") {
+
+		createRule(new Rule(20, "Resource finden") {
 			@ Override
 			protected boolean constraint() {
 				return agent.seeResource();
@@ -40,8 +42,8 @@ public class DefaultStategy extends AbstractStrategy {
 				agent.goToResource();
 			}
 		});
-		//-------------------------------------------->
-		createRule(new Rule(30, "PickUp Resource") {
+
+		createRule(new Rule(30, "Resource sammeln") {
 			@ Override
 			protected boolean constraint() {
 				return agent.toucheResource();
@@ -51,8 +53,19 @@ public class DefaultStategy extends AbstractStrategy {
 				agent.pickupResource();
 			}
 		});
-		//-------------------------------------------->
-		createRule(new Rule(40, "Save Resource") {
+
+		createRule(new Rule(40, "Helfen") {
+			@ Override
+			protected boolean constraint() {
+				return agent.seeLostTeamAgent();
+			}
+			@ Override
+			protected void action() {
+				agent.spendFuelTeamAgent(20);
+			}
+		});
+
+		createRule(new Rule(50, "Carry back") {
 			@ Override
 			protected boolean constraint() {
 				return agent.isCarringResource();
@@ -62,30 +75,19 @@ public class DefaultStategy extends AbstractStrategy {
 				agent.moveOneStepInTheMothershipDirection();
 			}
 		});
-		//-------------------------------------------->
-		createRule(new Rule(50, "Pass Resource") {
+
+		createRule(new Rule(60, "Resource abgeben") {
 			@ Override
 			protected boolean constraint() {
-				return agent.isCarringResource() && agent.isAtMothership();
+				return agent.isAtMothership();
 			}
 			@ Override
 			protected void action() {
 				agent.deliverResourceToMothership();
 			}
 		});
-		//-------------------------------------------->
-		createRule(new Rule(60, "HelpLostAgent") {
-			@ Override
-			protected boolean constraint() {
-				return agent.seeLostTeamAgent();
-			}
-			@ Override
-			protected void action() {
-				agent.spendFuelTeamAgent(300);
-			}
-		});
-		//-------------------------------------------->
-		createRule(new Rule(90, "FightAgainstMothership") {
+
+		createRule(new Rule(70, "Attackiere feindl. Mutterschiff") {
 			@ Override
 			protected boolean constraint() {
 				return agent.seeAdversaryMothership();
@@ -95,8 +97,30 @@ public class DefaultStategy extends AbstractStrategy {
 				agent.fightWithAdversaryMothership();
 			}
 		});
-		//-------------------------------------------->
-		createRule(new Rule(110, "SaveMothership") {
+
+		createRule(new Rule(80, "Leerer Tank - Zurück gehen") {
+			@ Override
+			protected boolean constraint() {
+				return agent.getFuel() <= Agent.DEFAULT_START_FUEL/4 && agent.getMothership().hasFuel();
+			}
+			@ Override
+			protected void action() {
+				agent.moveOneStepInTheMothershipDirection();
+			}
+		});
+
+		createRule(new Rule(90, "Tanken") {
+			@ Override
+			protected boolean constraint() {
+				return agent.isAtMothership() && agent.getFuel() <= Agent.DEFAULT_START_FUEL/4 && agent.getMothership().hasFuel();
+			}
+			@ Override
+			protected void action() {
+				agent.orderFuel(150);
+			}
+		});
+
+		createRule(new Rule(100, "Fire in the house!") {
 			@ Override
 			protected boolean constraint() {
 				return agent.getMothership().isDamaged();
@@ -106,8 +130,8 @@ public class DefaultStategy extends AbstractStrategy {
 				agent.moveOneStepInTheMothershipDirection();
 			}
 		});
-		//-------------------------------------------->
-		createRule(new Rule(120, "RepaireMothership") {
+
+		createRule(new Rule(110, "Finden und sammeln") {
 			@ Override
 			protected boolean constraint() {
 				return agent.getMothership().isDamaged() && agent.isAtMothership();
@@ -117,8 +141,8 @@ public class DefaultStategy extends AbstractStrategy {
 				agent.repaireMothership();
 			}
 		});
-		//-------------------------------------------->
-		createRule(new Rule(190, "FightAgainstAgent") {
+
+		createRule(new Rule(120, "Fight!") {
 			@ Override
 			protected boolean constraint() {
 				return agent.seeAdversaryAgent();
@@ -128,39 +152,28 @@ public class DefaultStategy extends AbstractStrategy {
 				agent.fightWithAdversaryAgent();
 			}
 		});
-		//-------------------------------------------->
-		createRule(new Rule(200, "GoBackToMothership") {
+
+		createRule(new Rule(130, "Alarm!") {
 			@ Override
 			protected boolean constraint() {
-				return agent.getFuel() < 300;
+				return agent.getMothership().isBurning();
 			}
 			@ Override
 			protected void action() {
 				agent.moveOneStepInTheMothershipDirection();
 			}
 		});
-		//-------------------------------------------->
-		createRule(new Rule(400, "OrderFuel") {
-			@ Override
-			protected boolean constraint() {
-				return (agent.getFuel() < 300) && (agent.isAtMothership());
-			}
-			@ Override
-			protected void action() {
-				agent.orderFuel(100);
-			}
-		});
-		//-------------------------------------------->
-		createRule(new Rule(1000, "AvoidWall") {
+
+		createRule(new Rule(1000, "Collision detected") {
 			@ Override
 			protected boolean constraint() {
 				return agent.collisionDetected();
 			}
 			@ Override
 			protected void action() {
-				agent.turnRandom();
+				agent.turnAround();
 			}
 		});
-		//-------------------------------------------->
+
 	}
 }
