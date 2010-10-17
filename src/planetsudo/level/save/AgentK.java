@@ -6,8 +6,6 @@
 package planetsudo.level.save;
 
 
-import data.Base2D;
-import data.Direction2D;
 import data.Point2D;
 import java.awt.Color;
 import java.awt.Polygon;
@@ -40,23 +38,27 @@ public class AgentK extends AbstractLevel {
 	}
 
 	@Override
-	protected Base2D[] loadHomePositions() {
-		Base2D[] homePosition = new Base2D[2];
-		homePosition[0] = new Base2D(200, 300, Direction2D.DOWN);
-		homePosition[1] = new Base2D(200, 1200, Direction2D.DOWN);
+	protected Point2D[] loadHomePositions() {
+		Point2D[] homePosition = new Point2D[2];
+		homePosition[0] = new Point2D(200, 300);
+		homePosition[1] = new Point2D(200, 1700);
 		return homePosition;
 	}
 
 	@Override
 	protected ResourcePlacement[] loadResourcePlacement() {
-		ResourcePlacement[] resourcePlacement = new ResourcePlacement[1];
-		resourcePlacement[0] = new ResourceRandomRectangle(0, 0, 100, 100, 3, ResourceType.Normal);
+		ResourcePlacement[] resourcePlacement = new ResourcePlacement[5];
+		resourcePlacement[0] = new ResourceRandomRectangle(0, 500, 500, 1500, 30, ResourceType.Normal);
+		resourcePlacement[1] = new ResourceRandomRectangle(0, 500, 1000, 1500, 20, ResourceType.DoublePoints);
+		resourcePlacement[2] = new ResourceRandomRectangle(1500, 0, 2000, 2000, 6, ResourceType.ExtremPoint);
+		resourcePlacement[3] = new ResourceRandomRectangle(500, 0, 2000, 2000, 10, ResourceType.ExtraAgentFuel);
+		resourcePlacement[4] = new ResourceRandomRectangle(500, 0, 2000, 2000, 10, ResourceType.ExtraMothershipFuel);
 		return resourcePlacement;
 	}
 
 	@Override
 	protected Color loadLevelColor() {
-		return Color.PINK;
+		return new Color(137,67,162);
 	}
 
 	@Override

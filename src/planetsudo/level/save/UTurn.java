@@ -50,14 +50,18 @@ public class UTurn extends AbstractLevel {
 
 	@Override
 	protected ResourcePlacement[] loadResourcePlacement() {
-		ResourcePlacement[] resourcePlacement = new ResourcePlacement[1];
+		ResourcePlacement[] resourcePlacement = new ResourcePlacement[5];
 		resourcePlacement[0] = new ResourceRandomRectangle(0, 0, 1000, 1000, 50, ResourceType.Normal);
+		resourcePlacement[1] = new ResourceRandomRectangle(0, 0, 1000, 1000, 25, ResourceType.DoublePoints);
+		resourcePlacement[2] = new ResourceRandomRectangle(0, 0, 1000, 1000, 10, ResourceType.ExtremPoint);
+		resourcePlacement[3] = new ResourceRandomRectangle(0, 0, 1000, 1000, 10, ResourceType.ExtraAgentFuel);
+		resourcePlacement[4] = new ResourceRandomRectangle(0, 0, 1000, 1000, 10, ResourceType.ExtraMothershipFuel);
 		return resourcePlacement;
 	}
 
 	@Override
 	protected Color loadLevelColor() {
-		return Color.BLUE;
+		return new Color(67,167,197);
 	}
 
 	@Override

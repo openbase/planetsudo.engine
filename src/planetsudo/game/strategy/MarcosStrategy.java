@@ -20,7 +20,7 @@ public class MarcosStrategy extends AbstractStrategy {
 	@Override
 	protected void loadRules() {
 		//-------------------------------------------->
-		createRule(new Rule(10, "Fly") {
+		createRule(new Rule(10, "Fly arround") {
 			@ Override
 			protected boolean constraint() {
 				return true;
@@ -32,7 +32,7 @@ public class MarcosStrategy extends AbstractStrategy {
 			}
 		});
 
-		createRule(new Rule(20, "Resource finden") {
+		createRule(new Rule(20, "Gehe zu Resource") {
 			@ Override
 			protected boolean constraint() {
 				return agent.seeResource();
@@ -43,7 +43,7 @@ public class MarcosStrategy extends AbstractStrategy {
 			}
 		});
 
-		createRule(new Rule(30, "Resource sammeln") {
+		createRule(new Rule(30, "Resource aufsammeln") {
 			@ Override
 			protected boolean constraint() {
 				return agent.toucheResource();
@@ -54,18 +54,18 @@ public class MarcosStrategy extends AbstractStrategy {
 			}
 		});
 
-		createRule(new Rule(40, "Helfen") {
+		createRule(new Rule(40, "Helfe Teammitglied") {
 			@ Override
 			protected boolean constraint() {
 				return agent.seeLostTeamAgent();
 			}
 			@ Override
 			protected void action() {
-				agent.spendFuelTeamAgent(20);
+				agent.spendFuelTeamAgent(Agent.DEFAULT_START_FUEL/4);
 			}
 		});
 
-		createRule(new Rule(50, "Carry back") {
+		createRule(new Rule(50, "Carry Resource back") {
 			@ Override
 			protected boolean constraint() {
 				return agent.isCarringResource();
@@ -79,7 +79,7 @@ public class MarcosStrategy extends AbstractStrategy {
 		createRule(new Rule(60, "Resource abgeben") {
 			@ Override
 			protected boolean constraint() {
-				return agent.isAtMothership();
+				return agent.isAtMothership() && agent.isCarringResource();
 			}
 			@ Override
 			protected void action() {
@@ -101,7 +101,7 @@ public class MarcosStrategy extends AbstractStrategy {
 		createRule(new Rule(80, "Leerer Tank - Zurück gehen") {
 			@ Override
 			protected boolean constraint() {
-				return agent.getFuel() <= Agent.DEFAULT_START_FUEL/4 && agent.getMothership().hasFuel();
+				return agent.getFuel() <= Agent.DEFAULT_START_FUEL/3 && agent.getMothership().hasFuel();
 			}
 			@ Override
 			protected void action() {
@@ -112,11 +112,11 @@ public class MarcosStrategy extends AbstractStrategy {
 		createRule(new Rule(90, "Tanken") {
 			@ Override
 			protected boolean constraint() {
-				return agent.isAtMothership() && agent.getFuel() <= Agent.DEFAULT_START_FUEL/4 && agent.getMothership().hasFuel();
+				return agent.isAtMothership() && agent.getFuel() <= Agent.DEFAULT_START_FUEL/3 && agent.getMothership().hasFuel();
 			}
 			@ Override
 			protected void action() {
-				agent.orderFuel(150);
+				agent.orderFuel(100);
 			}
 		});
 
@@ -131,7 +131,7 @@ public class MarcosStrategy extends AbstractStrategy {
 			}
 		});
 
-		createRule(new Rule(110, "Finden und sammeln") {
+		createRule(new Rule(110, "Repariere Mutterschiff") {
 			@ Override
 			protected boolean constraint() {
 				return agent.getMothership().isDamaged() && agent.isAtMothership();
@@ -171,7 +171,7 @@ public class MarcosStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-				agent.turnAround();
+				agent.turnRandom();
 			}
 		});
 
