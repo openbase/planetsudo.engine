@@ -44,6 +44,7 @@ public class LevelDisplayPanel extends ResourceDisplayPanel<LevelPanel> implemen
 	public synchronized  void setVideoThreadCommand(VideoThreadCommand command) {
 		switch(command) {
 			case Start:
+			case Resume:
 				if(!isRunning) {
 					isRunning = true;
 					stop = false;
@@ -55,6 +56,7 @@ public class LevelDisplayPanel extends ResourceDisplayPanel<LevelPanel> implemen
 				}
 				break;
 			case Stop:
+			case Pause:
 				if(isRunning) {
 					stop = true;
 				} else {

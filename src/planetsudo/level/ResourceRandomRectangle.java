@@ -85,12 +85,11 @@ public class ResourceRandomRectangle extends Rectangle2D.Double implements Resou
 //				return new Point2D(xLevelPosition, yLevelPosition);
 //			}
 //		}
-		Rectangle levelBounds = level.getLevelBorderPolygon().getBounds();
 		int resourceXPos = 0, resourceYPos = 0;
 		while(true) {
 			try {
-				resourceXPos = RandomGenerator.getRandom((int) levelBounds.getMinX(), (int) levelBounds.getMaxX());
-				resourceYPos = RandomGenerator.getRandom((int) levelBounds.getMinY(), (int) levelBounds.getMaxY());
+				resourceXPos = RandomGenerator.getRandom((int) getMinX(), (int) getMaxX());
+				resourceYPos = RandomGenerator.getRandom((int) getMinY(), (int) getMaxY());
 			} catch (NotValidException ex) {
 				Logger.getLogger(ResourceRandomRectangle.class.getName()).log(Level.SEVERE, null, ex);
 			}
@@ -99,7 +98,6 @@ public class ResourceRandomRectangle extends Rectangle2D.Double implements Resou
 			}
 		}
 		return new Point2D(resourceXPos, resourceYPos);
-
 	}
 
 	@Override

@@ -5,6 +5,8 @@
 
 package planetsudo.level.save;
 
+import data.Base2D;
+import data.Direction2D;
 import data.Point2D;
 import java.awt.Color;
 import java.awt.Polygon;
@@ -142,10 +144,10 @@ public class WakaWaka extends AbstractLevel{
 	}
 
 	@Override
-	protected Point2D[] loadHomePositions() {
-		Point2D[] homePosition = new Point2D[2];
-		homePosition[0] = new Point2D(100, 100);
-		homePosition[1] = new Point2D(1450, 1450);
+	protected Base2D[] loadHomePositions() {
+		Base2D[] homePosition = new Base2D[2];
+		homePosition[0] = new Base2D(100, 100, Direction2D.DOWN);
+		homePosition[1] = new Base2D(1450, 1450, Direction2D.DOWN);
 		return homePosition;
 	}
 

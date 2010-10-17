@@ -5,6 +5,8 @@
 
 package planetsudo.level.save;
 
+import data.Base2D;
+import data.Direction2D;
 import data.Point2D;
 import java.awt.Color;
 import java.awt.Polygon;
@@ -38,10 +40,10 @@ public class MarioWorld extends AbstractLevel {
 
 
 	@Override
-	protected Point2D[] loadHomePositions() {
-		Point2D[] homePosition = new Point2D[2];
-		homePosition[0] = new Point2D(100, 950);
-		homePosition[1] = new Point2D(900, 950);
+	protected Base2D[] loadHomePositions() {
+		Base2D[] homePosition = new Base2D[2];
+		homePosition[0] = new Base2D(100, 950, Direction2D.DOWN);
+		homePosition[1] = new Base2D(900, 950, Direction2D.DOWN);
 		return homePosition;
 	}
 

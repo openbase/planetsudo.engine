@@ -42,7 +42,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 	
 
 	public Mothership(int id, Team team, AbstractLevel level) {
-		super(id, team.getName()+Mothership.class.getSimpleName(), STATIC_OBJECT, level, level.getMothershipHomePosition(id), 100, 100, ObjectShape.Rec);
+		super(id, team.getName()+Mothership.class.getSimpleName(), STATIC_OBJECT, level, level.getMothershipBase(id).getPoint(), 100, 100, ObjectShape.Rec);
 		Logger.info(this, "Create "+this);
 		this.team = team;
 		this.team.setMothership(this);

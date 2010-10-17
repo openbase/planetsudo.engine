@@ -5,6 +5,7 @@
 
 package planetsudo.level;
 
+import data.Base2D;
 import data.Point2D;
 import java.awt.Color;
 import java.awt.Polygon;
@@ -34,7 +35,7 @@ public abstract class AbstractLevel implements Runnable {
 
 	private final Polygon levelBorderPolygon;
 	private final Polygon[] levelWallPolygons;
-	private final Point2D[] homePositions;
+	private final Base2D[] homePositions;
 	private final ResourcePlacement[] resourcePlacement;
 	private final Color color;
 
@@ -141,7 +142,7 @@ public abstract class AbstractLevel implements Runnable {
 
 	protected abstract Polygon loadLevelBorderPolygon();
 	protected abstract Polygon[] loadLevelWallPolygons();
-	protected abstract Point2D[] loadHomePositions();
+	protected abstract Base2D[] loadHomePositions();
 	protected abstract ResourcePlacement[] loadResourcePlacement();
 	protected abstract Color loadLevelColor();
 
@@ -153,7 +154,7 @@ public abstract class AbstractLevel implements Runnable {
 		return levelWallPolygons;
 	}
 
-	public Point2D[] getHomePositions() {
+	public Base2D[] getHomePositions() {
 		return homePositions;
 	}
 	public ResourcePlacement[] getResourcePlacement() {
@@ -165,7 +166,7 @@ public abstract class AbstractLevel implements Runnable {
 
 
 
-	public Point2D getMothershipHomePosition(int mothershipID) {
+	public Base2D getMothershipBase(int mothershipID) {
 		return getHomePositions()[mothershipID];
 	}
 
