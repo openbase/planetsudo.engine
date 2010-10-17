@@ -5,10 +5,13 @@
 
 package planetsudo.level;
 
+import configuration.parameter.CommandParameterParser;
 import java.io.File;
 import java.util.Set;
 import java.util.TreeMap;
 import logging.Logger;
+import planetsudo.main.clc.SetLevelPathCommand;
+import planetsudo.view.level.LevelPanel;
 
 /**
  *
@@ -26,7 +29,18 @@ public class LevelLoader {
 
 	private void update() {
 		// Read Levelfiles
-		String[] levelClassNameList = new File("build/classes/planetsudo/level/save/").list();
+		//File levelFolder = new File("build/classes/planetsudo/level/save/");
+		File levelFolder = new File(CommandParameterParser.getAttribute(SetLevelPathCommand.class).getValue());
+		if(!levelFolder.exists()) {
+			Logger.error(this, "Could not find level folder! "+CommandParameterParser.getAttribute(SetLevelPathCommand.class).getValue()+" does not exist!");
+			return;
+		}
+		String[] levelClassNameList = levelFolder.list();
+		if(levelClassNameList == null) {
+			Logger.error(this, "Level folder is empty!!");
+			return;
+		}
+
 		levelMap = new TreeMap<String, Class<? extends AbstractLevel>>();
 		for(String levelClassName : levelClassNameList) {
 			levelClassName = levelClassName.replace(".class", "");

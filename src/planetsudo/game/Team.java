@@ -73,8 +73,8 @@ public class Team implements Manageable {
 	}
 
 	public void addPoints(int points) {
-		points += points;
-		changes.firePropertyChange(POINT_STATE_CHANGE, null, points);
+		this.points += points;
+		changes.firePropertyChange(POINT_STATE_CHANGE, null, this.points);
 	}
 
 	public Mothership getMothership() {
