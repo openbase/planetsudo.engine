@@ -28,7 +28,7 @@ import planetsudo.game.GameManager;
 import planetsudo.game.GameManager.GameState;
 import planetsudo.level.LevelView;
 import planetsudo.view.level.LevelDisplayPanel.VideoThreadCommand;
-import planetsudo.view.levelobjects.AgentPanel;
+import planetsudo.view.level.levelobjects.AgentPanel;
 import planetsudo.view.loading.LevelLoadingPanel;
 import planetsudo.view.menu.GameContext;
 import planetsudo.view.menu.HelpFrame;

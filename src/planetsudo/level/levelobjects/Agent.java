@@ -255,9 +255,7 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	public void orderFuel(int percent) {
-//		if(actionPoints.getActionPoints() > 20) {
-				actionPoints.getActionPoint(20);
-//		}
+		actionPoints.getActionPoint(20);
 		if(percent < 0 || percent > 100) {
 			Logger.error(this, "Could not refill fuel! Percent value["+percent+"] is not in bounds! Valuerange 0-100");
 			return;
@@ -370,6 +368,8 @@ public class Agent extends AbstractLevelObject {
 		return level.getLostTeamAgent(this) != null;
 	}
 
+
+	private AbstractLevelObject helpLevelObject = null;
 	public void spendFuelTeamAgent(int value) {
 		actionPoints.getActionPoint(20);
 		if(useFuel()) {
@@ -378,8 +378,13 @@ public class Agent extends AbstractLevelObject {
 				direction.turnTo(position, teamAgent.position);
 				actionPoints.getActionPoint(value);
 				teamAgent.fuel += useFuel(value);
+				helpLevelObject =	teamAgent;
 			}
 		}
+	}
+
+	public AbstractLevelObject wasHelping() {
+		return helpLevelObject;
 	}
 
 	public void repaireMothership() {

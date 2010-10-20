@@ -6,7 +6,7 @@
 package planetsudo.view.level;
 
 import java.awt.Color;
-import planetsudo.view.levelobjects.MothershipPanel;
+import planetsudo.view.level.levelobjects.MothershipPanel;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.event.ActionEvent;
@@ -15,7 +15,7 @@ import java.util.Iterator;
 import planetsudo.level.levelobjects.Mothership;
 import planetsudo.level.AbstractLevel;
 import planetsudo.level.levelobjects.Resource;
-import planetsudo.view.levelobjects.ResourcePanel;
+import planetsudo.view.level.levelobjects.ResourcePanel;
 import view.components.draw.AbstractResourcePanel;
 import view.components.draw.ResourceDisplayPanel;
 

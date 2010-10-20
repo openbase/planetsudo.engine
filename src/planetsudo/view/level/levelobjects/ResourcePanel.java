@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package planetsudo.view.levelobjects;
+package planetsudo.view.level.levelobjects;
 
 import java.awt.Graphics2D;
 import java.beans.PropertyChangeEvent;

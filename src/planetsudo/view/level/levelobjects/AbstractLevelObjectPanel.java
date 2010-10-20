@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package planetsudo.view.levelobjects;
+package planetsudo.view.level.levelobjects;
 
 import data.Direction2D;
 import data.ImageLoader;
