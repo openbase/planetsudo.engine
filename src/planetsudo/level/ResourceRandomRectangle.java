@@ -11,8 +11,7 @@ import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import logging.Logger;
 import math.RandomGenerator;
 import planetsudo.level.levelobjects.Resource;
 import planetsudo.level.levelobjects.Resource.ResourceType;
@@ -36,9 +35,8 @@ public class ResourceRandomRectangle extends Rectangle2D.Double implements Resou
 		ArrayList<Resource> resources = new ArrayList<Resource>();
 		for(int i=0; i<resourceCount;i++) {
 			GUIController.setEvent(new PropertyChangeEvent(this, GUIController.LOADING_STEP, null, -1));
-			Point2D resourcePosition = calcRandomLevelPosition(level);
 			//Point2D resourcePosition = new Point2D(RandomGenerator.getRandom((int) getX(), (int) getWidth()), RandomGenerator.getRandom((int) getY(), (int) getHeight()));
-			resources.add(new Resource(level.generateNewResourceID(), type, level, resourcePosition));
+			resources.add(new Resource(level.generateNewResourceID(), type, level, this));
 		}
 		return resources;
 	}
@@ -86,15 +84,21 @@ public class ResourceRandomRectangle extends Rectangle2D.Double implements Resou
 //			}
 //		}
 		int resourceXPos = 0, resourceYPos = 0;
+		int tries = 0;
 		while(true) {
 			try {
 				resourceXPos = RandomGenerator.getRandom((int) getMinX(), (int) getMaxX());
 				resourceYPos = RandomGenerator.getRandom((int) getMinY(), (int) getMaxY());
 			} catch (NotValidException ex) {
-				Logger.getLogger(ResourceRandomRectangle.class.getName()).log(Level.SEVERE, null, ex);
+				Logger.warn(this, "Could not place Resource["+type+"]! Bad resoure bounds!", ex);
 			}
 			if(!level.containsWall(new Rectangle(resourceXPos-Resource.RESOURCE_SIZE, resourceYPos-Resource.RESOURCE_SIZE, Resource.RESOURCE_SIZE*2, Resource.RESOURCE_SIZE*2))) {
 				break;
+			} else {
+				tries++;
+				if(tries > 1000) {
+					Logger.warn(this, "Could not place Resource["+type+"]! Bad map design!");
+				}
 			}
 		}
 		return new Point2D(resourceXPos, resourceYPos);

@@ -36,5 +36,10 @@ public class ResourceGausOval extends Rectangle2D.Double implements ResourcePlac
 		return resourceCount;
 	}
 
+	@Override
+	public Point2D calcRandomLevelPosition(AbstractLevel level) {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
 
 }

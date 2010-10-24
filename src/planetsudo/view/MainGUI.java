@@ -315,7 +315,6 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
         jMenu2.add(displayTeamPanelCheckBoxMenuItem);
 
         jCheckBoxMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, 0));
-        jCheckBoxMenuItem3.setSelected(true);
         jCheckBoxMenuItem3.setText("AgentenStatus");
         jCheckBoxMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

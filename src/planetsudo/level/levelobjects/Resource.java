@@ -12,6 +12,7 @@ import java.util.List;
 import logging.Logger;
 import planetsudo.game.Team;
 import planetsudo.level.AbstractLevel;
+import planetsudo.level.ResourcePlacement;
 
 /**
  *
@@ -22,17 +23,29 @@ public class Resource extends AbstractLevelObject {
 	public final static String KILL_EVENT = "KillEvent";
 	public final static int RESOURCE_SIZE = 25;
 
-	public enum ResourceType {Normal, DoublePoints, ExtremPoint, ExtraAgentFuel, ExtraMothershipFuel, Bomb};
+	public enum ResourceType {Unknown, Normal, DoublePoints, ExtremPoint, ExtraAgentFuel, ExtraMothershipFuel, Bomb};
 	private ResourceType type;
 	private Agent owner;
 	private final List<Integer> conquerors;
+	private boolean used;
+	private ResourcePlacement placement;
+
+	public Resource(int id, ResourceType type, AbstractLevel level, ResourcePlacement placement) {
+		this(id, type, level, placement.calcRandomLevelPosition(level));
+		this.placement = placement;
+	}
 
 	public Resource(int id, ResourceType type, AbstractLevel level, Point2D position) {
 		super(id, Resource.class.getSimpleName()+"["+id+"]",STATIC_OBJECT, level, position, RESOURCE_SIZE, RESOURCE_SIZE, ObjectShape.Rec);
 		this.type = type;
 		this.owner = null;
+		this.used = false;
 		this.conquerors = Collections.synchronizedList(new ArrayList<Integer>());
 		Logger.info(this, "Create "+this);
+	}
+
+	public ResourcePlacement getPlacement() {
+		return placement;
 	}
 
 	@Override
@@ -71,7 +84,17 @@ public class Resource extends AbstractLevelObject {
 			conquerors.clear();
 		}
 		setStatic(false);
-		return true;
+		switch(type) {
+			case ExtraAgentFuel:
+				use(agent);
+				return false;
+			case Bomb:
+				use(agent);
+				return false;
+			default:
+				return true;
+		}
+		
 	}
 
 	public int getCapturingActionPoints() {
@@ -100,28 +123,34 @@ public class Resource extends AbstractLevelObject {
 		setStatic(true);
 	}
 
-	public int use(Agent agent) {
-		position = new Point2D(position);
-		level.removeResource(this);
-		changes.firePropertyChange(KILL_EVENT, null, null);
+	public synchronized int use(Agent agent) {
+		if(!used) {
+			used = true;
+			position = new Point2D(position);
+			level.removeResource(this);
+			changes.firePropertyChange(KILL_EVENT, null, null);
 
-		switch(type) {
-			case Normal:
-				return 1;
-			case DoublePoints:
-				return 2;
-			case ExtremPoint:
-				return 5;
-			case ExtraAgentFuel:
-				agent.spendFuel(Agent.DEFAULT_START_FUEL/2);
-				return 0;
-			case ExtraMothershipFuel:
-				agent.getMothership().spendFuel(Agent.DEFAULT_START_FUEL/5);
-				return 0;
-			case Bomb:
-				return 0;
-			default:
-				return 0;
+			switch(type) {
+				case Normal:
+					return 1;
+				case DoublePoints:
+					return 2;
+				case ExtremPoint:
+					return 5;
+				case ExtraAgentFuel:
+					agent.spendFuel(Agent.DEFAULT_START_FUEL/2);
+					return 0;
+				case ExtraMothershipFuel:
+					agent.getMothership().spendFuel(Mothership.DEFAULT_START_FUEL/5);
+					return 0;
+				case Bomb:
+					agent.kill();
+					return 0;
+				default:
+					return 0;
+			}
 		}
+		Logger.warn(this, "Ignore double resource use!");
+		return 0;
 	}
 }

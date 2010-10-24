@@ -7,7 +7,6 @@ package planetsudo.level.save;
 
 import data.Base2D;
 import data.Direction2D;
-import data.Point2D;
 import java.awt.Color;
 import java.awt.Polygon;
 import planetsudo.level.AbstractLevel;
@@ -54,7 +53,7 @@ public class MarioWorld extends AbstractLevel {
 		resourcePlacement[1] = new ResourceRandomRectangle(150, 150, 850, 850, 15, ResourceType.DoublePoints);
 		resourcePlacement[2] = new ResourceRandomRectangle(300, 300, 700, 700, 4, ResourceType.ExtremPoint);
 		resourcePlacement[3] = new ResourceRandomRectangle(0, 0, 1000, 1000, 4, ResourceType.ExtraAgentFuel);
-		resourcePlacement[4] = new ResourceRandomRectangle(400, 0, 200, 200, 4, ResourceType.ExtraMothershipFuel);
+		resourcePlacement[4] = new ResourceRandomRectangle(400, 400, 200, 200, 4, ResourceType.ExtraMothershipFuel);
 		return resourcePlacement;
 	}
 

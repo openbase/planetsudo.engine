@@ -45,7 +45,7 @@ public class AgentPanel extends AbstractLevelObjectPanel<Agent, MothershipPanel>
 	private int x, y;
 	private Direction2D direction, side;
 	private Point2D position;
-	private int[] xPoses = new int[4], yPoses = new int[4];
+	private int[] xPoses = new int[3], yPoses = new int[4];
 
 	@Override
 	protected void paintComponent(Graphics2D g2) {
@@ -82,21 +82,21 @@ public class AgentPanel extends AbstractLevelObjectPanel<Agent, MothershipPanel>
 			side = new Direction2D(direction.getAngle()-90);
 			g2.drawLine((int) (x+(side.getVector().getX()*resource.getWidth()/2)),
 						(int) (y+(side.getVector().getY()*resource.getHeight()/3)),
-						x,
-						y);
+						(int) (levelObject.getPosition().getX()),
+						(int) (levelObject.getPosition().getY()));
 		}
 
 		levelObject = resource.wasHelping();
 		if(levelObject != null) {
 			side = new Direction2D(direction.getAngle()+90);
-			xPoses[0] = (int) (x+(side.getVector().getX()*30));
-			yPoses[0] = (int) (y+(side.getVector().getY()*30));
-			xPoses[1] = (int) (x-(side.getVector().getX()*30));
-			yPoses[1] = (int) (y-(side.getVector().getY()*30));
+			xPoses[0] = (int) (x+(side.getVector().getX()*15));
+			yPoses[0] = (int) (y+(side.getVector().getY()*15));
+			xPoses[1] = (int) (x-(side.getVector().getX()*15));
+			yPoses[1] = (int) (y-(side.getVector().getY()*15));
 			xPoses[2] = (int) levelObject.getPosition().getX();
 			yPoses[2] = (int) levelObject.getPosition().getY();
-			g22.setColor(teamColor);
-			g2.drawPolygon(xPoses,yPoses,4);
+			g2.setColor(teamColor);
+			g2.fillPolygon(xPoses,yPoses,3);
 //			g2.drawPolygon((int) (resource.getPosition().getX()resource.getWidth()/2)),
 //						(int) (resource.getPosition().getY()getHeight()/3)),
 //						(int) (levelObject.getPosition().getX()),
@@ -105,6 +105,11 @@ public class AgentPanel extends AbstractLevelObjectPanel<Agent, MothershipPanel>
 
 		//paintShape(g2);
 		paintImageRotated(direction, g2);
+
+		//Explositon
+		if(!resource.isAlive()) {
+			paintExplosion(g2);
+		}
 
 		// Paint FuelBarBackground
 		g2.setColor(FUEL_BACKGROUND);
@@ -119,6 +124,7 @@ public class AgentPanel extends AbstractLevelObjectPanel<Agent, MothershipPanel>
 					(int) (y-FUEL_BAR_STATIC_POSITION_Y),
 					(int) (FUEL_BAR_STATIC_WIDTH/Agent.DEFAULT_START_FUEL*resource.getFuel()),
 					(int) FUEL_BAR_STATIC_HEIGHT);
+
 
 		// Paint StateLable
 		if(showStateLabel) {

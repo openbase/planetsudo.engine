@@ -6,10 +6,8 @@
 package planetsudo.view.level.levelobjects;
 
 import java.awt.Graphics2D;
-import java.util.Iterator;
 import planetsudo.level.levelobjects.Agent;
 import planetsudo.level.levelobjects.Mothership;
-import planetsudo.view.MainGUI;
 import planetsudo.view.level.LevelPanel;
 
 /**
@@ -37,5 +35,8 @@ public class MothershipPanel extends AbstractLevelObjectPanel<Mothership, LevelP
 		g2.setColor(resource.getTeam().getTeamColor());
 		g2.fillRect((int)boundingBox.getCenterX()-45, (int)boundingBox.getCenterY()-45, 90,90);
 		paintImage(g2);
+		if(resource.isBurning()) {
+			paintExplosion(g2);
+		}
 	}
 }

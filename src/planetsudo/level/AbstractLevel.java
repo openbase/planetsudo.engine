@@ -97,7 +97,7 @@ public abstract class AbstractLevel implements Runnable {
 		Logger.info(this, "Add "+resources.size()+" Resources");
 	}
 
-	protected synchronized int generateNewResourceID() {
+	public synchronized int generateNewResourceID() {
 		return resourceKeyCounter++;
 	}
 
@@ -164,8 +164,6 @@ public abstract class AbstractLevel implements Runnable {
 		return color;
 	}
 
-
-
 	public Base2D getMothershipBase(int mothershipID) {
 		return getHomePositions()[mothershipID];
 	}
@@ -224,8 +222,17 @@ public abstract class AbstractLevel implements Runnable {
 	public void removeResource(Resource resource) {
 		synchronized(resources) {
 			resources.remove(resource);
+			if(resource.getType() == Resource.ResourceType.Normal) {
+				resources.add(new Resource(generateNewResourceID(), Resource.ResourceType.Normal, this, resource.getPlacement()));
+			}
 		}
 
+	}
+
+	public void addResource(Resource resource) {
+		synchronized(resources) {
+			resources.add(resource);
+		}
 	}
 
 	/**

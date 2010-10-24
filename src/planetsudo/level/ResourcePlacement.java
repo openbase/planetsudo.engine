@@ -5,6 +5,7 @@
 
 package planetsudo.level;
 
+import data.Point2D;
 import java.util.ArrayList;
 import planetsudo.level.levelobjects.Resource;
 
@@ -15,4 +16,5 @@ import planetsudo.level.levelobjects.Resource;
 public interface ResourcePlacement {
 	public ArrayList<Resource> getResources(AbstractLevel level);
 	public int getResourceCount();
+	public Point2D calcRandomLevelPosition(AbstractLevel level);
 }

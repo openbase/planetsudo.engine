@@ -136,15 +136,13 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 	private Agent nextAgent;
 	private int agentCount = 0;
 	public void addActionPoint() {
-		//synchronized(agents) {
 		if(agentCount != 0) {
-			agentIndex = (agentIndex+1) % (agents.size());
+			agentIndex = (agentIndex+1) % (agentCount);
 			nextAgent = agents.get(agentKeyArray[agentIndex]);
 			if(nextAgent != null) {
 				nextAgent.getActionPoints().addActionPoint();
 			}
 		}
-		//}
 	}
 
 	public Team getTeam() {
@@ -174,7 +172,6 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 	protected void removeAgent(Agent agent) {
 		synchronized(agents) {
 			agents.remove(agent.getID());
-			agentCount = agents.size();
 		}
 	}
 
@@ -216,7 +213,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 	}
 
 	public boolean isBurning() {
-		return shield < BURNING_MOTHERSHIP;
+		return shield < BURNING_MOTHERSHIP && hasFuel();
 	}
 
 	public int getShieldForce() {

@@ -34,7 +34,9 @@ public class Agent extends AbstractLevelObject {
 	protected Direction2D direction;
 	protected int fuel;
 	private boolean alive;
+	private boolean attacked;
 	private Resource resource;
+	private boolean hasMine;
 	private String lastAction;
 	private AbstractLevelObject adversaryObject;
 
@@ -45,6 +47,7 @@ public class Agent extends AbstractLevelObject {
 		this.mothership = mothership;
 		this.actionPoints = new ActionPoints(this);
 		this.alive = true;
+		this.attacked = false;
 		if(id == -1) { // check if valid
 			kill();
 			return;
@@ -76,6 +79,7 @@ public class Agent extends AbstractLevelObject {
 	protected void reset() {
 		fuel = DEFAULT_START_FUEL;
 		position = mothership.getAgentHomePosition();
+		hasMine = true;
 		try {
 			direction = new Direction2D(RandomGenerator.getRandom(1, 360));
 		} catch (NotValidException ex) {
@@ -105,6 +109,14 @@ public class Agent extends AbstractLevelObject {
 		return fuel > 0;
 	}
 
+	public boolean hasMine() {
+		return hasMine;
+	}
+
+	public void placeMine() {
+		level.addResource(new Resource(level.generateNewResourceID(), Resource.ResourceType.Bomb, level, new Point2D(position)));
+	}
+
 	private int calcSpeed() {
 		return isCarringResource() ? DEFAULT_AGENT_SPEED/2 : DEFAULT_AGENT_SPEED;
 	}
@@ -119,9 +131,11 @@ public class Agent extends AbstractLevelObject {
 			resource.release();
 		}
 		adversaryObject = null;
+		isHelping = false;
 	}
 
 	private synchronized int useFuel(int value) {
+		actionPoints.getActionPoint(value);
 		if(fuel == 0) {
 			disable();
 			return 0;
@@ -153,15 +167,16 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	public Resource getResource() {
-		Resource tmpResource = resource;
+		Resource tmp2Resource = resource;
 		resource = null;
-		return tmpResource;
+		return tmp2Resource;
 	}
 
-	protected void kill() {
+	public void kill() {
 		Logger.info(this, "Kill "+name);
 		mothership.removeAgent(this);
 		alive = false;
+		fuel = 0;
 	}
 
 	public boolean isAlive() {
@@ -205,11 +220,19 @@ public class Agent extends AbstractLevelObject {
 
 	public void goStraightAhead() {
 		actionPoints.getActionPoint(4);
-		if(useFuel()) {
-			position.translate(direction, calcSpeed());
-			if(level.collisionDetected(getBounds())) { // Is collied with wall?
-				kill();
+		if(isCarringResource()) {
+			if(useFuel(2) != 2) {
+				return;
 			}
+		} else {
+			if(!useFuel()) {
+				return;
+			}
+		}
+
+		position.translate(direction, calcSpeed());
+		if(level.collisionDetected(getBounds())) { // Is collied with wall?
+			kill();
 		}
 	}
 
@@ -289,6 +312,15 @@ public class Agent extends AbstractLevelObject {
 		}
 	}
 
+	private Resource tmpResource;
+	public Resource.ResourceType toucheResourceType() {
+		tmpResource = level.getTouchableResource(this);
+		if(tmpResource != null) {
+			return tmpResource.getType();
+		}
+		return Resource.ResourceType.Unknown;
+	}
+
 	public boolean toucheResource() {
 		return level.getTouchableResource(this) != null;
 	}
@@ -322,6 +354,13 @@ public class Agent extends AbstractLevelObject {
 		return level.getAdversaryMothership(this) != null;
 	}
 
+	boolean oldattackedValue;
+	public boolean wasAttacked() {
+		oldattackedValue = attacked;
+		attacked = false;
+		return oldattackedValue;
+	}
+
 	private int catchedfuel;
 	public void fightWithAdversaryAgent() {
 		actionPoints.getActionPoint();
@@ -329,6 +368,7 @@ public class Agent extends AbstractLevelObject {
 			Agent adversaryAgent = level.getAdversaryAgent(this);
 			adversaryObject = adversaryAgent;
 			if(adversaryAgent != null) {
+				adversaryAgent.attacked = true;
 				actionPoints.getActionPoint(20);
 				direction.turnTo(position, adversaryAgent.position);
 				if(adversaryAgent.hasFuel()) {
@@ -369,21 +409,32 @@ public class Agent extends AbstractLevelObject {
 	}
 
 
+	private boolean isHelping  = false;
 	private AbstractLevelObject helpLevelObject = null;
 	public void spendFuelTeamAgent(int value) {
 		actionPoints.getActionPoint(20);
 		if(useFuel()) {
 			Agent teamAgent = level.getLostTeamAgent(this);
 			if(teamAgent  != null) {
-				direction.turnTo(position, teamAgent.position);
-				actionPoints.getActionPoint(value);
-				teamAgent.fuel += useFuel(value);
 				helpLevelObject =	teamAgent;
+				isHelping = true;
+				direction.turnTo(position, teamAgent.position);
+				actionPoints.getActionPoint(value*2);
+				teamAgent.fuel += useFuel(value);
+				
 			}
 		}
+		isHelping = false;
 	}
 
+
+	private AbstractLevelObject helpLevelObjectOld;
 	public AbstractLevelObject wasHelping() {
+		if(!isHelping) {
+			helpLevelObjectOld = helpLevelObject;
+			helpLevelObject = null;
+			return helpLevelObjectOld;
+		}
 		return helpLevelObject;
 	}
 

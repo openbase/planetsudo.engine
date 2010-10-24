@@ -37,6 +37,7 @@ public abstract class AbstractStrategy implements Runnable {
 					executeRule();
 				} catch(Exception ex) {
 					Logger.error(this, "Could not execute rule["+agent.getLastAction()+"]!", ex);
+					agent.kill();
 				}
 //			} else {
 //				try {

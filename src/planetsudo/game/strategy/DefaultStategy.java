@@ -6,6 +6,7 @@
 package planetsudo.game.strategy;
 
 import planetsudo.level.levelobjects.Agent;
+import planetsudo.level.levelobjects.Resource;
 
 /**
  *
@@ -44,7 +45,7 @@ public class DefaultStategy extends AbstractStrategy {
 		createRule(new Rule(30, "PickUp Resource") {
 			@ Override
 			protected boolean constraint() {
-				return agent.toucheResource();
+				return agent.toucheResource() && agent.toucheResourceType() != Resource.ResourceType.Bomb;
 			}
 			@ Override
 			protected void action() {
@@ -93,6 +94,28 @@ public class DefaultStategy extends AbstractStrategy {
 			@ Override
 			protected void action() {
 				agent.fightWithAdversaryMothership();
+			}
+		});
+		//-------------------------------------------->
+		createRule(new Rule(95, "FightAgainstMothership") {
+			@ Override
+			protected boolean constraint() {
+				return agent.hasMine() && agent.seeAdversaryMothership();
+			}
+			@ Override
+			protected void action() {
+				agent.placeMine();
+			}
+		});
+		//-------------------------------------------->
+		createRule(new Rule(100, "TurnToAdversaryAgent") {
+			@ Override
+			protected boolean constraint() {
+				return agent.wasAttacked();
+			}
+			@ Override
+			protected void action() {
+				agent.turnLeft(60);
 			}
 		});
 		//-------------------------------------------->
@@ -148,6 +171,17 @@ public class DefaultStategy extends AbstractStrategy {
 			@ Override
 			protected void action() {
 				agent.orderFuel(100);
+			}
+		});
+		//-------------------------------------------->
+		createRule(new Rule(500, "OrderFuelDuringFight") {
+			@ Override
+			protected boolean constraint() {
+				return (agent.getFuel() < 100) && agent.seeAdversaryAgent() && agent.isAtMothership();
+			}
+			@ Override
+			protected void action() {
+				agent.orderFuel(10);
 			}
 		});
 		//-------------------------------------------->
