@@ -23,7 +23,8 @@ public class LevelLoadingPanel extends JPanel {
 	private LevelTitleLoadingPanel titlePanel;
 	private JPanel mainPanel, leftBorder, rightBorder;
 	private MenuLoadingPanel menuPanel;
-	private LoadingAnimation completeLoadingProgress, nextLoadingProgress;
+	//private LoadingAnimation completeLoadingProgress;
+	private LoadingAnimation nextLoadingProgress;
 
 	public LevelLoadingPanel() {
 		initComponents();
@@ -36,7 +37,7 @@ public class LevelLoadingPanel extends JPanel {
 		leftBorder = new JPanel();
 		rightBorder = new JPanel();
 		menuPanel = new MenuLoadingPanel();
-		completeLoadingProgress = new LoadingAnimation();
+		//completeLoadingProgress = new LoadingAnimation();
 		nextLoadingProgress = new LoadingAnimation();
 		BoxLayout layout = new BoxLayout(mainPanel, BoxLayout.LINE_AXIS);
 		mainPanel.setLayout(layout);
@@ -49,7 +50,7 @@ public class LevelLoadingPanel extends JPanel {
 		rightBorder.setPreferredSize(new Dimension(100,0));
 		
 
-		mainPanel.add(completeLoadingProgress);
+		//mainPanel.add(completeLoadingProgress);
 		mainPanel.add(nextLoadingProgress);
 
 		add(titlePanel, BorderLayout.PAGE_START);

@@ -29,8 +29,8 @@ public abstract class AbstractLevelObjectPanel<R extends AbstractLevelObject, PR
 
 	protected BufferedImage image;
 
-	public AbstractLevelObjectPanel(R resource, PRP parentResourcePanel, String imageURI) {
-		super(resource, parentResourcePanel);
+	public AbstractLevelObjectPanel(R resource, PRP parentResourcePanel, DrawLayer drawLayer, String imageURI) {
+		super(resource, parentResourcePanel, drawLayer);
 		if(imageURI != null) {
 			try {
 				this.image = ImageLoader.getInstance().loadImage(imageURI);

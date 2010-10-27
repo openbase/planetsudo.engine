@@ -12,9 +12,12 @@ import java.beans.PropertyChangeEvent;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import javax.swing.Timer;
 import logging.Logger;
+import planetsudo.game.GameManager;
 import planetsudo.game.Team;
 import planetsudo.level.AbstractLevel;
 import planetsudo.main.GUIController;
@@ -56,7 +59,10 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 	public void reset() {
 		GUIController.setEvent(new PropertyChangeEvent(this, GUIController.LOADING_STATE_CHANGE, 1, "Lade "+team.getName()+" Mutterschiff"));
 		fuel = DEFAULT_START_FUEL;
-		for(Agent agent : agents.values()) {
+
+		List<Agent> tmpCollection = new LinkedList<Agent>();
+		tmpCollection.addAll(agents.values());
+		for(Agent agent : tmpCollection) {
 			agent.kill();
 		}
 		agentMaxCount = team.getAgentCount();
@@ -65,7 +71,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 	}
 
 	private void loadAgents() {
-		GUIController.setEvent(new PropertyChangeEvent(this, GUIController.LOADING_STATE_CHANGE, agentMaxCount, "Lade "+team.getName()+" Agentens"));
+		GUIController.setEvent(new PropertyChangeEvent(this, GUIController.LOADING_STATE_CHANGE, agentMaxCount, "Lade "+team.getName()+" Agent"));
 		Agent agent;
 		for(int i=0;i<agentMaxCount;i++) {
 			GUIController.setEvent(new PropertyChangeEvent(this, GUIController.LOADING_STEP, null, i));
@@ -114,8 +120,9 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 		}
 	}
 
-	public void waitTillFuelRunsOut() {
-		synchronized(this) {Logger.info(this, "Create "+this);
+	public void waitTillGameEnd() {
+		synchronized(this) {
+			Logger.info(this, "Create "+this);
 			if(fuel == 0) return;
 			try {
 				this.wait();
@@ -230,6 +237,8 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		orderFuel(BURNING_MOTHERSHIP-shield);
+		if(!GameManager.getInstance().isPause()) {
+			orderFuel(BURNING_MOTHERSHIP-shield);
+		}
 	}
 }

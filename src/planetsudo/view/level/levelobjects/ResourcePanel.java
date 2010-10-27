@@ -21,7 +21,7 @@ import planetsudo.view.level.LevelPanel;
 public class ResourcePanel extends AbstractLevelObjectPanel<Resource, LevelPanel> implements PropertyChangeListener {
 
 	public ResourcePanel(Resource resource, LevelPanel parentResourcePanel) {
-		super(resource, parentResourcePanel, getImageURI(resource.getType()));
+		super(resource, parentResourcePanel, DrawLayer.BACKGROUND, getImageURI(resource.getType()));
 		Logger.info(this, "Create "+this);
 		resource.addPropertyChangeListener(this);
 	}
@@ -77,6 +77,6 @@ public class ResourcePanel extends AbstractLevelObjectPanel<Resource, LevelPanel
 	public void propertyChange(PropertyChangeEvent evt) {
 		if(evt.getPropertyName().equals(Resource.KILL_EVENT)) {
 			parentResourcePanel.removeChild(this);
-		}
+		} 
 	}
 }

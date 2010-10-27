@@ -172,8 +172,10 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 					gamePanel.setVideoThreadCommand(VideoThreadCommand.Stop);
 					((CardLayout) mainPanel.getLayout()).show(mainPanel, LOADING_PANEL);
 				} else if(changeEvent.getNewValue() == GameState.Running) {
-					gamePanel.updateDynamicComponents();
-					((CardLayout) mainPanel.getLayout()).show(mainPanel, GAME_PANEL);
+					if(changeEvent.getOldValue() != GameState.Break) {
+						gamePanel.updateDynamicComponents();
+						((CardLayout) mainPanel.getLayout()).show(mainPanel, GAME_PANEL);
+					}
 					gamePanel.setVideoThreadCommand(VideoThreadCommand.Start);
 				} else if(changeEvent.getNewValue() == GameState.Break) {
 					((CardLayout) mainPanel.getLayout()).show(mainPanel, GAME_PANEL);
@@ -197,6 +199,11 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 			case Configuration:
 				startPauseMenuItem.setText("Starte Spiel");
 				startPauseMenuItem.setEnabled(true);
+				stopMenuItem.setEnabled(false);
+				break;
+			case Initialisation:
+				startPauseMenuItem.setText("Starte Spiel");
+				startPauseMenuItem.setEnabled(false);
 				stopMenuItem.setEnabled(false);
 				break;
 			case Running:
@@ -304,7 +311,7 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 
         jMenu2.setText("Spiel");
 
-        displayTeamPanelCheckBoxMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
+        displayTeamPanelCheckBoxMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, 0));
         displayTeamPanelCheckBoxMenuItem.setSelected(true);
         displayTeamPanelCheckBoxMenuItem.setText("Teamanzeige");
         displayTeamPanelCheckBoxMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -339,6 +346,7 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 
         jMenu1.setText("Einstellungen");
 
+        jCheckBoxMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         jCheckBoxMenuItem2.setText("DebugModus");
         jCheckBoxMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -360,6 +368,7 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
         });
         helpMenu.add(contentsMenuItem);
 
+        aboutMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, 0));
         aboutMenuItem.setText("Über PlanetSudo");
         aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

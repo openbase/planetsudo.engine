@@ -18,7 +18,7 @@ public class MothershipPanel extends AbstractLevelObjectPanel<Mothership, LevelP
 
 
 	public MothershipPanel(Mothership resource, LevelPanel parentResourcePanel) {
-		super(resource, parentResourcePanel, "res/img/mothership2.png");
+		super(resource, parentResourcePanel, DrawLayer.BACKGROUND, "res/img/mothership2.png");
 		loadAgentPanels();
 	}
 

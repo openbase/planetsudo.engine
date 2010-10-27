@@ -41,6 +41,7 @@ public class ResourceRandomRectangle extends Rectangle2D.Double implements Resou
 		return resources;
 	}
 
+	@Override
 	public Point2D calcRandomLevelPosition(AbstractLevel level) {
 //		double widthCast = (int) level.getLevelBorderPolygon().getBounds().getWidth()/LevelView.RASTER_SIZE;
 //		double heightCast = (int) level.getLevelBorderPolygon().getBounds().getHeight()/LevelView.RASTER_SIZE;
@@ -91,6 +92,7 @@ public class ResourceRandomRectangle extends Rectangle2D.Double implements Resou
 				resourceYPos = RandomGenerator.getRandom((int) getMinY(), (int) getMaxY());
 			} catch (NotValidException ex) {
 				Logger.warn(this, "Could not place Resource["+type+"]! Bad resoure bounds!", ex);
+				break;
 			}
 			if(!level.containsWall(new Rectangle(resourceXPos-Resource.RESOURCE_SIZE, resourceYPos-Resource.RESOURCE_SIZE, Resource.RESOURCE_SIZE*2, Resource.RESOURCE_SIZE*2))) {
 				break;
@@ -98,6 +100,7 @@ public class ResourceRandomRectangle extends Rectangle2D.Double implements Resou
 				tries++;
 				if(tries > 1000) {
 					Logger.warn(this, "Could not place Resource["+type+"]! Bad map design!");
+					break;
 				}
 			}
 		}

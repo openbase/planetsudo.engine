@@ -139,7 +139,7 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	private synchronized int useFuel(int value) {
-		actionPoints.getActionPoint(value);
+		actionPoints.getActionPoint(1);
 		if(fuel == 0) {
 			disable();
 			return 0;

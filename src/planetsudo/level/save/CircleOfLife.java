@@ -19,9 +19,9 @@ import planetsudo.level.levelobjects.Resource.ResourceType;
  *
  * @author divine
  */
-public class SimpleWorld extends AbstractLevel {
+public class CircleOfLife extends AbstractLevel {
 
-	public SimpleWorld() {
+	public CircleOfLife() {
 	}
 
 	@Override
@@ -60,6 +60,12 @@ public class SimpleWorld extends AbstractLevel {
 
 	@Override
 	protected Polygon[] loadLevelWallPolygons() {
-		return null;
+		Polygon[] walls = new Polygon[1];
+		walls[0] = new Polygon();
+		walls[0].addPoint(400, 400);
+		walls[0].addPoint(600, 400);
+		walls[0].addPoint(600, 600);
+		walls[0].addPoint(400, 600);
+		return walls;
 	}
 }

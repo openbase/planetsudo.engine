@@ -5,12 +5,11 @@
 
 package planetsudo.view.level;
 
-import java.awt.Color;
+import java.beans.PropertyChangeEvent;
 import planetsudo.view.level.levelobjects.MothershipPanel;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.beans.PropertyChangeListener;
 import java.util.Iterator;
 import planetsudo.level.levelobjects.Mothership;
 import planetsudo.level.AbstractLevel;
@@ -23,7 +22,7 @@ import view.components.draw.ResourceDisplayPanel;
  *
  * @author divine
  */
-public class LevelPanel extends AbstractResourcePanel<AbstractLevel, LevelPanel> implements ActionListener {
+public class LevelPanel extends AbstractResourcePanel<AbstractLevel, LevelPanel> implements PropertyChangeListener {
 
 	private final boolean hasInternalWalls;
 
@@ -33,6 +32,7 @@ public class LevelPanel extends AbstractResourcePanel<AbstractLevel, LevelPanel>
 		boundingBox = resource.getLevelBorderPolygon().getBounds2D();
 		updateBounds();
 		parentPanel.setDoubleBuffered(true);
+		resource.addPropertyChangeListener(this);
 	}
 
 	public void loadLevelObjects() {
@@ -48,9 +48,9 @@ public class LevelPanel extends AbstractResourcePanel<AbstractLevel, LevelPanel>
 	}
 
 	private void loadMothershipPanels() {
-		Iterator<Mothership> mothershipIterator = resource.getMotherships();
-		while(mothershipIterator.hasNext()) {
-			new MothershipPanel(mothershipIterator.next(), this);
+		Mothership[] mothershipArray = resource.getMotherships();
+		for(Mothership mothership : mothershipArray) {
+			new MothershipPanel(mothership, this);
 		}
 	}
 
@@ -66,7 +66,9 @@ public class LevelPanel extends AbstractResourcePanel<AbstractLevel, LevelPanel>
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		parentPanel.repaint();
+	public void propertyChange(PropertyChangeEvent evt) {
+		if(evt.getPropertyName().equals(AbstractLevel.CREATE_RESOURCE)) {
+			new ResourcePanel((Resource) evt.getNewValue(), this);
+		}
 	}
 }

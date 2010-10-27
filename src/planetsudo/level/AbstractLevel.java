@@ -11,12 +11,14 @@ import java.awt.Color;
 import java.awt.Polygon;
 import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeEvent;
-import java.util.Collection;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import logging.Logger;
+import planetsudo.game.GameManager;
 import planetsudo.level.levelobjects.Mothership;
 import planetsudo.game.Team;
 import planetsudo.level.levelobjects.Agent;
@@ -29,18 +31,19 @@ import planetsudo.main.GUIController;
  */
 public abstract class AbstractLevel implements Runnable {
 
-	//public final static long DEFAULT_GAME_SPEED = 12/Mothership.DEFAULT_AGENT_COUNT; // Optimised Game Speed
-	public final static long DEFAULT_GAME_SPEED = 12/10;
+	public final static long DEFAULT_GAME_SPEED = 12/Mothership.MAX_AGENT_COUNT; // Optimised Game Speed
+	public final static String CREATE_RESOURCE = "create resource";
 
-
+	private final GameManager gameManager;
 	private final Polygon levelBorderPolygon;
 	private final Polygon[] levelWallPolygons;
 	private final Base2D[] homePositions;
 	private final ResourcePlacement[] resourcePlacement;
 	private final Color color;
+	private final PropertyChangeSupport changes;
 
 	private final String name;
-	private final List<Mothership> motherships;
+	private final Mothership[] motherships;
 	private final List<Resource> resources;
 	private final long gameSpeed;
 	
@@ -48,13 +51,15 @@ public abstract class AbstractLevel implements Runnable {
 	private int resourceKeyCounter;
 
 	public AbstractLevel() {
+		this.gameManager = GameManager.getInstance();
+		this.changes = new PropertyChangeSupport(this);
 		this.name = getClass().getSimpleName();
 		this.levelBorderPolygon = loadLevelBorderPolygon();
 		this.levelWallPolygons = loadLevelWallPolygons();
 		this.homePositions = loadHomePositions();
 		this.resourcePlacement = loadResourcePlacement();
 		this.color = loadLevelColor();
-		this.motherships = Collections.synchronizedList(new LinkedList<Mothership>());
+		this.motherships = new Mothership[2];
 		this.resources = Collections.synchronizedList(new LinkedList<Resource>());
 		this.gameSpeed = DEFAULT_GAME_SPEED;
 		Point2D base = updateBasePosition();
@@ -65,14 +70,17 @@ public abstract class AbstractLevel implements Runnable {
 
 	@Override
 	public void run() {
+
 		Logger.info(this, "Start Level "+this);
 		for(Mothership mothership : motherships) {
 			mothership.startGame();
 		}
 
 		while(!isGameOver()) {
-			for(Mothership mothership : motherships) {
-				mothership.addActionPoint();
+			if(!gameManager.isPause()) {
+				for(Mothership mothership : motherships) {
+					mothership.addActionPoint();
+				}
 			}
 			try {
 				Thread.sleep(gameSpeed);
@@ -80,17 +88,16 @@ public abstract class AbstractLevel implements Runnable {
 				Logger.warn(this, "", ex);
 			}
 		}
+		Logger.info(this, "Level Ends.");
 	}
 
 	public synchronized void reset() {
 		Logger.info(this, "Load default values.");
-		for(Mothership mothership : motherships) {
-			mothership.reset();
-			motherships.remove(mothership);
-		}
-		for(Resource resource : resources) {
-			resources.remove(resource);
-		}
+		if(motherships[0] != null) motherships[0].reset();
+		if(motherships[1] != null) motherships[1].reset();
+//		motherships[0] = null;
+//		motherships[1] = null;
+		resources.clear();
 		resourceKeyCounter = 0;
 		Logger.info(this, "Place resources in "+this);
 		placeResources();
@@ -101,12 +108,15 @@ public abstract class AbstractLevel implements Runnable {
 		return resourceKeyCounter++;
 	}
 
-	public void setTeams(Collection<Team> teams) {
-		reset();
-		for(Team team : teams) {
-			motherships.add(new Mothership(motherships.size(), team, this));
-		}
+	public void setTeamA(Team team) {
+		motherships[0] = new Mothership(0, team, this);
 	}
+	
+		public void setTeamB(Team team) {
+		motherships[1] = new Mothership(1, team, this);
+	}
+
+
 
 	public boolean containsWall(Rectangle2D bounds) {
 		Logger.debug(this, "CalcWallContain");
@@ -126,17 +136,12 @@ public abstract class AbstractLevel implements Runnable {
 
 	public void waitTillGameOver() {
 		for(Mothership mothership : motherships) {
-			mothership.waitTillFuelRunsOut();
+			mothership.waitTillGameEnd();
 		}
 	}
 
 	public boolean isGameOver() {
-		for(Mothership mothership : motherships) {
-			if(mothership.hasFuel()) {
-				return false;
-			}
-		}
-		return true;
+		return gameManager.isGameOver();
 	}
 
 
@@ -168,8 +173,8 @@ public abstract class AbstractLevel implements Runnable {
 		return getHomePositions()[mothershipID];
 	}
 
-	public Iterator<Mothership> getMotherships() {
-		return motherships.iterator();
+	public Mothership[] getMotherships() {
+		return motherships;
 	}
 
 	public Iterator<Resource> getResources() {
@@ -223,9 +228,15 @@ public abstract class AbstractLevel implements Runnable {
 		synchronized(resources) {
 			resources.remove(resource);
 			if(resource.getType() == Resource.ResourceType.Normal) {
-				resources.add(new Resource(generateNewResourceID(), Resource.ResourceType.Normal, this, resource.getPlacement()));
+				spornNewResource(resource.getPlacement());
 			}
 		}
+	}
+
+	private void spornNewResource(ResourcePlacement placement) {
+		Resource newResource = new Resource(generateNewResourceID(), Resource.ResourceType.Normal, this, placement);
+		resources.add(newResource);
+		changes.firePropertyChange(CREATE_RESOURCE, null, newResource);
 
 	}
 
@@ -308,5 +319,15 @@ public abstract class AbstractLevel implements Runnable {
 
 	public String getName() {
 		return name;
+	}
+
+	public void addPropertyChangeListener(PropertyChangeListener l) {
+	    changes.addPropertyChangeListener(l);
+	    Logger.debug(this, "Add "+l.getClass()+" as new PropertyChangeListener.");
+	}
+
+	public void removePropertyChangeListener(PropertyChangeListener l) {
+	    changes.removePropertyChangeListener(l);
+	    Logger.debug(this, "Remove PropertyChangeListener "+l.getClass()+".");
 	}
 }

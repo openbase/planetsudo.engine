@@ -10,8 +10,8 @@ import planetsudo.level.levelobjects.Mothership;
 import planetsudo.level.levelobjects.Agent;
 import java.util.TreeMap;
 import logging.Logger;
+import planetsudo.game.GameManager;
 import planetsudo.level.levelobjects.AgentController;
-
 
 /**
  *
@@ -23,8 +23,10 @@ public abstract class AbstractStrategy implements Runnable {
 	protected final AgentController agent;
 	private final Mothership mothership;
 	private final TreeMap<Integer, Rule> rules;
+	private final GameManager gameManager;
 
 	public AbstractStrategy(Agent agent) {
+		this.gameManager = GameManager.getInstance();
 		this.strategyOwner = agent;
 		this.agent = new AgentController(strategyOwner);
 		this.mothership = agent.getMothership();
@@ -35,26 +37,27 @@ public abstract class AbstractStrategy implements Runnable {
 	@ Override
 	public void run() {
 		while(strategyOwner.isAlive()) {
-//			if(agent.hasFuel()) {
+				if(gameManager.isGameOver()) {
+					//agent.kill();
+					break;
+				}
 				try {
-					executeRule();
+					if(!gameManager.isPause()) {
+						executeRule();
+					} else {
+						Logger.debug(this, "ignore roule because game is paused!");
+					}
 				} catch(Exception ex) {
 					Logger.error(this, "Could not execute rule["+strategyOwner.getLastAction()+"]!", ex);
 					strategyOwner.kill();
 				}
-//			} else {
-//				try {
-//					Thread.sleep(500);
-//				} catch (InterruptedException ex) {
-//					Logger.warn(this, "", ex);
-//				}
-//			}
 			try {
 				Thread.sleep(50);
 			} catch (InterruptedException ex) {
 				Logger.warn(this, "", ex);
 			}
 		}
+		Logger.info(this, "AI dies from agent "+agent+"!");
 	}
 
 	public void createRule(Rule rule) {
@@ -82,3 +85,4 @@ public abstract class AbstractStrategy implements Runnable {
 
 	protected abstract void loadRules();
 }
+x

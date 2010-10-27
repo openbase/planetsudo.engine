@@ -76,7 +76,7 @@
                 <MenuItem class="javax.swing.JCheckBoxMenuItem" name="displayTeamPanelCheckBoxMenuItem">
                   <Properties>
                     <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                      <KeyStroke key="Ctrl+M"/>
+                      <KeyStroke key="M"/>
                     </Property>
                     <Property name="selected" type="boolean" value="true"/>
                     <Property name="text" type="java.lang.String" value="Teamanzeige"/>
@@ -120,6 +120,9 @@
           <SubComponents>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="jCheckBoxMenuItem2">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+Alt+D"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="DebugModus"/>
               </Properties>
               <Events>
@@ -146,6 +149,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="aboutMenuItem">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="F2"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="&#xdc;ber PlanetSudo"/>
               </Properties>
               <Events>
