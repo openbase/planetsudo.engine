@@ -46,7 +46,7 @@ public class MarcosStrategy extends AbstractStrategy {
 		createRule(new Rule(30, "Resource aufsammeln") {
 			@ Override
 			protected boolean constraint() {
-				return agent.toucheResource();
+				return agent.touchResource();
 			}
 			@ Override
 			protected void action() {
@@ -171,7 +171,7 @@ public class MarcosStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-				agent.turnRandom();
+				agent.turnLeft(45);
 			}
 		});
 

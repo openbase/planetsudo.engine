@@ -101,6 +101,10 @@ public class Agent extends AbstractLevelObject {
 		return fuel;
 	}
 
+	public int getFuelInPercent() {
+		return (fuel*100)/Agent.DEFAULT_START_FUEL;
+	}
+
 	public Team getTeam() {
 		return mothership.getTeam();
 	}
@@ -313,7 +317,7 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	private Resource tmpResource;
-	public Resource.ResourceType toucheResourceType() {
+	public Resource.ResourceType touchResourceType() {
 		tmpResource = level.getTouchableResource(this);
 		if(tmpResource != null) {
 			return tmpResource.getType();
@@ -321,7 +325,7 @@ public class Agent extends AbstractLevelObject {
 		return Resource.ResourceType.Unknown;
 	}
 
-	public boolean toucheResource() {
+	public boolean touchResource() {
 		return level.getTouchableResource(this) != null;
 	}
 
@@ -355,7 +359,7 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	boolean oldattackedValue;
-	public boolean wasAttacked() {
+	public boolean isUnderAttack() {
 		oldattackedValue = attacked;
 		attacked = false;
 		return oldattackedValue;

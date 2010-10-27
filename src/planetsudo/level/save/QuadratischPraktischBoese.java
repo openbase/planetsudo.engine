@@ -81,17 +81,12 @@ public class QuadratischPraktischBoese extends AbstractLevel {
 
 	@Override
 	protected Polygon[] loadLevelWallPolygons() {
-		Polygon[] resourcePlacement = new Polygon[2];
+		Polygon[] resourcePlacement = new Polygon[1];
 		resourcePlacement[0] = new Polygon();
 		resourcePlacement[0].addPoint(500, 1000);
 		resourcePlacement[0].addPoint(1000, 500);
 		resourcePlacement[0].addPoint(1100, 600);
 		resourcePlacement[0].addPoint(600, 1100);
-		resourcePlacement[1] = new Polygon();
-		resourcePlacement[1].addPoint(150, 50);
-		resourcePlacement[1].addPoint(200, 50);
-		resourcePlacement[1].addPoint(200, 100);
-		resourcePlacement[1].addPoint(150, 100);
 		return resourcePlacement;
 	}
 }

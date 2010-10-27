@@ -10,6 +10,7 @@ import planetsudo.level.levelobjects.Mothership;
 import planetsudo.level.levelobjects.Agent;
 import java.util.TreeMap;
 import logging.Logger;
+import planetsudo.level.levelobjects.AgentController;
 
 
 /**
@@ -18,12 +19,14 @@ import logging.Logger;
  */
 public abstract class AbstractStrategy implements Runnable {
 
-	protected final Agent agent;
-	protected final Mothership mothership;
+	private final Agent strategyOwner;
+	protected final AgentController agent;
+	private final Mothership mothership;
 	private final TreeMap<Integer, Rule> rules;
 
 	public AbstractStrategy(Agent agent) {
-		this.agent = agent;
+		this.strategyOwner = agent;
+		this.agent = new AgentController(strategyOwner);
 		this.mothership = agent.getMothership();
 		this.rules = new TreeMap<Integer, Rule>();
 		this.loadRules();
@@ -31,13 +34,13 @@ public abstract class AbstractStrategy implements Runnable {
 
 	@ Override
 	public void run() {
-		while(agent.isAlive()) {
+		while(strategyOwner.isAlive()) {
 //			if(agent.hasFuel()) {
 				try {
 					executeRule();
 				} catch(Exception ex) {
-					Logger.error(this, "Could not execute rule["+agent.getLastAction()+"]!", ex);
-					agent.kill();
+					Logger.error(this, "Could not execute rule["+strategyOwner.getLastAction()+"]!", ex);
+					strategyOwner.kill();
 				}
 //			} else {
 //				try {
@@ -70,7 +73,7 @@ public abstract class AbstractStrategy implements Runnable {
 		for(Rule rule : rules.values()) {
 			if(rule.constraint()) {
 				//Logger.debug(this, "Select "+rule);
-				agent.setLastAction(rule.getName());
+				strategyOwner.setLastAction(rule.getName());
 				rule.action();
 				break;
 			}

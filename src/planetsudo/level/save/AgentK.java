@@ -42,19 +42,21 @@ public class AgentK extends AbstractLevel {
 	@Override
 	protected Base2D[] loadHomePositions() {
 		Base2D[] homePosition = new Base2D[2];
-		homePosition[0] = new Base2D(200, 300, Direction2D.DOWN);
-		homePosition[1] = new Base2D(200, 1700, Direction2D.DOWN);
+		homePosition[0] = new Base2D(1200, 100, Direction2D.DOWN);
+		homePosition[1] = new Base2D(1200, 1900, Direction2D.DOWN);
 		return homePosition;
 	}
 
 	@Override
 	protected ResourcePlacement[] loadResourcePlacement() {
-		ResourcePlacement[] resourcePlacement = new ResourcePlacement[5];
-		resourcePlacement[0] = new ResourceRandomRectangle(0, 500, 500, 1500, 30, ResourceType.Normal);
-		resourcePlacement[1] = new ResourceRandomRectangle(0, 500, 1000, 1500, 20, ResourceType.DoublePoints);
-		resourcePlacement[2] = new ResourceRandomRectangle(1500, 0, 2000, 2000, 6, ResourceType.ExtremPoint);
-		resourcePlacement[3] = new ResourceRandomRectangle(500, 0, 2000, 2000, 10, ResourceType.ExtraAgentFuel);
-		resourcePlacement[4] = new ResourceRandomRectangle(500, 0, 2000, 2000, 10, ResourceType.ExtraMothershipFuel);
+		ResourcePlacement[] resourcePlacement = new ResourcePlacement[7];
+		resourcePlacement[0] = new ResourceRandomRectangle(0, 0, 500, 2000, 30, ResourceType.Normal);
+		resourcePlacement[1] = new ResourceRandomRectangle(0, 0, 500, 700, 20, ResourceType.DoublePoints);
+		resourcePlacement[6] = new ResourceRandomRectangle(0, 1300, 500, 2000, 20, ResourceType.DoublePoints);
+		resourcePlacement[2] = new ResourceRandomRectangle(0, 0, 500, 500, 3, ResourceType.ExtremPoint);
+		resourcePlacement[5] = new ResourceRandomRectangle(0, 1500, 500, 2000, 3, ResourceType.ExtremPoint);
+		resourcePlacement[3] = new ResourceRandomRectangle(0, 0, 500, 2000, 10, ResourceType.ExtraAgentFuel);
+		resourcePlacement[4] = new ResourceRandomRectangle(0, 0, 500, 2000, 10, ResourceType.ExtraMothershipFuel);
 		return resourcePlacement;
 	}
 

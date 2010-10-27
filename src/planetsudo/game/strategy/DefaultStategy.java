@@ -14,8 +14,9 @@ import planetsudo.level.levelobjects.Resource;
  */
 public class DefaultStategy extends AbstractStrategy {
 
-	public DefaultStategy(Agent agent) {
-		super(agent);	}
+	public DefaultStategy(Agent a) {
+		super(a);
+	}
 
 	@Override
 	protected void loadRules() {
@@ -45,7 +46,7 @@ public class DefaultStategy extends AbstractStrategy {
 		createRule(new Rule(30, "PickUp Resource") {
 			@ Override
 			protected boolean constraint() {
-				return agent.toucheResource() && agent.toucheResourceType() != Resource.ResourceType.Bomb;
+				return agent.touchResource() && agent.touchResourceType() != Resource.ResourceType.Bomb;
 			}
 			@ Override
 			protected void action() {
@@ -111,7 +112,7 @@ public class DefaultStategy extends AbstractStrategy {
 		createRule(new Rule(100, "TurnToAdversaryAgent") {
 			@ Override
 			protected boolean constraint() {
-				return agent.wasAttacked();
+				return agent.isUnderAttack();
 			}
 			@ Override
 			protected void action() {
