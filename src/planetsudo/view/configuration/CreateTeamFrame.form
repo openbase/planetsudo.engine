@@ -32,7 +32,7 @@
                   <Component id="member2TextField" pref="227" max="32767" attributes="0"/>
                   <Component id="member1TextField" alignment="0" pref="227" max="32767" attributes="0"/>
                   <Component id="strategyTextField" alignment="0" pref="227" max="32767" attributes="0"/>
-                  <Component id="jButton1" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="createButton" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -88,7 +88,7 @@
                           <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                      <Component id="createButton" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
@@ -118,9 +118,6 @@
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="strategyTextField">
-      <Properties>
-        <Property name="text" type="java.lang.String" value=".class"/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
       <Properties>
@@ -146,12 +143,12 @@
         <Property name="text" type="java.lang.String" value="Entwickler"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="javax.swing.JButton" name="createButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Erstellen"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="createButtonActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JColorChooser" name="colorChooser">

@@ -251,6 +251,10 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 		return instance;
 	}
 
+	public ConfigurationPanel getConfigurationPanel() {
+		return configurationPanel;
+	}
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is

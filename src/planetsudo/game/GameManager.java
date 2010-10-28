@@ -5,16 +5,10 @@
 
 package planetsudo.game;
 
-import java.awt.Color;
 import java.beans.PropertyChangeEvent;
-import java.util.ArrayList;
-import java.util.Vector;
 import logging.Logger;
 import planetsudo.level.AbstractLevel;
 import planetsudo.main.GUIController;
-import planetsudo.game.strategy.MarianStategy;
-import planetsudo.game.strategy.MarcosStrategy;
-import planetsudo.level.LevelLoader;
 
 /**
  *
@@ -45,15 +39,15 @@ public class GameManager implements Runnable {
 	}
 
 	public void setupTestGame() {
-		LevelLoader.getInstance();
-		ArrayList<String> team0 = new ArrayList<String>(), team1 = new ArrayList<String>();
-		team0.add("OptimusPrime");
-		team0.add("Divine");
-		team1.add("Noxus");
-		addTeam(new Team(0, "Piranjas", Color.BLUE, MarianStategy.class, team0), TeamType.A);
-		//addTeam(new Team(1, "BlackHeath", Color.MAGENTA, DefaultStategy.class, 10, team1));
-		addTeam(new Team(2, "Legions of Iron", new Color(255,100,100), MarcosStrategy.class, team1), TeamType.B);
-		startGame();
+//		LevelLoader.getInstance();
+//		ArrayList<String> team0 = new ArrayList<String>(), team1 = new ArrayList<String>();
+//		team0.add("OptimusPrime");
+//		team0.add("Divine");
+//		team1.add("Noxus");
+//		addTeam(new Team(0, "Piranjas", Color.BLUE, MarianStrategy.class, team0), TeamType.A);
+//		//addTeam(new Team(1, "BlackHeath", Color.MAGENTA, DefaultStategy.class, 10, team1));
+//		addTeam(new Team(2, "Legions of Iron", new Color(255,100,100), MarcosStrategy.class, team1), TeamType.B);
+//		startGame();
 	}
 
 	@Override

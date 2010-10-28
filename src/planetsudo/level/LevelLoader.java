@@ -11,7 +11,6 @@ import java.util.Set;
 import java.util.TreeMap;
 import logging.Logger;
 import planetsudo.main.clc.SetLevelPathCommand;
-import planetsudo.view.level.LevelPanel;
 
 /**
  *

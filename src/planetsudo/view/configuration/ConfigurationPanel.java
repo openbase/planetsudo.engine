@@ -11,8 +11,12 @@
 
 package planetsudo.view.configuration;
 
+import controller.ObjectFileController;
+import java.io.File;
 import javax.swing.ImageIcon;
+import logging.Logger;
 import planetsudo.game.GameManager;
+import planetsudo.game.Team;
 import planetsudo.level.AbstractLevel;
 import planetsudo.level.LevelLoader;
 import planetsudo.view.MainGUI;
@@ -35,6 +39,43 @@ public class ConfigurationPanel extends javax.swing.JPanel {
 		for(String levelName : LevelLoader.getInstance().getLevelNameSet()) {
 			LevelChooserComboBox.addItem(levelName);
 		}
+		updateTeamList();
+	}
+
+	public void updateTeamList() {
+		File teamFolder = new File("teams/");
+		if(!teamFolder.exists()) {
+			Logger.error(this, "Could not find team folder! ");
+			return;
+		}
+		String[] teamClassNameList = teamFolder.list();
+		if(teamClassNameList == null) {
+			Logger.error(this, "Team folder is empty!!");
+			return;
+		}
+
+		teamAComboBox.removeAllItems();
+		teamBComboBox.removeAllItems();
+		Team tmpTeam;
+		//Vector<Team> teamVector = new Vector<Team>();
+		for (String teamClassName : teamClassNameList) {
+			if (teamClassName.endsWith(".team")) {
+				//String[] a = teamClassName.split("\.");
+				String teamStringID = teamClassName.replace(".team", "");
+
+				try {
+					ObjectFileController<Team> readerWriter = new ObjectFileController<Team>("teams/" + teamStringID + ".team");
+
+					tmpTeam  = readerWriter.readObject();
+					teamAComboBox.addItem(tmpTeam);
+					teamBComboBox.addItem(tmpTeam);
+					//teamVector.add();
+				} catch (Exception ex) {
+					Logger.error(this, "Could not find team "+teamClassName+"!", ex);
+					continue;
+				}
+			}
+		}
 	}
 
     /** This method is called from within the constructor to
@@ -48,8 +89,8 @@ public class ConfigurationPanel extends javax.swing.JPanel {
         java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel1 = new javax.swing.JPanel();
-        jComboBox1 = new javax.swing.JComboBox();
-        jComboBox2 = new javax.swing.JComboBox();
+        teamBComboBox = new javax.swing.JComboBox();
+        teamAComboBox = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -64,19 +105,27 @@ public class ConfigurationPanel extends javax.swing.JPanel {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Team Einstellungen"));
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.setEnabled(false);
+        teamBComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        teamBComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                teamBComboBoxActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
-        jPanel1.add(jComboBox1, gridBagConstraints);
+        jPanel1.add(teamBComboBox, gridBagConstraints);
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox2.setEnabled(false);
+        teamAComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        teamAComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                teamAComboBoxActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        jPanel1.add(jComboBox2, gridBagConstraints);
+        jPanel1.add(teamAComboBox, gridBagConstraints);
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Team A");
@@ -225,7 +274,7 @@ public class ConfigurationPanel extends javax.swing.JPanel {
 
 	private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 		MainGUI.getInstance().showLoadingPanel();
-		GameManager.getInstance().setupTestGame();
+		GameManager.getInstance().startGame();
 	}//GEN-LAST:event_jButton1ActionPerformed
 
 	private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -237,13 +286,19 @@ public class ConfigurationPanel extends javax.swing.JPanel {
         });
 	}//GEN-LAST:event_jButton2ActionPerformed
 
+	private void teamAComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_teamAComboBoxActionPerformed
+		GameManager.getInstance().addTeam((Team) teamAComboBox.getSelectedItem(), GameManager.TeamType.A);
+	}//GEN-LAST:event_teamAComboBoxActionPerformed
+
+	private void teamBComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_teamBComboBoxActionPerformed
+		GameManager.getInstance().addTeam((Team) teamBComboBox.getSelectedItem(), GameManager.TeamType.B);
+	}//GEN-LAST:event_teamBComboBoxActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox LevelChooserComboBox;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JComboBox jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -252,6 +307,8 @@ public class ConfigurationPanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel3;
     private planetsudo.view.level.LevelDisplayPanel levelPreviewDisplayPanel;
     private javax.swing.JLabel logoLabel;
+    private javax.swing.JComboBox teamAComboBox;
+    private javax.swing.JComboBox teamBComboBox;
     // End of variables declaration//GEN-END:variables
 
 

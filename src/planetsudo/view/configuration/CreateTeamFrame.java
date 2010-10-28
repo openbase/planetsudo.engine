@@ -11,12 +11,14 @@
 
 package planetsudo.view.configuration;
 
+import controller.ObjectFileController;
 import java.awt.Color;
 import java.util.Collection;
 import java.util.Vector;
 import logging.Logger;
 import planetsudo.game.Team;
 import planetsudo.game.strategy.AbstractStrategy;
+import planetsudo.view.MainGUI;
 
 /**
  *
@@ -35,6 +37,9 @@ public class CreateTeamFrame extends javax.swing.JFrame {
 		Color color;
 		Class<AbstractStrategy> strategy = null;
 		Collection<String> members = new Vector<String>();
+		idTextField.setForeground(Color.BLACK);
+		strategyTextField.setForeground(Color.BLACK);
+		createButton.setForeground(Color.BLACK);
 
 		try {
 			id = Integer.parseInt(idTextField.getText());
@@ -47,7 +52,8 @@ public class CreateTeamFrame extends javax.swing.JFrame {
 		color = colorChooser.getColor();
 
 		try {
-			strategy = (Class<AbstractStrategy>) getClass().getClassLoader().loadClass(strategyTextField.getText());
+			Logger.info(this, "try to load "+ AbstractStrategy.class.getPackage().getName()+"."+strategyTextField.getText());
+			strategy = (Class<AbstractStrategy>) getClass().getClassLoader().loadClass(AbstractStrategy.class.getPackage().getName()+"."+strategyTextField.getText());
 		} catch (ClassNotFoundException ex) {
 			strategyTextField.setForeground(Color.RED);
 			Logger.error(this, "Could not find strategy!", ex);
@@ -59,7 +65,29 @@ public class CreateTeamFrame extends javax.swing.JFrame {
 		members.add(member2TextField.getText());
 
 
-		new Team(id, name, color, strategy, members);
+		Team team = new Team(id, name, color, strategy, members);
+		try {
+			ObjectFileController<Team> fileWriter = new ObjectFileController<Team>("teams/"+id+".team");
+			fileWriter.writeObject(team);
+		} catch (Exception ex) {
+			Logger.error(this, "Could not find team folder!", ex);
+			createButton.setForeground(Color.RED);
+			return;
+		}
+		MainGUI.getInstance().getConfigurationPanel().updateTeamList();
+		setVisible(false);
+		reset();
+
+	}
+
+	private void reset() {
+		idTextField.setText("");
+		nameTextField.setText("");
+		strategyTextField.setText("");
+		member1TextField.setText("");
+		member2TextField.setText("");
+		
+
 	}
 
     /** This method is called from within the constructor to
@@ -82,7 +110,7 @@ public class CreateTeamFrame extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         member2TextField = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        createButton = new javax.swing.JButton();
         colorChooser = new javax.swing.JColorChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -104,8 +132,6 @@ public class CreateTeamFrame extends javax.swing.JFrame {
             }
         });
 
-        strategyTextField.setText(".class");
-
         jLabel4.setText("Strategie");
 
         jLabel5.setText("Entwickler");
@@ -114,10 +140,10 @@ public class CreateTeamFrame extends javax.swing.JFrame {
 
         jLabel7.setText("Entwickler");
 
-        jButton1.setText("Erstellen");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        createButton.setText("Erstellen");
+        createButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                createButtonActionPerformed(evt);
             }
         });
 
@@ -134,7 +160,7 @@ public class CreateTeamFrame extends javax.swing.JFrame {
                     .addComponent(member2TextField, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
                     .addComponent(member1TextField, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
                     .addComponent(strategyTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
-                    .addComponent(jButton1))
+                    .addComponent(createButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
@@ -178,16 +204,16 @@ public class CreateTeamFrame extends javax.swing.JFrame {
                             .addComponent(member2TextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel7))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)))
+                        .addComponent(createButton)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-	private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+	private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
 		createTeam();
-	}//GEN-LAST:event_jButton1ActionPerformed
+	}//GEN-LAST:event_createButtonActionPerformed
 
 	private void idTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idTextFieldActionPerformed
 		// TODO add your handling code here:
@@ -210,8 +236,8 @@ public class CreateTeamFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JColorChooser colorChooser;
+    private javax.swing.JButton createButton;
     private javax.swing.JTextField idTextField;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
