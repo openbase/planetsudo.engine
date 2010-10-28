@@ -7,9 +7,10 @@ package planetsudo.main;
 import configuration.parameter.CommandParameterParser;
 import configuration.parameter.PrintHelpCommand;
 import configuration.parameter.SetDebugModeCommand;
-import planetsudo.game.GameManager;
 import logging.Logger;
+import planetsudo.game.GameManager;
 import planetsudo.main.clc.SetLevelPathCommand;
+
 
 /**
  *
@@ -18,12 +19,11 @@ import planetsudo.main.clc.SetLevelPathCommand;
 public class Main {
 
 	public final static boolean DEBUG = false;
-	private final GameManager gameManager;
 	private final GUIController guiController;
 
 	public Main() {
 		Logger.info(this, "Starting Game...");
-		this.gameManager = new GameManager();
+		new GameManager();
 		this.guiController = new GUIController();
 		this.guiController.startGUI();
 	}
@@ -45,7 +45,7 @@ public class Main {
 
 		new Logger(DEBUG);
 		Logger.setPrintExceptionStackTrace(true);
-		Logger.setDisplayExceptionDialog(true);
+		Logger.setDisplayExceptionDialog(false);
 		new Main();
 	}
 

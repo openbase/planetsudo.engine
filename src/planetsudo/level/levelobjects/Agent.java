@@ -416,7 +416,6 @@ public class Agent extends AbstractLevelObject {
 	private boolean isHelping  = false;
 	private AbstractLevelObject helpLevelObject = null;
 	public void spendFuelTeamAgent(int value) {
-		actionPoints.getActionPoint(20);
 		if(useFuel()) {
 			Agent teamAgent = level.getLostTeamAgent(this);
 			if(teamAgent  != null) {

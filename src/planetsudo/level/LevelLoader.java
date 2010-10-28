@@ -24,6 +24,7 @@ public class LevelLoader {
 
 	public LevelLoader() {
 		instance = this;
+		levelMap = new TreeMap<String, Class<? extends AbstractLevel>>();
 		update();
 	}
 
@@ -41,16 +42,22 @@ public class LevelLoader {
 			return;
 		}
 
-		levelMap = new TreeMap<String, Class<? extends AbstractLevel>>();
+
+
+
 		for(String levelClassName : levelClassNameList) {
-			levelClassName = levelClassName.replace(".class", "");
-			Logger.info(this, "Found Level: "+levelClassName);
-			try {
-				levelMap.put(levelClassName, (Class<? extends AbstractLevel>) getClass().getClassLoader().loadClass(getClass().getPackage().getName()+".save."+levelClassName));
-			} catch (ClassNotFoundException ex) {
-				Logger.error(this, "Could not load level binary file!", ex);
+			if(levelClassName.endsWith(".class")) {
+				levelClassName = levelClassName.replace(".class", "");
+				Logger.info(this, "Found Level: "+levelClassName);
+				try {
+					levelMap.put(levelClassName, (Class<? extends AbstractLevel>) getClass().getClassLoader().loadClass(getClass().getPackage().getName()+".save."+levelClassName));
+				} catch (ClassNotFoundException ex) {
+					Logger.error(this, "Could not load level binary file!", ex);
+				}
+				Logger.info(this, levelMap.size()+" Level loaded.");
+			} else {
+				Logger.info(this, "Ignore file "+levelClassName+" in level folder.");
 			}
-			Logger.info(this, levelMap.size()+" Level loaded.");
 		}
 	}
 

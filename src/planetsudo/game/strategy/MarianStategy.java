@@ -12,10 +12,21 @@ import planetsudo.level.levelobjects.Resource;
  *
  * @author divine
  */
-public class DefaultStategy extends AbstractStrategy {
+public class MarianStategy extends AbstractStrategy {
 
-	public DefaultStategy(Agent a) {
+	public MarianStategy() {
+	}
+	public MarianStategy(Agent a) {
 		super(a);
+	}
+
+	/**
+	 * Wie viele Agenten sollen erstellt werde wird hier angegeben.
+	 * @return Anzahl der Agenten
+	 */
+	@Override
+	protected int loadAgentCount() {
+		return 10;
 	}
 
 	@Override

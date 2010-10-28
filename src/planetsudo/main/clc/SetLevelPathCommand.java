@@ -12,7 +12,7 @@ import configuration.parameter.AbstractRunCommand;
  * @author divine
  */
 public class SetLevelPathCommand extends AbstractRunCommand<String, Void> {
-	public final static String[] COMMAND_IDENTIFIERS = {"-d", "--debug"};
+	public final static String[] COMMAND_IDENTIFIERS = {"-l", "--levelfolder"};
 	public final static String[] ARGUMENT_IDENTIFIERS = {"LevelPath"};
 	public final static String[] DEFAULT_VALUES = {"build/classes/planetsudo/level/save/"};
 

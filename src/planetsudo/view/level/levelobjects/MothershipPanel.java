@@ -23,7 +23,7 @@ public class MothershipPanel extends AbstractLevelObjectPanel<Mothership, LevelP
 	}
 
 	private void loadAgentPanels() {
-		for(Agent agent : resource.getAgends()) {
+		for(Agent agent : resource.getAgents()) {
 			new AgentPanel(agent, this);
 		}
 	}

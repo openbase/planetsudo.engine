@@ -32,6 +32,7 @@ import planetsudo.view.level.levelobjects.AgentPanel;
 import planetsudo.view.loading.LevelLoadingPanel;
 import planetsudo.view.menu.GameContext;
 import planetsudo.view.menu.HelpFrame;
+import planetsudo.view.menu.AINetworkTransferMenu;
 
 /**
  *
@@ -93,6 +94,7 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 				setFullScreenMode(DEFAULT_FULLSCREENMODE);
 				guiController.addPropertyChangeListener(instance);
 				displayTeamPanelCheckBoxMenuItem.setSelected(gamePanel.isTeamPanelDisplayed());
+				updateButtons(GameManager.getInstance().getGameState());
 			}
 		});
 	}
@@ -200,23 +202,44 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 				startPauseMenuItem.setText("Starte Spiel");
 				startPauseMenuItem.setEnabled(true);
 				stopMenuItem.setEnabled(false);
+				finalCalculationMenuItem.setEnabled(false);
 				break;
 			case Initialisation:
 				startPauseMenuItem.setText("Starte Spiel");
 				startPauseMenuItem.setEnabled(false);
 				stopMenuItem.setEnabled(false);
+				finalCalculationMenuItem.setEnabled(false);
 				break;
 			case Running:
 				startPauseMenuItem.setText("Pause");
 				startPauseMenuItem.setEnabled(true);
 				stopMenuItem.setEnabled(true);
+				finalCalculationMenuItem.setEnabled(true);
 				break;
 			case Break:
 				startPauseMenuItem.setText("Weiter");
 				startPauseMenuItem.setEnabled(true);
 				stopMenuItem.setEnabled(true);
+				finalCalculationMenuItem.setEnabled(false);
 				break;
 		}
+		if(finished) {
+			startPauseMenuItem.setEnabled(false);
+			stopMenuItem.setEnabled(true);
+			finalCalculationMenuItem.setEnabled(false);
+			stopMenuItem.setText("Zurück zum Hauptmenü");
+
+		} else {
+			stopMenuItem.setText("Stop");
+		}
+		finished = false;
+	}
+
+	private boolean finished;
+	private void finalizeGame() {
+		finished = true;
+		GameManager.getInstance().switchGameState(GameState.Break);
+		gamePanel.displayEndCalculation();
 	}
 
 	public void showLoadingPanel() {
@@ -238,9 +261,12 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
     private void initComponents() {
 
         jFrame1 = new javax.swing.JFrame();
+        jMenuItem1 = new javax.swing.JMenuItem();
         mainPanel = new javax.swing.JPanel();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
+        finalCalculationMenuItem = new javax.swing.JMenuItem();
+        jSeparator3 = new javax.swing.JPopupMenu.Separator();
         startPauseMenuItem = new javax.swing.JMenuItem();
         stopMenuItem = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
@@ -251,6 +277,8 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
         jCheckBoxMenuItem3 = new javax.swing.JCheckBoxMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jCheckBoxMenuItem2 = new javax.swing.JCheckBoxMenuItem();
         helpMenu = new javax.swing.JMenu();
@@ -268,12 +296,24 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
             .addGap(0, 300, Short.MAX_VALUE)
         );
 
+        jMenuItem1.setText("jMenuItem1");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PlanetSudo - The Force Of Life");
 
         mainPanel.setLayout(new java.awt.CardLayout());
 
         fileMenu.setText("Spiel");
+
+        finalCalculationMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, 0));
+        finalCalculationMenuItem.setText("Endabrechnung");
+        finalCalculationMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                finalCalculationMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(finalCalculationMenuItem);
+        fileMenu.add(jSeparator3);
 
         startPauseMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SPACE, 0));
         startPauseMenuItem.setText("Start");
@@ -333,7 +373,7 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
         editMenu.add(jMenu2);
         editMenu.add(jSeparator1);
 
-        jCheckBoxMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, java.awt.event.InputEvent.ALT_MASK));
+        jCheckBoxMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F11, 0));
         jCheckBoxMenuItem1.setText("Vollbild");
         jCheckBoxMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -343,6 +383,19 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
         editMenu.add(jCheckBoxMenuItem1);
 
         menuBar.add(editMenu);
+
+        jMenu3.setText("Netzwerk");
+
+        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
+        jMenuItem2.setText("Sende KI");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem2);
+
+        menuBar.add(jMenu3);
 
         jMenu1.setText("Einstellungen");
 
@@ -389,7 +442,7 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
         );
 
         pack();
@@ -434,12 +487,35 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 	}//GEN-LAST:event_stopMenuItemActionPerformed
 
 	private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
-		new HelpFrame().setVisible(true);
+		java.awt.EventQueue.invokeLater(new Runnable() {
+			@Override
+            public void run() {
+                new HelpFrame().setVisible(true);
+            }
+        });
 	}//GEN-LAST:event_aboutMenuItemActionPerformed
 
 	private void contentsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contentsMenuItemActionPerformed
-		new GameContext().setVisible(true);
+		java.awt.EventQueue.invokeLater(new Runnable() {
+			@Override
+            public void run() {
+                new GameContext().setVisible(true);
+            }
+        });
 	}//GEN-LAST:event_contentsMenuItemActionPerformed
+
+	private void finalCalculationMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finalCalculationMenuItemActionPerformed
+		finalizeGame();
+	}//GEN-LAST:event_finalCalculationMenuItemActionPerformed
+
+	private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+		java.awt.EventQueue.invokeLater(new Runnable() {
+			@Override
+            public void run() {
+                new AINetworkTransferMenu().setVisible(true);
+            }
+        });
+	}//GEN-LAST:event_jMenuItem2ActionPerformed
 
 	public static LevelView levelView;
     /**
@@ -462,6 +538,7 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
+    private javax.swing.JMenuItem finalCalculationMenuItem;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem2;
@@ -469,8 +546,12 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
     private javax.swing.JFrame jFrame1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem startPauseMenuItem;

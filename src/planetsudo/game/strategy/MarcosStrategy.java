@@ -13,8 +13,19 @@ import planetsudo.level.levelobjects.Agent;
  */
 public class MarcosStrategy extends AbstractStrategy {
 
+	public MarcosStrategy() {
+	}
 	public MarcosStrategy(Agent agent) {
 		super(agent);	
+	}
+
+	/**
+	 * Wie viele Agenten sollen erstellt werde wird hier angegeben.
+	 * @return Anzahl der Agenten
+	 */
+	@Override
+	protected int loadAgentCount() {
+		return 1;
 	}
 
 	@Override

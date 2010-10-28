@@ -294,7 +294,7 @@ public abstract class AbstractLevel implements Runnable {
 	public Agent getAdversaryAgent(Agent agent) {
 		for(Mothership mothership : motherships) {
 			if(mothership.getTeam() != agent.getTeam()) {
-				for(Agent adversaryAgent : mothership.getAgends()) {
+				for(Agent adversaryAgent : mothership.getAgents()) {
 					if(adversaryAgent.hasFuel() && adversaryAgent.getBounds().intersects(agent.getViewBounds())) {
 						return adversaryAgent;
 					}
@@ -307,7 +307,7 @@ public abstract class AbstractLevel implements Runnable {
 	public Agent getLostTeamAgent(Agent agent) {
 		for(Mothership mothership : motherships) {
 			if(mothership.getTeam() == agent.getTeam()) {
-				for(Agent teamAgent : mothership.getAgends()) {
+				for(Agent teamAgent : mothership.getAgents()) {
 					if(!teamAgent.hasFuel() && teamAgent.getBounds().intersects(agent.getViewBounds())) {
 						return teamAgent;
 					}

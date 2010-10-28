@@ -193,7 +193,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 		}
 	}
 
-	public Collection<Agent> getAgends() {
+	public Collection<Agent> getAgents() {
 		return agents.values();
 	}
 
@@ -227,6 +227,10 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 		return shield;
 	}
 
+	public int getShieldPoints() {
+		return shield/10;
+	}
+
 	public boolean isMaxDamaged() {
 		return shield == 0;
 	}
@@ -240,5 +244,17 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 		if(!GameManager.getInstance().isPause()) {
 			orderFuel(BURNING_MOTHERSHIP-shield);
 		}
+	}
+
+	public int getAgentsAtHomePosition() {
+		int counter = 0;
+		synchronized(agents) {
+			for(Agent agent : agents.values()) {
+				if(getBounds().contains(agent.getBounds()) || getBounds().intersects(agent.getBounds())) {
+					counter++;
+				}
+			}
+		}
+		return counter;
 	}
 }

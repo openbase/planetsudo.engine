@@ -12,7 +12,7 @@ import java.util.Vector;
 import logging.Logger;
 import planetsudo.level.AbstractLevel;
 import planetsudo.main.GUIController;
-import planetsudo.game.strategy.DefaultStategy;
+import planetsudo.game.strategy.MarianStategy;
 import planetsudo.game.strategy.MarcosStrategy;
 import planetsudo.level.LevelLoader;
 
@@ -50,9 +50,9 @@ public class GameManager implements Runnable {
 		team0.add("OptimusPrime");
 		team0.add("Divine");
 		team1.add("Noxus");
-		addTeam(new Team(0, "Piranjas", Color.BLUE, DefaultStategy.class, 4, team0), TeamType.A);
+		addTeam(new Team(0, "Piranjas", Color.BLUE, MarianStategy.class, team0), TeamType.A);
 		//addTeam(new Team(1, "BlackHeath", Color.MAGENTA, DefaultStategy.class, 10, team1));
-		addTeam(new Team(2, "Legions of Iron", new Color(0,100,255), MarcosStrategy.class, 4, team1), TeamType.B);
+		addTeam(new Team(2, "Legions of Iron", new Color(255,100,100), MarcosStrategy.class, team1), TeamType.B);
 		startGame();
 	}
 
@@ -194,6 +194,10 @@ public class GameManager implements Runnable {
 
 	public Team getTeamB() {
 		return teamB;
+	}
+
+	public boolean isWinner(Team team) {
+		return team.getFinalPoints() == Math.max(teamA.getFinalPoints(), teamB.getFinalPoints());
 	}
 
 	@Override

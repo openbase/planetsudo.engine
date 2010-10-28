@@ -6,12 +6,12 @@
 
 package planetsudo.game.strategy;
 
-import planetsudo.level.levelobjects.Mothership;
 import planetsudo.level.levelobjects.Agent;
 import java.util.TreeMap;
 import logging.Logger;
 import planetsudo.game.GameManager;
 import planetsudo.level.levelobjects.AgentController;
+import planetsudo.level.levelobjects.MothershipController;
 
 /**
  *
@@ -21,16 +21,27 @@ public abstract class AbstractStrategy implements Runnable {
 
 	private final Agent strategyOwner;
 	protected final AgentController agent;
-	private final Mothership mothership;
+	private final MothershipController mothership;
 	private final TreeMap<Integer, Rule> rules;
 	private final GameManager gameManager;
+	private final int agentCount;
+
+	public AbstractStrategy() {
+		this.mothership = null;
+		this.rules = null;
+		this.gameManager = null;
+		this.strategyOwner = null;
+		this.agent = null;
+		this.agentCount = loadAgentCount();
+	}
 
 	public AbstractStrategy(Agent agent) {
 		this.gameManager = GameManager.getInstance();
 		this.strategyOwner = agent;
 		this.agent = new AgentController(strategyOwner);
-		this.mothership = agent.getMothership();
+		this.mothership = this.agent.getMothership();
 		this.rules = new TreeMap<Integer, Rule>();
+		this.agentCount = loadAgentCount();
 		this.loadRules();
 	}
 
@@ -72,10 +83,12 @@ public abstract class AbstractStrategy implements Runnable {
 		return -rule.getPriority(); // invert priority to swap list order.
 	}
 
+
+
 	protected void executeRule() {
 		for(Rule rule : rules.values()) {
 			if(rule.constraint()) {
-				//Logger.debug(this, "Select "+rule);
+				Logger.debug(this, "Select "+rule);
 				strategyOwner.setLastAction(rule.getName());
 				rule.action();
 				break;
@@ -83,6 +96,11 @@ public abstract class AbstractStrategy implements Runnable {
 		}
 	}
 
+	public int getAgentCount() {
+		return agentCount;
+	}
+
 	protected abstract void loadRules();
+	protected abstract int loadAgentCount();
 }
-x
+

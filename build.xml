@@ -93,10 +93,24 @@
 
         <delete dir="${store.dir}"/>
         <mkdir dir="${store.dir}"/>
+	
+	<copy todir="dist" >
+            <fileset dir=".">
+                <include name="**/*.gif"/>
+                <include name="**/*.jpg"/>
+                <include name="**/*.png"/>
+                <include name="**/*.wav"/>
+            </fileset>
+            
+        </copy>
 
         <jar destfile="${store.dir}/temp_final.jar" filesetmanifest="skip">
             <zipgroupfileset dir="dist" includes="*.jar"/>
-            <zipgroupfileset dir="dist/lib" includes="*.jar"/>
+	    <zipgroupfileset dir="dist/lib" includes="*.jar"/>
+	    <fileset dir="dist">
+		    <include name="res/**/*.png" />
+	    </fileset>
+	    <!-- <zipgroupfileset dir="src" includes="*.java"/>-->
 
             <manifest>
                 <attribute name="Main-Class" value="${main.class}"/>

@@ -56,6 +56,11 @@ public class GamePanel extends javax.swing.JPanel {
 		teamMenuPanel2.setVisible(displayTeamPanel);
 	}
 
+	public void displayEndCalculation() {
+		teamMenuPanel1.displayEndCalculation();
+		teamMenuPanel2.displayEndCalculation();
+	}
+
 	public void setVideoThreadCommand(VideoThreadCommand command) {
 		levelDisplayPanel.setVideoThreadCommand(command);
 		switch(command) {
