@@ -17,47 +17,47 @@ public class MothershipController {
 	}
 
 	/**
-	 * Gibt zurück, ob Mutterschiff Treibstoff hat.
-	 * @return
+	 * Gibt zur&uuml;ck, ob Mutterschiff Treibstoff hat.
+	 * @return Einen der Resourcentypen: Unknown, Normal, DoublePoints, ExtremPoint, ExtraAgentFuel, ExtraMothershipFuel, Bomb
 	 */
 	public boolean hasFuel() {
 		return mothership.hasFuel();
 	}
 
 	/**
-	 * Gibt zurück, wie viele Agenten das Team hat.
+	 * Gibt zur&uuml;ck, wie viele Agenten das Team hat.
 	 */
 	public void getAgentCount() {
 		mothership.getAgentCount();
 	}
 
 	/**
-	 * Gibt zurück, ob das Mutterschiff brennt und somit Treibstoff verliert.
-	 * @return
+	 * Gibt zur&uuml;ck, ob das Mutterschiff brennt und somit Treibstoff verliert.
+	 * @return true oder false.
 	 */
 	public boolean isBurning() {
 		return mothership.isBurning();
 	}
 
 	/**
-	 * Gibt die Schildstärke des Mutterschiffs wieder. (0-100)
-	 * @return
+	 * Gibt die Schildst&auml;rke des Mutterschiffs wieder.
+	 * @return Schildst&auml;rke von 0 - 100 als ganze Zahl.
 	 */
 	public int getShieldForce() {
 		return mothership.getShieldForce();
 	}
 
 	/**
-	 * Gibt zurück, ob das Mutterschiff maximal beschädigt wurde. (Der Schutzschild is komplett zerstört)
-	 * @return
+	 * Gibt zur&uuml;ck, ob das Mutterschiff maximal besch&auml;digt wurde. (Der Schutzschild is komplett zerst&ouml;rt)
+	 * @return true oder false.
 	 */
 	public boolean isMaxDamaged() {
 		return mothership.isMaxDamaged();
 	}
 
 	/**
-	 * Gibt zurück, ob das Mutterschiff und somit der Schutzschild beschädigt ist.
-	 * @return
+	 * Gibt zur&uuml;ck, ob das Mutterschiff und somit der Schutzschild besch&auml;digt ist.
+	 * @return true oder false.
 	 */
 	public boolean isDamaged() {
 		return mothership.isDamaged();

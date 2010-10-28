@@ -118,7 +118,10 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	public void placeMine() {
-		level.addResource(new Resource(level.generateNewResourceID(), Resource.ResourceType.Bomb, level, new Point2D(position)));
+		actionPoints.getActionPoint();
+		if(useFuel()) {
+			level.addResource(new Resource(level.generateNewResourceID(), Resource.ResourceType.Bomb, level, new Point2D(position)));
+		}
 	}
 
 	private int calcSpeed() {
@@ -273,6 +276,7 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	public void moveOneStepInTheMothershipDirection() {
+		actionPoints.getActionPoint();
 		direction.setAngle(mothership.getLevelView().getAbsolutAngle(this));
 		goStraightAhead();
 	}
@@ -311,7 +315,7 @@ public class Agent extends AbstractLevelObject {
 
 	public void deliverResourceToMothership() {
 		actionPoints.getActionPoint(10);
-		if(isCarringResource()) {
+		if(isCarringResource() && useFuel()) {
 			mothership.passResource(this);
 		}
 	}
@@ -331,14 +335,16 @@ public class Agent extends AbstractLevelObject {
 
 	public void pickupResource() {
 		actionPoints.getActionPoint(10);
-		if(isCarringResource()) {
-			getResource().release();
-		}
-		Resource resourceToCollect = level.getTouchableResource(this);
-		if(resourceToCollect != null && resourceToCollect.setBusy(getTeam())) {
-			direction.turnTo(position, resourceToCollect.position);
-			actionPoints.getActionPoint(resourceToCollect.getCapturingActionPoints());
-			carryResource(resourceToCollect);
+		if(useFuel()) {
+			if(isCarringResource()) {
+				getResource().release();
+			}
+			Resource resourceToCollect = level.getTouchableResource(this);
+			if(resourceToCollect != null && resourceToCollect.setBusy(getTeam())) {
+				direction.turnTo(position, resourceToCollect.position);
+				actionPoints.getActionPoint(resourceToCollect.getCapturingActionPoints());
+				carryResource(resourceToCollect);
+			}
 		}
 	}
 

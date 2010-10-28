@@ -118,6 +118,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 		} else {
 			fuel += value;
 		}
+		changes.firePropertyChange(FUEL_STATE_CHANGE, null, this.fuel);
 	}
 
 	public void waitTillGameEnd() {
