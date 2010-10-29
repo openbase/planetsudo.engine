@@ -17,9 +17,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.logging.Level;
 import logging.Logger;
 import planetsudo.game.LevelReciver;
 import planetsudo.game.Team;
+import planetsudo.view.MainGUI;
 
 /**
  *
@@ -27,14 +29,37 @@ import planetsudo.game.Team;
  */
 public class AINetworkTransferMenu extends javax.swing.JFrame {
 
+	private static AINetworkTransferMenu instance;
+
+	public synchronized static void display() {
+		if (instance == null) {
+			java.awt.EventQueue.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					new AINetworkTransferMenu().setVisible(true);
+				}
+			});
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException ex) {
+				java.util.logging.Logger.getLogger(AINetworkTransferMenu.class.getName()).log(Level.SEVERE, null, ex);
+			}
+		} else {
+			instance.setVisible(true);
+		}
+	}
+
+
     /** Creates new form AINetworkTransferMenu */
     public AINetworkTransferMenu() {
+		instance = this;
         initComponents();
 		setLocation(300, 300);
 		updateTeamList();
     }
 
 	public void connectToServer() {
+		sendButton.setEnabled(false);
 		ObjectOutputStream out = null;
 		ObjectInputStream in = null;
 		try {
@@ -42,18 +67,9 @@ public class AINetworkTransferMenu extends javax.swing.JFrame {
 			stateLabel.setText("Verbunden mit "+hostTextField.getText());
 			out = new ObjectOutputStream(clientSocket.getOutputStream());
 			in = new ObjectInputStream(clientSocket.getInputStream());
-			stateLabel.setText("Übertrage Team");
-			out.writeObject((Team) teamComboBox.getSelectedItem());
-			if((Boolean) in.readObject()) {
-				stateLabel.setText("Empfange Team");
-			} else {
-				stateLabel.setText("Empfang verweigert!");
-				clientSocket.close();
-			}
-
-			clientSocket.close();
-			stateLabel.setText("Übertragung erfolgreich,");
+			sendTeam(out, in , clientSocket);
 		} catch (Exception ex) {
+			sendButton.setEnabled(true);
 			Logger.error(this, "Error during transfer occured!", ex);
 			stateLabel.setText("Übertragungsfehler!");
 		} finally {
@@ -63,7 +79,9 @@ public class AINetworkTransferMenu extends javax.swing.JFrame {
 			} catch (IOException ex) {
 				Logger.error(this, "Connection Lost!");
 			}
+			sendButton.setEnabled(true);
 		}
+		sendButton.setEnabled(true);
 	}
 
 	public void updateTeamList() {
@@ -138,8 +156,8 @@ public class AINetworkTransferMenu extends javax.swing.JFrame {
             }
         });
 
-        stateLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        stateLabel.setText("State");
+        stateLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        stateLabel.setText("Not Connected");
 
         sendButton.setText("Senden");
         sendButton.addActionListener(new java.awt.event.ActionListener() {
@@ -154,19 +172,20 @@ public class AINetworkTransferMenu extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel3)
                     .addComponent(jLabel2)
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(stateLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(teamComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(hostTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(sendButton)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(hostTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(sendButton))
+                    .addComponent(teamComboBox, 0, 301, Short.MAX_VALUE)
+                    .addComponent(stateLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -179,13 +198,13 @@ public class AINetworkTransferMenu extends javax.swing.JFrame {
                 .addGap(11, 11, 11)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(hostTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(hostTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sendButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(stateLabel)
-                    .addComponent(jLabel3)
-                    .addComponent(sendButton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel3))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -194,8 +213,8 @@ public class AINetworkTransferMenu extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -246,5 +265,40 @@ public class AINetworkTransferMenu extends javax.swing.JFrame {
     private javax.swing.JLabel stateLabel;
     private javax.swing.JComboBox teamComboBox;
     // End of variables declaration//GEN-END:variables
+
+	private void sendTeam(ObjectOutputStream out, ObjectInputStream in, Socket clientSocket) throws IOException, ClassNotFoundException {
+		stateLabel.setText("Übertrage Team");
+		out.writeObject((Team) teamComboBox.getSelectedItem());
+		if(((Boolean) in.readObject())) {
+			stateLabel.setText("Connecting");
+		} else {
+			stateLabel.setText("Empfang verweigert!");
+			clientSocket.close();
+			sendButton.setEnabled(true);
+			return;
+		}
+		if(!((Boolean) in.readObject())) {
+			stateLabel.setText("Empfange Team");
+		} else {
+			stateLabel.setText("Gegenstelle nicht bereit!");
+			clientSocket.close();
+			sendButton.setEnabled(true);
+			return;
+		}
+		Team team = (Team) in.readObject();
+		Logger.info(this, "Incomming OtherTeam");
+
+		try {
+			ObjectFileController<Team> fileWriter = new ObjectFileController<Team>("teams/"+team.getID()+".team");
+			fileWriter.writeObject(team);
+		} catch (Exception ex) {
+			stateLabel.setText("Konnte Team nicht speichern!");
+			Logger.error(this, "Could not find team folder!", ex);
+			return;
+		}
+		MainGUI.getInstance().getConfigurationPanel().updateTeamList();
+		clientSocket.close();
+		stateLabel.setText("Übertragung erfolgreich,");
+	}
 
 }

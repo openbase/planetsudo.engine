@@ -13,6 +13,7 @@ package planetsudo.view.menu;
 
 import data.ImageLoader;
 import java.io.IOException;
+import java.util.logging.Level;
 import javax.swing.ImageIcon;
 import logging.Logger;
 
@@ -22,8 +23,31 @@ import logging.Logger;
  */
 public class HelpFrame extends javax.swing.JFrame {
 
+	private static HelpFrame instance;
+
+	public synchronized static void display() {
+		if (instance == null) {
+			java.awt.EventQueue.invokeLater(new Runnable() {
+
+				@Override
+				public void run() {
+					new HelpFrame().setVisible(true);
+				}
+			});
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException ex) {
+				java.util.logging.Logger.getLogger(GameContext.class.getName()).log(Level.SEVERE, null, ex);
+			}
+		} else {
+			instance.setVisible(true);
+		}
+	}
+
+
     /** Creates new form HelpFrame */
     public HelpFrame() {
+		instance = this;
         initComponents();
 		try {
 			logoDisplayLabel.setIcon(new ImageIcon(ImageLoader.getInstance().loadImage("res/img/PlanetSudoLogoMedium.png")));
@@ -157,7 +181,7 @@ public class HelpFrame extends javax.swing.JFrame {
                             .addComponent(jLabel12)
                             .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(logoDisplayLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 127, Short.MAX_VALUE)
                 .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );

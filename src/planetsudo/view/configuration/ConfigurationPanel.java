@@ -13,6 +13,7 @@ package planetsudo.view.configuration;
 
 import controller.ObjectFileController;
 import data.ImageLoader;
+import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.ImageIcon;
@@ -29,6 +30,8 @@ import planetsudo.view.MainGUI;
  */
 public class ConfigurationPanel extends javax.swing.JPanel {
 
+
+	private Team defaultTeam;
     /** Creates new form ConfigurationPanel */
     public ConfigurationPanel() {
         initComponents();
@@ -46,12 +49,14 @@ public class ConfigurationPanel extends javax.swing.JPanel {
 			LevelChooserComboBox.addItem(levelName);
 		}
 		updateTeamList();
+		loadDefaultTeam();
 	}
 
 	public void updateTeamList() {
 
 		teamAComboBox.removeAllItems();
 		teamBComboBox.removeAllItems();
+		defaultTeamComboBox.removeAllItems();
 
 		File teamFolder = new File("teams/");
 		if(!teamFolder.exists()) {
@@ -74,6 +79,7 @@ public class ConfigurationPanel extends javax.swing.JPanel {
 					tmpTeam  = readerWriter.readObject();
 					teamAComboBox.addItem(tmpTeam);
 					teamBComboBox.addItem(tmpTeam);
+					defaultTeamComboBox.addItem(tmpTeam);
 				} catch (Exception ex) {
 					Logger.error(this, "Could not find team "+teamClassName+"!", ex);
 					continue;
@@ -92,12 +98,6 @@ public class ConfigurationPanel extends javax.swing.JPanel {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jPanel1 = new javax.swing.JPanel();
-        teamBComboBox = new javax.swing.JComboBox();
-        teamAComboBox = new javax.swing.JComboBox();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         LevelChooserComboBox = new javax.swing.JComboBox();
         jButton1 = new javax.swing.JButton();
@@ -105,8 +105,93 @@ public class ConfigurationPanel extends javax.swing.JPanel {
         levelPreviewDisplayPanel = new planetsudo.view.level.LevelDisplayPanel();
         logoLabel = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        teamBComboBox = new javax.swing.JComboBox();
+        teamAComboBox = new javax.swing.JComboBox();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        defaultTeamComboBox = new javax.swing.JComboBox();
+        setdefaultTeamButton = new javax.swing.JButton();
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Team Einstellungen"));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Level Einstellungen"));
+
+        LevelChooserComboBox.setMaximumRowCount(20);
+        LevelChooserComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        LevelChooserComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LevelChooserComboBoxActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(LevelChooserComboBox, 0, 372, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(LevelChooserComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jButton1.setText("Ok");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Vorschau"));
+
+        javax.swing.GroupLayout levelPreviewDisplayPanelLayout = new javax.swing.GroupLayout(levelPreviewDisplayPanel);
+        levelPreviewDisplayPanel.setLayout(levelPreviewDisplayPanelLayout);
+        levelPreviewDisplayPanelLayout.setHorizontalGroup(
+            levelPreviewDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 433, Short.MAX_VALUE)
+        );
+        levelPreviewDisplayPanelLayout.setVerticalGroup(
+            levelPreviewDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 573, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(levelPreviewDisplayPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(levelPreviewDisplayPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        logoLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        logoLabel.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        logoLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        logoLabel.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+
+        jButton2.setText("Erstelle Team");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Team Einstellungen"));
+
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
         teamBComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -154,79 +239,62 @@ public class ConfigurationPanel extends javax.swing.JPanel {
         gridBagConstraints.ipadx = 15;
         jPanel1.add(jLabel3, gridBagConstraints);
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Level Einstellungen"));
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("StandartTeam"));
 
-        LevelChooserComboBox.setMaximumRowCount(20);
-        LevelChooserComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        LevelChooserComboBox.addActionListener(new java.awt.event.ActionListener() {
+        defaultTeamComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        defaultTeamComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                LevelChooserComboBoxActionPerformed(evt);
+                defaultTeamComboBoxActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        setdefaultTeamButton.setText("Setzen");
+        setdefaultTeamButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                setdefaultTeamButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(LevelChooserComboBox, 0, 244, Short.MAX_VALUE)
+                .addComponent(defaultTeamComboBox, 0, 242, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(setdefaultTeamButton)
                 .addContainerGap())
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(LevelChooserComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(defaultTeamComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(setdefaultTeamButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jButton1.setText("Ok");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Vorschau"));
-
-        javax.swing.GroupLayout levelPreviewDisplayPanelLayout = new javax.swing.GroupLayout(levelPreviewDisplayPanel);
-        levelPreviewDisplayPanel.setLayout(levelPreviewDisplayPanelLayout);
-        levelPreviewDisplayPanelLayout.setHorizontalGroup(
-            levelPreviewDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 401, Short.MAX_VALUE)
-        );
-        levelPreviewDisplayPanelLayout.setVerticalGroup(
-            levelPreviewDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 379, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(levelPreviewDisplayPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(levelPreviewDisplayPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
-
-        logoLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        logoLabel.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
-        logoLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        logoLabel.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-
-        jButton2.setText("Erstelle Team");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -235,33 +303,35 @@ public class ConfigurationPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE)
-                    .addComponent(logoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(logoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jButton2))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton2)
                             .addComponent(jButton1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(logoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 251, Short.MAX_VALUE)
+                        .addComponent(logoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -282,12 +352,7 @@ public class ConfigurationPanel extends javax.swing.JPanel {
 	}//GEN-LAST:event_jButton1ActionPerformed
 
 	private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-		java.awt.EventQueue.invokeLater(new Runnable() {
-			@Override
-            public void run() {
-                new CreateTeamFrame().setVisible(true);
-            }
-        });
+		CreateTeamFrame.display();
 	}//GEN-LAST:event_jButton2ActionPerformed
 
 	private void teamAComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_teamAComboBoxActionPerformed
@@ -298,9 +363,37 @@ public class ConfigurationPanel extends javax.swing.JPanel {
 		GameManager.getInstance().addTeam((Team) teamBComboBox.getSelectedItem(), GameManager.TeamType.B);
 	}//GEN-LAST:event_teamBComboBoxActionPerformed
 
+	private void defaultTeamComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_defaultTeamComboBoxActionPerformed
+
+	}//GEN-LAST:event_defaultTeamComboBoxActionPerformed
+
+	private void setDefaultTeam(Team team) {
+		setdefaultTeamButton.setForeground(Color.BLACK);
+		setdefaultTeamButton.setEnabled(false);
+		defaultTeamComboBox.setEnabled(false);
+		defaultTeam = team;
+		defaultTeamComboBox.setSelectedItem(team);
+	}
+
+	private void setdefaultTeamButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setdefaultTeamButtonActionPerformed
+		try {
+			Team defaultTeamTmp = (Team) defaultTeamComboBox.getSelectedItem();
+			setdefaultTeamButton.setForeground(Color.BLACK);
+			ObjectFileController<Team> fileWriter = new ObjectFileController<Team>("teams/"+defaultTeamTmp.getID()+".default");
+			fileWriter.writeObject(defaultTeamTmp);
+			setDefaultTeam(defaultTeamTmp);
+		} catch (Exception ex) {
+			Logger.error(this, "Could not find team folder!", ex);
+			setdefaultTeamButton.setForeground(Color.RED);
+			return;
+		}
+		
+	}//GEN-LAST:event_setdefaultTeamButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox LevelChooserComboBox;
+    private javax.swing.JComboBox defaultTeamComboBox;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -309,11 +402,47 @@ public class ConfigurationPanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private planetsudo.view.level.LevelDisplayPanel levelPreviewDisplayPanel;
     private javax.swing.JLabel logoLabel;
+    private javax.swing.JButton setdefaultTeamButton;
     private javax.swing.JComboBox teamAComboBox;
     private javax.swing.JComboBox teamBComboBox;
     // End of variables declaration//GEN-END:variables
+
+	private void loadDefaultTeam() {
+		File teamFolder = new File("teams/");
+		if(!teamFolder.exists()) {
+			Logger.error(this, "Could not find team folder! ");
+			return;
+		}
+		String[] teamClassNameList = teamFolder.list();
+		if(teamClassNameList == null) {
+			Logger.error(this, "Team folder is empty!!");
+			return;
+		}
+		Team tmpTeam;
+		for (String teamClassName : teamClassNameList) {
+			if (teamClassName.endsWith(".default")) {
+				String teamStringID = teamClassName.replace(".default", "");
+
+				try {
+					ObjectFileController<Team> readerWriter = new ObjectFileController<Team>("teams/" + teamStringID + ".default");
+
+					tmpTeam  = readerWriter.readObject();
+					setDefaultTeam(tmpTeam);
+				} catch (Exception ex) {
+					Logger.error(this, "Could not find team "+teamClassName+"!", ex);
+					continue;
+				}
+			}
+		}
+	}
+
+	public Team getDefaultTeam() {
+		return defaultTeam;
+	}
 
 
 

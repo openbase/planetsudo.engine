@@ -15,10 +15,13 @@ import controller.ObjectFileController;
 import java.awt.Color;
 import java.util.Collection;
 import java.util.Vector;
+import java.util.logging.Level;
 import logging.Logger;
 import planetsudo.game.Team;
 import planetsudo.game.strategy.AbstractStrategy;
 import planetsudo.view.MainGUI;
+
+
 
 /**
  *
@@ -26,8 +29,29 @@ import planetsudo.view.MainGUI;
  */
 public class CreateTeamFrame extends javax.swing.JFrame {
 
+	private static CreateTeamFrame instance;
+
+	public synchronized static void display() {
+		if (instance == null) {
+			java.awt.EventQueue.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					new CreateTeamFrame().setVisible(true);
+				}
+			});
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException ex) {
+				java.util.logging.Logger.getLogger(CreateTeamFrame.class.getName()).log(Level.SEVERE, null, ex);
+			}
+		} else {
+			instance.setVisible(true);
+		}
+	}
+
     /** Creates new form CreateTeamFrame */
     public CreateTeamFrame() {
+		instance = this;
         initComponents();
 		setLocation(300, 300);
     }

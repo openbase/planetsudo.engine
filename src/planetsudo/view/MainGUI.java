@@ -491,21 +491,11 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 	}//GEN-LAST:event_stopMenuItemActionPerformed
 
 	private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
-		java.awt.EventQueue.invokeLater(new Runnable() {
-			@Override
-            public void run() {
-                new HelpFrame().setVisible(true);
-            }
-        });
+		HelpFrame.display();
 	}//GEN-LAST:event_aboutMenuItemActionPerformed
 
 	private void contentsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contentsMenuItemActionPerformed
-		java.awt.EventQueue.invokeLater(new Runnable() {
-			@Override
-            public void run() {
-                new GameContext().setVisible(true);
-            }
-        });
+		GameContext.display();
 	}//GEN-LAST:event_contentsMenuItemActionPerformed
 
 	private void finalCalculationMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finalCalculationMenuItemActionPerformed
@@ -513,12 +503,7 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 	}//GEN-LAST:event_finalCalculationMenuItemActionPerformed
 
 	private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-		java.awt.EventQueue.invokeLater(new Runnable() {
-			@Override
-            public void run() {
-                new AINetworkTransferMenu().setVisible(true);
-            }
-        });
+		AINetworkTransferMenu.display();
 	}//GEN-LAST:event_jMenuItem2ActionPerformed
 
 	public static LevelView levelView;

@@ -338,8 +338,6 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
 		teamFinalStateLabel.setText("");
 		saveAgentsPointsLabel.setText("-");
 		mothershipShieldPointsLabel.setText("-");
-
-
 	}
 
 

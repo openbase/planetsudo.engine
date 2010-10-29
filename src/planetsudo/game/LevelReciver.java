@@ -5,6 +5,10 @@
 
 package planetsudo.game;
 
+import controller.ObjectFileController;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -83,15 +87,45 @@ public class LevelReciver implements Runnable {
 
 	private void reciveTeam(ObjectInputStream in, ObjectOutputStream out) throws IOException, ClassNotFoundException {
 		Team team = (Team) in.readObject();
-		int res = JOptionPane.showConfirmDialog(MainGUI.getInstance(),
-									"Jemand möchte mit dir seine KI tauschen. Stimmst du dem zu?",
-									"Team empfangen",
-									JOptionPane.YES_NO_OPTION);
-		if(res == JOptionPane.YES_OPTION) {
-			out.writeObject(new Boolean(true));
-		} else {
+			int res = JOptionPane.showConfirmDialog(MainGUI.getInstance(),
+										"Jemand möchte mit dir seine KI tauschen. Stimmst du dem zu?",
+										"Team empfangen",
+										JOptionPane.YES_NO_OPTION);
+		Logger.debug(this, "Res is"+res);
+		if(res == JOptionPane.NO_OPTION) {
 			out.writeObject(new Boolean(false));
+			return;
+		} else {
+			out.writeObject(new Boolean(true));
 		}
+		Team defaultTeamTmp = MainGUI.getInstance().getConfigurationPanel().getDefaultTeam();
+		out.writeObject(new Boolean(defaultTeamTmp == null));
+		if(defaultTeamTmp == null) {
+			JOptionPane.showMessageDialog(MainGUI.getInstance(),
+										"Du hast kein DefaultTeam ausgesucht! Breche Transfer ab!",
+										"Cancel",
+										JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		out.writeObject(defaultTeamTmp);
+
+		try {
+			ObjectFileController<Team> fileWriter = new ObjectFileController<Team>("teams/"+team.getID()+".team");
+			fileWriter.writeObject(team);
+//			team.getStrategy();
+
+
+//			File classFile = new File(nameAusgabedatei+".html");
+//			FileWriter fw = new FileWriter(classFile);
+//			BufferedWriter bw = new BufferedWriter(fw);
+//			bw.write("Hallo");
+//			bw.close();
+
+		} catch (Exception ex) {
+			Logger.error(this, "Could not find team folder!", ex);
+			return;
+		}
+		MainGUI.getInstance().getConfigurationPanel().updateTeamList();
 	}
 
 
