@@ -12,7 +12,9 @@
 package planetsudo.view.configuration;
 
 import controller.ObjectFileController;
+import data.ImageLoader;
 import java.io.File;
+import java.io.IOException;
 import javax.swing.ImageIcon;
 import logging.Logger;
 import planetsudo.game.GameManager;
@@ -30,7 +32,11 @@ public class ConfigurationPanel extends javax.swing.JPanel {
     /** Creates new form ConfigurationPanel */
     public ConfigurationPanel() {
         initComponents();
-		logoLabel.setIcon(new ImageIcon("res/img/PlanetSudoLogoMedium.png"));
+		try {
+			logoLabel.setIcon(new ImageIcon(ImageLoader.getInstance().loadImage("res/img/PlanetSudoLogoMedium.png")));
+		} catch (IOException ex) {
+			Logger.warn(this, "Could not display image");
+		}
 		initDynamicComponents();
     }
 
@@ -43,6 +49,10 @@ public class ConfigurationPanel extends javax.swing.JPanel {
 	}
 
 	public void updateTeamList() {
+
+		teamAComboBox.removeAllItems();
+		teamBComboBox.removeAllItems();
+
 		File teamFolder = new File("teams/");
 		if(!teamFolder.exists()) {
 			Logger.error(this, "Could not find team folder! ");
@@ -53,14 +63,9 @@ public class ConfigurationPanel extends javax.swing.JPanel {
 			Logger.error(this, "Team folder is empty!!");
 			return;
 		}
-
-		teamAComboBox.removeAllItems();
-		teamBComboBox.removeAllItems();
 		Team tmpTeam;
-		//Vector<Team> teamVector = new Vector<Team>();
 		for (String teamClassName : teamClassNameList) {
 			if (teamClassName.endsWith(".team")) {
-				//String[] a = teamClassName.split("\.");
 				String teamStringID = teamClassName.replace(".team", "");
 
 				try {
@@ -69,7 +74,6 @@ public class ConfigurationPanel extends javax.swing.JPanel {
 					tmpTeam  = readerWriter.readObject();
 					teamAComboBox.addItem(tmpTeam);
 					teamBComboBox.addItem(tmpTeam);
-					//teamVector.add();
 				} catch (Exception ex) {
 					Logger.error(this, "Could not find team "+teamClassName+"!", ex);
 					continue;

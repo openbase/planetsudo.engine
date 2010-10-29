@@ -11,7 +11,10 @@
 
 package planetsudo.view.menu;
 
+import data.ImageLoader;
+import java.io.IOException;
 import javax.swing.ImageIcon;
+import logging.Logger;
 
 /**
  *
@@ -22,6 +25,12 @@ public class HelpFrame extends javax.swing.JFrame {
     /** Creates new form HelpFrame */
     public HelpFrame() {
         initComponents();
+		try {
+			logoDisplayLabel.setIcon(new ImageIcon(ImageLoader.getInstance().loadImage("res/img/PlanetSudoLogoMedium.png")));
+		} catch (IOException ex) {
+			Logger.warn(this, "Could not display image");
+		}
+		setLocation(300, 300);
     }
 
     /** This method is called from within the constructor to
@@ -43,53 +52,53 @@ public class HelpFrame extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
+        logoDisplayLabel = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Über PlanetSudo");
         setAlwaysOnTop(true);
+        setResizable(false);
 
         jLabel1.setText("Projekt:");
 
-        jLabel2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Dialog", 1, 14));
         jLabel2.setIcon(new ImageIcon("res/img/agent.png"));
         jLabel2.setText("PlanetSudo");
 
         jLabel3.setText("Entwickler:");
 
-        jLabel4.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Dialog", 0, 12));
         jLabel4.setText("Divine [Marian Pohling] MarianPohling@djdivine.de");
 
-        jLabel5.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Dialog", 0, 12));
         jLabel5.setText("Noxus [Marco Wellmann] Marco.Wellmann@gmx.de");
 
         jLabel6.setText("Veröffentlichung:");
 
-        jLabel7.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Dialog", 0, 12));
         jLabel7.setText("29.10.2010");
 
         jLabel8.setText("Entwicklungszeit:");
 
-        jLabel9.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        jLabel9.setFont(new java.awt.Font("Dialog", 0, 12));
         jLabel9.setText("6 Monate");
 
-        jLabel10.setFont(new java.awt.Font("Dialog", 2, 14)); // NOI18N
+        jLabel10.setFont(new java.awt.Font("Dialog", 2, 14));
         jLabel10.setText("<html><b>PlanetSudo</b> wurde im Rahmen des 26. Computerwochenendes der ev. Jugendarbeit in Halle (Westf.) entwickelt. Das Lernziel besteht darin den Teilnehmern einen Einblick in das Design und die Implementierung primitiver Verhaltensweisen zu geben welche im Zusammenspiel ein komplexes Verhalten erzeugen. Das Projekt endet mit einer kurzen Präsentation der erstellten Regeln und einer Reflexion der entwickelten Verhaltensweisen im Kontext eines Turniers.</html>");
         jLabel10.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jLabel10.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
 
-        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel11.setIcon(new ImageIcon("res/img/PlanetSudoLogoMedium.png"));
-        jLabel11.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        jLabel11.setFocusable(false);
-        jLabel11.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        jLabel11.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        logoDisplayLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        logoDisplayLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        logoDisplayLabel.setFocusable(false);
+        logoDisplayLabel.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        logoDisplayLabel.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
 
         jLabel12.setText("Lizenz:");
 
-        jLabel13.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        jLabel13.setFont(new java.awt.Font("Dialog", 0, 12));
         jLabel13.setText("<html>GNU LIBRARY GENERAL PUBLIC LICENSE<br/>Version 2, June 1991   Copyright (C) 1991 Free Software Foundation, Inc</html>");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -116,7 +125,7 @@ public class HelpFrame extends javax.swing.JFrame {
                             .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(logoDisplayLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 784, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -147,8 +156,8 @@ public class HelpFrame extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel12)
                             .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
+                    .addComponent(logoDisplayLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -170,7 +179,6 @@ public class HelpFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
@@ -181,6 +189,7 @@ public class HelpFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel logoDisplayLabel;
     // End of variables declaration//GEN-END:variables
 
 }

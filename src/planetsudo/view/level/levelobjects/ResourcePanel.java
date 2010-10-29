@@ -37,7 +37,7 @@ public class ResourcePanel extends AbstractLevelObjectPanel<Resource, LevelPanel
 			case ExtraAgentFuel:
 				return "res/img/resource5.png";
 			case ExtraMothershipFuel:
-				return "res/img/resource2.png";
+				return "res/img/resource7.png";
 			case Bomb:
 				return "res/img/resource4.png";
 			default:

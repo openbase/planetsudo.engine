@@ -29,6 +29,7 @@ public class CreateTeamFrame extends javax.swing.JFrame {
     /** Creates new form CreateTeamFrame */
     public CreateTeamFrame() {
         initComponents();
+		setLocation(300, 300);
     }
 
 	private void createTeam() {
@@ -115,6 +116,8 @@ public class CreateTeamFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Erstelle Team");
+        setAlwaysOnTop(true);
+        setResizable(false);
 
         jLabel1.setText("ID");
 

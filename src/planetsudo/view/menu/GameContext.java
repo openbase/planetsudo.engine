@@ -11,7 +11,10 @@
 
 package planetsudo.view.menu;
 
+import data.ImageLoader;
+import java.io.IOException;
 import javax.swing.ImageIcon;
+import logging.Logger;
 
 /**
  *
@@ -22,6 +25,12 @@ public class GameContext extends javax.swing.JFrame {
     /** Creates new form GameContext */
     public GameContext() {
         initComponents();
+		try {
+			titleLabel.setIcon(new ImageIcon(ImageLoader.getInstance().loadImage("res/img/mothership.png")));
+		} catch (IOException ex) {
+			Logger.warn(this, "Could not display image");
+		}
+		setLocation(300, 300);
     }
 
     /** This method is called from within the constructor to
@@ -33,17 +42,17 @@ public class GameContext extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        titleLabel = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Spielablauf");
         setAlwaysOnTop(true);
+        setResizable(false);
 
-        jLabel1.setIcon(new ImageIcon("res/img/mothership.png"));
-        jLabel1.setText("Spielablauf");
+        titleLabel.setText("Spielablauf");
 
-        jLabel2.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Dialog", 0, 12));
         jLabel2.setText("<html>Zwei unterschiedliche Roboterteams erobern einen für sie unbekannten Planeten. Ihre Mutterschiffe sind bereits gelandet und sie erkundschaften die Umgebung und sammeln in Konkurrenz zum gegnerischen Team über den Planeten zufällig verstreute Ressourcen ein, die sie anschließend zum Mutterschiff zurück bringen. Ziel des Spiels ist es, mit dem im Mutterschiff vorhandenen Treibstoff so viele Ressourcen wie möglich einzusammeln und zum Mutterschiff zu befördern. Die Roboter selber verbrauchen den Treibstoff und müssen diesen Regelmäßig beim Mutterschiff wieder auftanken. Andererseits bleiben sie auf dem Spielfeld ohne Funktionalität zurück. Zum einsammeln der Ressourcen wird eine gewisse Zeit benötigt, zudem sind Roboter, die eine Ressource zum Mutterschiff transportieren, langsamer als normal. Entdeckt ein Roboter in seiner näheren Umgebung einen feindlichen Agenten, so ist es möglich mit diesem eine kriegerische Auseinandersetzung zu führen, bis der Treibstoff des Unterlegenen leer ist. Sollte der besiegte eine Resource getragen haben lässt er diese wieder fallen. Diese ist dann wieder zum Sammeln freigegeben. Sollte ein Agent das Mutterschiff der gegnerischen mannschaft angreifen, so verliert dieses an Schildenergie. Geht die Schildenergie zuneige (Unter 50%) so beginnt der Treibstoffvorrat des angegriffenen Mutterschiffs zu sinken. Je niedriger nun der Schild fällt, desto schneller sinkt der restliche Treibstoffvorrat des Mutterschiffs. Die Agenten des angegriffenen Mutterschiffs werden darüber benachrichtigt, dass ihr Mutterschiff angegriffen wird und können nun dementsprechend handeln. Das Spiel endet wenn der gesamte Treibstoff beider Teams verbraucht ist.</html>");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -54,7 +63,7 @@ public class GameContext extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addComponent(titleLabel)
                         .addGap(545, 545, 545))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 570, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -64,7 +73,7 @@ public class GameContext extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addComponent(titleLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
                 .addContainerGap())
@@ -85,8 +94,8 @@ public class GameContext extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
 
 }

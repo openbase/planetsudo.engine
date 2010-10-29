@@ -64,6 +64,10 @@ public class Team implements Manageable, Serializable {
 		return counter;
 	}
 
+	public void reset() {
+		points = 0;
+	}
+
 	@Override
 	public int getID() {
 		return id;

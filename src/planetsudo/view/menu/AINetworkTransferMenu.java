@@ -11,6 +11,16 @@
 
 package planetsudo.view.menu;
 
+import controller.ObjectFileController;
+import java.io.File;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import logging.Logger;
+import planetsudo.game.LevelReciver;
+import planetsudo.game.Team;
+
 /**
  *
  * @author divine
@@ -20,7 +30,75 @@ public class AINetworkTransferMenu extends javax.swing.JFrame {
     /** Creates new form AINetworkTransferMenu */
     public AINetworkTransferMenu() {
         initComponents();
+		setLocation(300, 300);
+		updateTeamList();
     }
+
+	public void connectToServer() {
+		ObjectOutputStream out = null;
+		ObjectInputStream in = null;
+		try {
+			Socket clientSocket = new Socket(hostTextField.getText(), LevelReciver.PORT);
+			stateLabel.setText("Verbunden mit "+hostTextField.getText());
+			out = new ObjectOutputStream(clientSocket.getOutputStream());
+			in = new ObjectInputStream(clientSocket.getInputStream());
+			stateLabel.setText("Übertrage Team");
+			out.writeObject((Team) teamComboBox.getSelectedItem());
+			if((Boolean) in.readObject()) {
+				stateLabel.setText("Empfange Team");
+			} else {
+				stateLabel.setText("Empfang verweigert!");
+				clientSocket.close();
+			}
+
+			clientSocket.close();
+			stateLabel.setText("Übertragung erfolgreich,");
+		} catch (Exception ex) {
+			Logger.error(this, "Error during transfer occured!", ex);
+			stateLabel.setText("Übertragungsfehler!");
+		} finally {
+			try {
+				out.close();
+				in.close();
+			} catch (IOException ex) {
+				Logger.error(this, "Connection Lost!");
+			}
+		}
+	}
+
+	public void updateTeamList() {
+
+		teamComboBox.removeAllItems();
+
+		File teamFolder = new File("teams/");
+		if(!teamFolder.exists()) {
+			Logger.error(this, "Could not find team folder! ");
+			return;
+		}
+		String[] teamClassNameList = teamFolder.list();
+		if(teamClassNameList == null) {
+			Logger.error(this, "Team folder is empty!!");
+			return;
+		}
+		Team tmpTeam;
+		for (String teamClassName : teamClassNameList) {
+			if (teamClassName.endsWith(".team")) {
+				String teamStringID = teamClassName.replace(".team", "");
+
+				try {
+					ObjectFileController<Team> readerController = new ObjectFileController<Team>("teams/" + teamStringID + ".team");
+
+					tmpTeam  = readerController.readObject();
+					teamComboBox.addItem(tmpTeam);
+				} catch (Exception ex) {
+					Logger.error(this, "Could not find team "+teamClassName+"!", ex);
+					continue;
+				}
+			}
+		}
+	}
+
+
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -31,33 +109,84 @@ public class AINetworkTransferMenu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        teamComboBox = new javax.swing.JComboBox();
         jLabel2 = new javax.swing.JLabel();
         hostTextField = new javax.swing.JTextField();
+        stateLabel = new javax.swing.JLabel();
         sendButton = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        stateLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Netzübertragung");
+        setAlwaysOnTop(true);
+        setResizable(false);
 
-        jLabel1.setText("Künstliche Intelligenz übers Netzwerk verschicken");
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Team und KI übers Netzwerk verschicken"));
+
+        jLabel4.setText("Team");
+
+        teamComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel2.setText("Empfänger:");
 
-        hostTextField.setText("HostName oder IP Adresse");
+        hostTextField.setText("Host / IP");
         hostTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 hostTextFieldActionPerformed(evt);
             }
         });
 
+        stateLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        stateLabel.setText("State");
+
         sendButton.setText("Senden");
+        sendButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sendButtonActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Status:");
 
-        stateLabel.setFont(new java.awt.Font("Dialog", 0, 12));
-        stateLabel.setText("State");
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(stateLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(teamComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(hostTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(sendButton)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(teamComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addGap(11, 11, 11)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(hostTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(stateLabel)
+                    .addComponent(jLabel3)
+                    .addComponent(sendButton))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -65,35 +194,14 @@ public class AINetworkTransferMenu extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(hostTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(sendButton))
-                            .addComponent(stateLabel))))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(hostTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(sendButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(stateLabel)
-                    .addComponent(jLabel3))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -103,6 +211,19 @@ public class AINetworkTransferMenu extends javax.swing.JFrame {
 	private void hostTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hostTextFieldActionPerformed
 		// TODO add your handling code here:
 	}//GEN-LAST:event_hostTextFieldActionPerformed
+
+	private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButtonActionPerformed
+		stateLabel.setText("Verbinde mit "+hostTextField.getText());
+		Thread t = new Thread() {
+			@Override
+			public void run() {
+				connectToServer();
+			}
+		};
+		t.start();
+		
+
+	}//GEN-LAST:event_sendButtonActionPerformed
 
     /**
     * @param args the command line arguments
@@ -117,11 +238,13 @@ public class AINetworkTransferMenu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField hostTextField;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JButton sendButton;
     private javax.swing.JLabel stateLabel;
+    private javax.swing.JComboBox teamComboBox;
     // End of variables declaration//GEN-END:variables
 
 }

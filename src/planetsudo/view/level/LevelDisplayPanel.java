@@ -40,7 +40,7 @@ public class LevelDisplayPanel extends ResourceDisplayPanel<LevelPanel> implemen
 			visibleResourcePanel.loadLevelObjects();
 		}
 	}
-	
+
 	public synchronized  void setVideoThreadCommand(VideoThreadCommand command) {
 		switch(command) {
 			case Start:

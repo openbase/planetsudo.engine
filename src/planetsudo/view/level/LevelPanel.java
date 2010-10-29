@@ -25,6 +25,7 @@ import view.components.draw.ResourceDisplayPanel;
 public class LevelPanel extends AbstractResourcePanel<AbstractLevel, LevelPanel> implements PropertyChangeListener {
 
 	private final boolean hasInternalWalls;
+	private boolean enabledLevelObjects;
 
 	public LevelPanel(AbstractLevel resource, ResourceDisplayPanel parentPanel) {
 		super(resource, parentPanel);
@@ -33,9 +34,11 @@ public class LevelPanel extends AbstractResourcePanel<AbstractLevel, LevelPanel>
 		updateBounds();
 		parentPanel.setDoubleBuffered(true);
 		resource.addPropertyChangeListener(this);
+		enabledLevelObjects = false;
 	}
 
 	public void loadLevelObjects() {
+		enabledLevelObjects = true;
 		loadResourcePanels();
 		loadMothershipPanels();
 	}
@@ -67,7 +70,7 @@ public class LevelPanel extends AbstractResourcePanel<AbstractLevel, LevelPanel>
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if(evt.getPropertyName().equals(AbstractLevel.CREATE_RESOURCE)) {
+		if(evt.getPropertyName().equals(AbstractLevel.CREATE_RESOURCE) && enabledLevelObjects) {
 			new ResourcePanel((Resource) evt.getNewValue(), this);
 		}
 	}

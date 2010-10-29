@@ -36,6 +36,7 @@ public class GameManager implements Runnable {
 		this.pause = false;
 		this.gameOver = true;
 		this.gameState = GameState.Configuration;
+		new LevelReciver();
 	}
 
 	public void setupTestGame() {
@@ -126,7 +127,8 @@ public class GameManager implements Runnable {
 					setGameState(GameState.Configuration);
 					return;
 				}
-
+				teamA.reset();
+				teamB.reset();
 				level.setTeamA(teamA);
 				level.setTeamB(teamB);
 				level.reset();
