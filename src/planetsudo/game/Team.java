@@ -30,7 +30,7 @@ public class Team implements Manageable, Serializable {
 	private Mothership mothership;
 	private Class<? extends AbstractStrategy> strategy;
 	private int points;
-	private int agentCount;
+//	private int agentCount;
 	private ArrayList<String> members;
 	
 	protected final PropertyChangeSupport changes;
@@ -41,12 +41,6 @@ public class Team implements Manageable, Serializable {
 		this.teamColor = teamColor;
 		this.strategy = strategy;
 		this.points = 0;
-		this.agentCount = loadAgentCount();
-		if(agentCount > Mothership.MAX_AGENT_COUNT && agentCount <= 0){
-			Logger.info(this, "Bad agent count! Corrected to "+Mothership.MAX_AGENT_COUNT);
-			this.agentCount = Mothership.MAX_AGENT_COUNT;
-		}
-		//this.agentCount = agentCount;
 		this.changes = new PropertyChangeSupport(this);
 		this.members = new ArrayList<String>();
 		this.members.addAll(members);
@@ -60,6 +54,10 @@ public class Team implements Manageable, Serializable {
 			Logger.error(this, "Could not create strategy instance!", ex);
 		} catch (IllegalAccessException ex) {
 			Logger.error(this, "Could not access strategy file!", ex);
+		}
+		if(counter > Mothership.MAX_AGENT_COUNT || counter <= 0){
+			Logger.info(this, "Bad agent count! Corrected to "+Mothership.MAX_AGENT_COUNT);
+			counter = Mothership.MAX_AGENT_COUNT;
 		}
 		return counter;
 	}
@@ -82,7 +80,7 @@ public class Team implements Manageable, Serializable {
 	}
 
 	public int getAgentCount() {
-		return agentCount;
+		return loadAgentCount();
 	}
 
 	public void addPoint() {

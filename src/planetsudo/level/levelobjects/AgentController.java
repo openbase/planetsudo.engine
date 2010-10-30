@@ -5,7 +5,6 @@
 
 package planetsudo.level.levelobjects;
 
-import data.Direction2D;
 
 /**
  *
@@ -14,7 +13,7 @@ import data.Direction2D;
 public class AgentController {
 
 	private final Agent agent;
-	private final MothershipController mothershipController;
+	public final MothershipController mothershipController;
 
 	public AgentController(Agent agent) {
 		this.agent = agent;
@@ -47,7 +46,7 @@ public class AgentController {
 
 	/**
 	 * Zeigt den verbliebenen Treibstoff des Agenten an.
-	 * @return Den verbliebenen Treibstoff als ganze Zahl.
+	 * @return Den verbliebenen Treibstoff als ganz Zahl.
 	 */
 	public int getFuel() {
 		return agent.getFuel();
@@ -158,7 +157,7 @@ public class AgentController {
 	}
 
 	/**
-	 * Der Agent dreht sich um eine zuf&auml;llige Gradzahl in eine zuf&auml;llige Richtung.
+	 * Der Agent dreht sich in eine zuf&auml;llige Richtung.
 	 * Aktionspunkte: 1
 	 * Treibstoff: 1
 	 */
@@ -187,7 +186,7 @@ public class AgentController {
 	}
 
 	/**
-	 * Der Agent fordert percent Prozent Treibstoff vom Mutterschiff an.
+	 * Der Agent fordert @param percent Prozent Treibstoff vom Mutterschiff an.
 	 * @param percent Der anzufordernde Treibstoffwert in Prozent als ganze Zahl von 0 - 100.
 	 * Aktionspunkte: 20 + 2 für jeden getankten Treibstoff.
 	 */
@@ -196,7 +195,7 @@ public class AgentController {
 	}
 
 	/**
-	 * Zeigt an ob der Agent eine Resource aufgesp&uuml;rt hat.
+	 * Zeigt an ob der Agent eine Resource sehen kann.
 	 * @return true oder false.
 	 */
 	public boolean seeResource() {
@@ -222,7 +221,7 @@ public class AgentController {
 	}
 
 	/**
-	 * Gibt zur&uuml;ck, ob der Agent eine Resource ber&uuml;hrt.
+	 * Gibt zur&uuml;ck, ob der Agent eine Resource ber&uuml;hrt und diese somit aufgeben kann.
 	 * @return true oder false.
 	 */
 	public boolean touchResource() {
@@ -254,7 +253,7 @@ public class AgentController {
 	}
 
 	/**
-	 * Der Befehl zum aufnehmen einer Resource.
+	 * Der Befehl zum aufnehmen einer Resource wenn der Agent sie anfassen kann.
 	 * Aktionspunkte: 10
 	 * Treibstoff: 1
 	 */
@@ -263,7 +262,7 @@ public class AgentController {
 	}
 
 	/**
-	 * Zeigt an, ob der Agent einen Feindlichen Agenten sieht.
+	 * Zeigt an, ob der Agent einen feindlichen Agenten sieht.
 	 * @return true oder false.
 	 */
 	public boolean seeAdversaryAgent() {
@@ -313,7 +312,7 @@ public class AgentController {
 	}
 
 	/**
-	 * Der Agent spendet einem Teammitglied value Treibstoff.
+	 * Der Agent spendet einem Teammitglied @param value Treibstoff.
 	 * Ein Agent ist Bewegungsunf&auml;hig, solange er Treibstoff spendet!
 	 * Aktionspunkte: value*2
 	 * Treibstoff: 1 + value
@@ -324,11 +323,18 @@ public class AgentController {
 	}
 
 	/**
-	 * Der Befehl zum reparieren des eigenen Mutterschiffs.
+	 * Der Befehl zum reparieren des eigenen Mutterschiffs. Hierzu muss sich der Agent am Mutterschiff befinden!
 	 * Aktionspunkte: 50
 	 * Treibstoff: 1
 	 */
 	public void repaireMothership() {
 		agent.repaireMothership();
+	}
+
+	/**
+	 * Wenn der Agent eine Resource trägt, lässt er sie wieder fallen.
+	 */
+	public void releaseResource() {
+		agent.releaseResource();
 	}
 }

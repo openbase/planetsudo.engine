@@ -50,13 +50,13 @@ public class AgentK extends AbstractLevel {
 	@Override
 	protected ResourcePlacement[] loadResourcePlacement() {
 		ResourcePlacement[] resourcePlacement = new ResourcePlacement[7];
-		resourcePlacement[0] = new ResourceRandomRectangle(0, 0, 500, 2000, 30, ResourceType.Normal);
-		resourcePlacement[1] = new ResourceRandomRectangle(0, 0, 500, 700, 20, ResourceType.DoublePoints);
-		resourcePlacement[6] = new ResourceRandomRectangle(0, 1300, 500, 2000, 20, ResourceType.DoublePoints);
+		resourcePlacement[0] = new ResourceRandomRectangle(0, 0, 500, 2000, 5, ResourceType.Normal);
+		resourcePlacement[1] = new ResourceRandomRectangle(0, 0, 500, 700, 10, ResourceType.DoublePoints);
+		resourcePlacement[6] = new ResourceRandomRectangle(0, 1300, 500, 2000, 10, ResourceType.DoublePoints);
 		resourcePlacement[2] = new ResourceRandomRectangle(0, 0, 500, 500, 3, ResourceType.ExtremPoint);
 		resourcePlacement[5] = new ResourceRandomRectangle(0, 1500, 500, 2000, 3, ResourceType.ExtremPoint);
 		resourcePlacement[3] = new ResourceRandomRectangle(0, 0, 500, 2000, 10, ResourceType.ExtraAgentFuel);
-		resourcePlacement[4] = new ResourceRandomRectangle(0, 0, 500, 2000, 10, ResourceType.ExtraMothershipFuel);
+		resourcePlacement[4] = new ResourceRandomRectangle(0, 0, 500, 2000, 5, ResourceType.ExtraMothershipFuel);
 		return resourcePlacement;
 	}
 

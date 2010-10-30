@@ -11,16 +11,20 @@
 
 package planetsudo.view.menu;
 
+import configuration.parameter.CommandParameterParser;
 import controller.ObjectFileController;
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.logging.Level;
 import logging.Logger;
 import planetsudo.game.LevelReciver;
 import planetsudo.game.Team;
+import planetsudo.main.clc.SetTeamPathCommand;
 import planetsudo.view.MainGUI;
 
 /**
@@ -88,7 +92,7 @@ public class AINetworkTransferMenu extends javax.swing.JFrame {
 
 		teamComboBox.removeAllItems();
 
-		File teamFolder = new File("teams/");
+		File teamFolder = new File(CommandParameterParser.getAttribute(SetTeamPathCommand.class).getValue());
 		if(!teamFolder.exists()) {
 			Logger.error(this, "Could not find team folder! ");
 			return;
@@ -104,7 +108,7 @@ public class AINetworkTransferMenu extends javax.swing.JFrame {
 				String teamStringID = teamClassName.replace(".team", "");
 
 				try {
-					ObjectFileController<Team> readerController = new ObjectFileController<Team>("teams/" + teamStringID + ".team");
+					ObjectFileController<Team> readerController = new ObjectFileController<Team>(CommandParameterParser.getAttribute(SetTeamPathCommand.class).getValue()+ teamStringID + ".team");
 
 					tmpTeam  = readerController.readObject();
 					teamComboBox.addItem(tmpTeam);
@@ -268,7 +272,21 @@ public class AINetworkTransferMenu extends javax.swing.JFrame {
 
 	private void sendTeam(ObjectOutputStream out, ObjectInputStream in, Socket clientSocket) throws IOException, ClassNotFoundException {
 		stateLabel.setText("Übertrage Team");
-		out.writeObject((Team) teamComboBox.getSelectedItem());
+		Team teamToSend = (Team) teamComboBox.getSelectedItem();
+		URL strategyURL =  teamToSend.getStrategy().getResource(teamToSend.getStrategy().getSimpleName()+".class");
+		try {
+			File strategyFile = new File(strategyURL.toURI());
+			out.writeObject(strategyFile);
+		} catch (URISyntaxException ex) {
+			java.util.logging.Logger.getLogger(AINetworkTransferMenu.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		try {
+			Logger.info(this, "########### ClassLocation:" + strategyURL.toURI().toString());
+		} catch (URISyntaxException ex) {
+			java.util.logging.Logger.getLogger(AINetworkTransferMenu.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		//out.writeObject(new File(teamToSend.getStrategy().teamToSend)
+		out.writeObject(teamToSend);
 		if(((Boolean) in.readObject())) {
 			stateLabel.setText("Connecting");
 		} else {
@@ -285,11 +303,26 @@ public class AINetworkTransferMenu extends javax.swing.JFrame {
 			sendButton.setEnabled(true);
 			return;
 		}
+		File strategyFileSend = (File) in.readObject();
+
+
+
+
+//		FileWriter fstream = new FileWriter(strategyFileSend.getPath()+strategyFileSend.getName());
+//        BufferedWriter outfile = new BufferedWriter(fstream);
+//			outfile.writewrite(strategyFileSend);
+		 //Close the output stream
+    out.close();
+
+
+
+
+		//getClass().getClassLoader().getSystemClassLoader().
 		Team team = (Team) in.readObject();
 		Logger.info(this, "Incomming OtherTeam");
 
 		try {
-			ObjectFileController<Team> fileWriter = new ObjectFileController<Team>("teams/"+team.getID()+".team");
+			ObjectFileController<Team> fileWriter = new ObjectFileController<Team>(CommandParameterParser.getAttribute(SetTeamPathCommand.class).getValue()+team.getID()+".team");
 			fileWriter.writeObject(team);
 		} catch (Exception ex) {
 			stateLabel.setText("Konnte Team nicht speichern!");

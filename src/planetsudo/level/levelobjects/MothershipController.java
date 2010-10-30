@@ -17,7 +17,7 @@ public class MothershipController {
 	}
 
 	/**
-	 * Gibt zur&uuml;ck, ob Mutterschiff Treibstoff hat.
+	 * Gibt zur&uuml;ck, ob das Mutterschiff Treibstoff hat.
 	 * @return Einen der Resourcentypen: Unknown, Normal, DoublePoints, ExtremPoint, ExtraAgentFuel, ExtraMothershipFuel, Bomb
 	 */
 	public boolean hasFuel() {

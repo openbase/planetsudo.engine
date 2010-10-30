@@ -64,7 +64,7 @@ public class Revolution extends AbstractLevel {
 	@Override
 	protected ResourcePlacement[] loadResourcePlacement() {
 		ResourcePlacement[] resourcePlacement = new ResourcePlacement[5];
-		resourcePlacement[0] = new ResourceRandomRectangle(0, 0, 1000, 1000, 50, ResourceType.Normal);
+		resourcePlacement[0] = new ResourceRandomRectangle(0, 0, 1000, 1000, 10, ResourceType.Normal);
 		resourcePlacement[1] = new ResourceRandomRectangle(0, 0, 1000, 1000, 20, ResourceType.DoublePoints);
 		resourcePlacement[2] = new ResourceRandomRectangle(350, 400, 300, 200, 10, ResourceType.ExtremPoint);
 		resourcePlacement[3] = new ResourceRandomRectangle(350, 400, 300, 200, 10, ResourceType.ExtraAgentFuel);

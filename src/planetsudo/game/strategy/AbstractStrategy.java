@@ -21,7 +21,7 @@ public abstract class AbstractStrategy implements Runnable {
 
 	private final Agent strategyOwner;
 	protected final AgentController agent;
-	private final MothershipController mothership;
+	protected final MothershipController mothership;
 	private final TreeMap<Integer, Rule> rules;
 	private final GameManager gameManager;
 	private final int agentCount;
@@ -33,6 +33,7 @@ public abstract class AbstractStrategy implements Runnable {
 		this.strategyOwner = null;
 		this.agent = null;
 		this.agentCount = loadAgentCount();
+		Logger.info(this, null);
 	}
 
 	public AbstractStrategy(Agent agent) {

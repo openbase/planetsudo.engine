@@ -11,6 +11,7 @@
 
 package planetsudo.view.configuration;
 
+import configuration.parameter.CommandParameterParser;
 import controller.ObjectFileController;
 import java.awt.Color;
 import java.util.Collection;
@@ -19,6 +20,7 @@ import java.util.logging.Level;
 import logging.Logger;
 import planetsudo.game.Team;
 import planetsudo.game.strategy.AbstractStrategy;
+import planetsudo.main.clc.SetTeamPathCommand;
 import planetsudo.view.MainGUI;
 
 
@@ -92,7 +94,7 @@ public class CreateTeamFrame extends javax.swing.JFrame {
 
 		Team team = new Team(id, name, color, strategy, members);
 		try {
-			ObjectFileController<Team> fileWriter = new ObjectFileController<Team>("teams/"+id+".team");
+			ObjectFileController<Team> fileWriter = new ObjectFileController<Team>(CommandParameterParser.getAttribute(SetTeamPathCommand.class).getValue()+id+".team");
 			fileWriter.writeObject(team);
 		} catch (Exception ex) {
 			Logger.error(this, "Could not find team folder!", ex);

@@ -10,6 +10,8 @@ import configuration.parameter.SetDebugModeCommand;
 import logging.Logger;
 import planetsudo.game.GameManager;
 import planetsudo.main.clc.SetLevelPathCommand;
+import planetsudo.main.clc.SetStrategyPathCommand;
+import planetsudo.main.clc.SetTeamPathCommand;
 
 
 /**
@@ -22,6 +24,13 @@ public class Main {
 	private final GUIController guiController;
 
 	public Main() {
+		Logger.info(this, "Install strategy...");
+		String command = "InstallStrategy.bat";
+		try {
+			Process child = Runtime.getRuntime().exec(command);
+		} catch (Exception ex) {
+			Logger.warn(this, "Could not sync strategy!");
+		}
 		Logger.info(this, "Starting Game...");
 		new GameManager();
 		this.guiController = new GUIController();
@@ -34,6 +43,8 @@ public class Main {
 	public static void main(String[] args) {
 		CommandParameterParser.setProgramName("PlanetSudo");
 		CommandParameterParser.addCommand(new PrintHelpCommand());
+		CommandParameterParser.addCommand(new SetTeamPathCommand());
+		CommandParameterParser.addCommand(new SetStrategyPathCommand());
 		CommandParameterParser.addCommand(new SetDebugModeCommand());
 		CommandParameterParser.addCommand(new SetLevelPathCommand());
 

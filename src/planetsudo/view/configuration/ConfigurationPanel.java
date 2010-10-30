@@ -11,6 +11,7 @@
 
 package planetsudo.view.configuration;
 
+import configuration.parameter.CommandParameterParser;
 import controller.ObjectFileController;
 import data.ImageLoader;
 import java.awt.Color;
@@ -22,6 +23,7 @@ import planetsudo.game.GameManager;
 import planetsudo.game.Team;
 import planetsudo.level.AbstractLevel;
 import planetsudo.level.LevelLoader;
+import planetsudo.main.clc.SetTeamPathCommand;
 import planetsudo.view.MainGUI;
 
 /**
@@ -58,7 +60,7 @@ public class ConfigurationPanel extends javax.swing.JPanel {
 		teamBComboBox.removeAllItems();
 		defaultTeamComboBox.removeAllItems();
 
-		File teamFolder = new File("teams/");
+		File teamFolder = new File(CommandParameterParser.getAttribute(SetTeamPathCommand.class).getValue());
 		if(!teamFolder.exists()) {
 			Logger.error(this, "Could not find team folder! ");
 			return;
@@ -74,7 +76,7 @@ public class ConfigurationPanel extends javax.swing.JPanel {
 				String teamStringID = teamClassName.replace(".team", "");
 
 				try {
-					ObjectFileController<Team> readerWriter = new ObjectFileController<Team>("teams/" + teamStringID + ".team");
+					ObjectFileController<Team> readerWriter = new ObjectFileController<Team>(CommandParameterParser.getAttribute(SetTeamPathCommand.class).getValue()+ teamStringID + ".team");
 
 					tmpTeam  = readerWriter.readObject();
 					teamAComboBox.addItem(tmpTeam);
@@ -159,7 +161,7 @@ public class ConfigurationPanel extends javax.swing.JPanel {
         );
         levelPreviewDisplayPanelLayout.setVerticalGroup(
             levelPreviewDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 573, Short.MAX_VALUE)
+            .addGap(0, 624, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -303,7 +305,6 @@ public class ConfigurationPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(logoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -311,7 +312,8 @@ public class ConfigurationPanel extends javax.swing.JPanel {
                             .addComponent(jButton2))
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(logoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -322,7 +324,7 @@ public class ConfigurationPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -330,8 +332,8 @@ public class ConfigurationPanel extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton2)
                             .addComponent(jButton1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 251, Short.MAX_VALUE)
-                        .addComponent(logoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 215, Short.MAX_VALUE)
+                        .addComponent(logoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -379,7 +381,7 @@ public class ConfigurationPanel extends javax.swing.JPanel {
 		try {
 			Team defaultTeamTmp = (Team) defaultTeamComboBox.getSelectedItem();
 			setdefaultTeamButton.setForeground(Color.BLACK);
-			ObjectFileController<Team> fileWriter = new ObjectFileController<Team>("teams/"+defaultTeamTmp.getID()+".default");
+			ObjectFileController<Team> fileWriter = new ObjectFileController<Team>(SetTeamPathCommand.DEFAULT_VALUES[0]+defaultTeamTmp.getID()+".default");
 			fileWriter.writeObject(defaultTeamTmp);
 			setDefaultTeam(defaultTeamTmp);
 		} catch (Exception ex) {
@@ -412,7 +414,7 @@ public class ConfigurationPanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
 	private void loadDefaultTeam() {
-		File teamFolder = new File("teams/");
+		File teamFolder = new File(SetTeamPathCommand.DEFAULT_VALUES[0]);
 		if(!teamFolder.exists()) {
 			Logger.error(this, "Could not find team folder! ");
 			return;
@@ -428,7 +430,7 @@ public class ConfigurationPanel extends javax.swing.JPanel {
 				String teamStringID = teamClassName.replace(".default", "");
 
 				try {
-					ObjectFileController<Team> readerWriter = new ObjectFileController<Team>("teams/" + teamStringID + ".default");
+					ObjectFileController<Team> readerWriter = new ObjectFileController<Team>(SetTeamPathCommand.DEFAULT_VALUES[0] + teamStringID + ".default");
 
 					tmpTeam  = readerWriter.readObject();
 					setDefaultTeam(tmpTeam);

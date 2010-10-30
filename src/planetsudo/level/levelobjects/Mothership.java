@@ -31,7 +31,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 	public final static String FUEL_STATE_CHANGE = "FuelStateChange";
 	public final static String SHIELD_STATE_CHANGE = "ShieldStateChange";
 
-	public final static int DEFAULT_START_FUEL = 30000;
+	public final static int DEFAULT_START_FUEL = 15000;
 	public final static int MAX_AGENT_COUNT = 10; // range 0-9999
 	public final static int BURNING_MOTHERSHIP = 50;
 
@@ -61,7 +61,9 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 		fuel = DEFAULT_START_FUEL;
 
 		List<Agent> tmpCollection = new LinkedList<Agent>();
-		tmpCollection.addAll(agents.values());
+		synchronized(agents) {
+			tmpCollection.addAll(agents.values());
+		}
 		for(Agent agent : tmpCollection) {
 			agent.kill();
 		}
@@ -76,31 +78,44 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 		for(int i=0;i<agentMaxCount;i++) {
 			GUIController.setEvent(new PropertyChangeEvent(this, GUIController.LOADING_STEP, null, i));
 			agent = new Agent(team.getName()+"Agent", this);
-			Agent replacedAgent = agents.put(agent.getID(), agent);
+			Agent replacedAgent;
+			synchronized(agents) {
+				replacedAgent = agents.put(agent.getID(), agent);
+			}
 			if(replacedAgent != null){
 				Logger.error(this, "Add agent with same id like an other one! Kill old one.");
 				replacedAgent.kill();
 			}
 		}
-		agentCount = agents.size();
-		agentKeyArray = new Integer[agents.size()];
-		agentKeyArray = agents.keySet().toArray(agentKeyArray);
+		synchronized(agents) {
+			agentCount = agents.size();
+			agentKeyArray = new Integer[agents.size()];
+			agentKeyArray = agents.keySet().toArray(agentKeyArray);
+		}
 	}
 
-	public synchronized int orderFuel(int fuel) {
-		int oldFuel = this.fuel;
-		if(fuel <=  0) { // fuel emty
-			fuel = 0;
-		} else if(this.fuel < fuel) { // use last fuel
-			fuel = this.fuel;
-			this.fuel = 0;
-			synchronized(this) {
-				notify();
+	public int orderFuel(int fuel, Agent agent) {
+		if(agent == null || getBounds().contains(agent.getBounds())) {
+			try {
+				int oldFuel = this.fuel;
+				if(fuel <=  0) { // fuel emty
+					fuel = 0;
+				} else if(this.fuel < fuel) { // use last fuel
+					fuel = this.fuel;
+					this.fuel = 0;
+					synchronized(this) {
+						notify();
+					}
+				} else {
+					this.fuel -= fuel;
+				}
+				changes.firePropertyChange(FUEL_STATE_CHANGE, oldFuel, this.fuel);
+			} catch(Exception e ) {
+				Logger.error(this, "Hallo Bug?", e);
 			}
 		} else {
-			this.fuel -= fuel;
+			return 0;
 		}
-		changes.firePropertyChange(FUEL_STATE_CHANGE, oldFuel, this.fuel);
 		return fuel;
 	}
 
@@ -135,7 +150,9 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 
 	public void startGame() {
 		for(Agent agent : agents.values()) {
-			agent.startGame();
+			synchronized(agents) {
+				agent.startGame();
+			}
 		}
 	}
 
@@ -174,7 +191,9 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 	}
 
 	public void getAgentCount() {
-		agents.size();
+		synchronized(agents) {
+			agents.size();
+		}
 	}
 
 	protected void removeAgent(Agent agent) {
@@ -189,13 +208,17 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 
 	protected void passResource(Agent agent) {
 		Resource resource = agent.getResource();
-		if(resource != null) {
-			team.addPoints(resource.use(agent));
+		if(getBounds().contains(agent.getBounds())) {
+			if(resource != null) {
+				team.addPoints(resource.use(agent));
+			}
 		}
 	}
 
 	public Collection<Agent> getAgents() {
-		return agents.values();
+		synchronized(agents) {
+			return agents.values();
+		}
 	}
 
 	public synchronized void attack() {
@@ -243,7 +266,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(!GameManager.getInstance().isPause()) {
-			orderFuel(BURNING_MOTHERSHIP-shield);
+			orderFuel(BURNING_MOTHERSHIP-shield, null);
 		}
 	}
 

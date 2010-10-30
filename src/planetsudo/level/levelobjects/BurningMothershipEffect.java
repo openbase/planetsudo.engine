@@ -21,7 +21,7 @@ public class BurningMothershipEffect extends TimerTask {
 
 	@Override
 	public void run() {
-		mothership.orderFuel(33-mothership.getShieldForce());
+		mothership.orderFuel(33-mothership.getShieldForce(), null);
 	}
 
 }

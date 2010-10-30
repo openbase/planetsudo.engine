@@ -5,19 +5,22 @@
 
 package planetsudo.game;
 
+import configuration.parameter.CommandParameterParser;
 import controller.ObjectFileController;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.logging.Level;
 import javax.swing.JOptionPane;
 import logging.Logger;
+import planetsudo.main.clc.SetTeamPathCommand;
 import planetsudo.view.MainGUI;
+import planetsudo.view.menu.AINetworkTransferMenu;
 
 /**
  *
@@ -68,7 +71,7 @@ public class LevelReciver implements Runnable {
 				try {
 					reciveTeam(in, out);
 				} catch (Exception ex) {
-					Logger.error(this, "Could not transfer team!");
+					Logger.error(this, "Could not transfer team!",ex );
 				}
 
 
@@ -86,6 +89,8 @@ public class LevelReciver implements Runnable {
 	}
 
 	private void reciveTeam(ObjectInputStream in, ObjectOutputStream out) throws IOException, ClassNotFoundException {
+		File strategyFileSend = (File) in.readObject();
+		Logger.info(this, "####### Incomming class name is:"+strategyFileSend.getName());
 		Team team = (Team) in.readObject();
 			int res = JOptionPane.showConfirmDialog(MainGUI.getInstance(),
 										"Jemand möchte mit dir seine KI tauschen. Stimmst du dem zu?",
@@ -107,10 +112,27 @@ public class LevelReciver implements Runnable {
 										JOptionPane.ERROR_MESSAGE);
 			return;
 		}
+
+
+		URL strategyURL =  defaultTeamTmp.getStrategy().getResource(defaultTeamTmp.getStrategy().getSimpleName()+".class");
+		try {
+			File strategyFile = new File(strategyURL.toURI());
+			out.writeObject(strategyFile);
+		} catch (URISyntaxException ex) {
+			java.util.logging.Logger.getLogger(AINetworkTransferMenu.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		try {
+			Logger.info(this, "########### ClassLocation:" + strategyURL.toURI().toString());
+		} catch (URISyntaxException ex) {
+			java.util.logging.Logger.getLogger(AINetworkTransferMenu.class.getName()).log(Level.SEVERE, null, ex);
+		}
+
+
+
 		out.writeObject(defaultTeamTmp);
 
 		try {
-			ObjectFileController<Team> fileWriter = new ObjectFileController<Team>("teams/"+team.getID()+".team");
+			ObjectFileController<Team> fileWriter = new ObjectFileController<Team>(CommandParameterParser.getAttribute(SetTeamPathCommand.class).getValue()+team.getID()+".team");
 			fileWriter.writeObject(team);
 //			team.getStrategy();
 

@@ -54,7 +54,7 @@ public class JD extends AbstractLevel {
 	@Override
 	protected ResourcePlacement[] loadResourcePlacement() {
 		ResourcePlacement[] resourcePlacement = new ResourcePlacement[5];
-		resourcePlacement[0] = new ResourceRandomRectangle(100, 100, 1900, 1900, 50, ResourceType.Normal);
+		resourcePlacement[0] = new ResourceRandomRectangle(100, 100, 1900, 1900, 10, ResourceType.Normal);
 		resourcePlacement[1] = new ResourceRandomRectangle(100, 100, 1900, 1900, 20, ResourceType.DoublePoints);
 		resourcePlacement[2] = new ResourceRandomRectangle(100, 100, 1900, 1900, 10, ResourceType.ExtremPoint);
 		resourcePlacement[3] = new ResourceRandomRectangle(100, 100, 1900, 1900, 10, ResourceType.ExtraAgentFuel);

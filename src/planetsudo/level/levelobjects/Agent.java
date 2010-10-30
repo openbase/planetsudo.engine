@@ -16,6 +16,7 @@ import math.RandomGenerator;
 import planetsudo.game.ActionPoints;
 import planetsudo.game.Team;
 import planetsudo.game.strategy.AbstractStrategy;
+import planetsudo.level.levelobjects.Resource.ResourceType;
 
 /**
  *
@@ -120,7 +121,9 @@ public class Agent extends AbstractLevelObject {
 	public void placeMine() {
 		actionPoints.getActionPoint();
 		if(useFuel()) {
-			level.addResource(new Resource(level.generateNewResourceID(), Resource.ResourceType.Bomb, level, new Point2D(position)));
+			Resource newMine =new Resource(level.generateNewResourceID(), Resource.ResourceType.Bomb, level, new Point2D(position));
+			newMine.setPlacer(this);
+			level.addResource(newMine);
 		}
 	}
 
@@ -173,7 +176,7 @@ public class Agent extends AbstractLevelObject {
 		resource.release();
 	}
 
-	public Resource getResource() {
+	protected Resource getResource() {
 		Resource tmp2Resource = resource;
 		resource = null;
 		return tmp2Resource;
@@ -293,7 +296,7 @@ public class Agent extends AbstractLevelObject {
 		}
 
 		for(int toOrder = ((DEFAULT_START_FUEL*percent)/100) - fuel; toOrder>0;toOrder--) {
-			fuel += mothership.orderFuel(1);
+			fuel += mothership.orderFuel(1,this);
 			actionPoints.getActionPoint(2);
 		}
 	}
@@ -324,7 +327,15 @@ public class Agent extends AbstractLevelObject {
 	public Resource.ResourceType touchResourceType() {
 		tmpResource = level.getTouchableResource(this);
 		if(tmpResource != null) {
-			return tmpResource.getType();
+			if(tmpResource.wasPlacedByTeam() != null) {
+				if(this.getTeam() == tmpResource.wasPlacedByTeam()) {
+					return tmpResource.getType();
+				} else {
+					return ResourceType.ExtremPoint;
+				}
+			} else {
+				return tmpResource.getType();
+			}
 		}
 		return Resource.ResourceType.Unknown;
 	}

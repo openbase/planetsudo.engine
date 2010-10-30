@@ -117,6 +117,11 @@ public class Resource extends AbstractLevelObject {
 		}
 	}
 
+	private Team placedBy = null;
+	public Team wasPlacedByTeam() {
+		return placedBy;
+	}
+
 	protected void release() {
 		owner = null;
 		position = new Point2D(position);
@@ -152,5 +157,13 @@ public class Resource extends AbstractLevelObject {
 		}
 		Logger.warn(this, "Ignore double resource use!");
 		return 0;
+	}
+
+	void setPlacer(Agent agent) {
+		placedBy = agent.getTeam();
+	}
+
+	public boolean isUsed() {
+		return used;
 	}
 }

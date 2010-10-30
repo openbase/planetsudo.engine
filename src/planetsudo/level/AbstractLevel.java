@@ -97,11 +97,15 @@ public abstract class AbstractLevel implements Runnable {
 		if(motherships[1] != null) motherships[1].reset();
 //		motherships[0] = null;
 //		motherships[1] = null;
-		resources.clear();
+		synchronized(resources) {
+			resources.clear();
+		}
 		resourceKeyCounter = 0;
 		Logger.info(this, "Place resources in "+this);
 		placeResources();
-		Logger.info(this, "Add "+resources.size()+" Resources");
+		synchronized(resources) {
+			Logger.info(this, "Add "+resources.size()+" Resources");
+		}
 	}
 
 	public synchronized int generateNewResourceID() {
@@ -235,7 +239,9 @@ public abstract class AbstractLevel implements Runnable {
 
 	private void spornNewResource(ResourcePlacement placement) {
 		Resource newResource = new Resource(generateNewResourceID(), Resource.ResourceType.Normal, this, placement);
-		resources.add(newResource);
+		synchronized(resources) {
+			resources.add(newResource);
+		}
 		changes.firePropertyChange(CREATE_RESOURCE, null, newResource);
 
 	}
@@ -254,7 +260,7 @@ public abstract class AbstractLevel implements Runnable {
 	public Resource getCloseResource(Agent agent) {
 		synchronized(resources) {
 			for(Resource resource : resources) {
-				if(resource.getBounds().intersects(agent.getViewBounds()) &&
+				if(!resource.isUsed() && resource.getBounds().intersects(agent.getViewBounds()) &&
 						(resource.getOwner() == null || resource.getOwner().getTeam() != agent.getTeam())) {
 					return resource;
 				}
@@ -271,7 +277,7 @@ public abstract class AbstractLevel implements Runnable {
 	public synchronized Resource getTouchableResource(Agent agent) {
 		synchronized(resources) {
 			for(Resource resource : resources) {
-				if(resource.getBounds().intersects(agent.getBounds()) &&
+				if(!resource.isUsed() &&resource.getBounds().intersects(agent.getBounds()) &&
 						(resource.getOwner() == null || resource.getOwner().getTeam() != agent.getTeam())) {
 					return resource;
 				}
