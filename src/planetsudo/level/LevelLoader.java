@@ -26,7 +26,11 @@ public class LevelLoader {
 													"SimpleFight", 
 													"SimpleWorld",
 													"UTurn",
-													"WakaWaka"};
+													"WakaWaka",
+													"Revolution",
+													"FrauenWG",
+													"JD"
+												};
 
 	public LevelLoader() {
 		instance = this;
