@@ -78,25 +78,32 @@ public class LuckyLoop extends AbstractLevel {
 	@Override
 	protected Base2D[] loadHomePositions() {
 		Base2D[] homePosition = new Base2D[2];
-		homePosition[0] = new Base2D(200, 300, Direction2D.DOWN);
-		homePosition[1] = new Base2D(200, 1700, Direction2D.DOWN);
+		homePosition[0] = new Base2D(150, 150, Direction2D.DOWN);
+		homePosition[1] = new Base2D(1650, 1300, Direction2D.DOWN);
 		return homePosition;
 	}
 
 	@Override
 	protected ResourcePlacement[] loadResourcePlacement() {
-		ResourcePlacement[] resourcePlacement = new ResourcePlacement[5];
-		resourcePlacement[0] = new ResourceRandomRectangle(0, 500, 500, 1500, 30, ResourceType.Normal);
-		resourcePlacement[1] = new ResourceRandomRectangle(0, 500, 1000, 1500, 20, ResourceType.DoublePoints);
-		resourcePlacement[2] = new ResourceRandomRectangle(1500, 0, 2000, 2000, 6, ResourceType.ExtremPoint);
-		resourcePlacement[3] = new ResourceRandomRectangle(500, 0, 2000, 2000, 10, ResourceType.ExtraAgentFuel);
-		resourcePlacement[4] = new ResourceRandomRectangle(500, 0, 2000, 2000, 10, ResourceType.ExtraMothershipFuel);
+		ResourcePlacement[] resourcePlacement = new ResourcePlacement[12];
+		resourcePlacement[0] = new ResourceRandomRectangle(0, 0, 925, 1450, 10, ResourceType.Normal);
+		resourcePlacement[1] = new ResourceRandomRectangle(925, 0, 925, 1450, 10, ResourceType.Normal);
+		resourcePlacement[2] = new ResourceRandomRectangle(50, 1100, 300, 300, 8, ResourceType.DoublePoints);
+		resourcePlacement[3] = new ResourceRandomRectangle(1500, 50, 300, 300, 8, ResourceType.DoublePoints);
+		resourcePlacement[4] = new ResourceRandomRectangle(950, 350, 300, 300, 13, ResourceType.ExtremPoint);
+		resourcePlacement[5] = new ResourceRandomRectangle(550, 800, 300, 300, 13, ResourceType.ExtremPoint);
+		resourcePlacement[6] = new ResourceRandomRectangle(850, 0, 450, 300, 6, ResourceType.ExtraAgentFuel);
+		resourcePlacement[7] = new ResourceRandomRectangle(1400, 400, 450, 250, 6, ResourceType.ExtraAgentFuel);
+		resourcePlacement[8] = new ResourceRandomRectangle(0, 850, 450, 250, 6, ResourceType.ExtraAgentFuel);
+		resourcePlacement[9] = new ResourceRandomRectangle(550, 1200, 450, 300, 6, ResourceType.ExtraAgentFuel);
+		resourcePlacement[10] = new ResourceRandomRectangle(950, 350, 300, 300, 10, ResourceType.ExtraMothershipFuel);
+		resourcePlacement[11] = new ResourceRandomRectangle(550, 800, 300, 300, 10, ResourceType.ExtraMothershipFuel);
 		return resourcePlacement;
 	}
 
 	@Override
 	protected Color loadLevelColor() {
-		return new Color(137,67,162);
+		return new Color(0,102,102);
 	}
 
 	@Override
@@ -126,7 +133,7 @@ public class LuckyLoop extends AbstractLevel {
 		levelWalls[0].addPoint(1300, 750);
 		levelWalls[0].addPoint(1200, 750);
 		levelWalls[0].addPoint(1150, 800);
-		levelWalls[0].addPoint(1350, 900);
+		levelWalls[0].addPoint(1150, 900);
 		levelWalls[0].addPoint(1100, 950);
 		levelWalls[0].addPoint(1100, 1150);
 		levelWalls[0].addPoint(1050, 1200);
@@ -137,7 +144,7 @@ public class LuckyLoop extends AbstractLevel {
 		levelWalls[0].addPoint(900, 1000);
 		levelWalls[0].addPoint(900, 900);
 		levelWalls[0].addPoint(800, 800);
-		levelWalls[0].addPoint(700, 800);
+		levelWalls[0].addPoint(650, 800);
 		levelWalls[0].addPoint(550, 900);
 		levelWalls[0].addPoint(550, 1000);
 		levelWalls[0].addPoint(650, 1100);
@@ -152,7 +159,7 @@ public class LuckyLoop extends AbstractLevel {
 		levelWalls[0].addPoint(650, 700);
 		levelWalls[0].addPoint(700, 650);
 		levelWalls[0].addPoint(700, 550);
-		levelWalls[0].addPoint(750, 700);
+		levelWalls[0].addPoint(750, 500);
 		return levelWalls;
 	}
 }
