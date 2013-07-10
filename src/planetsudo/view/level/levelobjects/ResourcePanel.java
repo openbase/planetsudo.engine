@@ -8,7 +8,7 @@ package planetsudo.view.level.levelobjects;
 import java.awt.Graphics2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import logging.Logger;
+import de.dc.util.logging.Logger;
 import planetsudo.level.levelobjects.Agent;
 import planetsudo.level.levelobjects.Resource;
 import planetsudo.level.levelobjects.Resource.ResourceType;

@@ -6,7 +6,7 @@
 package planetsudo.game;
 
 import java.beans.PropertyChangeEvent;
-import logging.Logger;
+import de.dc.util.logging.Logger;
 import planetsudo.level.AbstractLevel;
 import planetsudo.main.GUIController;
 

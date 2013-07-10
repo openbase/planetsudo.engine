@@ -21,7 +21,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
-import logging.Logger;
+import de.dc.util.logging.Logger;
 import logging.Logger.Channel;
 import planetsudo.main.GUIController;
 import planetsudo.game.GameManager;

@@ -7,7 +7,7 @@ package planetsudo.main;
 import configuration.parameter.CommandParameterParser;
 import configuration.parameter.PrintHelpCommand;
 import configuration.parameter.SetDebugModeCommand;
-import logging.Logger;
+import de.dc.util.logging.Logger;
 import planetsudo.game.GameManager;
 import planetsudo.main.clc.SetLevelPathCommand;
 import planetsudo.main.clc.SetStrategyPathCommand;

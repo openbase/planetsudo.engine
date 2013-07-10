@@ -8,7 +8,7 @@ package planetsudo.game.strategy;
 
 import planetsudo.level.levelobjects.Agent;
 import java.util.TreeMap;
-import logging.Logger;
+import de.dc.util.logging.Logger;
 import planetsudo.game.GameManager;
 import planetsudo.level.levelobjects.AgentController;
 import planetsudo.level.levelobjects.MothershipController;

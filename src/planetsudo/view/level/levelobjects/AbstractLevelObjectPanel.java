@@ -16,7 +16,7 @@ import java.awt.geom.Dimension2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.logging.Level;
-import logging.Logger;
+import de.dc.util.logging.Logger;
 import math.RandomGenerator;
 import planetsudo.level.levelobjects.AbstractLevelObject;
 import view.components.draw.AbstractResourcePanel;

@@ -11,11 +11,7 @@
     <description>Builds, tests, and runs the project PlanetSudo.</description>
     <import file="nbproject/build-impl.xml"/>
 
-    <import file="nbproject/profiler-build-impl.xml"/>
-    <import file="nbproject/management-build-impl.xml"/>
-    <property name="store.jar.name" value="PlanetSudoGameEngine"/>
-    <!--
-    
+    <import file="nbproject/management-build-impl.xml"/>    <!--
 
     There exist several targets which are by default empty and which can be 
     used for execution of your tasks. These targets are usually executed 
@@ -76,55 +72,5 @@
     nbproject/build-impl.xml file. 
 
     -->
-        <target name="buildRelease" depends="jar">
-
-        <!-- Change the value of this property to be the name of your JAR,
-             minus the .jar extension. It should not have spaces.
-             <property name="store.jar.name" value="MyJarName"/>
-        -->
-
-
-        <!-- don't edit below this line -->
-
-        <property name="store.dir" value="release"/>
-        <property name="store.jar" value="${store.dir}/${store.jar.name}.jar"/>
-
-        <echo message="Packaging ${application.title} into a single JAR at ${store.jar}"/>
-
-        <delete dir="${store.dir}"/>
-        <mkdir dir="${store.dir}"/>
-	
-	<copy todir="dist" >
-            <fileset dir=".">
-                <include name="**/*.gif"/>
-                <include name="**/*.jpg"/>
-                <include name="**/*.png"/>
-                <include name="**/*.wav"/>
-            </fileset>
-            
-        </copy>
-
-        <jar destfile="${store.dir}/temp_final.jar" filesetmanifest="skip">
-            <zipgroupfileset dir="dist" includes="*.jar"/>
-	    <zipgroupfileset dir="dist/lib" includes="*.jar"/>
-	    <fileset dir="dist">
-		    <include name="res/**/*.png" />
-	    </fileset>
-	    <!-- <zipgroupfileset dir="src" includes="*.java"/>-->
-
-            <manifest>
-                <attribute name="Main-Class" value="${main.class}"/>
-            </manifest>
-        </jar>
-
-        <zip destfile="${store.jar}">
-            <zipfileset src="${store.dir}/temp_final.jar"
-            excludes="META-INF/*.SF, META-INF/*.DSA, META-INF/*.RSA"/>
-        </zip>
-
-        <delete file="${store.dir}/temp_final.jar"/>
-
-    </target>
-
 </project>
 

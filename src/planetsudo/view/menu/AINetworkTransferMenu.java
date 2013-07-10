@@ -21,7 +21,7 @@ import java.net.Socket;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.logging.Level;
-import logging.Logger;
+import de.dc.util.logging.Logger;
 import planetsudo.game.LevelReciver;
 import planetsudo.game.Team;
 import planetsudo.main.clc.SetTeamPathCommand;

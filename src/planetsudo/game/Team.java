@@ -13,7 +13,7 @@ import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import logging.Logger;
+import de.dc.util.logging.Logger;
 import planetsudo.level.levelobjects.Mothership;
 
 /**

@@ -17,7 +17,7 @@ import java.awt.Color;
 import java.util.Collection;
 import java.util.Vector;
 import java.util.logging.Level;
-import logging.Logger;
+import de.dc.util.logging.Logger;
 import planetsudo.game.Team;
 import planetsudo.game.strategy.AbstractStrategy;
 import planetsudo.main.clc.SetTeamPathCommand;

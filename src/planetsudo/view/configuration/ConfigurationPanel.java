@@ -18,7 +18,7 @@ import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.ImageIcon;
-import logging.Logger;
+import de.dc.util.logging.Logger;
 import planetsudo.game.GameManager;
 import planetsudo.game.Team;
 import planetsudo.level.AbstractLevel;

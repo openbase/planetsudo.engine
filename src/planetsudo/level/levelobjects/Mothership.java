@@ -16,7 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import javax.swing.Timer;
-import logging.Logger;
+import de.dc.util.logging.Logger;
 import planetsudo.game.GameManager;
 import planetsudo.game.Team;
 import planetsudo.level.AbstractLevel;

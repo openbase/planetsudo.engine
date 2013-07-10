@@ -10,7 +10,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
-import logging.Logger;
+import de.dc.util.logging.Logger;
 import planetsudo.game.GameManager;
 import view.components.LoadingAnimation;
 

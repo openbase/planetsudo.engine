@@ -11,7 +11,7 @@ import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
-import logging.Logger;
+import de.dc.util.logging.Logger;
 import math.RandomGenerator;
 import planetsudo.level.levelobjects.Resource;
 import planetsudo.level.levelobjects.Resource.ResourceType;

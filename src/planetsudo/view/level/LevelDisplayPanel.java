@@ -11,7 +11,7 @@
 
 package planetsudo.view.level;
 
-import logging.Logger;
+import de.dc.util.logging.Logger;
 import planetsudo.level.AbstractLevel;
 import view.components.draw.ResourceDisplayPanel;
 

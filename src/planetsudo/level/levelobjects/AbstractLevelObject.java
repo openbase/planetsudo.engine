@@ -10,7 +10,7 @@ import data.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import logging.Logger;
+import de.dc.util.logging.Logger;
 import planetsudo.level.AbstractLevel;
 import planetsudo.level.LevelView;
 

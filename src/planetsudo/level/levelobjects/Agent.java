@@ -11,7 +11,7 @@ import exceptions.NotValidException;
 import java.awt.geom.Rectangle2D;
 import java.lang.reflect.Constructor;
 import java.util.logging.Level;
-import logging.Logger;
+import de.dc.util.logging.Logger;
 import math.RandomGenerator;
 import planetsudo.game.ActionPoints;
 import planetsudo.game.Team;

@@ -17,7 +17,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.logging.Level;
 import javax.swing.JOptionPane;
-import logging.Logger;
+import de.dc.util.logging.Logger;
 import planetsudo.main.clc.SetTeamPathCommand;
 import planetsudo.view.MainGUI;
 import planetsudo.view.menu.AINetworkTransferMenu;

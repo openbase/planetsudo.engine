@@ -7,7 +7,7 @@ package planetsudo.level;
 
 import java.util.Set;
 import java.util.TreeMap;
-import logging.Logger;
+import de.dc.util.logging.Logger;
 
 /**
  *

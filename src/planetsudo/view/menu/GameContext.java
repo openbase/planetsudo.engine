@@ -15,7 +15,7 @@ import data.ImageLoader;
 import java.io.IOException;
 import java.util.logging.Level;
 import javax.swing.ImageIcon;
-import logging.Logger;
+import de.dc.util.logging.Logger;
 
 /**
  *

@@ -5,7 +5,7 @@
 
 package planetsudo.level;
 
-import logging.Logger;
+import de.dc.util.logging.Logger;
 
 /**
  *

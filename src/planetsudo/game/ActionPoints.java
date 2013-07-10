@@ -5,7 +5,7 @@
 
 package planetsudo.game;
 
-import logging.Logger;
+import de.dc.util.logging.Logger;
 import planetsudo.level.levelobjects.Agent;
 
 /**

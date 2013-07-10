@@ -26,7 +26,7 @@ public class MarianStrategy extends AbstractStrategy {
 	 */
 	@Override
 	protected int loadAgentCount() {
-		return 1;
+		return 5;
 	}
 
 	@Override

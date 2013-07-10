@@ -10,7 +10,7 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 import java.util.TreeMap;
-import logging.Logger;
+import de.dc.util.logging.Logger;
 import planetsudo.level.levelobjects.AbstractLevelObject;
 
 /**

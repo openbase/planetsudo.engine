@@ -9,7 +9,7 @@ import data.Point2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import logging.Logger;
+import de.dc.util.logging.Logger;
 import planetsudo.game.Team;
 import planetsudo.level.AbstractLevel;
 import planetsudo.level.ResourcePlacement;
