@@ -377,7 +377,7 @@ public class ConfigurationPanel extends javax.swing.JPanel {
 		try {
 			Team defaultTeamTmp = (Team) defaultTeamComboBox.getSelectedItem();
 			setdefaultTeamButton.setForeground(Color.BLACK);
-			ObjectFileController<Team> fileWriter = new ObjectFileController<Team>(SetTeamPathCommand.DEFAULT_VALUES[0].getAbsolutePath() + "/" + defaultTeamTmp.getId() + ".default");
+			ObjectFileController<Team> fileWriter = new ObjectFileController<Team>(CLParser.getAttribute(SetTeamPathCommand.class).getDefaultValue().getAbsolutePath() + "/" + defaultTeamTmp.getId() + ".default");
 			fileWriter.writeObject(defaultTeamTmp);
 			setDefaultTeam(defaultTeamTmp);
 		} catch (Exception ex) {
@@ -408,7 +408,7 @@ public class ConfigurationPanel extends javax.swing.JPanel {
 	// End of variables declaration//GEN-END:variables
 
 	private void loadDefaultTeam() {
-		File teamFolder = SetTeamPathCommand.DEFAULT_VALUES[0];
+		File teamFolder = CLParser.getAttribute(SetTeamPathCommand.class).getDefaultValue();
 		if (!teamFolder.exists()) {
 			Logger.error(this, "Could not find team folder! ");
 			return;
@@ -424,7 +424,7 @@ public class ConfigurationPanel extends javax.swing.JPanel {
 				String teamStringID = teamClassName.replace(".default", "");
 
 				try {
-					ObjectFileController<Team> readerWriter = new ObjectFileController<Team>(SetTeamPathCommand.DEFAULT_VALUES[0] + "/" + teamStringID + ".default");
+					ObjectFileController<Team> readerWriter = new ObjectFileController<Team>(teamFolder.getAbsolutePath() + "/" + teamStringID + ".default");
 
 					tmpTeam = readerWriter.readObject();
 					setDefaultTeam(tmpTeam);

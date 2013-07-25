@@ -7,11 +7,11 @@ package de.dc.planetsudo.main;
 import de.dc.util.logging.Logger;
 import de.unibi.agai.clparser.CLParser;
 import de.unibi.agai.clparser.command.DebugModeFlag;
-import de.unibi.agai.clparser.command.PrintHelpCommand;
 import de.dc.planetsudo.game.GameManager;
 import de.dc.planetsudo.main.command.SetLevelPathCommand;
 import de.dc.planetsudo.main.command.SetStrategyPathCommand;
 import de.dc.planetsudo.main.command.SetTeamPathCommand;
+import de.dc.util.configuration.parameter.PrintHelpCommand;
 
 
 /**
@@ -42,16 +42,13 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		CLParser.setProgramName("PlanetSudo");
-		CLParser.addCommand(new PrintHelpCommand());
-		CLParser.addCommand(new SetTeamPathCommand());
-		CLParser.addCommand(new SetStrategyPathCommand());
-		CLParser.addCommand(new DebugModeFlag());
-		CLParser.addCommand(new SetLevelPathCommand());
+		CLParser.registerCommand(SetTeamPathCommand.class);
+		CLParser.registerCommand(SetStrategyPathCommand.class);
+		CLParser.registerCommand(DebugModeFlag.class);
+		CLParser.registerCommand(SetLevelPathCommand.class);
 
 		CLParser.analyseAndExitOnError(args);
 		
-//		Logger.setPrintExceptionStackTrace(true);
-//		Logger.setDisplayExceptionDialog(false);
 		new Main();
 	}
 

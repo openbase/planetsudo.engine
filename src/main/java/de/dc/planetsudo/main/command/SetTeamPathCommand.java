@@ -4,7 +4,7 @@
  */
 package de.dc.planetsudo.main.command;
 
-import de.unibi.agai.clparser.command.AbstractSetDirectory;
+import de.unibi.agai.clparser.command.AbstractCLDirectory;
 import de.unibi.agai.tools.FileHandler;
 import java.io.File;
 
@@ -12,18 +12,22 @@ import java.io.File;
  *
  * @author divine
  */
-public class SetTeamPathCommand extends AbstractSetDirectory {
+public class SetTeamPathCommand extends AbstractCLDirectory {
 
 	public final static String[] COMMAND_IDENTIFIERS = {"-t", "--teamfolder"};
 	public final static String[] ARGUMENT_IDENTIFIERS = {"LevelPath"};
-	public final static File[] DEFAULT_VALUES = {new File("/home/divine/workspace/PlanetSudo/teams")};
 
 	public SetTeamPathCommand() {
-		super(COMMAND_IDENTIFIERS, ARGUMENT_IDENTIFIERS, DEFAULT_VALUES, FileHandler.ExistenceHandling.CanExist, FileHandler.AutoMode.On);
+		super(COMMAND_IDENTIFIERS, ARGUMENT_IDENTIFIERS, FileHandler.ExistenceHandling.CanExist, FileHandler.AutoMode.On);
 	}
 
 	@Override
 	public String getDescription() {
 		return "Set the TeamPath.";
+	}
+
+	@Override
+	protected File getCommandDefaultValue() {
+		return new File("/home/divine/workspace/PlanetSudo/teams");
 	}
 }

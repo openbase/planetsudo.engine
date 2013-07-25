@@ -16,10 +16,10 @@ import java.net.URL;
 import java.util.logging.Level;
 import javax.swing.JOptionPane;
 import de.dc.util.logging.Logger;
-import de.unibi.agai.clparser.CLParser;
 import de.dc.planetsudo.main.command.SetTeamPathCommand;
 import de.dc.planetsudo.view.MainGUI;
 import de.dc.planetsudo.view.menu.AINetworkTransferMenu;
+import de.unibi.agai.clparser.CLParser;
 
 /**
  *
