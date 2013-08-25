@@ -16,6 +16,7 @@ import de.dc.util.logging.Logger;
 import java.awt.event.MouseEvent;
 import de.dc.planetsudo.level.levelobjects.AbstractLevelObject;
 import de.dc.planetsudo.level.levelobjects.Agent;
+import de.dc.planetsudo.view.MainGUI;
 
 /**
  *

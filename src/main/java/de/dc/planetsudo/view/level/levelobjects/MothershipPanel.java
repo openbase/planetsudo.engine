@@ -10,6 +10,7 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import de.dc.planetsudo.level.levelobjects.Agent;
 import de.dc.planetsudo.level.levelobjects.Mothership;
+import de.dc.planetsudo.view.MainGUI;
 import de.dc.planetsudo.view.level.LevelPanel;
 
 /**
@@ -40,6 +41,10 @@ public class MothershipPanel extends AbstractLevelObjectPanel<Mothership, LevelP
 		if(resource.isBurning()) {
 			paintExplosion(g2);
 		}
+
+//		if(MainGUI.levelView == resource.getLevelView()) {
+			resource.getLevelView().drawLevelView((int)parentResourcePanel.getBoundingBox().getX(), (int)parentResourcePanel.getBoundingBox().getY(), g2);
+//		}
 	}
 
 	@Override

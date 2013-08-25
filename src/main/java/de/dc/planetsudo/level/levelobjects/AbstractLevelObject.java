@@ -51,11 +51,12 @@ public abstract class AbstractLevelObject extends AbstractGameObject implements 
 		this.width = width;
 		this.height = height;
 		this.shape = shape;
+		this.changes = new PropertyChangeSupport(this);
+
 		if(!(this instanceof Resource)) {
 			this.levelView = new LevelView(this);
 		}
-		this.objectType = objectType;
-		this.changes = new PropertyChangeSupport(this);
+		this.setObjectType(objectType);
 	}
 
 	@ Override
@@ -90,7 +91,7 @@ public abstract class AbstractLevelObject extends AbstractGameObject implements 
 		return objectType;
 	}
 
-	public void setObjectType(ObjectType objectType) {
+	public final void setObjectType(ObjectType objectType) {
 		if(this.objectType == objectType) {
 			return;
 		}

@@ -94,9 +94,9 @@ public class LevelView {
 	} 
 
 	public int getAbsolutAngle(AbstractLevelObject levelObject) {
-		Logger.debug(this, "BEGIN: GetAbsoluteAngle");
+		Logger.info(this, "BEGIN: GetAbsoluteAngle");
 		int angle = getAngle(calcLevelRasterElement(levelObject), calcLevelRasterElement(this.levelObject));
-		Logger.debug(this, "END: GetAbsoluteAngle");
+		Logger.info(this, "END: GetAbsoluteAngle: "+angle);
 		return angle;
 	}
 
