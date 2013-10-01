@@ -20,6 +20,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.logging.Level;
 import de.dc.planetsudo.level.levelobjects.AbstractLevelObject;
+import de.dc.planetsudo.level.levelobjects.Agent;
 import de.dc.planetsudo.view.game.AbstractGameObjectPanel;
 import de.dc.util.view.engine.draw2d.AbstractResourcePanel.DrawLayer;
 import java.beans.PropertyChangeEvent;
@@ -93,7 +94,7 @@ public abstract class AbstractLevelObjectPanel<R extends AbstractLevelObject, PR
 	}
 	private Dimension2D dimension2D = new Dimension();
 
-	public AffineTransform rotateTransformation(Direction2D direction, int width, int height, AffineTransform affineTransform) {
+	public AffineTransform rotateTransformation(Direction2D direction, double width, double height, AffineTransform affineTransform) {
 		dimension2D.setSize(width, height);
 		return getRotationTransformation(direction, dimension2D, affineTransform);
 	}
@@ -103,6 +104,17 @@ public abstract class AbstractLevelObjectPanel<R extends AbstractLevelObject, PR
 				dimension.getWidth() / 2.0,
 				dimension.getHeight() / 2.0);
 		return affineTransform;
+	}
+
+	public AffineTransform getBoundsTransformation(final Direction2D direction) {
+		return rotateTransformation(direction, boundingBox.getWidth(), boundingBox.getHeight(), getBoundsTransformation());
+	}
+
+	public AffineTransform getBoundsTransformation() {
+		return new AffineTransform(
+				1, 0,
+				0, 1,
+				boundingBox.getX(), boundingBox.getY());
 	}
 
 	public AffineTransform getSkaleImageToBoundsTransformation() {
