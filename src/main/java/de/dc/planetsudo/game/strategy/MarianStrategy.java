@@ -16,6 +16,7 @@ public class MarianStrategy extends AbstractStrategy {
 
 	public MarianStrategy() {
 	}
+	
 	public MarianStrategy(Agent a) {
 		super(a);
 	}
@@ -61,6 +62,7 @@ public class MarianStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
+				agent.placeMarker();
 				agent.pickupResource();
 			}
 		});

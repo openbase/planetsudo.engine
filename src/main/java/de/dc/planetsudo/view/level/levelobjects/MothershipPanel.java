@@ -22,6 +22,7 @@ public class MothershipPanel extends AbstractLevelObjectPanel<Mothership, LevelP
 
 	public MothershipPanel(Mothership resource, LevelPanel parentResourcePanel) {
 		super(resource, resource.getPolygon(), GameObjectImages.Mothership.imagesURL, parentResourcePanel, DrawLayer.BACKGROUND);
+		new TeamMarkerPanel(resource.getTeamMarker(), parentResourcePanel);
 		loadAgentPanels();
 	}
 

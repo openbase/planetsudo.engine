@@ -359,4 +359,8 @@ public class AgentController {
 	public void goToSuppordAgent() {
 		agent.goToSuppordAgent();
 	}
+
+	public void placeMarker() {
+		agent.placeMarker();
+	}
 }

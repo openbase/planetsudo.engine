@@ -503,4 +503,17 @@ public class Agent extends AbstractLevelObject {
 			mothership.cancelSupport(this);
 		}
 	}
+
+	public void placeMarker() {
+		mothership.placeMarker(position.clone());
+	}
+
+	public void goToMarker() {
+		try {
+			direction.setAngle(mothership.getMarker().getLevelView().getAbsolutAngle(this));
+			goStraightAhead();
+		} catch (CouldNotPerformException ex) {
+			Logger.warn(this, "Could not goToMarker!", ex);
+		}
+	}
 }

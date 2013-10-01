@@ -4,6 +4,10 @@
  */
 
 package de.dc.planetsudo.level.levelobjects;
+
+import de.dc.util.data.Point2D;
+import de.dc.util.exceptions.CouldNotPerformException;
+
 /**
  *
  * @author divine
@@ -68,5 +72,12 @@ public class MothershipController {
 	public boolean needSomeoneSupport() {
 		return mothership.needSomeoneSupport(agent);
 	}
+	
+	public boolean existMarker() {
+		return mothership.existMarker();
+	}
 
+	public void clearMarker() {
+		mothership.clearMarker();
+	}
 }

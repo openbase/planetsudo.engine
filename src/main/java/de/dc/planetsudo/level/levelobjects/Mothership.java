@@ -4,6 +4,7 @@
  */
 package de.dc.planetsudo.level.levelobjects;
 
+import com.sun.swing.internal.plaf.metal.resources.metal;
 import de.dc.util.data.Point2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -44,6 +45,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 	private final Timer timer;
 	private final Map<Integer, Agent> agents;
 	private final List<Agent> supportChannel;
+	private final TeamMarker teamMarker;
 
 	public Mothership(final int id, final Team team, final AbstractLevel level) {
 		super(id, team.getName() + Mothership.class.getSimpleName(), AbstractResourcePanel.ObjectType.Static, level, level.getMothershipBase(id).getPoint(), 100, 100, ObjectShape.Rec);
@@ -52,6 +54,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 		this.team.setMothership(this);
 		this.agents = new HashMap<Integer, Agent>();
 		this.supportChannel = new ArrayList<Agent>();
+		this.teamMarker = new TeamMarker(team, level);
 		this.reset();
 		this.timer = new Timer(50, this);
 	}
@@ -193,6 +196,14 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 			}
 			return getId() * 10000 + i;
 		}
+	}
+
+	/**
+	 * Methode just for visual purpose
+	 * @return
+	 */
+	public TeamMarker getTeamMarker() {
+		return teamMarker;
 	}
 
 	public void getAgentCount() {
@@ -340,10 +351,26 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 		}
 	}
 
-	void cancelSupport(Agent agent) {
+	public void cancelSupport(Agent agent) {
 		synchronized (SUPPORT_CHANNEL_LOCK) {
 			supportChannel.remove(agent);
 			agent.setNeedSupport(false);
 		}
+	}
+
+	public boolean existMarker() {
+		return teamMarker.isPlaced();
+	}
+
+	public void clearMarker() {
+		teamMarker.clear();
+	}
+
+	public void placeMarker(final Point2D position) {
+		teamMarker.place(position);
+	}
+
+	public TeamMarker getMarker() throws CouldNotPerformException {
+		return teamMarker.getMarker();
 	}
 }
