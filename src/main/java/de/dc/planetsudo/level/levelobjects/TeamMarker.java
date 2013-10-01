@@ -20,10 +20,12 @@ public class TeamMarker extends AbstractLevelObject {
 	public static final double MARKER_SIZE = 50;
 	private final Object MARKER_LOCK = new Object();
 	private boolean placed;
+	private Team team;
 
 	public TeamMarker(final Team team, final AbstractLevel level) {
 		super(0, team.getName() + "Marker", ObjectType.Static, level, new Point2D(), MARKER_SIZE, MARKER_SIZE, ObjectShape.Oval);
 		this.placed = false;
+		this.team = team;
 	}
 
 	public void place(final Point2D position) {
@@ -52,6 +54,10 @@ public class TeamMarker extends AbstractLevelObject {
 		}
 	}
 
+	public Team getTeam() {
+		return team;
+	}
+	
 	@Override
 	protected void reset() {
 		clear();

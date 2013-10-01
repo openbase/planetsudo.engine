@@ -31,11 +31,11 @@ public class TeamMarkerPanel extends AbstractLevelObjectPanel<TeamMarker, LevelP
 
 	@Override
 	protected void paintComponent(Graphics2D g2, Graphics2D gl) {
-		//if (resource.isPlaced()) {
+		if (resource.isPlaced()) {
 			boundingBox = resource.getBounds();
-			g2.setColor(Color.RED);
+			g2.setColor(resource.getTeam().getTeamColor());
 			g2.drawOval((int) boundingBox.getX(), (int) boundingBox.getY(), (int) boundingBox.getWidth(), (int) boundingBox.getHeight());
-		//}
+		}
 	}
 
 	@Override
