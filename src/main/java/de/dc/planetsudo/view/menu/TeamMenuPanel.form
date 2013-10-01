@@ -24,16 +24,11 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jPanel3" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
-                      <Group type="103" groupAlignment="1" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="teamMothershipPanel" alignment="0" max="32767" attributes="0"/>
                           <Component id="jPanel2" alignment="0" max="32767" attributes="1"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="teamFinalStateLabel" alignment="0" pref="220" max="32767" attributes="0"/>
-                          <Component id="jPanel1" alignment="1" pref="220" max="32767" attributes="1"/>
+                          <Component id="teamFinalStateLabel" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jPanel1" alignment="1" pref="0" max="32767" attributes="1"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -52,7 +47,7 @@
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="teamFinalStateLabel" min="-2" pref="79" max="-2" attributes="0"/>
-              <EmptySpace pref="84" max="32767" attributes="0"/>
+              <EmptySpace pref="80" max="32767" attributes="0"/>
               <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -76,8 +71,8 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="mothershipFuelProgressBar" alignment="1" pref="186" max="32767" attributes="0"/>
-                      <Component id="shieldProgressBar" alignment="0" pref="186" max="32767" attributes="0"/>
+                      <Component id="mothershipFuelProgressBar" alignment="1" max="32767" attributes="0"/>
+                      <Component id="shieldProgressBar" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -88,7 +83,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <Component id="mothershipFuelProgressBar" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="shieldProgressBar" pref="22" max="32767" attributes="0"/>
+                  <Component id="shieldProgressBar" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -319,7 +314,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <Component id="teamColorPanel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="teamNameLabel" pref="192" max="32767" attributes="0"/>
+                  <Component id="teamNameLabel" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -329,7 +324,7 @@
               <Group type="102" attributes="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="teamColorPanel" min="-2" max="-2" attributes="1"/>
-                      <Component id="teamNameLabel" alignment="0" pref="16" max="32767" attributes="1"/>
+                      <Component id="teamNameLabel" alignment="0" pref="0" max="32767" attributes="1"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>

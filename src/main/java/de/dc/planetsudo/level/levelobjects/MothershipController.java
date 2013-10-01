@@ -11,9 +11,11 @@ package de.dc.planetsudo.level.levelobjects;
 public class MothershipController {
 
 		private Mothership mothership;
+		private Agent agent;
 
-	public MothershipController(Mothership mothership) {
+	public MothershipController(Mothership mothership, final Agent relatetAgent) {
 		this.mothership = mothership;
+		this.agent = relatetAgent;
 	}
 
 	/**
@@ -61,6 +63,10 @@ public class MothershipController {
 	 */
 	public boolean isDamaged() {
 		return mothership.isDamaged();
+	}
+
+	public boolean needSomeoneSupport() {
+		return mothership.needSomeoneSupport(agent);
 	}
 
 }

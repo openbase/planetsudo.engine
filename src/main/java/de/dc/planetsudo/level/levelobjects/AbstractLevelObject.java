@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package de.dc.planetsudo.level.levelobjects;
 
 import de.dc.planetsudo.game.AbstractGameObject;
@@ -23,10 +22,11 @@ import java.awt.Polygon;
  */
 public abstract class AbstractLevelObject extends AbstractGameObject implements Manageable {
 
-	public enum ObjectShape {Oval, Rec};
+	public enum ObjectShape {
 
+		Oval, Rec
+	};
 	public static final String OBJECT_TYPE_UPDATE = "ObjectTypeUpdate";
-
 	protected final int id;
 	protected final String name;
 	protected final AbstractLevel level;
@@ -36,7 +36,6 @@ public abstract class AbstractLevelObject extends AbstractGameObject implements 
 	protected double width;
 	protected double height;
 	protected final PropertyChangeSupport changes;
-
 	private ObjectType objectType;
 
 	public AbstractLevelObject() {
@@ -52,8 +51,9 @@ public abstract class AbstractLevelObject extends AbstractGameObject implements 
 		this.height = height;
 		this.shape = shape;
 		this.changes = new PropertyChangeSupport(this);
+		this.objectType = ObjectType.Dynamic;
 
-		if(!(this instanceof Resource)) {
+		if (!(this instanceof Resource)) {
 			this.levelView = new LevelView(this);
 		}
 		this.setObjectType(objectType);
@@ -80,37 +80,31 @@ public abstract class AbstractLevelObject extends AbstractGameObject implements 
 	public Point2D getPosition() {
 		return position;
 	}
-
-	//	public boolean isStatic() {
-	//		return isStatic;
-	//	}
+	
 	public boolean isObjectType(ObjectType type) {
 		return objectType == type;
 	}
+
 	public ObjectType getObjectType() {
 		return objectType;
 	}
 
 	public final void setObjectType(ObjectType objectType) {
-		if(this.objectType == objectType) {
+		if (this.objectType == objectType) {
 			return;
 		}
-
+		if (levelView != null) {
+			levelView.updateObjectMovement();
+		}
 		this.objectType = objectType;
 		changes.firePropertyChange(OBJECT_TYPE_UPDATE, null, objectType);
-
-		if(objectType == objectType.Dynamic) {
-			if(levelView != null) {
-				levelView.updateObjectMovement();
-			}
-		}
 	}
 
 	public Rectangle2D.Double getBounds() {
-		return new Rectangle2D.Double(	(int)position.getX()-(width/2),
-										(int)position.getY()-(height/2),
-										width,
-										height);
+		return new Rectangle2D.Double((int) position.getX() - (width / 2),
+				(int) position.getY() - (height / 2),
+				width,
+				height);
 	}
 
 	protected abstract void reset();
@@ -121,10 +115,10 @@ public abstract class AbstractLevelObject extends AbstractGameObject implements 
 
 	public Polygon getPolygon() {
 		Polygon polygon = new Polygon();
-		polygon.addPoint((int) (position.getX()-width/2), (int) (position.getY()-height/2));
-		polygon.addPoint((int) (position.getX()+width/2), (int) (position.getY()-height/2));
-		polygon.addPoint((int) (position.getX()-width/2), (int) (position.getY()+height/2));
-		polygon.addPoint((int) (position.getX()+width/2), (int) (position.getY()+height/2));
+		polygon.addPoint((int) (position.getX() - width / 2), (int) (position.getY() - height / 2));
+		polygon.addPoint((int) (position.getX() + width / 2), (int) (position.getY() - height / 2));
+		polygon.addPoint((int) (position.getX() - width / 2), (int) (position.getY() + height / 2));
+		polygon.addPoint((int) (position.getX() + width / 2), (int) (position.getY() + height / 2));
 		return polygon;
 	}
 
@@ -137,13 +131,13 @@ public abstract class AbstractLevelObject extends AbstractGameObject implements 
 	}
 
 	public void addPropertyChangeListener(PropertyChangeListener l) {
-	    changes.addPropertyChangeListener(l);
-	    Logger.debug(this, "Add "+l.getClass()+" as new PropertyChangeListener.");
+		changes.addPropertyChangeListener(l);
+		Logger.debug(this, "Add " + l.getClass() + " as new PropertyChangeListener.");
 	}
 
 	public void removePropertyChangeListener(PropertyChangeListener l) {
-	    changes.removePropertyChangeListener(l);
-	    Logger.debug(this, "Remove PropertyChangeListener "+l.getClass()+".");
+		changes.removePropertyChangeListener(l);
+		Logger.debug(this, "Remove PropertyChangeListener " + l.getClass() + ".");
 	}
 
 	@ Override

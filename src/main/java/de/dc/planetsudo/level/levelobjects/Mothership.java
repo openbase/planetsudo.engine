@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package de.dc.planetsudo.level.levelobjects;
 
 import de.dc.util.data.Point2D;
@@ -10,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,7 +19,10 @@ import de.dc.planetsudo.game.GameManager;
 import de.dc.planetsudo.game.Team;
 import de.dc.planetsudo.level.AbstractLevel;
 import de.dc.planetsudo.main.GUIController;
+import de.dc.util.exceptions.CouldNotPerformException;
+import de.dc.util.exceptions.NotValidException;
 import de.dc.util.view.engine.draw2d.AbstractResourcePanel;
+import java.util.ArrayList;
 
 /**
  *
@@ -31,41 +32,40 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 
 	public final static String FUEL_STATE_CHANGE = "FuelStateChange";
 	public final static String SHIELD_STATE_CHANGE = "ShieldStateChange";
-
 	public final static int DEFAULT_START_FUEL = 15000;
 	public final static int MAX_AGENT_COUNT = 10; // range 0-9999
 	public final static int BURNING_MOTHERSHIP = 50;
-
+	public final Object AGENTLOCK = new Object();
+	public final Object SUPPORT_CHANNEL_LOCK = new Object();
 	private final Team team;
 	private int fuel;
 	private int agentMaxCount;
 	private int shield;
-	private Timer timer;
-
+	private final Timer timer;
 	private final Map<Integer, Agent> agents;
-	
+	private final List<Agent> supportChannel;
 
-	public Mothership(int id, Team team, AbstractLevel level) {
-		super(id, team.getName()+Mothership.class.getSimpleName(), AbstractResourcePanel.ObjectType.Static, level, level.getMothershipBase(id).getPoint(), 100, 100, ObjectShape.Rec);
-		Logger.info(this, "Create "+this);
+	public Mothership(final int id, final Team team, final AbstractLevel level) {
+		super(id, team.getName() + Mothership.class.getSimpleName(), AbstractResourcePanel.ObjectType.Static, level, level.getMothershipBase(id).getPoint(), 100, 100, ObjectShape.Rec);
+		Logger.info(this, "Create " + this);
 		this.team = team;
 		this.team.setMothership(this);
-		this.agents = Collections.synchronizedMap(new HashMap<Integer, Agent>());
+		this.agents = new HashMap<Integer, Agent>();
+		this.supportChannel = new ArrayList<Agent>();
 		this.reset();
 		this.timer = new Timer(50, this);
-
 	}
 
 	@ Override
-	public void reset() {
-		GUIController.setEvent(new PropertyChangeEvent(this, GUIController.LOADING_STATE_CHANGE, 1, "Lade "+team.getName()+" Mutterschiff"));
+	public final void reset() {
+		GUIController.setEvent(new PropertyChangeEvent(this, GUIController.LOADING_STATE_CHANGE, 1, "Lade " + team.getName() + " Mutterschiff"));
 		fuel = DEFAULT_START_FUEL;
 
-		List<Agent> tmpCollection = new LinkedList<Agent>();
-		synchronized(agents) {
+		final List<Agent> tmpCollection = new LinkedList<Agent>();
+		synchronized (AGENTLOCK) {
 			tmpCollection.addAll(agents.values());
 		}
-		for(Agent agent : tmpCollection) {
+		for (Agent agent : tmpCollection) {
 			agent.kill();
 		}
 		agentMaxCount = team.getAgentCount();
@@ -74,45 +74,45 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 	}
 
 	private void loadAgents() {
-		GUIController.setEvent(new PropertyChangeEvent(this, GUIController.LOADING_STATE_CHANGE, agentMaxCount, "Lade "+team.getName()+" Agent"));
+		GUIController.setEvent(new PropertyChangeEvent(this, GUIController.LOADING_STATE_CHANGE, agentMaxCount, "Lade " + team.getName() + " Agent"));
 		Agent agent;
-		for(int i=0;i<agentMaxCount;i++) {
+		for (int i = 0; i < agentMaxCount; i++) {
 			GUIController.setEvent(new PropertyChangeEvent(this, GUIController.LOADING_STEP, null, i));
-			agent = new Agent(team.getName()+"Agent", this);
+			agent = new Agent(team.getName() + "Agent", this);
 			Agent replacedAgent;
-			synchronized(agents) {
+			synchronized (AGENTLOCK) {
 				replacedAgent = agents.put(agent.getId(), agent);
 			}
-			if(replacedAgent != null){
+			if (replacedAgent != null) {
 				Logger.error(this, "Add agent with same id like an other one! Kill old one.");
 				replacedAgent.kill();
 			}
 		}
-		synchronized(agents) {
+		synchronized (AGENTLOCK) {
 			agentCount = agents.size();
 			agentKeyArray = new Integer[agents.size()];
 			agentKeyArray = agents.keySet().toArray(agentKeyArray);
 		}
 	}
 
-	public int orderFuel(int fuel, Agent agent) {
-		if(agent == null || getBounds().contains(agent.getBounds())) {
+	public int orderFuel(int fuel, final Agent agent) {
+		if (agent == null || getBounds().contains(agent.getBounds())) {
 			try {
-				int oldFuel = this.fuel;
-				if(fuel <=  0) { // fuel emty
+				final int oldFuel = this.fuel;
+				if (fuel <= 0) { // fuel emty
 					fuel = 0;
-				} else if(this.fuel < fuel) { // use last fuel
+				} else if (this.fuel < fuel) { // use last fuel
 					fuel = this.fuel;
 					this.fuel = 0;
-					synchronized(this) {
-						notify();
+					synchronized (this) {
+						notifyAll();
 					}
 				} else {
 					this.fuel -= fuel;
 				}
 				changes.firePropertyChange(FUEL_STATE_CHANGE, oldFuel, this.fuel);
-			} catch(Exception e ) {
-				Logger.error(this, "Hallo Bug?", e);
+			} catch (Exception e) {
+				Logger.error(this, "Could not order fuel!", e);
 			}
 		} else {
 			return 0;
@@ -128,8 +128,8 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 		return fuel > 0;
 	}
 
-	protected void spendFuel(int value) {
-		if(value+fuel > DEFAULT_START_FUEL) {
+	protected void spendFuel(final int value) {
+		if (value + fuel > DEFAULT_START_FUEL) {
 			fuel = DEFAULT_START_FUEL;
 		} else {
 			fuel += value;
@@ -138,9 +138,11 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 	}
 
 	public void waitTillGameEnd() {
-		synchronized(this) {
-			Logger.info(this, "Create "+this);
-			if(fuel == 0) return;
+		synchronized (this) {
+			Logger.info(this, "Create " + this);
+			if (fuel == 0) {
+				return;
+			}
 			try {
 				this.wait();
 			} catch (InterruptedException ex) {
@@ -150,22 +152,24 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 	}
 
 	public void startGame() {
-		for(Agent agent : agents.values()) {
-			synchronized(agents) {
+		synchronized (AGENTLOCK) {
+			for (Agent agent : agents.values()) {
 				agent.startGame();
 			}
 		}
 	}
-
 	private int agentIndex = 0;
 	private Integer[] agentKeyArray;
 	private Agent nextAgent;
 	private int agentCount = 0;
+
 	public void addActionPoint() {
-		if(agentCount != 0) {
-			agentIndex = (agentIndex+1) % (agentCount);
-			nextAgent = agents.get(agentKeyArray[agentIndex]);
-			if(nextAgent != null) {
+		if (agentCount != 0) {
+			agentIndex = (agentIndex + 1) % (agentCount);
+			synchronized (AGENTLOCK) {
+				nextAgent = agents.get(agentKeyArray[agentIndex]);
+			}
+			if (nextAgent != null) {
 				nextAgent.getActionPoints().addActionPoint();
 			}
 		}
@@ -176,29 +180,29 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 	}
 
 	public int registerAgent() {
-		synchronized(agents) {
+		synchronized (AGENTLOCK) {
 			int i;
-			for(i=0;i<=agents.size();i++) {
-				if(!agents.containsKey(getId()*10000+i)) {
+			for (i = 0; i <= agents.size(); i++) {
+				if (!agents.containsKey(getId() * 10000 + i)) {
 					break;
 				}
 			}
-			if(i>=agentMaxCount || i>9999) {
+			if (i >= agentMaxCount || i > 9999) {
 				Logger.error(this, "Already to many agents alive.");
 				return -1;
 			}
-			return getId()*10000+i;
+			return getId() * 10000 + i;
 		}
 	}
 
 	public void getAgentCount() {
-		synchronized(agents) {
+		synchronized (AGENTLOCK) {
 			agents.size();
 		}
 	}
 
-	protected void removeAgent(Agent agent) {
-		synchronized(agents) {
+	protected void removeAgent(final Agent agent) {
+		synchronized (AGENTLOCK) {
 			agents.remove(agent.getId());
 		}
 	}
@@ -207,26 +211,25 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 		return position.clone();
 	}
 
-	protected void passResource(Agent agent) {
-		Resource resource = agent.getResource();
-		if(getBounds().contains(agent.getBounds())) {
-			if(resource != null) {
+	protected void passResource(final Agent agent) throws NotValidException {
+		final Resource resource = agent.getResource();
+		if (resource != null && getBounds().contains(agent.getBounds())) {
 				team.addPoints(resource.use(agent));
-			}
 		}
 	}
 
 	public Collection<Agent> getAgents() {
-		synchronized(agents) {
+		synchronized (AGENTLOCK) {
 			return agents.values();
 		}
 	}
 
 	public synchronized void attack() {
-		if(shield > 0) {
+		Logger.info(this, "Attack A. Mothership");
+		if (shield > 0) {
 			shield--;
-			if(shield <= BURNING_MOTHERSHIP) {
-				if(!timer.isRunning()) {
+			if (shield <= BURNING_MOTHERSHIP) {
+				if (!timer.isRunning()) {
 					timer.start();
 				}
 			}
@@ -235,11 +238,11 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 	}
 
 	public synchronized void repaire() {
-		if(shield < 100) {
+		if (shield < 100) {
 			shield++;
-			if(shield > BURNING_MOTHERSHIP && timer.isRunning()) {
+			if (shield > BURNING_MOTHERSHIP && timer.isRunning()) {
 				timer.stop();
-			} 
+			}
 			changes.firePropertyChange(SHIELD_STATE_CHANGE, null, shield);
 		}
 	}
@@ -253,7 +256,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 	}
 
 	public int getShieldPoints() {
-		return shield/10;
+		return shield / 10;
 	}
 
 	public boolean isMaxDamaged() {
@@ -265,21 +268,82 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		if(!GameManager.getInstance().isPause()) {
-			orderFuel(BURNING_MOTHERSHIP-shield, null);
+	public void actionPerformed(final ActionEvent e) {
+		if (!GameManager.getInstance().isPause()) {
+			orderFuel(BURNING_MOTHERSHIP - shield, null);
 		}
 	}
 
 	public int getAgentsAtHomePosition() {
 		int counter = 0;
-		synchronized(agents) {
-			for(Agent agent : agents.values()) {
-				if(getBounds().contains(agent.getBounds()) || getBounds().intersects(agent.getBounds())) {
+		synchronized (AGENTLOCK) {
+			for (Agent agent : agents.values()) {
+				if (getBounds().contains(agent.getBounds()) || getBounds().intersects(agent.getBounds())) {
 					counter++;
 				}
 			}
 		}
 		return counter;
+	}
+
+	public void callForHelp(final Agent agent) {
+		synchronized (SUPPORT_CHANNEL_LOCK) {
+			if (supportChannel.contains(agent)) {
+				return;
+			}
+			supportChannel.add(agent);
+			agent.setNeedSupport(true);
+		}
+	}
+
+	public boolean needSomeoneSupport(final Agent helper) {
+		synchronized (SUPPORT_CHANNEL_LOCK) {
+			switch (supportChannel.size()) {
+				case 0:
+					return false;
+				case 1:
+					return !supportChannel.contains(helper);
+				default:
+					return true;
+			}
+		}
+	}
+
+	public Agent getAgentSupportDirection(final Agent helper) throws CouldNotPerformException {
+		synchronized (SUPPORT_CHANNEL_LOCK) {
+			if (supportChannel.isEmpty()) {
+				throw new CouldNotPerformException("No support necessary.");
+			}
+			Agent supportCaller = null;
+			int distance = Integer.MAX_VALUE;
+			int tmpDistance;
+			for (Agent a : supportChannel) {
+				if (a != helper) {
+					tmpDistance = helper.getLevelView().getDistance(a);
+					if (supportCaller == null || tmpDistance < distance) {
+						supportCaller = a;
+						distance = tmpDistance;
+					}
+				}
+			}
+
+			if(supportCaller == null) {
+				throw new CouldNotPerformException("No support possible.");
+			}
+			
+			// remove caller from support channel if support possible
+			if(supportCaller.getBounds().intersects(helper.getViewBounds())) {
+				supportChannel.remove(supportCaller);
+				supportCaller.setNeedSupport(false);
+			}
+			return supportCaller;
+		}
+	}
+
+	void cancelSupport(Agent agent) {
+		synchronized (SUPPORT_CHANNEL_LOCK) {
+			supportChannel.remove(agent);
+			agent.setNeedSupport(false);
+		}
 	}
 }

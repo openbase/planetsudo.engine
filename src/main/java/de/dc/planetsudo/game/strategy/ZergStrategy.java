@@ -5,7 +5,6 @@
 
 package de.dc.planetsudo.game.strategy;
 
-import com.sun.java.swing.plaf.motif.resources.motif_es;
 import de.dc.planetsudo.level.levelobjects.Agent;
 import de.dc.planetsudo.level.levelobjects.Resource;
 

@@ -60,20 +60,6 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
 		teamMemberLabel.setText(memberList);
 	}
 
-//	private int add(int a, int b) {
-//		return a+b;
-//	}
-//
-//	private int alter;
-//
-//	public int getAlter() {
-//		return alter;
-//	}
-//
-//	public void setAlter(int alterNeu) {
-//		this.alter = alterNeu;
-//	}
-	
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -364,7 +350,7 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
 			mothershipShieldPointsNameLabel.setEnabled(true);
 			tmpValue = team.getMothership().getShieldPoints();
 			for(int i=0; i<=tmpValue;i++) {
-				mothershipShieldPointsLabel.setText(i + "");
+				mothershipShieldPointsLabel.setText(Integer.toString(i));
 				Thread.sleep(COUNT_ANIMATION);
 			}
 			mothershipShieldPointsLabel.setEnabled(false);
@@ -388,7 +374,7 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
 			saveAgentsPointsNameLabel.setEnabled(true);
 			tmpValue = team.getMothership().getAgentsAtHomePosition();
 			for(int i=0; i<=tmpValue;i++) {
-				saveAgentsPointsLabel.setText(i + "");
+				saveAgentsPointsLabel.setText(Integer.toString(i));
 				Thread.sleep(COUNT_ANIMATION);
 			}
 			saveAgentsPointsLabel.setEnabled(false);
@@ -412,7 +398,7 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
 			teamPointsNameLabel.setEnabled(true);
 			tmpValue = team.getFinalPoints();
 			for(int i=0; i<=tmpValue;i++) {
-				teamPointsLabel.setText(i + "");
+				teamPointsLabel.setText(Integer.toString(i));
 				Thread.sleep(COUNT_ANIMATION);
 			}
 			teamPointsLabel.setEnabled(false);

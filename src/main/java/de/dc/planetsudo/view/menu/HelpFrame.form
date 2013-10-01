@@ -41,17 +41,17 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel5" alignment="0" pref="424" max="32767" attributes="1"/>
-                          <Component id="jLabel9" alignment="0" pref="424" max="32767" attributes="0"/>
-                          <Component id="jLabel13" pref="424" max="32767" attributes="1"/>
-                          <Component id="jLabel7" alignment="0" pref="424" max="32767" attributes="0"/>
-                          <Component id="jLabel4" alignment="0" pref="424" max="32767" attributes="0"/>
-                          <Component id="jLabel2" alignment="0" pref="424" max="32767" attributes="0"/>
+                          <Component id="jLabel5" alignment="0" pref="516" max="32767" attributes="1"/>
+                          <Component id="jLabel9" alignment="0" pref="516" max="32767" attributes="0"/>
+                          <Component id="jLabel13" pref="516" max="32767" attributes="1"/>
+                          <Component id="jLabel7" alignment="0" pref="516" max="32767" attributes="0"/>
+                          <Component id="jLabel4" alignment="0" pref="516" max="32767" attributes="0"/>
+                          <Component id="jLabel2" alignment="0" pref="516" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="logoDisplayLabel" min="-2" pref="208" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jLabel10" alignment="1" pref="784" max="32767" attributes="1"/>
+                  <Component id="jLabel10" alignment="1" pref="876" max="32767" attributes="1"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -92,7 +92,7 @@
                   </Group>
                   <Component id="logoDisplayLabel" max="32767" attributes="1"/>
               </Group>
-              <EmptySpace pref="44" max="32767" attributes="0"/>
+              <EmptySpace pref="101" max="32767" attributes="0"/>
               <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>

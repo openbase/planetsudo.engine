@@ -65,6 +65,17 @@ public class MarianStrategy extends AbstractStrategy {
 			}
 		});
 		//-------------------------------------------->
+		createRule(new Rule(35, "Support Agent") {
+			@ Override
+			protected boolean constraint() {
+				return mothership.needSomeoneSupport();
+			}
+			@ Override
+			protected void action() {
+				agent.goToSuppordAgent();
+			}
+		});
+		//-------------------------------------------->
 		createRule(new Rule(40, "Save Resource") {
 			@ Override
 			protected boolean constraint() {
@@ -73,17 +84,6 @@ public class MarianStrategy extends AbstractStrategy {
 			@ Override
 			protected void action() {
 				agent.moveOneStepInTheMothershipDirection();
-			}
-		});
-		//-------------------------------------------->
-		createRule(new Rule(50, "Pass Resource") {
-			@ Override
-			protected boolean constraint() {
-				return agent.isCarringResource() && agent.isAtMothership();
-			}
-			@ Override
-			protected void action() {
-				agent.deliverResourceToMothership();
 			}
 		});
 		//-------------------------------------------->
@@ -106,10 +106,11 @@ public class MarianStrategy extends AbstractStrategy {
 			@ Override
 			protected void action() {
 				agent.fightWithAdversaryMothership();
+				agent.orderSupport();
 			}
 		});
 		//-------------------------------------------->
-		createRule(new Rule(95, "FightAgainstMothership") {
+		createRule(new Rule(95, "PlaceMine") {
 			@ Override
 			protected boolean constraint() {
 				return agent.hasMine() && agent.seeAdversaryMothership();
@@ -189,11 +190,33 @@ public class MarianStrategy extends AbstractStrategy {
 		createRule(new Rule(500, "OrderFuelDuringFight") {
 			@ Override
 			protected boolean constraint() {
-				return (agent.getFuel() < 100) && agent.seeAdversaryAgent() && agent.isAtMothership();
+				return (agent.getFuel() < 100) && (agent.seeAdversaryAgent()  || agent.isUnderAttack()) && agent.isAtMothership();
 			}
 			@ Override
 			protected void action() {
 				agent.orderFuel(10);
+			}
+		});
+		//-------------------------------------------->
+		createRule(new Rule(550, "Pass Resource") {
+			@ Override
+			protected boolean constraint() {
+				return agent.isCarringResource() && agent.isAtMothership();
+			}
+			@ Override
+			protected void action() {
+				agent.deliverResourceToMothership();
+			}
+		});
+		//-------------------------------------------->
+		createRule(new Rule(600, "CallForHelp") {
+			@ Override
+			protected boolean constraint() {
+				return (!agent.supportOrdered()) && ((agent.getFuel() < 5) || agent.isUnderAttack());
+			}
+			@ Override
+			protected void action() {
+				agent.orderSupport();
 			}
 		});
 		//-------------------------------------------->

@@ -50,7 +50,7 @@ public class HelpFrame extends javax.swing.JFrame {
 		instance = this;
         initComponents();
 		try {
-			logoDisplayLabel.setIcon(new ImageIcon(ImageLoader.getInstance().loadImage("res/img/PlanetSudoLogoMedium.png")));
+			logoDisplayLabel.setIcon(new ImageIcon(ImageLoader.getInstance().loadImage("img/PlanetSudoLogoMedium.png")));
 		} catch (IOException ex) {
 			Logger.warn(this, "Could not display image");
 		}
@@ -87,29 +87,29 @@ public class HelpFrame extends javax.swing.JFrame {
 
         jLabel1.setText("Projekt:");
 
-        jLabel2.setFont(new java.awt.Font("Dialog", 1, 14));
+        jLabel2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel2.setIcon(new ImageIcon("res/img/agent.png"));
         jLabel2.setText("PlanetSudo");
 
         jLabel3.setText("Entwickler:");
 
-        jLabel4.setFont(new java.awt.Font("Dialog", 0, 12));
+        jLabel4.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel4.setText("Divine [Marian Pohling] MarianPohling@djdivine.de");
 
-        jLabel5.setFont(new java.awt.Font("Dialog", 0, 12));
+        jLabel5.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel5.setText("Noxus [Marco Wellmann] Marco.Wellmann@gmx.de");
 
         jLabel6.setText("Veröffentlichung:");
 
-        jLabel7.setFont(new java.awt.Font("Dialog", 0, 12));
+        jLabel7.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel7.setText("29.10.2010");
 
         jLabel8.setText("Entwicklungszeit:");
 
-        jLabel9.setFont(new java.awt.Font("Dialog", 0, 12));
+        jLabel9.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel9.setText("6 Monate");
 
-        jLabel10.setFont(new java.awt.Font("Dialog", 2, 14));
+        jLabel10.setFont(new java.awt.Font("Dialog", 2, 14)); // NOI18N
         jLabel10.setText("<html><b>PlanetSudo</b> wurde im Rahmen des 26. Computerwochenendes der ev. Jugendarbeit in Halle (Westf.) entwickelt. Das Lernziel besteht darin den Teilnehmern einen Einblick in das Design und die Implementierung primitiver Verhaltensweisen zu geben welche im Zusammenspiel ein komplexes Verhalten erzeugen. Das Projekt endet mit einer kurzen Präsentation der erstellten Regeln und einer Reflexion der entwickelten Verhaltensweisen im Kontext eines Turniers.</html>");
         jLabel10.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jLabel10.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
@@ -122,7 +122,7 @@ public class HelpFrame extends javax.swing.JFrame {
 
         jLabel12.setText("Lizenz:");
 
-        jLabel13.setFont(new java.awt.Font("Dialog", 0, 12));
+        jLabel13.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel13.setText("<html>GNU LIBRARY GENERAL PUBLIC LICENSE<br/>Version 2, June 1991   Copyright (C) 1991 Free Software Foundation, Inc</html>");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -142,15 +142,15 @@ public class HelpFrame extends javax.swing.JFrame {
                             .addComponent(jLabel12))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE))
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(logoDisplayLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 784, Short.MAX_VALUE))
+                    .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 876, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -181,7 +181,7 @@ public class HelpFrame extends javax.swing.JFrame {
                             .addComponent(jLabel12)
                             .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(logoDisplayLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 127, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
                 .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );

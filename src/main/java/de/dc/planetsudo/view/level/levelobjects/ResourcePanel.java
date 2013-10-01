@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package de.dc.planetsudo.view.level.levelobjects;
 
 import de.dc.planetsudo.game.GameObjectImages;
@@ -14,6 +13,7 @@ import java.awt.event.MouseEvent;
 import de.dc.planetsudo.level.levelobjects.Agent;
 import de.dc.planetsudo.level.levelobjects.Resource;
 import de.dc.planetsudo.level.levelobjects.Resource.ResourceType;
+import de.dc.planetsudo.view.MainGUI;
 import de.dc.planetsudo.view.level.LevelPanel;
 
 /**
@@ -24,29 +24,29 @@ public class ResourcePanel extends AbstractLevelObjectPanel<Resource, LevelPanel
 
 	public ResourcePanel(Resource resource, LevelPanel parentResourcePanel) {
 		super(resource, resource.getPolygon(), getImageURI(resource.getType()), parentResourcePanel, DrawLayer.BACKGROUND);
-		Logger.info(this, "Create "+this);
+		Logger.info(this, "Create " + this);
 		resource.addPropertyChangeListener(this);
 	}
 
 	private static String getImageURI(ResourceType type) {
 		return GameObjectImages.valueOf("Resource" + type.name()).imagesURL;
 	}
-
 	private Agent owner;
 	private Graphics2D gg2;
+
 	@Override
 	protected void paintComponent(Graphics2D g2, Graphics2D gl) {
 		boundingBox = resource.getBounds();
 		owner = resource.getOwner();
-		if(owner == null) {
+		if (owner == null) {
 			paintImage(g2);
 		} else {
 			gg2 = (Graphics2D) g2.create();
-			gg2.translate(-owner.getDirection().getVector().getX()*owner.getWidth()*0.35, -owner.getDirection().getVector().getY()*owner.getHeight()*0.35);
+			gg2.translate(-owner.getDirection().getVector().getX() * owner.getWidth() * 0.35, -owner.getDirection().getVector().getY() * owner.getHeight() * 0.35);
 			paintImageRotated(owner.getDirection(), gg2);
 			gg2.dispose();
 		}
-		
+
 		//g2.fillOval((int)resource.getPosition().getX()-(int)resource.getWidth()/2, (int)resource.getPosition().getY()-(int)resource.getHeight()/2, (int)resource.getWidth(), (int)resource.getHeight());
 //				if(resource.isOwned()) {
 //					resource.getOwner().getDirection(
@@ -57,14 +57,16 @@ public class ResourcePanel extends AbstractLevelObjectPanel<Resource, LevelPanel
 //
 //				}
 
-		
+//		if (resource != null && resource.getLevelView() != null && MainGUI.levelView == resource.getLevelView()) {
+//			resource.getLevelView().drawLevelView((int) parentResourcePanel.getBoundingBox().getX(), (int) parentResourcePanel.getBoundingBox().getY(), g2);
+//		}
 	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if(evt.getPropertyName().equals(Resource.KILL_EVENT)) {
+		if (evt.getPropertyName().equals(Resource.KILL_EVENT)) {
 			parentResourcePanel.removeChild(this);
-		} 
+		}
 	}
 
 	@Override

@@ -4,7 +4,9 @@
  */
 package de.dc.planetsudo.main.command;
 
+import de.unibi.agai.clparser.CLParser;
 import de.unibi.agai.clparser.command.AbstractCLDirectory;
+import de.unibi.agai.clparser.command.SetPrefix;
 import de.unibi.agai.tools.FileHandler;
 import java.io.File;
 
@@ -28,6 +30,6 @@ public class SetTeamPathCommand extends AbstractCLDirectory {
 
 	@Override
 	protected File getCommandDefaultValue() {
-		return new File("/home/divine/workspace/PlanetSudo/teams");
+		return new File(CLParser.getAttribute(SetPrefix.class).getValue().getAbsolutePath()+"/teams");
 	}
 }

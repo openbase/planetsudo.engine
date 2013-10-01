@@ -10,15 +10,14 @@ import de.dc.util.view.engine.draw2d.ResourceDisplayPanel;
 import java.beans.PropertyChangeEvent;
 import de.dc.planetsudo.view.level.levelobjects.MothershipPanel;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Iterator;
 import de.dc.planetsudo.level.levelobjects.Mothership;
 import de.dc.planetsudo.level.AbstractLevel;
 import de.dc.planetsudo.level.levelobjects.Resource;
 import de.dc.planetsudo.view.game.AbstractGameObjectPanel;
 import de.dc.planetsudo.view.level.levelobjects.ResourcePanel;
+import java.awt.Polygon;
 
 /**
  *
@@ -47,15 +46,13 @@ public class LevelPanel extends AbstractGameObjectPanel<AbstractLevel, LevelPane
 	}
 
 	private void loadResourcePanels() {
-		Iterator<Resource> resourceIterator = resource.getResources();
-		while(resourceIterator.hasNext()) {
-			new ResourcePanel(resourceIterator.next(), this);
+		for(Resource res : resource.getResources()) {
+			new ResourcePanel(res, this);
 		}
 	}
 
 	private void loadMothershipPanels() {
-		Mothership[] mothershipArray = resource.getMotherships();
-		for(Mothership mothership : mothershipArray) {
+		for(Mothership mothership : resource.getMotherships()) {
 			new MothershipPanel(mothership, this);
 		}
 	}

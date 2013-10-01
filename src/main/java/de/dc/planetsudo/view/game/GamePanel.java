@@ -69,7 +69,9 @@ public class GamePanel extends javax.swing.JPanel {
 				levelMenuPanel.startTimer();
 				break;
 			case Stop:
+				levelMenuPanel.stopTimer();
 				levelMenuPanel.reset();
+				break;
 			case Pause:
 				levelMenuPanel.stopTimer();
 				break;

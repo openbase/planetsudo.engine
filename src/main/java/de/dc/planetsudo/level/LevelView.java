@@ -71,7 +71,7 @@ public class LevelView {
 	}
 
 	public void drawLevelView(int x, int y, Graphics2D g2) {
-		Logger.debug(this, "Draw LevelView");
+		Logger.info(this, "Draw LevelView");
 		int greyValue;
 		for(LevelRasterElement element : levelRepresentation) {
 			if(element.isPartOfWall()) {
@@ -94,30 +94,30 @@ public class LevelView {
 	} 
 
 	public int getAbsolutAngle(AbstractLevelObject levelObject) {
-		Logger.info(this, "BEGIN: GetAbsoluteAngle");
+//		Logger.info(this, "BEGIN: GetAbsoluteAngle");
 		int angle = getAngle(calcLevelRasterElement(levelObject), calcLevelRasterElement(this.levelObject));
-		Logger.info(this, "END: GetAbsoluteAngle: "+angle);
+//		Logger.info(this, "END: GetAbsoluteAngle: "+angle);
 		return angle;
 	}
 
 	public int getDistance(AbstractLevelObject levelObject) {
-		Logger.debug(this, "GetDistance");
+//		Logger.debug(this, "GetDistance");
 		return getDistance(calcLevelRasterElement(levelObject), calcLevelRasterElement(this.levelObject));
 	}
 
 	public void dijkstraTest() {
-		Logger.debug(this, "dijkstraTest");
+//		Logger.debug(this, "dijkstraTest");
 		dijkstra(levelRepresentation[0], levelRepresentation[(width*height)-1]);
 	}
 
 	private int getDistance(LevelRasterElement position, LevelRasterElement destination) {
-		Logger.debug(this, "getDistance");
+//		Logger.debug(this, "getDistance");
 		dijkstra(position, destination);
 		return position.getDistance();
 	}
 
 	private int getAngle(LevelRasterElement position, LevelRasterElement destination) {
-		Logger.debug(this, "getAngle");
+//		Logger.debug(this, "getAngle");
 		dijkstra(position, destination);
 		LevelRasterElementNeigbour neigbourNextToDestination = null;
 		for(LevelRasterElementNeigbour neigbour : position.getNeigbours()) {
@@ -171,9 +171,12 @@ public class LevelView {
 	}
 
 	private void dijkstra(LevelRasterElement position, LevelRasterElement destination) {
-		if(levelObject.isObjectType(ObjectType.Static)) return;
-		Logger.debug(this, "BEGINN: dijkstra new calc.");
-		long startTime = System.currentTimeMillis();
+		if(levelObject.isObjectType(ObjectType.Static)) {
+			Logger.debug(this, "Skip dijkstra of static object");
+			return;
+		}
+//		Logger.debug(this, "BEGINN: dijkstra new calc.");
+//		long startTime = System.currentTimeMillis();
 		// Initialisation
 		PriorityQueue<LevelRasterElement> distanceQueue = new PriorityQueue<LevelRasterElement>();
 		for(LevelRasterElement element : levelRepresentation) {
@@ -194,7 +197,7 @@ public class LevelView {
 			}
 			element = distanceQueue.poll();
 		} while(element != null && element != position);
-		Logger.debug(this, "END["+(System.currentTimeMillis()-startTime)+"]: dijkstra new calc.");
+//		Logger.debug(this, "END["+(System.currentTimeMillis()-startTime)+"]: dijkstra new calc.");
 	}
 
 	protected int getHeight() {

@@ -6,12 +6,12 @@ package de.dc.planetsudo.level.levelobjects;
 
 import de.dc.util.data.Point2D;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import de.dc.util.logging.Logger;
 import de.dc.planetsudo.game.Team;
 import de.dc.planetsudo.level.AbstractLevel;
 import de.dc.planetsudo.level.ResourcePlacement;
+import de.dc.util.exceptions.NotValidException;
 import de.dc.util.view.engine.draw2d.AbstractResourcePanel;
 import de.dc.util.view.engine.draw2d.AbstractResourcePanel.ObjectType;
 
@@ -31,6 +31,7 @@ public class Resource extends AbstractLevelObject {
 	private ResourceType type;
 	private Agent owner;
 	private final List<Integer> conquerors;
+	private final Object RESOURCE_LOCK = new Object();
 	private boolean used;
 	private ResourcePlacement placement;
 
@@ -44,7 +45,7 @@ public class Resource extends AbstractLevelObject {
 		this.type = type;
 		this.owner = null;
 		this.used = false;
-		this.conquerors = Collections.synchronizedList(new ArrayList<Integer>());
+		this.conquerors = new ArrayList<Integer>();
 		Logger.info(this, "Create " + this);
 	}
 
@@ -69,7 +70,7 @@ public class Resource extends AbstractLevelObject {
 	}
 
 	public boolean setBusy(Team team) {
-		synchronized (conquerors) {
+		synchronized (RESOURCE_LOCK) {
 			if (conquerors.contains(team.getId())) {
 				return false;
 			}
@@ -78,15 +79,20 @@ public class Resource extends AbstractLevelObject {
 		}
 	}
 
-	protected synchronized boolean capture(Agent agent) {
-		if (owner != null) {
-			return false;
-		}
-		owner = agent;
-		position = agent.getPosition();
-		synchronized (conquerors) {
+	public boolean isSaveFor(Agent agent) {
+		return wasPlacedByTeam() != agent.getTeam();
+	}
+
+	protected boolean capture(Agent agent) throws NotValidException {
+		synchronized (RESOURCE_LOCK) {
+			if (owner != null) {
+				return false;
+			}
+
+			owner = agent;
 			conquerors.clear();
 		}
+		position = agent.getPosition();
 		setObjectType(ObjectType.Dynamic);
 		switch (type) {
 			case ExtraAgentFuel:
@@ -127,36 +133,44 @@ public class Resource extends AbstractLevelObject {
 	}
 
 	protected void release() {
-		owner = null;
-		position = new Point2D(position);
+		synchronized (RESOURCE_LOCK) {
+			owner = null;
+			position = new Point2D(position);
+		}
 		setObjectType(ObjectType.Static);
 	}
 
-	public synchronized int use(Agent agent) {
-		if (!used) {
-			used = true;
-			position = new Point2D(position);
-			level.removeResource(this);
-			changes.firePropertyChange(KILL_EVENT, null, null);
+	public int use(Agent agent) throws NotValidException {
+		synchronized (RESOURCE_LOCK) {
+			if (agent != owner) {
+				Logger.warn(this, "Resource not owned!");
+				throw new NotValidException("Resource not owned by user!");
+			}
+			if (!used) {
+				used = true;
+				position = new Point2D(position);
+				level.removeResource(this);
+				changes.firePropertyChange(KILL_EVENT, null, null);
 
-			switch (type) {
-				case Normal:
-					return 1;
-				case DoublePoints:
-					return 2;
-				case ExtremPoint:
-					return 5;
-				case ExtraAgentFuel:
-					agent.spendFuel(Agent.DEFAULT_START_FUEL / 2);
-					return 0;
-				case ExtraMothershipFuel:
-					agent.getMothership().spendFuel(Mothership.DEFAULT_START_FUEL / 5);
-					return 0;
-				case Bomb:
-					agent.kill();
-					return 0;
-				default:
-					return 0;
+				switch (type) {
+					case Normal:
+						return 1;
+					case DoublePoints:
+						return 2;
+					case ExtremPoint:
+						return 5;
+					case ExtraAgentFuel:
+						agent.spendFuel(Agent.DEFAULT_START_FUEL / 2);
+						return 0;
+					case ExtraMothershipFuel:
+						agent.getMothership().spendFuel(Mothership.DEFAULT_START_FUEL / 5);
+						return 0;
+					case Bomb:
+						agent.kill();
+						return 0;
+					default:
+						return 0;
+				}
 			}
 		}
 		Logger.warn(this, "Ignore double resource use!");

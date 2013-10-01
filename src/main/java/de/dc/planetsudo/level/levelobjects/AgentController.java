@@ -5,6 +5,10 @@
 
 package de.dc.planetsudo.level.levelobjects;
 
+import de.dc.util.exceptions.CouldNotPerformException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 /**
  *
@@ -13,11 +17,13 @@ package de.dc.planetsudo.level.levelobjects;
 public class AgentController {
 
 	private final Agent agent;
+	private Mothership mothership;
 	public final MothershipController mothershipController;
 
 	public AgentController(Agent agent) {
 		this.agent = agent;
-		this.mothershipController = new MothershipController(agent.getMothership());
+		this.mothership = agent.getMothership();
+		this.mothershipController = new MothershipController(mothership, agent);
 	}
 
 	public MothershipController getMothership() {
@@ -336,5 +342,21 @@ public class AgentController {
 	 */
 	public void releaseResource() {
 		agent.releaseResource();
+	}
+
+	public void cancelSupport() {
+		agent.cancelSupport();
+	}
+
+	public void orderSupport() {
+		agent.orderSupport();
+	}
+	
+	public boolean supportOrdered() {
+		return agent.needSupport();
+	}
+
+	public void goToSuppordAgent() {
+		agent.goToSuppordAgent();
 	}
 }

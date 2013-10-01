@@ -40,7 +40,7 @@ public class ConfigurationPanel extends javax.swing.JPanel {
 	public ConfigurationPanel() {
 		initComponents();
 		try {
-			logoLabel.setIcon(new ImageIcon(ImageLoader.getInstance().loadImage("res/img/PlanetSudoLogoMedium.png")));
+			logoLabel.setIcon(new ImageIcon(ImageLoader.getInstance().loadImage("img/PlanetSudoLogoMedium.png")));
 		} catch (IOException ex) {
 			Logger.warn(this, "Could not display image");
 		}

@@ -11,7 +11,7 @@ import de.dc.planetsudo.game.GameManager;
 import de.dc.planetsudo.main.command.SetLevelPathCommand;
 import de.dc.planetsudo.main.command.SetStrategyPathCommand;
 import de.dc.planetsudo.main.command.SetTeamPathCommand;
-import de.dc.util.configuration.parameter.PrintHelpCommand;
+import de.unibi.agai.clparser.command.SetPrefix;
 
 
 /**
@@ -42,11 +42,13 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		CLParser.setProgramName("PlanetSudo");
+		CLParser.registerCommand(SetPrefix.class);
 		CLParser.registerCommand(SetTeamPathCommand.class);
 		CLParser.registerCommand(SetStrategyPathCommand.class);
 		CLParser.registerCommand(DebugModeFlag.class);
 		CLParser.registerCommand(SetLevelPathCommand.class);
 
+		Logger.setDebugMode(DEBUG);
 		CLParser.analyseAndExitOnError(args);
 		
 		new Main();

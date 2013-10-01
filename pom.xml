@@ -10,6 +10,12 @@
 	<name>PlanetSudo</name>
 	<url>http://maven.apache.org</url>
 
+	<parent>
+        <groupId>de.dc</groupId>
+        <artifactId>dc-common</artifactId>
+        <version>1.0</version>
+    </parent>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -31,7 +37,7 @@
 					<arguments>
 						<argument>-classpath</argument>
 						<classpath/>
-						<argument>de.dc.bco.client.swing.main.BCOClientSwing</argument>
+						<argument>de.dc.planetsudo.main.Main</argument>
 					</arguments>
 				</configuration>
 			</plugin>
@@ -110,29 +116,6 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-	
-	<repositories>
-		<!--These are needed for Swing/Netbeans -->
-		<repository>
-			<id>maven2-repository.netbeans.maven2</id>
-			<name>Netbeans Maven Repository</name>
-			<url>http://bits.netbeans.org/maven2/</url>
-			<layout>default</layout>
-		</repository>
-		<repository>
-			<url>http://download.java.net/maven/2/</url>
-			<id>beans-binding</id>
-			<layout>default</layout>
-			<name>Repository for library Library[beans-binding]</name>
-		</repository>
-	</repositories>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>onejar-maven-plugin.googlecode.com</id>
-			<url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo</url>
-		</pluginRepository>
-	</pluginRepositories>
 
 	<dependencies>
 		<dependency>
@@ -143,7 +126,7 @@
 		<dependency>
 			<groupId>de.unibi.agai</groupId>
 			<artifactId>CLParser</artifactId>
-			<version>3.0.0</version>
+			<version>3.0.2</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>

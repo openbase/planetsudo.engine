@@ -117,8 +117,6 @@ public class Team implements Manageable, Serializable {
 		return members;
 	}
 
-
-
 	public int getFinalPoints() {
 		return mothership.getAgentsAtHomePosition() + mothership.getShieldPoints() + points;
 	}

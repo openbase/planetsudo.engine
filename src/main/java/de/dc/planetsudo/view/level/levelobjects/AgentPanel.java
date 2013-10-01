@@ -37,9 +37,8 @@ public class AgentPanel extends AbstractLevelObjectPanel<Agent, MothershipPanel>
 		super(resource, resource.getPolygon(), GameObjectImages.Agent.imagesURL, parentResourcePanel, DrawLayer.FORGROUND); //TODO Check Polygon
 		this.teamColor = resource.getTeam().getTeamColor();
 		Logger.info(this, "Create AgentPanel of "+resource);
-//		if(resource.getMothership().getTeam().getID() == 0 && viewFlag) {
-//			viewFlag = false;
-//			MainGUI.levelView = resource.getLevelView();
+//		if(resource.getMothership().getTeam().getId() == 0) {
+			MainGUI.levelView = resource.getLevelView();
 //		}
 	}
 
@@ -132,7 +131,7 @@ public class AgentPanel extends AbstractLevelObjectPanel<Agent, MothershipPanel>
 		// Paint StateLable
 		if(showStateLabel) {
 			g2.setColor(Color.WHITE);
-			g2.setFont(new Font(Font.SERIF, Font.PLAIN, 25 ));
+			g2.setFont(new Font(Font.SERIF, Font.PLAIN, 25));
 			g2.drawString(resource.getLastAction(),x, y);
 		}
 	}

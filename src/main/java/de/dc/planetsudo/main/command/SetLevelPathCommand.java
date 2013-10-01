@@ -5,7 +5,9 @@
 
 package de.dc.planetsudo.main.command;
 
+import de.unibi.agai.clparser.CLParser;
 import de.unibi.agai.clparser.command.AbstractCLDirectory;
+import de.unibi.agai.clparser.command.SetPrefix;
 import de.unibi.agai.tools.FileHandler;
 import java.io.File;
 
@@ -29,6 +31,6 @@ public class SetLevelPathCommand extends AbstractCLDirectory {
 
 	@Override
 	protected File getCommandDefaultValue() {
-		return new File("/home/divine/workspace/PlanetSudo/target/classes/de/dc/planetsudo/level/save/");
+		return new File(CLParser.getAttribute(SetPrefix.class).getValue().getAbsolutePath()+"/target/classes/de/dc/planetsudo/level/save/");
 	}
 }

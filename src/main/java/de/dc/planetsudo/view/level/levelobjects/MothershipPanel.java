@@ -41,10 +41,6 @@ public class MothershipPanel extends AbstractLevelObjectPanel<Mothership, LevelP
 		if(resource.isBurning()) {
 			paintExplosion(g2);
 		}
-
-//		if(MainGUI.levelView == resource.getLevelView()) {
-			resource.getLevelView().drawLevelView((int)parentResourcePanel.getBoundingBox().getX(), (int)parentResourcePanel.getBoundingBox().getY(), g2);
-//		}
 	}
 
 	@Override
