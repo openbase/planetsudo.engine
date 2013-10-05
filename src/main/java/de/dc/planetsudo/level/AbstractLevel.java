@@ -59,9 +59,10 @@ public abstract class AbstractLevel extends AbstractGameObject implements Runnab
 		this.motherships = new Mothership[2];
 		this.resources = new ArrayList<Resource>();
 		this.gameSpeed = DEFAULT_GAME_SPEED;
-		Point2D base = updateBasePosition();
-		this.x = (int) base.getX();
-		this.y = (int) base.getY();
+		//		final Point2D base = updateBasePosition();
+		final Rectangle2D bounds = levelBorderPolygon.getBounds2D();
+		this.x = (int) bounds.getX();
+		this.y = (int) bounds.getY();
 		//this.levelView = new LevelView();
 	}
 
@@ -189,19 +190,16 @@ public abstract class AbstractLevel extends AbstractGameObject implements Runnab
 		}
 	}
 
-	private Point2D updateBasePosition() {
-		int x = Integer.MAX_VALUE;
-		int y = Integer.MAX_VALUE;
-		for (int i = 0; i < levelBorderPolygon.npoints; i++) {
-			if (levelBorderPolygon.xpoints[i] < x) {
-				x = levelBorderPolygon.xpoints[i];
-			}
-			if (levelBorderPolygon.ypoints[i] < y) {
-				y = levelBorderPolygon.xpoints[i];
-			}
-		}
-		return new Point2D(x, y);
-	}
+//	private Point2D updateBasePosition() {
+//		levelBorderPolygon.getb
+//		int x = Integer.MAX_VALUE;
+//		int y = Integer.MAX_VALUE;
+//		for (int i = 0; i < levelBorderPolygon.npoints; i++) {
+//			x = Math.min(x, levelBorderPolygon.xpoints[i]);
+//			y = Math.min(y, levelBorderPolygon.ypoints[i]);
+//		}
+//		return new Point2D(x, y);
+//	}
 
 	public int getX() {
 		return x;

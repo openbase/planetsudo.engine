@@ -136,7 +136,7 @@ public class ZergStrategy extends AbstractStrategy {
 		createRule(new Rule(200, "Sammel Ressource") {
 			@ Override
 			protected boolean constraint() {
-				return agent.touchResource() && agent.touchResourceType() != Resource.ResourceType.Bomb;
+				return agent.touchResource() && agent.touchResourceType() != Resource.ResourceType.Mine;
 			}
 			@ Override
 			protected void action() {

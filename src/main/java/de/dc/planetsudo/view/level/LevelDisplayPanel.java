@@ -22,7 +22,8 @@ import de.dc.planetsudo.level.AbstractLevel;
 public class LevelDisplayPanel extends ResourceDisplayPanel<LevelPanel> implements Runnable {
 
 	public enum VideoThreadCommand {Start, Stop, Pause, Resume};
-	public Thread videoThread;
+
+	private Thread videoThread;
 	private boolean isRunning, stop;
 
     /** Creates new form LevelDisplayPanel */

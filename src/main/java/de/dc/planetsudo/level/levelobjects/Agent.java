@@ -13,10 +13,12 @@ import java.util.logging.Level;
 import de.dc.util.logging.Logger;
 import de.dc.util.math.RandomGenerator;
 import de.dc.planetsudo.game.ActionPoints;
+import de.dc.planetsudo.game.GameSound;
 import de.dc.planetsudo.game.Team;
 import de.dc.planetsudo.game.strategy.AbstractStrategy;
 import de.dc.planetsudo.level.levelobjects.Resource.ResourceType;
 import de.dc.util.exceptions.CouldNotPerformException;
+import de.dc.util.sound.AudioServer;
 import de.dc.util.view.engine.draw2d.AbstractResourcePanel.ObjectType;
 
 /**
@@ -28,7 +30,7 @@ public class Agent extends AbstractLevelObject {
 	public final static int DEFAULT_START_FUEL = 2000;
 	public final static int AGENT_SIZE = 50;
 	public final static int AGENT_VIEW_DISTANCE = AGENT_SIZE;
-	public final static int DEFAULT_AGENT_SPEED = 5;
+	public final static int DEFAULT_AGENT_SPEED = 6;
 	protected final Mothership mothership;
 	private final ActionPoints actionPoints;
 	protected Direction2D direction;
@@ -38,13 +40,15 @@ public class Agent extends AbstractLevelObject {
 	private Resource resource;
 	private boolean hasMine;
 	private boolean needSupport;
+	private boolean commanderFlag;
 	private String lastAction;
 	private AbstractLevelObject adversaryObject;
 
-	public Agent(String name, Mothership mothership) {
+	public Agent(String name, boolean commanderFlag, Mothership mothership) {
 		super(mothership.registerAgent(), name, ObjectType.Dynamic, mothership.getLevel(), mothership.getAgentHomePosition(), AGENT_SIZE, AGENT_SIZE, ObjectShape.Oval);
 		Logger.info(this, "Create " + this);
 		this.lastAction = "Init";
+		this.commanderFlag = commanderFlag;
 		this.mothership = mothership;
 		this.actionPoints = new ActionPoints(this);
 		this.alive = true;
@@ -121,10 +125,11 @@ public class Agent extends AbstractLevelObject {
 	public synchronized void placeMine() {
 		actionPoints.getActionPoint(50);
 		if (useFuel(5) == 5 || hasMine) {
-			Resource newMine = new Resource(level.generateNewResourceID(), Resource.ResourceType.Bomb, level, new Point2D(position));
+			Resource newMine = new Resource(level.generateNewResourceID(), Resource.ResourceType.Mine, level, new Point2D(position));
 			newMine.setPlacer(this);
 			level.addResource(newMine);
 			hasMine = false;
+			AudioServer.playClip(GameSound.DeployMine);
 		}
 	}
 
@@ -187,6 +192,9 @@ public class Agent extends AbstractLevelObject {
 		mothership.removeAgent(this);
 		alive = false;
 		fuel = 0;
+		if (needSupport) {
+			mothership.cancelSupport(this);
+		}
 	}
 
 	public boolean isAlive() {
@@ -229,15 +237,14 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	public void goStraightAhead() {
-		actionPoints.getActionPoint(4);
 		if (isCarringResource()) {
-			if (useFuel(2) != 2) {
-				return;
-			}
+			actionPoints.getActionPoint(8);
 		} else {
-			if (!useFuel()) {
-				return;
-			}
+			actionPoints.getActionPoint(4);
+		}
+
+		if (!useFuel()) {
+			return;
 		}
 
 		position.translate(direction, calcSpeed());
@@ -253,14 +260,14 @@ public class Agent extends AbstractLevelObject {
 		}
 	}
 
-	public void turnLeft(int beta) {
+	public void turnLeft(final int beta) {
 		actionPoints.getActionPoint();
 		if (useFuel()) {
 			direction.setAngle(direction.getAngle() - beta);
 		}
 	}
 
-	public void turnRight(int beta) {
+	public void turnRight(final int beta) {
 		actionPoints.getActionPoint();
 		if (useFuel()) {
 			direction.setAngle(direction.getAngle() + beta);
@@ -288,7 +295,7 @@ public class Agent extends AbstractLevelObject {
 		return mothership.getBounds().contains(getBounds());
 	}
 
-	public void orderFuel(int percent) {
+	public void orderFuel(final int percent) {
 		actionPoints.getActionPoint(20);
 		if (percent < 0 || percent > 100) {
 			Logger.error(this, "Could not refill fuel! Percent value[" + percent + "] is not in bounds! Valuerange 0-100");
@@ -308,7 +315,7 @@ public class Agent extends AbstractLevelObject {
 	public void goToResource() {
 		actionPoints.getActionPoint();
 		if (useFuel()) {
-			Resource resourceToGo = level.getCloseResource(this);
+			final Resource resourceToGo = level.getCloseResource(this);
 			if (resourceToGo != null) {
 				direction.turnTo(position, resourceToGo.position);
 				position.translate(direction, calcSpeed());
@@ -326,22 +333,23 @@ public class Agent extends AbstractLevelObject {
 			Logger.warn(this, "Could not deliver resource to Mothership!", ex);
 		}
 	}
-	private Resource tmpResource;
+
+	public boolean touchResourceType(Resource.ResourceType type) {
+		return touchResourceType() == type;
+	}
 
 	public Resource.ResourceType touchResourceType() {
-		tmpResource = level.getTouchableResource(this);
-		if (tmpResource != null) {
-			if (tmpResource.wasPlacedByTeam() != null) {
-				if (this.getTeam() == tmpResource.wasPlacedByTeam()) {
-					return tmpResource.getType();
-				} else {
-					return ResourceType.ExtremPoint;
-				}
-			} else {
-				return tmpResource.getType();
-			}
+		final Resource tmpResource = level.getTouchableResource(this);
+		if (tmpResource == null) {
+			Logger.warn(this, "No resource in range!");
+			return Resource.ResourceType.Unknown;
 		}
-		return Resource.ResourceType.Unknown;
+
+		if (tmpResource.wasPlacedByTeam() == getTeam()) {
+			return tmpResource.getType();
+		} else {
+			return ResourceType.ExtremPoint;
+		}
 	}
 
 	public boolean touchResource() {
@@ -355,7 +363,7 @@ public class Agent extends AbstractLevelObject {
 				if (isCarringResource()) {
 					getResource().release();
 				}
-				Resource resourceToCollect = level.getTouchableResource(this);
+				final Resource resourceToCollect = level.getTouchableResource(this);
 				if (resourceToCollect != null && resourceToCollect.setBusy(getTeam())) {
 					direction.turnTo(position, resourceToCollect.position);
 					actionPoints.getActionPoint(resourceToCollect.getCapturingActionPoints());
@@ -367,7 +375,7 @@ public class Agent extends AbstractLevelObject {
 		}
 	}
 
-	private void carryResource(Resource resource) throws NotValidException {
+	private void carryResource(final Resource resource) throws NotValidException {
 		if (resource != null) {
 			if (resource.capture(this)) {
 				this.resource = resource;
@@ -382,9 +390,10 @@ public class Agent extends AbstractLevelObject {
 	public boolean seeAdversaryMothership() {
 		return level.getAdversaryMothership(this) != null;
 	}
-	boolean oldattackedValue;
+	
 
 	public boolean isUnderAttack() {
+		final boolean oldattackedValue;
 		oldattackedValue = attacked;
 		attacked = false;
 		return oldattackedValue;
@@ -394,7 +403,7 @@ public class Agent extends AbstractLevelObject {
 	public void fightWithAdversaryAgent() {
 		actionPoints.getActionPoint();
 		if (useFuel()) {
-			Agent adversaryAgent = level.getAdversaryAgent(this);
+			final Agent adversaryAgent = level.getAdversaryAgent(this);
 			adversaryObject = adversaryAgent;
 			if (adversaryAgent != null) {
 				adversaryAgent.attacked = true;
@@ -416,7 +425,7 @@ public class Agent extends AbstractLevelObject {
 			Mothership adversaryMothership = level.getAdversaryMothership(this);
 			adversaryObject = adversaryMothership;
 			if (adversaryMothership != null) {
-				actionPoints.getActionPoint(10);
+				actionPoints.getActionPoint(20);
 				direction.turnTo(position, adversaryMothership.position);
 				adversaryMothership.attack();
 			}
@@ -465,7 +474,7 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	public void repaireMothership() {
-		actionPoints.getActionPoint(50);
+		actionPoints.getActionPoint(30);
 		if (useFuel()) {
 			mothership.repaire();
 		}
@@ -477,7 +486,7 @@ public class Agent extends AbstractLevelObject {
 
 	public void orderSupport() {
 		if(!needSupport) {
-			mothership.callForHelp(this);
+			mothership.callForSupport(this);
 		}
 	}
 
@@ -515,5 +524,13 @@ public class Agent extends AbstractLevelObject {
 		} catch (CouldNotPerformException ex) {
 			Logger.warn(this, "Could not goToMarker!", ex);
 		}
+	}
+
+	public boolean isCommander() {
+		return commanderFlag;
+	}
+
+	protected boolean seeMarker() {
+		return mothership.getTeamMarker().seeMarker(this);
 	}
 }

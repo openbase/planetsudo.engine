@@ -10,14 +10,12 @@ import de.dc.util.data.Point2D;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
 import de.dc.util.logging.Logger;
 import java.awt.event.MouseEvent;
 import de.dc.planetsudo.level.levelobjects.AbstractLevelObject;
 import de.dc.planetsudo.level.levelobjects.Agent;
 import de.dc.planetsudo.view.MainGUI;
 import java.awt.Polygon;
-import java.awt.Shape;
 
 /**
  *
@@ -88,7 +86,7 @@ public class AgentPanel extends AbstractLevelObjectPanel<Agent, MothershipPanel>
 			g22.transform(getBoundsTransformation(direction));
 			//g22.fillRect(3, 10, 19, 9);
 			g22.fill(TEAM_COLOR_POLYGON);
-			if(resource.needSupport()) {
+			if(resource.needSupport() && animationFlag) {
 //				if(((System.currentTimeMillis()/500)%500)>5) {
 					g22.setColor(COLOR_DISABLED);
 //				}
@@ -139,15 +137,15 @@ public class AgentPanel extends AbstractLevelObjectPanel<Agent, MothershipPanel>
 		}
 
 		// Paint FuelBarBackground
-		g2.setColor(FUEL_BACKGROUND);
-		g2.fillRect((int) (x - FUEL_BAR_STATIC_WIDTH / 2),
+		gl.setColor(FUEL_BACKGROUND);
+		gl.fillRect((int) (x - FUEL_BAR_STATIC_WIDTH / 2),
 				(int) (y - FUEL_BAR_STATIC_POSITION_Y),
 				(int) FUEL_BAR_STATIC_WIDTH,
 				(int) FUEL_BAR_STATIC_HEIGHT);
 
 		// Paint FuelBar
-		g2.setColor(Color.GREEN);
-		g2.fillRect((int) (x - FUEL_BAR_STATIC_WIDTH / 2),
+		gl.setColor(Color.GREEN);
+		gl.fillRect((int) (x - FUEL_BAR_STATIC_WIDTH / 2),
 				(int) (y - FUEL_BAR_STATIC_POSITION_Y),
 				(int) (FUEL_BAR_STATIC_WIDTH / Agent.DEFAULT_START_FUEL * resource.getFuel()),
 				(int) FUEL_BAR_STATIC_HEIGHT);
@@ -155,9 +153,9 @@ public class AgentPanel extends AbstractLevelObjectPanel<Agent, MothershipPanel>
 
 		// Paint StateLable
 		if (showStateLabel) {
-			g2.setColor(Color.WHITE);
-			g2.setFont(new Font(Font.SERIF, Font.PLAIN, 25));
-			g2.drawString(resource.getLastAction(), x, y);
+			gl.setColor(Color.WHITE);
+			gl.setFont(new Font(Font.SERIF, Font.PLAIN, 25));
+			gl.drawString(resource.getLastAction(), x, y);
 		}
 	}
 

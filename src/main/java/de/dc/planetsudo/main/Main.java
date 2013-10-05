@@ -11,6 +11,7 @@ import de.dc.planetsudo.game.GameManager;
 import de.dc.planetsudo.main.command.SetLevelPathCommand;
 import de.dc.planetsudo.main.command.SetStrategyPathCommand;
 import de.dc.planetsudo.main.command.SetTeamPathCommand;
+import de.dc.util.view.Set2dDebug;
 import de.unibi.agai.clparser.command.SetPrefix;
 
 
@@ -46,6 +47,7 @@ public class Main {
 		CLParser.registerCommand(SetTeamPathCommand.class);
 		CLParser.registerCommand(SetStrategyPathCommand.class);
 		CLParser.registerCommand(DebugModeFlag.class);
+		CLParser.registerCommand(Set2dDebug.class);
 		CLParser.registerCommand(SetLevelPathCommand.class);
 
 		Logger.setDebugMode(DEBUG);

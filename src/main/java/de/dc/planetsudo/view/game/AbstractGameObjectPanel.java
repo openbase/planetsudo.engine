@@ -21,14 +21,14 @@ public abstract class AbstractGameObjectPanel<R extends AbstractGameObject, PRP 
 	}
 
 	public AbstractGameObjectPanel(final R resource, final Polygon placementPolygon, final ObjectType objectType, final ResourceDisplayPanel parentPanel) {
-		super(resource, placementPolygon, parentPanel);
+		super(resource, placementPolygon, objectType, parentPanel);
 	}
 
 	public AbstractGameObjectPanel(final R resource, final Polygon placementPolygon, final ObjectType objectType, final String imageURI, final PRP parentResourcePanel, final DrawLayer drawLayer) {
-		super(resource, placementPolygon, parentResourcePanel, drawLayer, imageURI);
+		super(resource, placementPolygon, objectType, imageURI, parentResourcePanel, drawLayer);
 	}
 
 	public AbstractGameObjectPanel(final R resource, final Polygon placementPolygon, final ObjectType objectType, final PRP parentResourcePanel, final DrawLayer drawLayer) {
-		super(resource, placementPolygon, parentResourcePanel, drawLayer);
+		super(resource, placementPolygon, objectType, parentResourcePanel, drawLayer);
 	}
 }

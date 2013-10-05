@@ -31,7 +31,8 @@ public class LevelPanel extends AbstractGameObjectPanel<AbstractLevel, LevelPane
 	public LevelPanel(AbstractLevel resource, ResourceDisplayPanel parentPanel) {
 		super(resource, resource.getLevelBorderPolygon(), ObjectType.Dynamic, GameObjectImages.Default.imagesURL, parentPanel);
 		hasInternalWalls = resource.getLevelWallPolygons() != null;
-//		boundingBox = resource.getLevelBorderPolygon().getBounds2D();
+		boundingBox = resource.getLevelBorderPolygon().getBounds2D();
+		
 		updateBounds();
 		parentPanel.setDoubleBuffered(true);
 		resource.addPropertyChangeListener(this);

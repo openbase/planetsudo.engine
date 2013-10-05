@@ -185,6 +185,5 @@ public class MarcosStrategy extends AbstractStrategy {
 				agent.turnLeft(45);
 			}
 		});
-
 	}
 }

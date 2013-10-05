@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package de.dc.planetsudo.game;
 
 import de.dc.util.logging.Logger;
@@ -13,6 +12,7 @@ import de.dc.planetsudo.level.levelobjects.Agent;
  * @author divine
  */
 public class ActionPoints {
+
 	private int points;
 	private Agent agent;
 
@@ -22,11 +22,12 @@ public class ActionPoints {
 	}
 
 	public void addActionPoint() {
-		if(!agent.isDisabled()) {
-			synchronized(this) {
-				points++;
-				this.notify();
-			}
+		if (agent.isDisabled() && !agent.isAtMothership()) {
+			return;
+		}
+		synchronized (this) {
+			points++;
+			this.notify();
 		}
 	}
 
@@ -35,9 +36,9 @@ public class ActionPoints {
 	}
 
 	public void getActionPoint(int orderedPoints) {
-		while(true) {
-			synchronized(this) {
-				if(points >= orderedPoints) {
+		while (true) {
+			synchronized (this) {
+				if (points >= orderedPoints) {
 					points -= orderedPoints;
 					return;
 				}

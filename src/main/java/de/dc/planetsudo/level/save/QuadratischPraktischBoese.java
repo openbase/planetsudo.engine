@@ -70,7 +70,7 @@ public class QuadratischPraktischBoese extends AbstractLevel {
 		resourcePlacement[3] = new ResourceRandomRectangle(0, 1100, 500, 500, 10, ResourceType.ExtremPoint);
 		resourcePlacement[4] = new ResourceRandomRectangle(500, 500, 600, 600, 4, ResourceType.ExtraAgentFuel);
 		resourcePlacement[5] = new ResourceRandomRectangle(500, 500, 600, 600, 4, ResourceType.ExtraMothershipFuel);
-		resourcePlacement[6] = new ResourceRandomRectangle(500, 500, 600, 600, 4, ResourceType.Bomb);
+		resourcePlacement[6] = new ResourceRandomRectangle(500, 500, 600, 600, 4, ResourceType.Mine);
 		return resourcePlacement;
 	}
 

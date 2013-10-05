@@ -18,7 +18,7 @@ public enum GameObjectImages {
 	ResourceExtremPoint("resource6.png"),
 	ResourceExtraAgentFuel("resource5.png"),
 	ResourceExtraMothershipFuel("resource7.png"),
-	ResourceBomb("resource4.png");
+	ResourceMine("resource4.png");
 
 	public static final String IMAGE_DIRECTORY = "img";
 	public final String imagesURL;

@@ -250,6 +250,10 @@ public class AgentController {
 		return agent.touchResourceType();
 	}
 
+	public boolean touchResourceType(final Resource.ResourceType type) {
+		return agent.touchResourceType(type);
+	}
+
 	/**
 	 * Gibt an, ob der Agent unter Beschuss steht.
 	 * @return true oder false.
@@ -354,7 +358,7 @@ public class AgentController {
 	
 	public boolean supportOrdered() {
 		return agent.needSupport();
-	}
+	}//TODO
 
 	public void goToSuppordAgent() {
 		agent.goToSuppordAgent();
@@ -362,5 +366,17 @@ public class AgentController {
 
 	public void placeMarker() {
 		agent.placeMarker();
+	}
+
+	public void goToMarker() {
+		agent.goToMarker();
+	}
+
+	public boolean isCommander() {
+		return agent.isCommander();
+	}
+
+	public boolean seeMarker() {
+		return agent.seeMarker();
 	}
 }

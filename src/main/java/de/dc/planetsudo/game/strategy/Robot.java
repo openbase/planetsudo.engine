@@ -139,7 +139,7 @@ public class Robot extends AbstractStrategy {
 		createRule(new Rule(595, "Bomben Vermeiden") {
 			@ Override
 			protected boolean constraint() {
-				return agent.touchResource() && agent.touchResourceType()==Resource.ResourceType.Bomb ;
+				return agent.touchResource() && agent.touchResourceType()==Resource.ResourceType.Mine ;
 			}
 			@ Override
 			protected void action() {
@@ -150,7 +150,7 @@ public class Robot extends AbstractStrategy {
 		createRule(new Rule(590, "sammle resource") {
 			@ Override
 			protected boolean constraint() {
-				return agent.touchResource() && agent.touchResourceType()!=Resource.ResourceType.Bomb ;
+				return agent.touchResource() && agent.touchResourceType()!=Resource.ResourceType.Mine ;
 			}
 			@ Override
 			protected void action() {

@@ -9,7 +9,6 @@ import de.dc.planetsudo.level.AbstractLevel;
 import de.dc.util.data.Point2D;
 import de.dc.util.exceptions.CouldNotPerformException;
 import de.dc.util.view.engine.draw2d.AbstractResourcePanel.ObjectType;
-import javax.swing.text.Position;
 
 /**
  *
@@ -33,6 +32,7 @@ public class TeamMarker extends AbstractLevelObject {
 			this.position = position;
 			placed = true;
 		}
+		levelView.updateObjectMovement();
 	}
 
 	public void clear() {
@@ -61,5 +61,13 @@ public class TeamMarker extends AbstractLevelObject {
 	@Override
 	protected void reset() {
 		clear();
+	}
+
+	protected boolean seeMarker(Agent agent) {
+		if(!placed) {
+			return false;
+		}
+
+		return getBounds().intersects(agent.getBounds());
 	}
 }

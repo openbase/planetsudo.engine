@@ -11,8 +11,6 @@ import java.awt.Color;
 import java.awt.Polygon;
 import de.dc.planetsudo.level.AbstractLevel;
 import de.dc.planetsudo.level.ResourcePlacement;
-import de.dc.planetsudo.level.ResourceRandomRectangle;
-import de.dc.planetsudo.level.levelobjects.Resource.ResourceType;
 
 /**
  *
@@ -93,14 +91,14 @@ public class FrauenWG extends AbstractLevel {
 
 	@Override
 	protected ResourcePlacement[] loadResourcePlacement() {
-		ResourcePlacement[] resourcePlacement = new ResourcePlacement[7];
-		resourcePlacement[0] = new ResourceRandomRectangle(100, 100, 2550, 1750, 100, ResourceType.Normal);
-		resourcePlacement[1] = new ResourceRandomRectangle(100, 100, 2550, 1750, 40, ResourceType.DoublePoints);
-		resourcePlacement[2] = new ResourceRandomRectangle(1000, 650, 1650, 1200, 20, ResourceType.ExtremPoint);
-		resourcePlacement[3] = new ResourceRandomRectangle(500, 1450, 800, 1750, 10, ResourceType.ExtraAgentFuel);
-		resourcePlacement[4] = new ResourceRandomRectangle(1850, 100, 2150, 400, 10, ResourceType.ExtraAgentFuel);
-		resourcePlacement[5] = new ResourceRandomRectangle(100, 650, 650, 1450, 25, ResourceType.ExtraMothershipFuel);
-		resourcePlacement[6] = new ResourceRandomRectangle(2000, 400, 2550, 1200, 25, ResourceType.ExtraMothershipFuel);
+		ResourcePlacement[] resourcePlacement = new ResourcePlacement[0];
+//		resourcePlacement[0] = new ResourceRandomRectangle(100, 100, 2550, 1750, 100, ResourceType.Normal);
+//		resourcePlacement[1] = new ResourceRandomRectangle(100, 100, 2550, 1750, 40, ResourceType.DoublePoints);
+//		resourcePlacement[2] = new ResourceRandomRectangle(1000, 650, 1650, 1200, 20, ResourceType.ExtremPoint);
+//		resourcePlacement[3] = new ResourceRandomRectangle(500, 1450, 800, 1750, 10, ResourceType.ExtraAgentFuel);
+//		resourcePlacement[4] = new ResourceRandomRectangle(1850, 100, 2150, 400, 10, ResourceType.ExtraAgentFuel);
+//		resourcePlacement[5] = new ResourceRandomRectangle(100, 650, 650, 1450, 25, ResourceType.ExtraMothershipFuel);
+//		resourcePlacement[6] = new ResourceRandomRectangle(2000, 400, 2550, 1200, 25, ResourceType.ExtraMothershipFuel);
 		return resourcePlacement;
 	}
 

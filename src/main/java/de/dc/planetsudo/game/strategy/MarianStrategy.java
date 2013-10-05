@@ -44,6 +44,28 @@ public class MarianStrategy extends AbstractStrategy {
 			}
 		});
 		//-------------------------------------------->
+		createRule(new Rule(5, "Go to Marker") {
+			@ Override
+			protected boolean constraint() {
+				return mothership.existMarker();
+			}
+			@ Override
+			protected void action() {
+				agent.goToMarker();
+			}
+		});
+		//-------------------------------------------->
+		createRule(new Rule(10, "Clear Marker") {
+			@ Override
+			protected boolean constraint() {
+				return agent.seeMarker();
+			}
+			@ Override
+			protected void action() {
+				mothership.clearMarker();
+			}
+		});
+		//-------------------------------------------->
 		createRule(new Rule(20, "Search Resources") {
 			@ Override
 			protected boolean constraint() {
@@ -58,7 +80,18 @@ public class MarianStrategy extends AbstractStrategy {
 		createRule(new Rule(30, "PickUp Resource") {
 			@ Override
 			protected boolean constraint() {
-				return agent.touchResource() && agent.touchResourceType() != Resource.ResourceType.Bomb;
+				return agent.touchResource() && agent.touchResourceType() != Resource.ResourceType.Mine;
+			}
+			@ Override
+			protected void action() {
+				agent.pickupResource();
+			}
+		});
+		//-------------------------------------------->
+		createRule(new Rule(31, "PickUp and Place") {
+			@ Override
+			protected boolean constraint() {
+				return agent.touchResource() && !agent.touchResourceType(Resource.ResourceType.Mine) && (agent.touchResourceType(Resource.ResourceType.ExtremPoint) || agent.touchResourceType(Resource.ResourceType.DoublePoints));
 			}
 			@ Override
 			protected void action() {
@@ -111,17 +144,7 @@ public class MarianStrategy extends AbstractStrategy {
 				agent.orderSupport();
 			}
 		});
-		//-------------------------------------------->
-		createRule(new Rule(95, "PlaceMine") {
-			@ Override
-			protected boolean constraint() {
-				return agent.hasMine() && agent.seeAdversaryMothership();
-			}
-			@ Override
-			protected void action() {
-				agent.placeMine();
-			}
-		});
+		
 		//-------------------------------------------->
 		createRule(new Rule(100, "TurnToAdversaryAgent") {
 			@ Override
@@ -164,6 +187,17 @@ public class MarianStrategy extends AbstractStrategy {
 			@ Override
 			protected void action() {
 				agent.fightWithAdversaryAgent();
+			}
+		});
+		//-------------------------------------------->
+		createRule(new Rule(195, "PlaceMine") {
+			@ Override
+			protected boolean constraint() {
+				return agent.hasMine() && agent.isUnderAttack();
+			}
+			@ Override
+			protected void action() {
+				agent.placeMine();
 			}
 		});
 		//-------------------------------------------->

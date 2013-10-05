@@ -66,7 +66,7 @@ public class NoNameStrategy extends AbstractStrategy {
 		createRule(new Rule(700, "Pick_up_Resource") {
 			@ Override
 			protected boolean constraint() {
-				return agent.touchResource() && agent.touchResourceType() != Resource.ResourceType.Bomb;
+				return agent.touchResource() && agent.touchResourceType() != Resource.ResourceType.Mine;
 			}
 			@ Override
 			protected void action() {

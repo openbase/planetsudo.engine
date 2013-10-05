@@ -13,8 +13,8 @@ import java.awt.event.MouseEvent;
 import de.dc.planetsudo.level.levelobjects.Agent;
 import de.dc.planetsudo.level.levelobjects.Resource;
 import de.dc.planetsudo.level.levelobjects.Resource.ResourceType;
-import de.dc.planetsudo.view.MainGUI;
 import de.dc.planetsudo.view.level.LevelPanel;
+import de.dc.util.data.Direction2D;
 
 /**
  *
@@ -33,17 +33,21 @@ public class ResourcePanel extends AbstractLevelObjectPanel<Resource, LevelPanel
 	}
 	private Agent owner;
 	private Graphics2D gg2;
+	private Direction2D direction;
 
 	@Override
 	protected void paintComponent(Graphics2D g2, Graphics2D gl) {
 		boundingBox = resource.getBounds();
 		owner = resource.getOwner();
+		
+
 		if (owner == null) {
 			paintImage(g2);
 		} else {
+			direction = owner.getDirection();
 			gg2 = (Graphics2D) g2.create();
-			gg2.translate(-owner.getDirection().getVector().getX() * owner.getWidth() * 0.35, -owner.getDirection().getVector().getY() * owner.getHeight() * 0.35);
-			paintImageRotated(owner.getDirection(), gg2);
+			gg2.translate(-direction.getVector().getX() * owner.getWidth() * 0.35, -direction.getVector().getY() * owner.getHeight() * 0.35);
+			paintImageRotated(direction, gg2);
 			gg2.dispose();
 		}
 

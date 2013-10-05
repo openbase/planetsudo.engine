@@ -69,7 +69,7 @@ public class KillAllStrategy extends AbstractStrategy {
 		createRule(new Rule(510, "Rohstoff T.") {
 			@ Override
 			protected boolean constraint() {
-				return   agent.touchResourceType()!=Resource.ResourceType.Bomb &&
+				return   agent.touchResourceType()!=Resource.ResourceType.Mine &&
                                         agent.touchResource() 
                                         ;
 			}

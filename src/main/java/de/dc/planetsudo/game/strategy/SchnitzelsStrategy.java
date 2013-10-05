@@ -72,7 +72,7 @@ public class SchnitzelsStrategy extends AbstractStrategy {
 			@ Override
 			protected boolean constraint() {
 		   return agent.touchResource() && agent.touchResourceType() !=
-Resource.ResourceType.Bomb;
+Resource.ResourceType.Mine;
 
 			}
 			@ Override

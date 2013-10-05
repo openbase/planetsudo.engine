@@ -16,6 +16,12 @@ import de.dc.util.logging.Logger;
 public class LevelLoader {
 	private static LevelLoader instance;
 	private TreeMap<String, Class<? extends AbstractLevel>> levelMap;
+
+	static {
+
+		//LevelLoader.class.
+	}
+
 	private final static String[] levelClasses = {	"SimpleWorld",
 													"AgentK",
 													"CircleOfLife",
@@ -29,7 +35,11 @@ public class LevelLoader {
 													"WakaWaka",
 													"Revolution",
 													"FrauenWG",
-													"JD"
+													"Engpass",
+													"JD",
+													"Arena",
+													"Kreuzung",
+													"Entropie"
 												};
 
 	public LevelLoader() {

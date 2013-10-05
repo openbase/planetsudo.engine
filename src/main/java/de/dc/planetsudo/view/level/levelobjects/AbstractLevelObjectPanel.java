@@ -5,9 +5,7 @@
 package de.dc.planetsudo.view.level.levelobjects;
 
 import de.dc.util.data.Direction2D;
-import de.dc.util.data.ImageLoader;
 import de.dc.util.exceptions.NotValidException;
-import de.dc.util.logging.Logger;
 import de.dc.util.math.RandomGenerator;
 import de.dc.util.view.engine.draw2d.ResourceDisplayPanel;
 import java.awt.Color;
@@ -16,15 +14,13 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Dimension2D;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.logging.Level;
 import de.dc.planetsudo.level.levelobjects.AbstractLevelObject;
-import de.dc.planetsudo.level.levelobjects.Agent;
 import de.dc.planetsudo.view.game.AbstractGameObjectPanel;
 import de.dc.util.view.engine.draw2d.AbstractResourcePanel.DrawLayer;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.Timer;
 
 /**
  *
@@ -32,47 +28,42 @@ import java.beans.PropertyChangeListener;
  */
 public abstract class AbstractLevelObjectPanel<R extends AbstractLevelObject, PRP extends AbstractGameObjectPanel> extends AbstractGameObjectPanel<R, PRP> {
 
-	protected BufferedImage image;
+	protected static boolean animationFlag;
+	static {
+		new Timer(200, new ActionListener() {
+
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				animationFlag ^= animationFlag;
+			}
+		}).start();
+	}
 
 	public AbstractLevelObjectPanel(final R resource, final Polygon placementPolygon, final String imageURI, final PRP parentResourcePanel, final DrawLayer drawLayer) {
-		super(resource, placementPolygon, resource.getObjectType(), imageURI, parentResourcePanel, drawLayer);
-		resource.addPropertyChangeListener(new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (evt.getPropertyName().equals(AbstractLevelObject.OBJECT_TYPE_UPDATE)) {
-					setObjectType(resource.getObjectType());
-				}
-			}
-		});
-		if (imageURI != null) {
-			try {
-				this.image = ImageLoader.getInstance().loadImage(imageURI);
-			} catch (IOException ex) {
-				Logger.error(this, "Could not load " + this + " image.", ex);
-			}
-		}
+		super(resource, placementPolygon, ObjectType.Static, imageURI, parentResourcePanel, drawLayer);
+//		resource.addPropertyChangeListener(new PropertyChangeListener() {
+//			@Override
+//			public void propertyChange(final PropertyChangeEvent evt) {
+//				if (evt.getPropertyName().equals(AbstractLevelObject.OBJECT_TYPE_UPDATE)) {
+//					setObjectType(resource.getObjectType());
+//				}
+//			}
+//		});
 	}
 
 	public AbstractLevelObjectPanel(final R resource, final Polygon placementPolygon, final String imageURI, final ResourceDisplayPanel parentPanel) {
-		super(resource, placementPolygon, resource.getObjectType(), imageURI, parentPanel);
-		resource.addPropertyChangeListener(new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (evt.getPropertyName().equals(AbstractLevelObject.OBJECT_TYPE_UPDATE)) {
-					setObjectType(resource.getObjectType());
-				}
-			}
-		});
-		if (imageURI != null) {
-			try {
-				this.image = ImageLoader.getInstance().loadImage(imageURI);
-			} catch (IOException ex) {
-				Logger.error(this, "Could not load " + this + " image.", ex);
-			}
-		}
+		super(resource, placementPolygon, ObjectType.Dynamic, imageURI, parentPanel);
+//		resource.addPropertyChangeListener(new PropertyChangeListener() {
+//			@Override
+//			public void propertyChange(final PropertyChangeEvent evt) {
+//				if (evt.getPropertyName().equals(AbstractLevelObject.OBJECT_TYPE_UPDATE)) {
+//					setObjectType(resource.getObjectType());
+//				}
+//			}
+//		});
 	}
 
-	protected void paintShape(Graphics2D g2) {
+	protected void paintShape(final Graphics2D g2) {
 		switch (resource.getShape()) {
 			case Oval:
 				g2.fillOval((int) resource.getPosition().getX() - ((int) resource.getWidth() / 2), (int) resource.getPosition().getY() - ((int) resource.getHeight() / 2), (int) resource.getWidth(), (int) resource.getHeight());
@@ -81,10 +72,6 @@ public abstract class AbstractLevelObjectPanel<R extends AbstractLevelObject, PR
 				g2.fillRect((int) resource.getPosition().getX() - ((int) resource.getWidth() / 2), (int) resource.getPosition().getY() - ((int) resource.getHeight() / 2), (int) resource.getWidth(), (int) resource.getHeight());
 				break;
 		}
-	}
-
-	protected void paintImage(Graphics2D g2) {
-		g2.drawImage(image, getSkaleImageToBoundsTransformation(), parentPanel);
 	}
 
 	protected void paintImageRotated(Direction2D direction, Graphics2D g2) {

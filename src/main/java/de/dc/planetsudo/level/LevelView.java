@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package de.dc.planetsudo.level;
 
 import java.awt.Color;
@@ -13,6 +12,7 @@ import java.util.TreeMap;
 import de.dc.util.logging.Logger;
 import de.dc.planetsudo.level.levelobjects.AbstractLevelObject;
 import de.dc.util.view.engine.draw2d.AbstractResourcePanel.ObjectType;
+import java.awt.geom.Rectangle2D;
 
 /**
  *
@@ -21,10 +21,9 @@ import de.dc.util.view.engine.draw2d.AbstractResourcePanel.ObjectType;
 public class LevelView {
 
 	public final static int RASTER_SIZE = 10;
-
 	private final AbstractLevelObject levelObject;
 	private final LevelRasterElement[] levelRepresentation;
-	private final int width, height, rasterSize;
+	private final int x_base, y_base, width, height, rasterSize;
 
 	public LevelView(AbstractLevel level) {
 		this(level, null);
@@ -38,48 +37,59 @@ public class LevelView {
 		Logger.debug(this, "Create new levelview.");
 		this.levelObject = levelObject;
 		this.rasterSize = RASTER_SIZE;
-		double widthCast = (int) level.getLevelBorderPolygon().getBounds().getWidth()/rasterSize;
-		double heightCast = (int) level.getLevelBorderPolygon().getBounds().getHeight()/rasterSize;
-		
-		if(widthCast < level.getLevelBorderPolygon().getBounds().getWidth()/rasterSize) {
-			this.width = ((int) heightCast)+1;
+		final Rectangle2D bounds = level.getLevelBorderPolygon().getBounds2D();
+
+		double widthCast = (int) (bounds.getWidth() / rasterSize);
+		double heightCast = (int) bounds.getHeight() / rasterSize;
+
+		this.x_base = (int) bounds.getX();
+		this.y_base = (int) bounds.getY();
+
+		if (widthCast < bounds.getWidth() / rasterSize) {
+			this.width = ((int) widthCast) + 1;
 		} else {
 			this.width = (int) widthCast;
 		}
-		if(heightCast < level.getLevelBorderPolygon().getBounds().getHeight()/rasterSize) {
-			this.height = ((int) heightCast)+1;
+		if (heightCast < bounds.getHeight() / rasterSize) {
+			this.height = ((int) heightCast) + 1;
 		} else {
 			this.height = (int) heightCast;
 		}
-		this.levelRepresentation = new LevelRasterElement[width*height];
+		this.levelRepresentation = new LevelRasterElement[width * height];
 		this.initLevelRepresentation();
+		this.updateObjectMovement();
 	}
 
-	public void initLevelRepresentation() {
+	private void initLevelRepresentation() {
 		Logger.debug(this, "initLevelRepresentation");
-		for(int i=0;i<levelRepresentation.length;i++) {
+		for (int i = 0; i < levelRepresentation.length; i++) {
 			levelRepresentation[i] = new LevelRasterElement(i, this);
 		}
-		
-		for(LevelRasterElement element : levelRepresentation) {
+
+		for (LevelRasterElement element : levelRepresentation) {
 			element.calculateNeigbours();
 		}
 	}
 
 	protected LevelRasterElement get(int x, int y) {
-		return levelRepresentation[x+y*width];
+		try {
+			return levelRepresentation[x + y * width];
+		} catch (Exception ex) {
+			Logger.error(this, "x_base[" + x_base + "] y_base[" + y_base + "] x[" + x + "] y[" + y + "] width[" + width + "] bounds[" + levelRepresentation.length + "]");
+			throw new RuntimeException(ex);
+		}
 	}
 
 	public void drawLevelView(int x, int y, Graphics2D g2) {
 		Logger.info(this, "Draw LevelView");
 		int greyValue;
-		for(LevelRasterElement element : levelRepresentation) {
-			if(element.isPartOfWall()) {
+		for (LevelRasterElement element : levelRepresentation) {
+			if (element.isPartOfWall()) {
 				g2.setColor(Color.RED);
-			} else if(element.isNextToWall()) {
+			} else if (element.isNextToWall()) {
 				g2.setColor(Color.GREEN);
 			} else {
-				greyValue = Math.min(255, Math.max(0, element.getDistance())/3);
+				greyValue = Math.min(255, Math.max(0, element.getDistance()) / 3);
 				g2.setColor(new Color(greyValue, greyValue, greyValue));
 			}
 			g2.fill(element.getRasterLevelRectangle());
@@ -90,8 +100,8 @@ public class LevelView {
 
 	private LevelRasterElement calcLevelRasterElement(AbstractLevelObject levelObject) {
 		Logger.debug(this, "CalcLevelRasterElement");
-		return get(((int)levelObject.getPosition().getX()-levelObject.getLevel().getX())/rasterSize, ((int)levelObject.getPosition().getY()-levelObject.getLevel().getY())/rasterSize);
-	} 
+		return get(((int) levelObject.getPosition().getX() - levelObject.getLevel().getX()) / rasterSize, ((int) levelObject.getPosition().getY() - levelObject.getLevel().getY()) / rasterSize);
+	}
 
 	public int getAbsolutAngle(AbstractLevelObject levelObject) {
 //		Logger.info(this, "BEGIN: GetAbsoluteAngle");
@@ -107,7 +117,7 @@ public class LevelView {
 
 	public void dijkstraTest() {
 //		Logger.debug(this, "dijkstraTest");
-		dijkstra(levelRepresentation[0], levelRepresentation[(width*height)-1]);
+		dijkstra(levelRepresentation[0], levelRepresentation[(width * height) - 1]);
 	}
 
 	private int getDistance(LevelRasterElement position, LevelRasterElement destination) {
@@ -120,58 +130,64 @@ public class LevelView {
 //		Logger.debug(this, "getAngle");
 		dijkstra(position, destination);
 		LevelRasterElementNeigbour neigbourNextToDestination = null;
-		for(LevelRasterElementNeigbour neigbour : position.getNeigbours()) {
-			if(neigbourNextToDestination == null || neigbourNextToDestination.getElement().getDistance() > neigbour.getElement().getDistance()) {
+		for (LevelRasterElementNeigbour neigbour : position.getNeigbours()) {
+			if (neigbourNextToDestination == null || neigbourNextToDestination.getElement().getDistance() > neigbour.getElement().getDistance()) {
 				neigbourNextToDestination = neigbour;
 			}
 		}
-		if(neigbourNextToDestination == null) {
+		if (neigbourNextToDestination == null) {
 			Logger.error(this, "No way to destionation found!");
 			return 0;
 		}
 		return neigbourNextToDestination.getAngle();
 	}
 
-	public void updateObjectMovement() {
+	public final void updateObjectMovement() {
 		Logger.debug(this, "UpdateObjectMovement");
-		dijkstra(null, calcLevelRasterElement(levelObject));
+		dijkstra(null, calcLevelRasterElement(levelObject), true);
 	}
 
 	private void dijkstra2(LevelRasterElement position, LevelRasterElement destination) {
-		if(levelObject.isObjectType(ObjectType.Static)) return;
+		if (levelObject.isObjectType(ObjectType.Static)) {
+			return;
+		}
 		assert !destination.isPartOfWall();
 		// Initialisation
 		TreeMap<Integer, ArrayList<LevelRasterElement>> distanceQueue = new TreeMap<Integer, ArrayList<LevelRasterElement>>();
-		for(LevelRasterElement element : levelRepresentation) {
+		for (LevelRasterElement element : levelRepresentation) {
 			element.reset(destination);
 		}
 		// find shortest distance
 		LevelRasterElement element = destination;
 		do {
 			element.setVisited(true);
-			for(LevelRasterElementNeigbour neigbour : element.getNeigbours()) {
-				if(!neigbour.getElement().isVisited()) {
-					neigbour.getElement().setDistance(element.getDistance()+neigbour.getWeight());
-					if(!distanceQueue.containsKey(neigbour.getElement().getDistance())) {
+			for (LevelRasterElementNeigbour neigbour : element.getNeigbours()) {
+				if (!neigbour.getElement().isVisited()) {
+					neigbour.getElement().setDistance(element.getDistance() + neigbour.getWeight());
+					if (!distanceQueue.containsKey(neigbour.getElement().getDistance())) {
 						distanceQueue.put(neigbour.getElement().getDistance(), new ArrayList<LevelRasterElement>());
 					}
-					if(!distanceQueue.get(neigbour.getElement().getDistance()).contains(neigbour.getElement())) {
+					if (!distanceQueue.get(neigbour.getElement().getDistance()).contains(neigbour.getElement())) {
 						distanceQueue.get(neigbour.getElement().getDistance()).add(neigbour.getElement());
 					}
 				}
 			}
 
-			if(!distanceQueue.isEmpty()) {
+			if (!distanceQueue.isEmpty()) {
 				element = distanceQueue.firstEntry().getValue().remove(0);
-				if(distanceQueue.firstEntry().getValue().isEmpty()) {
+				if (distanceQueue.firstEntry().getValue().isEmpty()) {
 					distanceQueue.pollFirstEntry();
 				}
 			}
-		} while(element != position && element != null); //
+		} while (element != position && element != null); //
 	}
 
 	private void dijkstra(LevelRasterElement position, LevelRasterElement destination) {
-		if(levelObject.isObjectType(ObjectType.Static)) {
+		dijkstra(position, destination, false);
+	}
+
+	private void dijkstra(LevelRasterElement position, LevelRasterElement destination, boolean force) {
+		if (!force && levelObject.isObjectType(ObjectType.Static)) {
 			Logger.debug(this, "Skip dijkstra of static object");
 			return;
 		}
@@ -179,24 +195,24 @@ public class LevelView {
 //		long startTime = System.currentTimeMillis();
 		// Initialisation
 		PriorityQueue<LevelRasterElement> distanceQueue = new PriorityQueue<LevelRasterElement>();
-		for(LevelRasterElement element : levelRepresentation) {
+		for (LevelRasterElement element : levelRepresentation) {
 			element.reset(destination);
 		}
 		// find shortest distance
 		LevelRasterElement element = destination;
 		do {
 			element.setVisited(true);
-			for(LevelRasterElementNeigbour neigbour : element.getNeigbours()) {
-				if(!neigbour.getElement().isVisited()) {
-					neigbour.getElement().setDistance(element.getDistance()+neigbour.getWeight());
+			for (LevelRasterElementNeigbour neigbour : element.getNeigbours()) {
+				if (!neigbour.getElement().isVisited()) {
+					neigbour.getElement().setDistance(element.getDistance() + neigbour.getWeight());
 
-					if(!distanceQueue.contains(neigbour.getElement())) {
+					if (!distanceQueue.contains(neigbour.getElement())) {
 						distanceQueue.add(neigbour.getElement());
 					}
 				}
 			}
 			element = distanceQueue.poll();
-		} while(element != null && element != position);
+		} while (element != null && element != position);
 //		Logger.debug(this, "END["+(System.currentTimeMillis()-startTime)+"]: dijkstra new calc.");
 	}
 

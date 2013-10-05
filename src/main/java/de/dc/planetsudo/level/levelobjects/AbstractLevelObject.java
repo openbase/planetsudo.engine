@@ -51,7 +51,7 @@ public abstract class AbstractLevelObject extends AbstractGameObject implements 
 		this.height = height;
 		this.shape = shape;
 		this.changes = new PropertyChangeSupport(this);
-		this.objectType = ObjectType.Dynamic;
+		this.objectType = ObjectType.Static;
 
 		if (!(this instanceof Resource)) {
 			this.levelView = new LevelView(this);
@@ -81,7 +81,7 @@ public abstract class AbstractLevelObject extends AbstractGameObject implements 
 		return position;
 	}
 	
-	public boolean isObjectType(ObjectType type) {
+	public boolean isObjectType(final ObjectType type) {
 		return objectType == type;
 	}
 
@@ -89,7 +89,7 @@ public abstract class AbstractLevelObject extends AbstractGameObject implements 
 		return objectType;
 	}
 
-	public final void setObjectType(ObjectType objectType) {
+	public final void setObjectType(final ObjectType objectType) {
 		if (this.objectType == objectType) {
 			return;
 		}

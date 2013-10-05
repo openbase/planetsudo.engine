@@ -26,7 +26,7 @@ public class Resource extends AbstractLevelObject {
 
 	public enum ResourceType {
 
-		Unknown, Normal, DoublePoints, ExtremPoint, ExtraAgentFuel, ExtraMothershipFuel, Bomb
+		Unknown, Normal, DoublePoints, ExtremPoint, ExtraAgentFuel, ExtraMothershipFuel, Mine
 	};
 	private ResourceType type;
 	private Agent owner;
@@ -70,6 +70,9 @@ public class Resource extends AbstractLevelObject {
 	}
 
 	public boolean setBusy(Team team) {
+		if(isOwned()) {
+			return false;
+		}
 		synchronized (RESOURCE_LOCK) {
 			if (conquerors.contains(team.getId())) {
 				return false;
@@ -79,11 +82,11 @@ public class Resource extends AbstractLevelObject {
 		}
 	}
 
-	public boolean isSaveFor(Agent agent) {
+	public boolean isSaveFor(final Agent agent) {
 		return wasPlacedByTeam() != agent.getTeam();
 	}
 
-	protected boolean capture(Agent agent) throws NotValidException {
+	protected boolean capture(final Agent agent) throws NotValidException {
 		synchronized (RESOURCE_LOCK) {
 			if (owner != null) {
 				return false;
@@ -98,13 +101,12 @@ public class Resource extends AbstractLevelObject {
 			case ExtraAgentFuel:
 				use(agent);
 				return false;
-			case Bomb:
+			case Mine:
 				use(agent);
 				return false;
 			default:
 				return true;
 		}
-
 	}
 
 	public int getCapturingActionPoints() {
@@ -119,7 +121,7 @@ public class Resource extends AbstractLevelObject {
 				return 400;
 			case ExtraMothershipFuel:
 				return 400;
-			case Bomb:
+			case Mine:
 				return 200;
 			default:
 				Logger.error(this, "Could not calculate capturing time because resource type is unknown!");
@@ -135,7 +137,7 @@ public class Resource extends AbstractLevelObject {
 	protected void release() {
 		synchronized (RESOURCE_LOCK) {
 			owner = null;
-			position = new Point2D(position);
+			position = position.clone();
 		}
 		setObjectType(ObjectType.Static);
 	}
@@ -165,7 +167,7 @@ public class Resource extends AbstractLevelObject {
 					case ExtraMothershipFuel:
 						agent.getMothership().spendFuel(Mothership.DEFAULT_START_FUEL / 5);
 						return 0;
-					case Bomb:
+					case Mine:
 						agent.kill();
 						return 0;
 					default:

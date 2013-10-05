@@ -57,7 +57,7 @@ public class SimpleStrategy extends AbstractStrategy {
 		createRule(new Rule(30, "PickUp Resource") {
 			@ Override
 			protected boolean constraint() {
-				return agent.touchResource() && agent.touchResourceType() != Resource.ResourceType.Bomb;
+				return agent.touchResource() && agent.touchResourceType() != Resource.ResourceType.Mine;
 			}
 			@ Override
 			protected void action() {

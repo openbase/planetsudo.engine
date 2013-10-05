@@ -79,15 +79,16 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 	private void loadAgents() {
 		GUIController.setEvent(new PropertyChangeEvent(this, GUIController.LOADING_STATE_CHANGE, agentMaxCount, "Lade " + team.getName() + " Agent"));
 		Agent agent;
+		boolean commanderFlag = true;
 		for (int i = 0; i < agentMaxCount; i++) {
 			GUIController.setEvent(new PropertyChangeEvent(this, GUIController.LOADING_STEP, null, i));
-			agent = new Agent(team.getName() + "Agent", this);
+			agent = new Agent(team.getName() + "Agent", commanderFlag, this);
 			Agent replacedAgent;
 			synchronized (AGENTLOCK) {
 				replacedAgent = agents.put(agent.getId(), agent);
 			}
 			if (replacedAgent != null) {
-				Logger.error(this, "Add agent with same id like an other one! Kill old one.");
+				Logger.error(this, "Agend with id " + id + " already defined! Kill old instance.");
 				replacedAgent.kill();
 			}
 		}
@@ -200,6 +201,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 
 	/**
 	 * Methode just for visual purpose
+	 *
 	 * @return
 	 */
 	public TeamMarker getTeamMarker() {
@@ -225,7 +227,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 	protected void passResource(final Agent agent) throws NotValidException {
 		final Resource resource = agent.getResource();
 		if (resource != null && getBounds().contains(agent.getBounds())) {
-				team.addPoints(resource.use(agent));
+			team.addPoints(resource.use(agent));
 		}
 	}
 
@@ -297,7 +299,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 		return counter;
 	}
 
-	public void callForHelp(final Agent agent) {
+	public void callForSupport(final Agent agent) {
 		synchronized (SUPPORT_CHANNEL_LOCK) {
 			if (supportChannel.contains(agent)) {
 				return;
@@ -329,21 +331,22 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 			int distance = Integer.MAX_VALUE;
 			int tmpDistance;
 			for (Agent a : supportChannel) {
-				if (a != helper) {
-					tmpDistance = helper.getLevelView().getDistance(a);
-					if (supportCaller == null || tmpDistance < distance) {
-						supportCaller = a;
-						distance = tmpDistance;
-					}
+				if (a == helper) { // do not help yourself
+					continue;
+				}
+				tmpDistance = helper.getLevelView().getDistance(a);
+				if (supportCaller == null || tmpDistance < distance) {
+					supportCaller = a;
+					distance = tmpDistance;
 				}
 			}
 
-			if(supportCaller == null) {
+			if (supportCaller == null) {
 				throw new CouldNotPerformException("No support possible.");
 			}
-			
+
 			// remove caller from support channel if support possible
-			if(supportCaller.getBounds().intersects(helper.getViewBounds())) {
+			if (supportCaller.getBounds().intersects(helper.getViewBounds())) {
 				supportChannel.remove(supportCaller);
 				supportCaller.setNeedSupport(false);
 			}
