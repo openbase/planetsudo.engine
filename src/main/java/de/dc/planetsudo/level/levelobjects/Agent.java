@@ -129,8 +129,7 @@ public class Agent extends AbstractLevelObject {
 	public synchronized void placeMine() {
 		actionPoints.getActionPoint(50);
 		if (useFuel(5) == 5 || hasMine) {
-			Resource newMine = new Resource(level.generateNewResourceID(), Resource.ResourceType.Mine, level, new Point2D(position));
-			newMine.setPlacer(this);
+			Resource newMine = new Resource(level.generateNewResourceID(), level, this);
 			level.addResource(newMine);
 			hasMine = false;
 			AudioServer.playClip(GameSound.DeployMine);
@@ -474,10 +473,10 @@ public class Agent extends AbstractLevelObject {
 		return helpLevelObject;
 	}
 
-	public void repaireMothership() {
+	public void repairMothership() {
 		actionPoints.getActionPoint(30);
 		if (useFuel()) {
-			mothership.repaire();
+			mothership.repair();
 		}
 	}
 

@@ -34,7 +34,7 @@ public abstract class AbstractLevelObjectPanel<R extends AbstractLevelObject, PR
 
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				animationFlag ^= animationFlag;
+				animationFlag = !animationFlag;
 			}
 		}).start();
 	}

@@ -337,8 +337,8 @@ public class AgentController {
 	 * Aktionspunkte: 50
 	 * Treibstoff: 1
 	 */
-	public void repaireMothership() {
-		agent.repaireMothership();
+	public void repairMothership() {
+		agent.repairMothership();
 	}
 
 	/**

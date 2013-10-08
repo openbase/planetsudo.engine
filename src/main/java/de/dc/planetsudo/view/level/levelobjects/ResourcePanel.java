@@ -15,6 +15,7 @@ import de.dc.planetsudo.level.levelobjects.Resource;
 import de.dc.planetsudo.level.levelobjects.Resource.ResourceType;
 import de.dc.planetsudo.view.level.LevelPanel;
 import de.dc.util.data.Direction2D;
+import java.awt.Color;
 
 /**
  *
@@ -22,10 +23,19 @@ import de.dc.util.data.Direction2D;
  */
 public class ResourcePanel extends AbstractLevelObjectPanel<Resource, LevelPanel> implements PropertyChangeListener {
 
-	public ResourcePanel(Resource resource, LevelPanel parentResourcePanel) {
+	private final boolean mine;
+	private final Color mineColor;
+
+	public ResourcePanel(final Resource resource, final LevelPanel parentResourcePanel) {
 		super(resource, resource.getPolygon(), getImageURI(resource.getType()), parentResourcePanel, DrawLayer.BACKGROUND);
 		Logger.info(this, "Create " + this);
 		resource.addPropertyChangeListener(this);
+		this.mine = resource.getType() == ResourceType.Mine;
+		if(mine && resource.wasPlacedByTeam() != null) {
+			this.mineColor = resource.wasPlacedByTeam().getTeamColor();
+		} else {
+			this.mineColor = Color.BLACK;
+		}
 	}
 
 	private static String getImageURI(ResourceType type) {
@@ -39,9 +49,16 @@ public class ResourcePanel extends AbstractLevelObjectPanel<Resource, LevelPanel
 	protected void paintComponent(Graphics2D g2, Graphics2D gl) {
 		boundingBox = resource.getBounds();
 		owner = resource.getOwner();
-		
 
 		if (owner == null) {
+			if (mine) {
+				if(animationFlag) {
+					g2.setColor(mineColor);
+				} else {
+					g2.setColor(Color.BLACK);
+				}
+				g2.fillRect((int) boundingBox.getCenterX() - 5, (int) boundingBox.getCenterY() - 5, 10, 10);
+			}
 			paintImage(g2);
 		} else {
 			direction = owner.getDirection();
@@ -51,19 +68,8 @@ public class ResourcePanel extends AbstractLevelObjectPanel<Resource, LevelPanel
 			gg2.dispose();
 		}
 
-		//g2.fillOval((int)resource.getPosition().getX()-(int)resource.getWidth()/2, (int)resource.getPosition().getY()-(int)resource.getHeight()/2, (int)resource.getWidth(), (int)resource.getHeight());
-//				if(resource.isOwned()) {
-//					resource.getOwner().getDirection(
-//					//					(int) (resource.getPosition().getX()+(resource.getDirection().getDirection().getX()*resource.getWidth())),
-////					(int) (resource.getPosition().getY()+(resource.getDirection().getDirection().getY()*resource.getHeight())));
-//
-//				} else {
-//
-//				}
 
-//		if (resource != null && resource.getLevelView() != null && MainGUI.levelView == resource.getLevelView()) {
-//			resource.getLevelView().drawLevelView((int) parentResourcePanel.getBoundingBox().getX(), (int) parentResourcePanel.getBoundingBox().getY(), g2);
-//		}
+
 	}
 
 	@Override

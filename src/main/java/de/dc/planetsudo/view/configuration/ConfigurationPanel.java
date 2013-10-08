@@ -111,12 +111,16 @@ public class ConfigurationPanel extends javax.swing.JPanel {
 		try {
 			teamAComboBox.removeAllItems();
 			teamBComboBox.removeAllItems();
-			defaultTeamComboBox.removeAllItems();
+			if (defaultTeamComboBox.isEnabled()) {
+				defaultTeamComboBox.removeAllItems();
+			}
 			List<TeamData> teams = Team.loadAll();
 			for (TeamData teamData : teams) {
 				teamAComboBox.addItem(teamData);
 				teamBComboBox.addItem(teamData);
-				defaultTeamComboBox.addItem(teamData);
+				if (defaultTeamComboBox.isEnabled()) {
+					defaultTeamComboBox.addItem(teamData);
+				}
 			}
 		} catch (CouldNotPerformException ex) {
 			Logger.warn(this, "Could not load teams!", ex);
@@ -460,18 +464,16 @@ public class ConfigurationPanel extends javax.swing.JPanel {
 	}
 
 	private void setdefaultTeamButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setdefaultTeamButtonActionPerformed
-
 		try {
 			TeamData defaultTeamData = (TeamData) defaultTeamComboBox.getSelectedItem();
 			setdefaultTeamButton.setForeground(Color.BLACK);
 			Team.saveDefaultTeam(defaultTeamData);
 			setDefaultTeam(defaultTeamData);
-		} catch (Exception ex) {
-			Logger.error(this, "Could not define default team!", ex);
+		} catch (Exception exx) {
+			Logger.error(this, "Could not define default team!", exx);
 			setdefaultTeamButton.setForeground(Color.RED);
 			return;
 		}
-
 	}//GEN-LAST:event_setdefaultTeamButtonActionPerformed
 
     private void syncButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_syncButtonActionPerformed

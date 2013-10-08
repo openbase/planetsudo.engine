@@ -222,7 +222,7 @@ public class SuperMarioBrothersStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-			        agent.repaireMothership();
+			        agent.repairMothership();
 
                  }
 		});

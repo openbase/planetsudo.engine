@@ -31,9 +31,17 @@ public class AgentPanel extends AbstractLevelObjectPanel<Agent, MothershipPanel>
 	public static boolean showStateLabel = false;
 	public final Color teamColor;
 
+	public static GameObjectImages getAgentImage(final Agent agent) {
+		if(agent.isCommander()) {
+			return GameObjectImages.AgentCommander;
+		} else {
+			return GameObjectImages.Agent;
+		}
+	}
+	
 	//public static boolean viewFlag = true;
-	public AgentPanel(Agent resource, MothershipPanel parentResourcePanel) {
-		super(resource, resource.getPolygon(), GameObjectImages.Agent.imagesURL, parentResourcePanel, DrawLayer.FORGROUND); //TODO Check Polygon
+	public AgentPanel(final Agent resource, final MothershipPanel parentResourcePanel) {
+		super(resource, resource.getPolygon(), getAgentImage(resource).imagesURL, parentResourcePanel, DrawLayer.FORGROUND); //TODO Check Polygon
 		this.teamColor = resource.getTeam().getTeamColor();
 		Logger.info(this, "Create AgentPanel of " + resource);
 //		if(resource.getMothership().getTeam().getId() == 0) {

@@ -36,7 +36,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 	public final static int MOTHERSHIP_FUEL_VOLUME = 15000;
 	public final static int AGENT_FUEL_VOLUME = 10000;
 	public final static int MAX_AGENT_COUNT = 10; // range 0-9999
-	public final static int BURNING_MOTHERSHIP = 50;
+	public final static int BURNING_MOTHERSHIP = 20;
 	public final Object AGENTLOCK = new Object();
 	public final Object SUPPORT_CHANNEL_LOCK = new Object();
 	private final Team team;
@@ -85,6 +85,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 		for (int i = 0; i < stradegyAgentCount; i++) {
 			GUIController.setEvent(new PropertyChangeEvent(this, GUIController.LOADING_STEP, null, i));
 			agent = new Agent(team.getName() + "Agent", commanderFlag, agendFuelVolume, this);
+			commanderFlag = false;
 			Agent replacedAgent;
 			synchronized (AGENTLOCK) {
 				replacedAgent = agents.put(agent.getId(), agent);
@@ -252,7 +253,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 		}
 	}
 
-	public synchronized void repaire() {
+	public synchronized void repair() {
 		if (shield < 100) {
 			shield++;
 			if (shield > BURNING_MOTHERSHIP && timer.isRunning()) {
@@ -285,7 +286,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 	@Override
 	public void actionPerformed(final ActionEvent e) {
 		if (!GameManager.getInstance().isPause()) {
-			orderFuel(BURNING_MOTHERSHIP - shield, null);
+			orderFuel(Math.max(0, BURNING_MOTHERSHIP - shield), null);
 		}
 	}
 

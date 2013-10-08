@@ -172,7 +172,7 @@ Resource.ResourceType.Mine;
 			}
 			@ Override
 			protected void action() {
-			    agent.repaireMothership();
+			    agent.repairMothership();
 			}
 		});
                 

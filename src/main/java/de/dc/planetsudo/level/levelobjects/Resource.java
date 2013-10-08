@@ -35,6 +35,13 @@ public class Resource extends AbstractLevelObject {
 	private boolean used;
 	private ResourcePlacement placement;
 
+
+	// Constructor just for mine
+	public Resource(int id, AbstractLevel level, Agent placer) {
+		this(id, ResourceType.Mine, level, new Point2D(placer.getPosition()));
+		this.placedBy = placer.getTeam();
+	}
+
 	public Resource(int id, ResourceType type, AbstractLevel level, ResourcePlacement placement) {
 		this(id, type, level, placement.calcRandomLevelPosition(level));
 		this.placement = placement;
@@ -177,10 +184,6 @@ public class Resource extends AbstractLevelObject {
 		}
 		Logger.warn(this, "Ignore double resource use!");
 		return 0;
-	}
-
-	void setPlacer(Agent agent) {
-		placedBy = agent.getTeam();
 	}
 
 	public boolean isUsed() {

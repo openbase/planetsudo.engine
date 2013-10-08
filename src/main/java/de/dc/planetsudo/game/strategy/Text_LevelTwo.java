@@ -130,7 +130,7 @@ public class Text_LevelTwo extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-				agent.repaireMothership();
+				agent.repairMothership();
 			}
 		});
 		//-------------------------------------------->

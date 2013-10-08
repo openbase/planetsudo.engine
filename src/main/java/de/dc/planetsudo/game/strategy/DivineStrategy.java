@@ -175,7 +175,7 @@ public class DivineStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-				agent.repaireMothership();
+				agent.repairMothership();
 			}
 		});
 		//-------------------------------------------->
@@ -198,6 +198,9 @@ public class DivineStrategy extends AbstractStrategy {
 			@ Override
 			protected void action() {
 				agent.placeMine();
+				agent.turnAround();
+				agent.goStraightAhead();
+				agent.goStraightAhead();
 			}
 		});
 		//-------------------------------------------->
