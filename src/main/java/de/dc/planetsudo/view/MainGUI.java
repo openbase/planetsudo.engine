@@ -284,8 +284,6 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
         jCheckBoxMenuItem3 = new javax.swing.JCheckBoxMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
-        jMenu3 = new javax.swing.JMenu();
-        serverSyncMenuItem = new javax.swing.JMenuItem();
         toolMenu = new javax.swing.JMenu();
         createTeamMenuItem = new javax.swing.JMenuItem();
         jCheckBoxMenuItem2 = new javax.swing.JCheckBoxMenuItem();
@@ -392,19 +390,6 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 
         menuBar.add(editMenu);
 
-        jMenu3.setText("Netzwerk");
-
-        serverSyncMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
-        serverSyncMenuItem.setText("Server Synchronisation");
-        serverSyncMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                serverSyncMenuItemActionPerformed(evt);
-            }
-        });
-        jMenu3.add(serverSyncMenuItem);
-
-        menuBar.add(jMenu3);
-
         toolMenu.setText("Einstellungen");
 
         createTeamMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_MASK));
@@ -459,7 +444,7 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
+            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
         );
 
         pack();
@@ -515,10 +500,6 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 		finalizeGame();
 	}//GEN-LAST:event_finalCalculationMenuItemActionPerformed
 
-	private void serverSyncMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serverSyncMenuItemActionPerformed
-		PlanetSudoClient.getInstance().runSync();
-	}//GEN-LAST:event_serverSyncMenuItemActionPerformed
-
     private void createTeamMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createTeamMenuItemActionPerformed
         CreateTeamFrame.display();
     }//GEN-LAST:event_createTeamMenuItemActionPerformed
@@ -552,14 +533,12 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem3;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
-    private javax.swing.JMenuItem serverSyncMenuItem;
     private javax.swing.JMenuItem startPauseMenuItem;
     private javax.swing.JMenuItem stopMenuItem;
     private javax.swing.JMenu toolMenu;

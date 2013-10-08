@@ -19,12 +19,12 @@ import de.dc.planetsudo.level.levelobjects.MothershipController;
  */
 public abstract class AbstractStrategy implements Runnable {
 
-	public final Agent strategyOwner;
+	private final Agent strategyOwner;
 	public final AgentController agent;
 	public final MothershipController mothership;
-	public final TreeMap<Integer, Rule> rules;
-	public final GameManager gameManager;
-	public final int agentCount;
+	private final TreeMap<Integer, Rule> rules;
+	private final GameManager gameManager;
+	private final int agentCount;
 
 
 //	private final Agent strategyOwner;
