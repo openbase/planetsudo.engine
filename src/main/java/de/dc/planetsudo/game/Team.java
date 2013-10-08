@@ -118,20 +118,30 @@ public class Team {
 	}
 
 	public int getFinalPoints() {
-		return mothership.getAgentsAtHomePosition() + mothership.getShieldPoints() + points;
+		return mothership.getAgentsAtHomePoints() + mothership.getShieldPoints() + points;
+	}
+
+	public static void saveDefaultTeam(final TeamData data, final boolean force) throws CouldNotPerformException {
+		save(data, DEFAULT_ID, force);
 	}
 
 	public static void saveDefaultTeam(final TeamData data) throws CouldNotPerformException {
-		save(data, DEFAULT_ID);
+		saveDefaultTeam(data, false);
 	}
 
 	public static void save(final TeamData data) throws CouldNotPerformException {
-		save(data, data.getName());
+		save(data, data.getName(), true);
 	}
 
-	public static void save(final TeamData data, final String teamName) throws CouldNotPerformException {
+	public static void save(final TeamData data, final String teamName, final boolean force) throws CouldNotPerformException {
 		try {
-			final ObjectFileController<TeamData> fileWriter = new ObjectFileController<TeamData>(CLParser.getAttribute(SetTeamPathCommand.class).getValue().getAbsolutePath() + "/" + teamName + ".team");
+			final String fileURL = CLParser.getAttribute(SetTeamPathCommand.class).getValue().getAbsolutePath() + "/" + teamName + ".team";
+
+			if(!force && new File(fileURL).exists()) {
+				throw new CouldNotPerformException("File already exist!");
+			}
+
+			final ObjectFileController<TeamData> fileWriter = new ObjectFileController<TeamData>(fileURL);
 			fileWriter.writeObject(data);
 		} catch (Exception ex) {
 			throw new CouldNotPerformException("Could not save TeamData[" + data.getName() + "] as default team!", ex);

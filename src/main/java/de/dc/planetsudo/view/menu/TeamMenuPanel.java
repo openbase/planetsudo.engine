@@ -109,8 +109,8 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
             .addGroup(teamMothershipPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(teamMothershipPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(mothershipFuelProgressBar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
-                    .addComponent(shieldProgressBar, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE))
+                    .addComponent(mothershipFuelProgressBar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(shieldProgressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         teamMothershipPanelLayout.setVerticalGroup(
@@ -118,38 +118,38 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
             .addGroup(teamMothershipPanelLayout.createSequentialGroup()
                 .addComponent(mothershipFuelProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(shieldProgressBar, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
+                .addComponent(shieldProgressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Punkte"));
         jPanel1.setOpaque(false);
 
-        saveAgentsPointsNameLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        saveAgentsPointsNameLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         saveAgentsPointsNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         saveAgentsPointsNameLabel.setText("Agenten Gesichert:");
 
-        mothershipShieldPointsNameLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        mothershipShieldPointsNameLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         mothershipShieldPointsNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         mothershipShieldPointsNameLabel.setText("Verteidigung:");
 
-        mothershipShieldPointsLabel.setFont(new java.awt.Font("Dialog", 0, 12));
-        mothershipShieldPointsLabel.setText("0");
+        mothershipShieldPointsLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        mothershipShieldPointsLabel.setText("-");
 
-        resourcePointsLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        resourcePointsLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         resourcePointsLabel.setText("0");
 
-        resourcePointsNameLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        resourcePointsNameLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         resourcePointsNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         resourcePointsNameLabel.setText("Resourcen:");
 
         teamPointsNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         teamPointsNameLabel.setText("Gesamt Punktzahl:");
 
-        saveAgentsPointsLabel.setFont(new java.awt.Font("Dialog", 0, 12));
-        saveAgentsPointsLabel.setText("0");
+        saveAgentsPointsLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        saveAgentsPointsLabel.setText("-");
 
-        teamPointsLabel.setText("0");
+        teamPointsLabel.setText("-");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -191,7 +191,7 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
                 .addContainerGap(30, Short.MAX_VALUE))
         );
 
-        teamFinalStateLabel.setFont(new java.awt.Font("Dialog", 1, 30));
+        teamFinalStateLabel.setFont(new java.awt.Font("Dialog", 1, 30)); // NOI18N
         teamFinalStateLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         teamFinalStateLabel.setText("Gewinner");
 
@@ -204,7 +204,7 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
 
         teamAgentLabel2.setText("Agenten:");
 
-        teamAgentLabel.setFont(new java.awt.Font("Dialog", 1, 14));
+        teamAgentLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         teamAgentLabel.setText("0");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -212,7 +212,7 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(65, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(teamMemberLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(teamAgentLabel2))
@@ -260,7 +260,7 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(teamColorPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(teamNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
+                .addComponent(teamNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -268,7 +268,7 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(teamColorPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(teamNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 16, Short.MAX_VALUE))
+                    .addComponent(teamNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -281,14 +281,11 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(teamMothershipPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(teamFinalStateLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(teamMothershipPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(teamFinalStateLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addContainerGap())))
         );
         layout.setVerticalGroup(
@@ -302,7 +299,7 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(teamFinalStateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -350,7 +347,7 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
 			mothershipShieldPointsNameLabel.setEnabled(true);
 			tmpValue = team.getMothership().getShieldPoints();
 			for(int i=0; i<=tmpValue;i++) {
-				mothershipShieldPointsLabel.setText(Integer.toString(i));
+				mothershipShieldPointsLabel.setText(Integer.toString(i)+"P");
 				Thread.sleep(COUNT_ANIMATION);
 			}
 			mothershipShieldPointsLabel.setEnabled(false);
@@ -372,9 +369,9 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
 			Thread.sleep(BLINK_ANIMATION);
 			saveAgentsPointsLabel.setEnabled(true);
 			saveAgentsPointsNameLabel.setEnabled(true);
-			tmpValue = team.getMothership().getAgentsAtHomePosition();
+			tmpValue = team.getMothership().getAgentsAtHomePoints();
 			for(int i=0; i<=tmpValue;i++) {
-				saveAgentsPointsLabel.setText(Integer.toString(i));
+				saveAgentsPointsLabel.setText(Integer.toString(i)+"P");
 				Thread.sleep(COUNT_ANIMATION);
 			}
 			saveAgentsPointsLabel.setEnabled(false);
@@ -398,7 +395,7 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
 			teamPointsNameLabel.setEnabled(true);
 			tmpValue = team.getFinalPoints();
 			for(int i=0; i<=tmpValue;i++) {
-				teamPointsLabel.setText(Integer.toString(i));
+				teamPointsLabel.setText(Integer.toString(i)+"P");
 				Thread.sleep(COUNT_ANIMATION);
 			}
 			teamPointsLabel.setEnabled(false);
@@ -483,7 +480,7 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
 			shieldProgressBar.setValue((Integer) evt.getNewValue());
 			updateShieldProgressBar();
 		} else if(evt.getPropertyName().equals(Team.POINT_STATE_CHANGE)) {
-			resourcePointsLabel.setText(evt.getNewValue().toString());
+			resourcePointsLabel.setText(evt.getNewValue().toString()+"P");
 		}
 	}
 	

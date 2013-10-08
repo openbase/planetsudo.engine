@@ -425,7 +425,7 @@ public class Agent extends AbstractLevelObject {
 			Mothership adversaryMothership = level.getAdversaryMothership(this);
 			adversaryObject = adversaryMothership;
 			if (adversaryMothership != null) {
-				actionPoints.getActionPoint(20);
+				actionPoints.getActionPoint(30);
 				direction.turnTo(position, adversaryMothership.position);
 				adversaryMothership.attack();
 			}

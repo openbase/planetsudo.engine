@@ -272,7 +272,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 	}
 
 	public int getShieldPoints() {
-		return shield / 10;
+		return shield / 2;
 	}
 
 	public boolean isMaxDamaged() {
@@ -289,6 +289,10 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 			orderFuel(Math.max(0, BURNING_MOTHERSHIP - shield), null);
 		}
 	}
+	public int getAgentsAtHomePoints() {
+		return ((getAgentsAtHomePosition() * 100) / agentCount);
+	}
+
 
 	public int getAgentsAtHomePosition() {
 		int counter = 0;

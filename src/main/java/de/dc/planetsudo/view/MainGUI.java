@@ -26,14 +26,12 @@ import de.dc.planetsudo.main.GUIController;
 import de.dc.planetsudo.game.GameManager;
 import de.dc.planetsudo.game.GameManager.GameState;
 import de.dc.planetsudo.level.LevelView;
-import de.dc.planetsudo.net.PlanetSudoClient;
 import de.dc.planetsudo.view.configuration.CreateTeamFrame;
 import de.dc.planetsudo.view.level.LevelDisplayPanel.VideoThreadCommand;
 import de.dc.planetsudo.view.level.levelobjects.AgentPanel;
 import de.dc.planetsudo.view.loading.LevelLoadingPanel;
 import de.dc.planetsudo.view.menu.GameContext;
 import de.dc.planetsudo.view.menu.HelpFrame;
-import de.dc.planetsudo.view.menu.AINetworkTransferMenu;
 import javax.swing.JFrame;
 
 /**

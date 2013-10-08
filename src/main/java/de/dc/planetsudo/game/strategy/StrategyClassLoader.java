@@ -20,7 +20,6 @@ import org.apache.tomcat.loader.ClassRepository;
 public class StrategyClassLoader {
 
 	private static File strategyJar = CLParser.getAttribute(SetExternalStrategyJar.class).getValue();
-
 	private static AdaptiveClassLoader adaptiveClassLoader;
 
 	static {
@@ -43,15 +42,10 @@ public class StrategyClassLoader {
 	public static Class<? extends AbstractStrategy> loadStrategy(final String strategyName) throws CouldNotPerformException {
 		try {
 			Class clazz = null;
-			try {
-				clazz = adaptiveClassLoader.loadClass(AbstractStrategy.class.getPackage().getName() + "." + strategyName);
-				Logger.info(StrategyClassLoader.class, "Load successful " + AbstractStrategy.class.getPackage().getName() + "." + strategyName);
-			} catch (Exception ex) {
-				Logger.error(StrategyClassLoader.class, "Could not load " + AbstractStrategy.class.getPackage().getName() + "." + strategyName, ex);
-			}
+			clazz = adaptiveClassLoader.loadClass(AbstractStrategy.class.getPackage().getName() + "." + strategyName);
+			Logger.info(StrategyClassLoader.class, "Load successful " + AbstractStrategy.class.getPackage().getName() + "." + strategyName);
 			return (Class<AbstractStrategy>) clazz;
 		} catch (Exception ex) {
-			ex.printStackTrace();
 			throw new CouldNotPerformException("Could not load Class[" + strategyName + "]external strategy!", ex);
 		}
 	}

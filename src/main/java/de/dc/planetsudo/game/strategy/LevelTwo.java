@@ -12,12 +12,12 @@ import de.dc.planetsudo.level.levelobjects.Resource;
  *
  * @author divine
  */
-public class Text_LevelTwo extends AbstractStrategy {
+public class LevelTwo extends AbstractStrategy {
 
-	public Text_LevelTwo() {
+	public LevelTwo() {
 	}
 	
-	public Text_LevelTwo(Agent a) {
+	public LevelTwo(Agent a) {
 		super(a);
 	}
 

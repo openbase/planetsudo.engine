@@ -45,6 +45,7 @@ public class CreateTeamFrame extends javax.swing.JFrame {
 				java.util.logging.Logger.getLogger(CreateTeamFrame.class.getName()).log(Level.SEVERE, null, ex);
 			}
 		} else {
+			instance.reset();
 			instance.setVisible(true);
 		}
 	}
@@ -66,16 +67,7 @@ public class CreateTeamFrame extends javax.swing.JFrame {
 		strategyTextField.setForeground(Color.BLACK);
 		createButton.setForeground(Color.BLACK);
 
-//		try {
-//			id = Integer.parseInt(idTextField.getText());
-//		} catch (NumberFormatException ex) {
-//			idTextField.setForeground(Color.RED);
-//			Logger.error(this, "Could not parse team id!");
-//			return;
-//		}
 		name = nameTextField.getText();
-
-
 
 		if (!colorChooserButton.getText().equals("")) {
 			colorChooserButton.setForeground(Color.RED);
@@ -99,7 +91,7 @@ public class CreateTeamFrame extends javax.swing.JFrame {
 			strategy = StrategyClassLoader.loadStrategy(strategyTextField.getText());
 		} catch (Exception ex) {
 			strategyTextField.setForeground(Color.RED);
-			Logger.error(this, "Could not load strategy!", ex);
+			Logger.warn(this, "Could not load strategy!", ex);
 			return;
 		}
 		members.add(member1TextField.getText());
@@ -254,16 +246,6 @@ public class CreateTeamFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_nameTextFieldActionPerformed
 
-	/**
-	 * @param args the command line arguments
-	 */
-	public static void main(String args[]) {
-		java.awt.EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				new CreateTeamFrame().setVisible(true);
-			}
-		});
-	}
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton colorChooserButton;
     private javax.swing.JButton createButton;

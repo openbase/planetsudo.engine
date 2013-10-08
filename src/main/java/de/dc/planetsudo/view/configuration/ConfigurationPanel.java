@@ -49,7 +49,6 @@ public class ConfigurationPanel extends javax.swing.JPanel {
 			Logger.warn(this, "Could not display image");
 		}
 
-
 		PlanetSudoClient.getInstance().addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(final PropertyChangeEvent evt) {
