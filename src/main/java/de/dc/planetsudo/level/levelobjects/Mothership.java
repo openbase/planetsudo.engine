@@ -17,6 +17,7 @@ import java.util.Map;
 import javax.swing.Timer;
 import de.dc.util.logging.Logger;
 import de.dc.planetsudo.game.GameManager;
+import de.dc.planetsudo.game.GameSound;
 import de.dc.planetsudo.game.Team;
 import de.dc.planetsudo.level.AbstractLevel;
 import de.dc.planetsudo.main.GUIController;
@@ -247,6 +248,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 			if (shield <= BURNING_MOTHERSHIP) {
 				if (!timer.isRunning()) {
 					timer.start();
+					GameSound.MothershipExplosion.play();
 				}
 			}
 			changes.firePropertyChange(SHIELD_STATE_CHANGE, null, shield);

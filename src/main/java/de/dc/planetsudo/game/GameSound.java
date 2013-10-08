@@ -4,6 +4,7 @@
  */
 package de.dc.planetsudo.game;
 
+import de.dc.util.sound.AudioServer;
 import de.dc.util.sound.FileHolder;
 import java.io.File;
 
@@ -14,7 +15,6 @@ import java.io.File;
 public enum GameSound implements FileHolder {
 
 	/*
-	 Minenexplosion
 	 * - Agent explodier
 	 * - Muttaschiff explodiert
 	 * - Laser
@@ -42,6 +42,10 @@ public enum GameSound implements FileHolder {
 
 	private GameSound(String uri) {
 		this.soundFile = new File(ClassLoader.getSystemResource(uri).getFile());
+	}
+
+	public void play() {
+		AudioServer.playClip(SpendFuel);
 	}
 }
 

@@ -18,7 +18,6 @@ import de.dc.planetsudo.game.Team;
 import de.dc.planetsudo.game.strategy.AbstractStrategy;
 import de.dc.planetsudo.level.levelobjects.Resource.ResourceType;
 import de.dc.util.exceptions.CouldNotPerformException;
-import de.dc.util.sound.AudioServer;
 import de.dc.util.view.engine.draw2d.AbstractResourcePanel.ObjectType;
 
 /**
@@ -132,7 +131,7 @@ public class Agent extends AbstractLevelObject {
 			Resource newMine = new Resource(level.generateNewResourceID(), level, this);
 			level.addResource(newMine);
 			hasMine = false;
-			AudioServer.playClip(GameSound.DeployMine);
+			GameSound.DeployMine.play();
 		}
 	}
 
@@ -198,6 +197,7 @@ public class Agent extends AbstractLevelObject {
 		if (needSupport) {
 			mothership.cancelSupport(this);
 		}
+		GameSound.AgentExplosion.play();
 	}
 
 	public boolean isAlive() {
@@ -309,6 +309,7 @@ public class Agent extends AbstractLevelObject {
 			fuel += mothership.orderFuel(1, this);
 			actionPoints.getActionPoint(2);
 		}
+		GameSound.RechargeFuel.play();
 	}
 
 	public boolean seeResource() {
@@ -331,6 +332,7 @@ public class Agent extends AbstractLevelObject {
 		try {
 			if (isCarringResource() && useFuel()) {
 				mothership.passResource(this);
+				GameSound.DeliverResource.play();
 			}
 		} catch (NotValidException ex) {
 			Logger.warn(this, "Could not deliver resource to Mothership!", ex);
@@ -415,6 +417,7 @@ public class Agent extends AbstractLevelObject {
 					catchedfuel = (adversaryAgent.useFuel((Mothership.AGENT_FUEL_VOLUME / 500) * 2) / 2);
 					fuel = Math.min(fuelVolume, fuel + catchedfuel);
 				}
+				GameSound.Laser.play();
 			}
 		}
 	}
@@ -457,8 +460,8 @@ public class Agent extends AbstractLevelObject {
 				direction.turnTo(position, teamAgent.position);
 				actionPoints.getActionPoint(value * 2);
 				teamAgent.fuel += useFuel(value);
-
 			}
+			GameSound.SpendFuel.play();
 		}
 		isHelping = false;
 	}
@@ -487,6 +490,7 @@ public class Agent extends AbstractLevelObject {
 	public void orderSupport() {
 		if(!needSupport) {
 			mothership.callForSupport(this);
+			GameSound.CallForSupport.play();
 		}
 	}
 
@@ -515,6 +519,7 @@ public class Agent extends AbstractLevelObject {
 
 	public void placeMarker() {
 		mothership.placeMarker(position.clone());
+		GameSound.DeployMarker.play();
 	}
 
 	public void goToMarker() {
