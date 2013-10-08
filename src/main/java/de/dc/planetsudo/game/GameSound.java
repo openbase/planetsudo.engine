@@ -14,6 +14,8 @@ import java.io.File;
 public enum GameSound implements FileHolder {
 
 	DeployMine("sound/sound.wav"),
+	AgentExplosion(""),
+	MothershipExplosion(""),
 	Laser("sound/sound.wav");
 
 	private final File soundFile;
