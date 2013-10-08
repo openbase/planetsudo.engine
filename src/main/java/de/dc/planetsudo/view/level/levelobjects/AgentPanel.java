@@ -58,18 +58,18 @@ public class AgentPanel extends AbstractLevelObjectPanel<Agent, MothershipPanel>
 	public static final Polygon TEAM_COLOR_POLYGON = new Polygon();
 	
 	static {
-		TEAM_COLOR_POLYGON.addPoint(relative(8), relative(36));
-		TEAM_COLOR_POLYGON.addPoint(relative(16), relative(38));
-		TEAM_COLOR_POLYGON.addPoint(relative(20), relative(44));
-		TEAM_COLOR_POLYGON.addPoint(relative(78), relative(44));
-		TEAM_COLOR_POLYGON.addPoint(relative(82), relative(38));
-		TEAM_COLOR_POLYGON.addPoint(relative(90), relative(36));
-		TEAM_COLOR_POLYGON.addPoint(relative(90), relative(66));
-		TEAM_COLOR_POLYGON.addPoint(relative(76), relative(82));
-		TEAM_COLOR_POLYGON.addPoint(relative(50), relative(70));
-		TEAM_COLOR_POLYGON.addPoint(relative(48), relative(70));
-		TEAM_COLOR_POLYGON.addPoint(relative(22), relative(82));
-		TEAM_COLOR_POLYGON.addPoint(relative(8), relative(66));
+		TEAM_COLOR_POLYGON.addPoint(relative(7), relative(36));
+		TEAM_COLOR_POLYGON.addPoint(relative(17), relative(36));
+		TEAM_COLOR_POLYGON.addPoint(relative(19), relative(50));
+		TEAM_COLOR_POLYGON.addPoint(relative(50), relative(12));
+		TEAM_COLOR_POLYGON.addPoint(relative(80), relative(50));
+		TEAM_COLOR_POLYGON.addPoint(relative(82), relative(36));
+		TEAM_COLOR_POLYGON.addPoint(relative(92), relative(36));
+		TEAM_COLOR_POLYGON.addPoint(relative(92), relative(82));
+		TEAM_COLOR_POLYGON.addPoint(relative(83), relative(92));
+		TEAM_COLOR_POLYGON.addPoint(relative(50), relative(71));
+		TEAM_COLOR_POLYGON.addPoint(relative(16), relative(91));
+		TEAM_COLOR_POLYGON.addPoint(relative(7), relative(82));
 	}
 	
 	private static int relative(double per) {
