@@ -13,9 +13,20 @@ import java.io.File;
  */
 public enum GameSound implements FileHolder {
 
+	/*
+	 Minenexplosion
+	 * Agent explodier
+	 * Muttaschiff explodiert
+	 * Laser
+	 * Mine Legen
+	 * Marker setzen
+	 * Hilferuf
+	 * (tanken)
+	 * Unterstützen
+	 * Resource abliefern	 */
 	DeployMine("sound/sound.wav"),
-	AgentExplosion(""),
-	MothershipExplosion(""),
+	AgentExplosion("sound/sound.wav"),
+	MothershipExplosion("sound/sound.wav"),
 	Laser("sound/sound.wav");
 
 	private final File soundFile;
