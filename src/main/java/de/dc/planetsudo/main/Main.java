@@ -8,8 +8,12 @@ import de.dc.util.logging.Logger;
 import de.unibi.agai.clparser.CLParser;
 import de.unibi.agai.clparser.command.DebugModeFlag;
 import de.dc.planetsudo.game.GameManager;
+import de.dc.planetsudo.main.command.SetExternalStrategyJar;
 import de.dc.planetsudo.main.command.SetLevelPathCommand;
+import de.dc.planetsudo.main.command.SetServer;
+import de.dc.planetsudo.main.command.SetServerPort;
 import de.dc.planetsudo.main.command.SetStrategyPathCommand;
+import de.dc.planetsudo.main.command.SetStrategySourceDirectory;
 import de.dc.planetsudo.main.command.SetTeamPathCommand;
 import de.dc.util.view.Set2dDebug;
 import de.unibi.agai.clparser.command.SetPrefix;
@@ -26,12 +30,12 @@ public class Main {
 
 	public Main() {
 		Logger.info(this, "Install strategy...");
-		String command = "InstallStrategy.bat";
-		try {
-			Process child = Runtime.getRuntime().exec(command);
-		} catch (Exception ex) {
-			Logger.warn(this, "Could not sync strategy!");
-		}
+//		String command = "InstallStrategy.bat";
+//		try {
+//			Process child = Runtime.getRuntime().exec(command);
+//		} catch (Exception ex) {
+//			Logger.warn(this, "Could not sync strategy!");
+//		}
 		Logger.info(this, "Starting Game...");
 		new GameManager();
 		this.guiController = new GUIController();
@@ -49,6 +53,10 @@ public class Main {
 		CLParser.registerCommand(DebugModeFlag.class);
 		CLParser.registerCommand(Set2dDebug.class);
 		CLParser.registerCommand(SetLevelPathCommand.class);
+		CLParser.registerCommand(SetServer.class);
+		CLParser.registerCommand(SetServerPort.class);
+		CLParser.registerCommand(SetStrategySourceDirectory.class);
+		CLParser.registerCommand(SetExternalStrategyJar.class);
 
 		Logger.setDebugMode(DEBUG);
 		CLParser.analyseAndExitOnError(args);

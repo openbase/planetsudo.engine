@@ -28,6 +28,7 @@ import de.dc.util.view.engine.draw2d.AbstractResourcePanel.ObjectType;
 public class Agent extends AbstractLevelObject {
 
 	public final static int DEFAULT_START_FUEL = 2000;
+//	public final static int DEFAULT_START_FUEL = 100;
 	public final static int AGENT_SIZE = 50;
 	public final static int AGENT_VIEW_DISTANCE = AGENT_SIZE;
 	public final static int DEFAULT_AGENT_SPEED = 6;
@@ -345,11 +346,10 @@ public class Agent extends AbstractLevelObject {
 			return Resource.ResourceType.Unknown;
 		}
 
-		if (tmpResource.wasPlacedByTeam() == getTeam()) {
-			return tmpResource.getType();
-		} else {
+		if(tmpResource.getType() == ResourceType.Mine && tmpResource.wasPlacedByTeam() != getTeam()) {
 			return ResourceType.ExtremPoint;
 		}
+		return tmpResource.getType();
 	}
 
 	public boolean touchResource() {

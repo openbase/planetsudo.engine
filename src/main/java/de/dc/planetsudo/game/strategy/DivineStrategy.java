@@ -12,12 +12,12 @@ import de.dc.planetsudo.level.levelobjects.Resource;
  *
  * @author divine
  */
-public class MarianStrategy extends AbstractStrategy {
+public class DivineStrategy extends AbstractStrategy {
 
-	public MarianStrategy() {
+	public DivineStrategy() {
 	}
 	
-	public MarianStrategy(Agent a) {
+	public DivineStrategy(Agent a) {
 		super(a);
 	}
 

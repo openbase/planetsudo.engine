@@ -30,7 +30,7 @@ public class Resource extends AbstractLevelObject {
 	};
 	private ResourceType type;
 	private Agent owner;
-	private final List<Integer> conquerors;
+	private final List<String> conquerors;
 	private final Object RESOURCE_LOCK = new Object();
 	private boolean used;
 	private ResourcePlacement placement;
@@ -45,7 +45,7 @@ public class Resource extends AbstractLevelObject {
 		this.type = type;
 		this.owner = null;
 		this.used = false;
-		this.conquerors = new ArrayList<Integer>();
+		this.conquerors = new ArrayList<String>();
 		Logger.info(this, "Create " + this);
 	}
 
@@ -74,10 +74,10 @@ public class Resource extends AbstractLevelObject {
 			return false;
 		}
 		synchronized (RESOURCE_LOCK) {
-			if (conquerors.contains(team.getId())) {
+			if (conquerors.contains(team.getName())) {
 				return false;
 			}
-			conquerors.add(team.getId());
+			conquerors.add(team.getName());
 			return true;
 		}
 	}

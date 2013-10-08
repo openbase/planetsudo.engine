@@ -9,6 +9,8 @@ import java.beans.PropertyChangeEvent;
 import de.dc.util.logging.Logger;
 import de.dc.planetsudo.level.AbstractLevel;
 import de.dc.planetsudo.main.GUIController;
+import de.dc.util.exceptions.ConstructionException;
+import java.util.logging.Level;
 
 /**
  *
@@ -36,7 +38,6 @@ public class GameManager implements Runnable {
 		this.pause = false;
 		this.gameOver = true;
 		this.gameState = GameState.Configuration;
-		new LevelReciver();
 	}
 
 	public void setupTestGame() {
@@ -73,26 +74,35 @@ public class GameManager implements Runnable {
 		teamB = null;
 	}
 
-	public boolean addTeam(Team team, TeamType type) {
-		if(gameState != GameState.Configuration) {
-			Logger.warn(this, "Could not add team in "+gameState.name()+" State.");
+	public boolean addTeam(TeamData teamData, TeamType type) {
+		try {
+			if(teamData == null) {
+				Logger.warn(this, "Ignore invalid team.");
+				return false;
+			}
+
+			if(gameState != GameState.Configuration) {
+				Logger.warn(this, "Could not add team in "+gameState.name()+" State.");
+				return false;
+			}
+			Logger.info(this, "Add team "+teamData+".");
+		
+			switch(type) {
+				case A:
+					teamA = new Team(teamData);
+					break;
+				case B:
+					teamB = new Team(teamData);
+					break;
+				default:
+					Logger.warn(this, "Unknown team type!");
+					return false;
+			}
+
+		} catch (Exception ex) {
+			Logger.warn(this, "Could not add team!", ex);
 			return false;
 		}
-		Logger.info(this, "Add team "+team+".");
-		switch(type) {
-			case A:
-				teamA = team;
-				break;
-			case B:
-				teamB = team;
-				break;
-			default:
-				Logger.warn(this, "Unknown team type!");
-				return false;
-		}
-		
-
-
 		return true;
 	}
 

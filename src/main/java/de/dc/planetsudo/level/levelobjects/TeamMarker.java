@@ -30,9 +30,9 @@ public class TeamMarker extends AbstractLevelObject {
 	public void place(final Point2D position) {
 		synchronized (MARKER_LOCK) {
 			this.position = position;
+			levelView.updateObjectMovement();
 			placed = true;
 		}
-		levelView.updateObjectMovement();
 	}
 
 	public void clear() {

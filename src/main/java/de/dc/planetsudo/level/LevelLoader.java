@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package de.dc.planetsudo.level;
 
 import java.util.Set;
@@ -14,33 +13,32 @@ import de.dc.util.logging.Logger;
  * @author divine
  */
 public class LevelLoader {
+
 	private static LevelLoader instance;
 	private TreeMap<String, Class<? extends AbstractLevel>> levelMap;
 
 	static {
-
 		//LevelLoader.class.
 	}
-
-	private final static String[] levelClasses = {	"SimpleWorld",
-													"AgentK",
-													"CircleOfLife",
-													"LuckyLoop",
-													"MarioWorld",
-													"QuadratischPraktischBoese",
-													"QuadratischPraktischGut",
-													"SimpleFight", 
-													"SimpleWorld",
-													"UTurn",
-													"WakaWaka",
-													"Revolution",
-													"FrauenWG",
-													"Engpass",
-													"JD",
-													"Arena",
-													"Kreuzung",
-													"Entropie"
-												};
+	private final static String[] levelClasses = {"SimpleWorld",
+		"AgentK",
+		"CircleOfLife",
+		"LuckyLoop",
+		"MarioWorld",
+		"QuadratischPraktischBoese",
+		"QuadratischPraktischGut",
+		"SimpleFight",
+		"SimpleWorld",
+		"UTurn",
+		"WakaWaka",
+		"Revolution",
+		"FrauenWG",
+		"Engpass",
+		"JD",
+		"Arena",
+		"Kreuzung",
+		"Entropie"
+	};
 
 	public LevelLoader() {
 		instance = this;
@@ -61,15 +59,15 @@ public class LevelLoader {
 //			Logger.error(this, "Level folder is empty!!");
 //			return;
 //		}
-		
-		for(String levelClassName : levelClasses) {
-			Logger.info(this, "Load Level: "+levelClassName);
+
+		for (String levelClassName : levelClasses) {
+			Logger.info(this, "Load Level: " + levelClassName);
 			try {
-				levelMap.put(levelClassName, (Class<? extends AbstractLevel>) getClass().getClassLoader().loadClass(getClass().getPackage().getName()+".save."+levelClassName));
+				levelMap.put(levelClassName, (Class<? extends AbstractLevel>) getClass().getClassLoader().loadClass(getClass().getPackage().getName() + ".save." + levelClassName));
 			} catch (ClassNotFoundException ex) {
-				Logger.error(this, "Could not find level "+levelClassName+"!");
+				Logger.error(this, "Could not find level " + levelClassName + "!");
 			}
-			Logger.debug(this, levelMap.size()+" Level loaded.");
+			Logger.debug(this, levelMap.size() + " Level loaded.");
 		}
 	}
 
@@ -87,13 +85,9 @@ public class LevelLoader {
 	}
 
 	public static synchronized LevelLoader getInstance() {
-		if(instance == null) {
+		if (instance == null) {
 			new LevelLoader();
 		}
 		return instance;
 	}
-
-
-
-
 }
