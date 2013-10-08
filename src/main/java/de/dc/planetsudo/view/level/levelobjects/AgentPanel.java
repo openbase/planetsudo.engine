@@ -147,7 +147,7 @@ public class AgentPanel extends AbstractLevelObjectPanel<Agent, MothershipPanel>
 		gl.setColor(Color.GREEN);
 		gl.fillRect((int) (x - FUEL_BAR_STATIC_WIDTH / 2),
 				(int) (y - FUEL_BAR_STATIC_POSITION_Y),
-				(int) (FUEL_BAR_STATIC_WIDTH / Agent.DEFAULT_START_FUEL * resource.getFuel()),
+				(int) (FUEL_BAR_STATIC_WIDTH / resource.getFuelVolume() * resource.getFuel()),
 				(int) FUEL_BAR_STATIC_HEIGHT);
 
 

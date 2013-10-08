@@ -72,7 +72,7 @@ public class MarcosStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-				agent.spendFuelTeamAgent(Agent.DEFAULT_START_FUEL/4);
+				agent.spendFuelTeamAgent(agent.getFuelVolume()/10);
 			}
 		});
 
@@ -112,7 +112,7 @@ public class MarcosStrategy extends AbstractStrategy {
 		createRule(new Rule(80, "Leerer Tank - Zurück gehen") {
 			@ Override
 			protected boolean constraint() {
-				return agent.getFuel() <= Agent.DEFAULT_START_FUEL/3 && agent.getMothership().hasFuel();
+				return agent.getFuel() <= agent.getFuelVolume()/5 && agent.getMothership().hasFuel();
 			}
 			@ Override
 			protected void action() {
@@ -123,7 +123,7 @@ public class MarcosStrategy extends AbstractStrategy {
 		createRule(new Rule(90, "Tanken") {
 			@ Override
 			protected boolean constraint() {
-				return agent.isAtMothership() && agent.getFuel() <= Agent.DEFAULT_START_FUEL/3 && agent.getMothership().hasFuel();
+				return agent.isAtMothership() && agent.getFuel() <= agent.getFuelVolume()/5 && agent.getMothership().hasFuel();
 			}
 			@ Override
 			protected void action() {

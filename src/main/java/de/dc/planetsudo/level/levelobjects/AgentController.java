@@ -379,4 +379,8 @@ public class AgentController {
 	public boolean seeMarker() {
 		return agent.seeMarker();
 	}
+
+	public int getFuelVolume() {
+		return agent.getFuelVolume();
+	}
 }

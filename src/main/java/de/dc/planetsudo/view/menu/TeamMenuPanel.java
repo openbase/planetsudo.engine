@@ -36,7 +36,7 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
     public TeamMenuPanel() {
         this.initComponents();
 		this.mothershipFuelProgressBar.setMinimum(0);
-		this.mothershipFuelProgressBar.setMaximum(Mothership.DEFAULT_START_FUEL);
+		this.mothershipFuelProgressBar.setMaximum(Mothership.MOTHERSHIP_FUEL_VOLUME);
 		this.timer = new Timer(300, this);
 		
     }

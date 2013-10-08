@@ -27,11 +27,13 @@ import de.dc.util.view.engine.draw2d.AbstractResourcePanel.ObjectType;
  */
 public class Agent extends AbstractLevelObject {
 
-	public final static int DEFAULT_START_FUEL = 2000;
-//	public final static int DEFAULT_START_FUEL = 100;
+//	public final static int DEFAULT_START_FUEL = 2000;
+	//public final static int DEFAULT_START_FUEL = 1000;
 	public final static int AGENT_SIZE = 50;
 	public final static int AGENT_VIEW_DISTANCE = AGENT_SIZE;
 	public final static int DEFAULT_AGENT_SPEED = 6;
+
+	private final int fuelVolume;
 	protected final Mothership mothership;
 	private final ActionPoints actionPoints;
 	protected Direction2D direction;
@@ -45,10 +47,11 @@ public class Agent extends AbstractLevelObject {
 	private String lastAction;
 	private AbstractLevelObject adversaryObject;
 
-	public Agent(String name, boolean commanderFlag, Mothership mothership) {
+	public Agent(final String name, final boolean commanderFlag, final int fuelVolume, final Mothership mothership) {
 		super(mothership.registerAgent(), name, ObjectType.Dynamic, mothership.getLevel(), mothership.getAgentHomePosition(), AGENT_SIZE, AGENT_SIZE, ObjectShape.Oval);
 		Logger.info(this, "Create " + this);
 		this.lastAction = "Init";
+		this.fuelVolume = fuelVolume;
 		this.commanderFlag = commanderFlag;
 		this.mothership = mothership;
 		this.actionPoints = new ActionPoints(this);
@@ -59,6 +62,10 @@ public class Agent extends AbstractLevelObject {
 			return;
 		}
 		reset();
+	}
+
+	public int getFuelVolume() {
+		return fuelVolume;
 	}
 
 	public Direction2D getDirection() {
@@ -74,16 +81,12 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	protected void spendFuel(int value) {
-		if (value + fuel > DEFAULT_START_FUEL) {
-			fuel = DEFAULT_START_FUEL;
-		} else {
-			fuel += value;
-		}
+		fuel = Math.min(fuelVolume, fuel +value);
 	}
 
 	@ Override
 	protected void reset() {
-		fuel = DEFAULT_START_FUEL;
+		fuel = fuelVolume;
 		position = mothership.getAgentHomePosition();
 		hasMine = true;
 		try {
@@ -108,7 +111,7 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	public int getFuelInPercent() {
-		return (fuel * 100) / Agent.DEFAULT_START_FUEL;
+		return (fuel * 100) / fuelVolume;
 	}
 
 	public Team getTeam() {
@@ -303,7 +306,7 @@ public class Agent extends AbstractLevelObject {
 			return;
 		}
 
-		for (int toOrder = ((DEFAULT_START_FUEL * percent) / 100) - fuel; toOrder > 0; toOrder--) {
+		for (int toOrder = ((fuelVolume * percent) / 100) - fuel; toOrder > 0; toOrder--) {
 			fuel += mothership.orderFuel(1, this);
 			actionPoints.getActionPoint(2);
 		}
@@ -410,10 +413,8 @@ public class Agent extends AbstractLevelObject {
 				actionPoints.getActionPoint(20);
 				direction.turnTo(position, adversaryAgent.position);
 				if (adversaryAgent.hasFuel()) {
-					catchedfuel = (adversaryAgent.useFuel((DEFAULT_START_FUEL / 100) * 2) / 2);
-					if (fuel + catchedfuel <= DEFAULT_START_FUEL) {
-						fuel += catchedfuel;
-					}
+					catchedfuel = (adversaryAgent.useFuel((Mothership.AGENT_FUEL_VOLUME / 500) * 2) / 2);
+					fuel = Math.min(fuelVolume, fuel + catchedfuel);
 				}
 			}
 		}

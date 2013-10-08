@@ -33,14 +33,15 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 
 	public final static String FUEL_STATE_CHANGE = "FuelStateChange";
 	public final static String SHIELD_STATE_CHANGE = "ShieldStateChange";
-	public final static int DEFAULT_START_FUEL = 15000;
+	public final static int MOTHERSHIP_FUEL_VOLUME = 15000;
+	public final static int AGENT_FUEL_VOLUME = 10000;
 	public final static int MAX_AGENT_COUNT = 10; // range 0-9999
 	public final static int BURNING_MOTHERSHIP = 50;
 	public final Object AGENTLOCK = new Object();
 	public final Object SUPPORT_CHANNEL_LOCK = new Object();
 	private final Team team;
 	private int fuel;
-	private int agentMaxCount;
+	private int stradegyAgentCount;
 	private int shield;
 	private final Timer timer;
 	private final Map<Integer, Agent> agents;
@@ -62,7 +63,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 	@ Override
 	public final void reset() {
 		GUIController.setEvent(new PropertyChangeEvent(this, GUIController.LOADING_STATE_CHANGE, 1, "Lade " + team.getName() + " Mutterschiff"));
-		fuel = DEFAULT_START_FUEL;
+		fuel = MOTHERSHIP_FUEL_VOLUME;
 
 		final List<Agent> tmpCollection = new LinkedList<Agent>();
 		synchronized (AGENTLOCK) {
@@ -71,18 +72,19 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 		for (Agent agent : tmpCollection) {
 			agent.kill();
 		}
-		agentMaxCount = team.getAgentCount();
+		stradegyAgentCount = team.getAgentCount();
 		loadAgents();
 		this.shield = 100;
 	}
 
 	private void loadAgents() {
-		GUIController.setEvent(new PropertyChangeEvent(this, GUIController.LOADING_STATE_CHANGE, agentMaxCount, "Lade " + team.getName() + " Agent"));
+		GUIController.setEvent(new PropertyChangeEvent(this, GUIController.LOADING_STATE_CHANGE, stradegyAgentCount, "Lade " + team.getName() + " Agent"));
 		Agent agent;
+		final int agendFuelVolume = (AGENT_FUEL_VOLUME/stradegyAgentCount);
 		boolean commanderFlag = true;
-		for (int i = 0; i < agentMaxCount; i++) {
+		for (int i = 0; i < stradegyAgentCount; i++) {
 			GUIController.setEvent(new PropertyChangeEvent(this, GUIController.LOADING_STEP, null, i));
-			agent = new Agent(team.getName() + "Agent", commanderFlag, this);
+			agent = new Agent(team.getName() + "Agent", commanderFlag, agendFuelVolume, this);
 			Agent replacedAgent;
 			synchronized (AGENTLOCK) {
 				replacedAgent = agents.put(agent.getId(), agent);
@@ -133,8 +135,8 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 	}
 
 	protected void spendFuel(final int value) {
-		if (value + fuel > DEFAULT_START_FUEL) {
-			fuel = DEFAULT_START_FUEL;
+		if (value + fuel > MOTHERSHIP_FUEL_VOLUME) {
+			fuel = MOTHERSHIP_FUEL_VOLUME;
 		} else {
 			fuel += value;
 		}
@@ -191,7 +193,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 					break;
 				}
 			}
-			if (i >= agentMaxCount || i > 9999) {
+			if (i >= stradegyAgentCount || i > 9999) {
 				Logger.error(this, "Already to many agents alive.");
 				return -1;
 			}

@@ -162,10 +162,10 @@ public class Resource extends AbstractLevelObject {
 					case ExtremPoint:
 						return 5;
 					case ExtraAgentFuel:
-						agent.spendFuel(Agent.DEFAULT_START_FUEL / 2);
+						agent.spendFuel(Mothership.AGENT_FUEL_VOLUME / 10);
 						return 0;
 					case ExtraMothershipFuel:
-						agent.getMothership().spendFuel(Mothership.DEFAULT_START_FUEL / 5);
+						agent.getMothership().spendFuel(Mothership.MOTHERSHIP_FUEL_VOLUME / 5);
 						return 0;
 					case Mine:
 						agent.kill();
