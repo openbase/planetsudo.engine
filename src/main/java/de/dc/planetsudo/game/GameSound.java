@@ -4,16 +4,17 @@
  */
 package de.dc.planetsudo.game;
 
+import de.dc.util.exceptions.CouldNotPerformException;
 import de.dc.util.logging.Logger;
+import de.dc.util.sound.AudioData;
 import de.dc.util.sound.AudioServer;
-import de.dc.util.sound.FileHolder;
 import java.io.File;
 
 /**
  *
  * @author Divine <DivineThreepwood@gmail.com>
  */
-public enum GameSound implements FileHolder {
+public enum GameSound {
 
 	/*
 	 * - Agent explodier
@@ -36,27 +37,29 @@ public enum GameSound implements FileHolder {
 	DeliverResource("sound/deliver_resource.wav"),
 	Laser("sound/lasershot.wav"),
 	AgentDisabled("sound/agent_empty_fuel.wav");
-	private File soundFile;
-	private boolean disabled;
-	@Override
-	public File getFile() {
-		return soundFile;
-	}
+
+	private final AudioData audioData;
+	private final boolean disabled;
+
+	private static final AudioServer AUDIO_SERVER = AudioServer.getInstance();
 
 	private GameSound(final String uri) {
+		AudioData tmpData = null;
 		try {
-			this.soundFile = new File(ClassLoader.getSystemResource(uri).getFile());
-			disabled = false;
+			tmpData = new AudioData(new File(ClassLoader.getSystemResource(uri).getFile()));
 		} catch (Exception ex) {
 			Logger.warn(this, "Could not load Soundfile["+uri+"] of "+name() ,ex);
-			disabled = true;
 		}
+		this.audioData = tmpData;
+		this.disabled = (audioData == null);
 	}
+
+
 
 	public void play() {
 		if(disabled) {
 			return;
 		}
-		AudioServer.playClip(this);
+		AUDIO_SERVER.playAudio(audioData);
 	}
 }

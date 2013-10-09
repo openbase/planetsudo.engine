@@ -28,6 +28,7 @@ import de.dc.util.exceptions.CouldNotPerformException;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
+import static javax.swing.JComponent.TOOL_TIP_TEXT_KEY;
 import javax.swing.SwingWorker;
 
 /**
@@ -36,7 +37,7 @@ import javax.swing.SwingWorker;
  */
 public class ConfigurationPanel extends javax.swing.JPanel {
 
-	private Team defaultTeam;
+//	private Team defaultTeam;
 
 	/**
 	 * Creates new form ConfigurationPanel
@@ -454,12 +455,22 @@ public class ConfigurationPanel extends javax.swing.JPanel {
 	private void defaultTeamComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_defaultTeamComboBoxActionPerformed
 	}//GEN-LAST:event_defaultTeamComboBoxActionPerformed
 
-	private void setDefaultTeam(TeamData defaultTeamData) {
+	private void setDefaultTeam(final TeamData defaultTeamData) {
 		setdefaultTeamButton.setForeground(Color.BLACK);
 		setdefaultTeamButton.setEnabled(false);
 		defaultTeamComboBox.setEnabled(false);
 		syncButton.setEnabled(true);
-		defaultTeamComboBox.setSelectedItem(defaultTeamData);
+		try {
+			for(int i =0; i<defaultTeamComboBox.getModel().getSize(); i++) {
+				if(((TeamData) defaultTeamComboBox.getModel().getElementAt(i)).getName().equals(defaultTeamData.getName())) {
+					defaultTeamComboBox.setSelectedItem(defaultTeamComboBox.getModel().getElementAt(i));
+					break;
+				}
+			}
+		} catch (Exception ex) {
+			Logger.warn(this, "Could not resolve default Team!", ex);
+		}
+		
 	}
 
 	private void setdefaultTeamButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setdefaultTeamButtonActionPerformed

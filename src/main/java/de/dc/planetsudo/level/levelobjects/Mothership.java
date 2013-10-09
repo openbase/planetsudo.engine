@@ -48,6 +48,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 	private final Map<Integer, Agent> agents;
 	private final List<Agent> supportChannel;
 	private final TeamMarker teamMarker;
+	private int mineCounter;
 
 	public Mothership(final int id, final Team team, final AbstractLevel level) {
 		super(id, team.getName() + Mothership.class.getSimpleName(), AbstractResourcePanel.ObjectType.Static, level, level.getMothershipBase(id).getPoint(), 100, 100, ObjectShape.Rec);
@@ -59,12 +60,14 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 		this.teamMarker = new TeamMarker(team, level);
 		this.reset();
 		this.timer = new Timer(50, this);
+		this.mineCounter = 0;
 	}
 
 	@ Override
 	public final void reset() {
 		GUIController.setEvent(new PropertyChangeEvent(this, GUIController.LOADING_STATE_CHANGE, 1, "Lade " + team.getName() + " Mutterschiff"));
 		fuel = MOTHERSHIP_FUEL_VOLUME;
+		mineCounter = level.getMineCounter();
 
 		final List<Agent> tmpCollection = new LinkedList<Agent>();
 		synchronized (AGENTLOCK) {
@@ -76,6 +79,14 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 		stradegyAgentCount = team.getAgentCount();
 		loadAgents();
 		this.shield = 100;
+	}
+
+	public synchronized boolean orderMine() {
+		if (mineCounter > 0) {
+			mineCounter--;
+			return true;
+		}
+		return false;
 	}
 
 	private void loadAgents() {
@@ -286,7 +297,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 	}
 
 	@Override
-	public void actionPerformed(final ActionEvent e) {
+		public void actionPerformed(final ActionEvent e) {
 		if (!GameManager.getInstance().isPause()) {
 			orderFuel(Math.max(0, BURNING_MOTHERSHIP - shield), null);
 		}

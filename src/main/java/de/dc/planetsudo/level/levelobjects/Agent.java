@@ -87,7 +87,7 @@ public class Agent extends AbstractLevelObject {
 	protected void reset() {
 		fuel = fuelVolume;
 		position = mothership.getAgentHomePosition();
-		hasMine = true;
+		hasMine = mothership.orderMine();
 		try {
 			direction = new Direction2D(RandomGenerator.getRandom(1, 360));
 		} catch (NotValidException ex) {

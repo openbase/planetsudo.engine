@@ -46,9 +46,11 @@ public abstract class AbstractLevel extends AbstractGameObject implements Runnab
 	private final long gameSpeed;
 	private final int x, y;
 	private int resourceKeyCounter;
+	private final Team[] teams;
 
 	public AbstractLevel() {
 		this.gameManager = GameManager.getInstance();
+		this.teams = new Team[2];
 		this.changes = new PropertyChangeSupport(this);
 		this.name = getClass().getSimpleName();
 		this.levelBorderPolygon = loadLevelBorderPolygon();
@@ -89,7 +91,16 @@ public abstract class AbstractLevel extends AbstractGameObject implements Runnab
 		Logger.info(this, "Level Ends.");
 	}
 
+	private int mineCounter = 0;
+
 	public synchronized void reset() {
+
+		if(teams[0] != null && teams[1] != null) {
+			mineCounter = (Math.min(teams[0].getAgentCount(), teams[1].getAgentCount()) -1);
+		} else {
+			mineCounter = 0;
+		}
+
 		Logger.info(this, "Load default values.");
 		if (motherships[0] != null) {
 			motherships[0].reset();
@@ -113,11 +124,17 @@ public abstract class AbstractLevel extends AbstractGameObject implements Runnab
 	}
 
 	public void setTeamA(Team team) {
+		teams[0] = team;
 		motherships[0] = new Mothership(0, team, this);
 	}
 
 	public void setTeamB(Team team) {
+		teams[1] = team;
 		motherships[1] = new Mothership(1, team, this);
+	}
+
+	public int getMineCounter() {
+		return mineCounter;
 	}
 
 	public boolean containsWall(Rectangle2D bounds) {

@@ -336,7 +336,7 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
 	}
 
 	public final static int BLINK_ANIMATION = 100;
-	public final static int COUNT_ANIMATION = 150;
+	public final static int COUNT_ANIMATION = 50;
 	private void animateEndCalculation() {
 		int tmpValue;
 		try {
