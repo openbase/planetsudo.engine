@@ -13,7 +13,6 @@ import de.dc.planetsudo.level.AbstractLevel;
 import de.dc.planetsudo.level.ResourcePlacement;
 import de.dc.util.exceptions.NotValidException;
 import de.dc.util.view.engine.draw2d.AbstractResourcePanel;
-import de.dc.util.view.engine.draw2d.AbstractResourcePanel.ObjectType;
 
 /**
  *
