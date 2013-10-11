@@ -6,6 +6,7 @@
 package de.dc.planetsudo.game.strategy;
 
 import de.dc.planetsudo.level.levelobjects.Agent;
+import de.dc.planetsudo.level.levelobjects.AgentInterface;
 
 
 /**
@@ -16,7 +17,7 @@ public class EdiStrategy extends AbstractStrategy {
 
 	public EdiStrategy() {
 	}
-	public EdiStrategy(Agent a) {
+	public EdiStrategy(AgentInterface a) {
 		super(a);
 	}
 

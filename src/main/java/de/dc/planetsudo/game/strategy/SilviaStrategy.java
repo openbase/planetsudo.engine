@@ -5,6 +5,7 @@
 package de.dc.planetsudo.game.strategy;
 
 import de.dc.planetsudo.level.levelobjects.Agent;
+import de.dc.planetsudo.level.levelobjects.AgentInterface;
 
 /**
  *
@@ -15,7 +16,7 @@ public class SilviaStrategy extends AbstractStrategy {
 	public SilviaStrategy() {
 	}
 
-	public SilviaStrategy(Agent a) {
+	public SilviaStrategy(AgentInterface a) {
 		super(a);
 	}
 

@@ -5,6 +5,7 @@
 package de.dc.planetsudo.game.strategy;
 
 import de.dc.planetsudo.level.levelobjects.Agent;
+import de.dc.planetsudo.level.levelobjects.AgentInterface;
 import de.dc.planetsudo.level.levelobjects.Resource;
 
 /**
@@ -16,7 +17,7 @@ public class JaciStrategy extends AbstractStrategy {
 	public JaciStrategy() {
 	}
 
-	public JaciStrategy(Agent a) {
+	public JaciStrategy(AgentInterface a) {
 		super(a);
 	}
 

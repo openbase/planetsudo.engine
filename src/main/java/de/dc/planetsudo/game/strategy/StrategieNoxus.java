@@ -5,7 +5,7 @@
 
 package de.dc.planetsudo.game.strategy;
 
-import de.dc.planetsudo.level.levelobjects.Agent;
+import de.dc.planetsudo.level.levelobjects.AgentInterface;
 import de.dc.planetsudo.level.levelobjects.Resource;
 
 /**
@@ -16,7 +16,7 @@ public class StrategieNoxus extends AbstractStrategy {
 
 	public StrategieNoxus() {
 	}
-	public StrategieNoxus(Agent a) {
+	public StrategieNoxus(AgentInterface a) {
 		super(a);
 	}
 
