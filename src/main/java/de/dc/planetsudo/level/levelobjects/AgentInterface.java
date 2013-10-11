@@ -39,9 +39,15 @@ public interface AgentInterface {
 	 * Treibstoff: 1
 	 */
 	void deployMine();
-
+	/**
+	 * Der Befehl zum bek&auml;mpfen eines feindlichen Agenten. Aktionspunkte:
+	 * 20 Treibstoff: 1
+	 */
 	void fightWithAdversaryAgent();
-
+	/**
+	 * Der Befehl zum Angreifen des feindlichen Mutterschiffs. Aktionspunkte: 10
+	 * Treibstoff: 1
+	 */
 	void fightWithAdversaryMothership();
 
 	/**
@@ -164,7 +170,11 @@ public interface AgentInterface {
 	 * @return true oder false.
 	 */
 	boolean isDisabled();
-
+	/**
+	 * Abfrage, ob der Agent sich im Kampf befindet oder nicht.
+	 *
+	 * @return true oder false.
+	 */
 	boolean isFighting();
 
 	boolean isSupportOrdered();
@@ -205,15 +215,31 @@ public interface AgentInterface {
 	 * Wenn der Agent eine Resource trägt, lässt er sie wieder fallen.
 	 */
 	void releaseResource();
-
+	/**
+	 * Der Befehl zum reparieren des eigenen Mutterschiffs. Hierzu muss sich der
+	 * Agent am Mutterschiff befinden! Aktionspunkte: 50 Treibstoff: 1
+	 */
 	void repairMothership();
 
 	void searchResources();
-
+	/**
+	 * Zeigt an, ob der Agent einen feindlichen Agenten sieht.
+	 *
+	 * @return true oder false.
+	 */
 	boolean seeAdversaryAgent();
-
+	/**
+	 * Zeigt an, ob der Agent das feindliche Mutterschiff sieht.
+	 *
+	 * @return true oder false.
+	 */
 	boolean seeAdversaryMothership();
-
+	/**
+	 * Zeigt an, ob sich in der N&auml;he des Agenten ein Teammitglied ohne
+	 * Treibstoff befindet.
+	 *
+	 * @return true oder false.
+	 */
 	boolean seeLostTeamAgent();
 
 	boolean seeMarker();
@@ -223,7 +249,13 @@ public interface AgentInterface {
 	 * @return true oder false.
 	 */
 	boolean seeResource();
-
+	/**
+	 * Der Agent spendet einem Teammitglied
+	 *
+	 * @param value Treibstoff. Ein Agent ist Bewegungsunf&auml;hig, solange er
+	 * Treibstoff spendet! Aktionspunkte: value*2 Treibstoff: 1 + value
+	 * @param value Der zu spendende Treibstoff.
+	 */
 	void spendTeamAgentFuel(int value);
 
 	/**

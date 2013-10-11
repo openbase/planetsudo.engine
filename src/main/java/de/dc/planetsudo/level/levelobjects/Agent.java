@@ -446,21 +446,13 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
 		}
 	}
 
-	/**
-	 * Zeigt an, ob der Agent einen feindlichen Agenten sieht.
-	 *
-	 * @return true oder false.
-	 */
+
 	@Override
 	public boolean seeAdversaryAgent() {
 		return level.getAdversaryAgent(this) != null;
 	}
 
-	/**
-	 * Zeigt an, ob der Agent das feindliche Mutterschiff sieht.
-	 *
-	 * @return true oder false.
-	 */
+
 	@Override
 	public boolean seeAdversaryMothership() {
 		return level.getAdversaryMothership(this) != null;
@@ -475,10 +467,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
 	}
 	private int catchedfuel;
 
-	/**
-	 * Der Befehl zum bek&auml;mpfen eines feindlichen Agenten. Aktionspunkte:
-	 * 20 Treibstoff: 1
-	 */
+
 	@Override
 	public void fightWithAdversaryAgent() {
 		actionPoints.getActionPoint();
@@ -498,10 +487,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
 		}
 	}
 
-	/**
-	 * Der Befehl zum Angreifen des feindlichen Mutterschiffs. Aktionspunkte: 10
-	 * Treibstoff: 1
-	 */
+
 	@Override
 	public void fightWithAdversaryMothership() {
 		actionPoints.getActionPoint();
@@ -517,11 +503,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
 		}
 	}
 
-	/**
-	 * Abfrage, ob der Agent sich im Kampf befindet oder nicht.
-	 *
-	 * @return true oder false.
-	 */
+
 	@Override
 	public boolean isFighting() {
 		return adversaryObject != null;
@@ -533,12 +515,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
 		return adversary;
 	}
 
-	/**
-	 * Zeigt an, ob sich in der N&auml;he des Agenten ein Teammitglied ohne
-	 * Treibstoff befindet.
-	 *
-	 * @return true oder false.
-	 */
+
 	@Override
 	public boolean seeLostTeamAgent() {
 		return level.getLostTeamAgent(this) != null;
@@ -546,13 +523,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
 	private boolean isHelping = false;
 	private AbstractLevelObject helpLevelObject = null;
 
-	/**
-	 * Der Agent spendet einem Teammitglied
-	 *
-	 * @param value Treibstoff. Ein Agent ist Bewegungsunf&auml;hig, solange er
-	 * Treibstoff spendet! Aktionspunkte: value*2 Treibstoff: 1 + value
-	 * @param value Der zu spendende Treibstoff.
-	 */
+
 	@Override
 	public void spendTeamAgentFuel(int value) {
 		if (useFuel()) {
@@ -579,10 +550,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
 		return helpLevelObject;
 	}
 
-	/**
-	 * Der Befehl zum reparieren des eigenen Mutterschiffs. Hierzu muss sich der
-	 * Agent am Mutterschiff befinden! Aktionspunkte: 50 Treibstoff: 1
-	 */
+
 	@Override
 	public void repairMothership() {
 		actionPoints.getActionPoint(30);
