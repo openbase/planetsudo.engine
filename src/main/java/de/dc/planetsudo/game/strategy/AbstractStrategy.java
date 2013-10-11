@@ -11,7 +11,6 @@ import java.util.TreeMap;
 import de.dc.util.logging.Logger;
 import de.dc.planetsudo.game.GameManager;
 import de.dc.planetsudo.level.AbstractLevel;
-import de.dc.planetsudo.level.levelobjects.AgentController;
 import de.dc.planetsudo.level.levelobjects.AgentInterface;
 import de.dc.planetsudo.level.levelobjects.MothershipInterface;
 import java.beans.PropertyChangeEvent;
