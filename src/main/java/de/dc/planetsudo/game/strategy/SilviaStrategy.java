@@ -40,7 +40,7 @@ public class SilviaStrategy extends AbstractStrategy {
 
 			@ Override
 			protected void action() {
-				agent.goStraightAhead();
+				agent.go();
 			}
 		});
 		//-------------------------------------------->
@@ -59,7 +59,7 @@ public class SilviaStrategy extends AbstractStrategy {
 		createRule(new Rule(800, "agent ist bei resource") {
 			@ Override
 			protected boolean constraint() {
-				return agent.touchResource();
+				return agent.isTouchingResource();
 			}
 
 			@ Override
@@ -76,7 +76,7 @@ public class SilviaStrategy extends AbstractStrategy {
 
 			@ Override
 			protected void action() {
-				agent.moveOneStepInTheMothershipDirection();
+				agent.goToMothership();
 			}
 		});
 		//-------------------------------------------->
@@ -100,7 +100,7 @@ public class SilviaStrategy extends AbstractStrategy {
 
 			@ Override
 			protected void action() {
-				agent.moveOneStepInTheMothershipDirection();
+				agent.goToMothership();
 			}
 		});
 		//-------------------------------------------->
@@ -167,7 +167,7 @@ public class SilviaStrategy extends AbstractStrategy {
 		createRule(new Rule(1000, "Just Go") {
 			@ Override
 			protected boolean constraint() {
-				return agent.collisionDetected();
+				return agent.isCollisionDetected();
 			}
 
 			@ Override

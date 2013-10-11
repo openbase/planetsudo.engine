@@ -39,7 +39,7 @@ public class EdiStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-                            agent.goStraightAhead();
+                            agent.go();
 			}
 		});
 		//-------------------------------------------->
@@ -57,7 +57,7 @@ public class EdiStrategy extends AbstractStrategy {
 		createRule(new Rule(500, "resource aufheben") {
 			@ Override
 			protected boolean constraint() {
-				return agent.touchResource();
+				return agent.isTouchingResource();
 			}
 			@ Override
 			protected void action() {
@@ -72,7 +72,7 @@ public class EdiStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-                            agent.moveOneStepInTheMothershipDirection();
+				agent.goToMothership();
 			}
 		});
 		//-------------------------------------------->
@@ -117,7 +117,7 @@ public class EdiStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-                            agent.moveOneStepInTheMothershipDirection();
+				agent.goToMothership();
 			}
 		});
                 //-------------------------------------------->
@@ -135,7 +135,7 @@ public class EdiStrategy extends AbstractStrategy {
 		createRule(new Rule(1000, "wände ausweichen") {
 			@ Override
 			protected boolean constraint() {
-				return agent.collisionDetected();
+				return agent.isCollisionDetected();
 			}
 			@ Override
 			protected void action() {
