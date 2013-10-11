@@ -6,6 +6,7 @@
 package de.dc.planetsudo.game.strategy;
 
 import de.dc.planetsudo.level.levelobjects.Agent;
+import de.dc.planetsudo.level.levelobjects.AgentInterface;
 
 /**
  *
@@ -13,7 +14,7 @@ import de.dc.planetsudo.level.levelobjects.Agent;
  */
 public class NoPlan extends AbstractStrategy {
 
-	public NoPlan(Agent agent) {
+	public NoPlan(AgentInterface agent) {
 		super(agent);
 	}
 
@@ -36,7 +37,7 @@ public class NoPlan extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-				agent.goStraightAhead();
+				agent.go();
 				//agent.
 			}
 		});
@@ -44,7 +45,7 @@ public class NoPlan extends AbstractStrategy {
 		createRule(new Rule(999, "Wall") {
 			@ Override
 			protected boolean constraint() {
-				return agent.collisionDetected();
+				return agent.isCollisionDetected();
 			}
 			@ Override
 			protected void action() {
@@ -75,7 +76,7 @@ public class NoPlan extends AbstractStrategy {
 				if(agent.isAtMothership()){
 					agent.deliverResourceToMothership();
 				}else{
-					agent.moveOneStepInTheMothershipDirection();
+					agent.goToMothership();
 				}
 			}
 		});
@@ -83,7 +84,7 @@ public class NoPlan extends AbstractStrategy {
 		createRule(new Rule(10, "Collecting") {
 			@ Override
 			protected boolean constraint() {
-				return agent.touchResource();
+				return agent.isTouchingResource();
 			}
 			@ Override
 			protected void action() {
@@ -109,7 +110,7 @@ public class NoPlan extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-				agent.spendFuelTeamAgent(3);
+				agent.spendTeamAgentFuel(3);
 			}
 		});
 		//-------------------------------------------->

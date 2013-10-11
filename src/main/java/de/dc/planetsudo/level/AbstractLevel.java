@@ -30,8 +30,9 @@ import java.util.ArrayList;
  */
 public abstract class AbstractLevel extends AbstractGameObject implements Runnable {
 
-	public final static long DEFAULT_GAME_SPEED = 12 / Mothership.MAX_AGENT_COUNT; // Optimised Game Speed
+	public final static long DEFAULT_AP_SPEED = 12 / Mothership.MAX_AGENT_COUNT; // Optimised Game Speed
 	public final static String CREATE_RESOURCE = "create resource";
+	public final static String GAME_SPEED_CHANGED = "SpeedChanged";
 	private final Object RESOURCES_LOCK = new SyncObject("ResourcesLock");
 	private final GameManager gameManager;
 	private final Polygon levelBorderPolygon;
@@ -43,7 +44,8 @@ public abstract class AbstractLevel extends AbstractGameObject implements Runnab
 	private final String name;
 	private final Mothership[] motherships;
 	private final List<Resource> resources;
-	private final long gameSpeed;
+	private final long apSpeed;
+	private int gameSpeed;
 	private final int x, y;
 	private int resourceKeyCounter;
 	private final Team[] teams;
@@ -60,7 +62,8 @@ public abstract class AbstractLevel extends AbstractGameObject implements Runnab
 		this.color = loadLevelColor();
 		this.motherships = new Mothership[2];
 		this.resources = new ArrayList<Resource>();
-		this.gameSpeed = DEFAULT_GAME_SPEED;
+		this.apSpeed = DEFAULT_AP_SPEED;
+		this.gameSpeed = 50;
 		//		final Point2D base = updateBasePosition();
 		final Rectangle2D bounds = levelBorderPolygon.getBounds2D();
 		this.x = (int) bounds.getX();
@@ -72,8 +75,14 @@ public abstract class AbstractLevel extends AbstractGameObject implements Runnab
 	public void run() {
 
 		Logger.info(this, "Start Level " + this);
-		for (Mothership mothership : motherships) {
-			mothership.startGame();
+		try {
+			for (Mothership mothership : motherships) {
+				mothership.startGame();
+//				gameManager.setGameState(GameManager.GameState.Configuration);
+			}
+		} catch (Exception ex) {
+			Logger.warn(this, "Could not start Level!", ex);
+			return;
 		}
 
 		while (!isGameOver()) {
@@ -83,7 +92,7 @@ public abstract class AbstractLevel extends AbstractGameObject implements Runnab
 				}
 			}
 			try {
-				Thread.sleep(gameSpeed);
+				Thread.sleep(apSpeed);
 			} catch (InterruptedException ex) {
 				Logger.warn(this, "", ex);
 			}
@@ -343,6 +352,15 @@ public abstract class AbstractLevel extends AbstractGameObject implements Runnab
 		return null;
 	}
 
+	public void setGameSpeed(int speed) {
+		if(gameSpeed == speed) {
+			return;
+		}
+		Logger.info(this, "Game speed "+speed+" -> "+gameSpeed);
+		this.gameSpeed = Math.min(100, Math.max(speed, 1));
+		changes.firePropertyChange(GAME_SPEED_CHANGED, null, gameSpeed);
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -355,5 +373,14 @@ public abstract class AbstractLevel extends AbstractGameObject implements Runnab
 	public void removePropertyChangeListener(PropertyChangeListener l) {
 		changes.removePropertyChangeListener(l);
 		Logger.debug(this, "Remove PropertyChangeListener " + l.getClass() + ".");
+	}
+
+	public int getGameSpeed() {
+		return gameSpeed;
+	}
+
+	public void setGameOverSoon() {
+		motherships[0].setGameOverSoon();
+		motherships[1].setGameOverSoon();
 	}
 }

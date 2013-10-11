@@ -6,6 +6,7 @@
 package de.dc.planetsudo.game.strategy;
 
 import de.dc.planetsudo.level.levelobjects.Agent;
+import de.dc.planetsudo.level.levelobjects.AgentInterface;
 import de.dc.planetsudo.level.levelobjects.Resource;
 
 /**
@@ -16,7 +17,7 @@ public class BerlusconiStrategy extends AbstractStrategy {
 
 	public BerlusconiStrategy() {
 	}
-	public BerlusconiStrategy(Agent a) {
+	public BerlusconiStrategy(AgentInterface a) {
 		super(a);
 	}
 
@@ -35,7 +36,7 @@ public class BerlusconiStrategy extends AbstractStrategy {
 		createRule(new Rule(1000, "Drehe bei Wand") {
 			@ Override
 			protected boolean constraint() {
-				return agent.collisionDetected();
+				return agent.isCollisionDetected();
 			}
 			@ Override
 			protected void action() {
@@ -58,7 +59,7 @@ public class BerlusconiStrategy extends AbstractStrategy {
 		createRule(new Rule(800, "Schnapp die Resource") {
 			@ Override
 			protected boolean constraint() {
-				return agent.touchResource();
+				return agent.isTouchingResource();
 			}
 			@ Override
 			protected void action() {
@@ -73,7 +74,7 @@ public class BerlusconiStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-				agent.moveOneStepInTheMothershipDirection();
+				agent.goToMothership();
 			}
 		});
                 //-------------------------------------------->
@@ -117,7 +118,7 @@ public class BerlusconiStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-				agent.goStraightAhead();
+				agent.go();
 			}
 		});
                 /*//-------------------------------------------->

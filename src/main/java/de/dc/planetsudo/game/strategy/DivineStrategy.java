@@ -5,8 +5,8 @@
 
 package de.dc.planetsudo.game.strategy;
 
-import de.dc.planetsudo.level.levelobjects.Agent;
-import de.dc.planetsudo.level.levelobjects.Resource;
+import de.dc.planetsudo.level.levelobjects.AgentInterface;
+import de.dc.planetsudo.level.levelobjects.Resource.ResourceType;
 
 /**
  *
@@ -17,7 +17,7 @@ public class DivineStrategy extends AbstractStrategy {
 	public DivineStrategy() {
 	}
 	
-	public DivineStrategy(Agent a) {
+	public DivineStrategy(AgentInterface a) {
 		super(a);
 	}
 
@@ -40,14 +40,26 @@ public class DivineStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-				agent.goStraightAhead();
+				agent.go();
+				
+			}
+		});
+		//-------------------------------------------->
+		createRule(new Rule(1, "Discover") {
+			@ Override
+			protected boolean constraint() {
+				return agent.isCommander();
+			}
+			@ Override
+			protected void action() {
+				agent.goRight(3);
 			}
 		});
 		//-------------------------------------------->
 		createRule(new Rule(5, "Go to Marker") {
 			@ Override
 			protected boolean constraint() {
-				return mothership.existMarker();
+				return !agent.isCommander() && mothership.isMarkerDeployed();
 			}
 			@ Override
 			protected void action() {
@@ -55,7 +67,7 @@ public class DivineStrategy extends AbstractStrategy {
 			}
 		});
 		//-------------------------------------------->
-		createRule(new Rule(10, "Clear Marker") {
+		createRule(new Rule(10, "Search") {
 			@ Override
 			protected boolean constraint() {
 				return agent.seeMarker();
@@ -63,13 +75,14 @@ public class DivineStrategy extends AbstractStrategy {
 			@ Override
 			protected void action() {
 				mothership.clearMarker();
+				agent.searchResources();
 			}
 		});
 		//-------------------------------------------->
-		createRule(new Rule(20, "Search Resources") {
+		createRule(new Rule(20, "See Resources") {
 			@ Override
 			protected boolean constraint() {
-				return agent.seeResource();
+				return !agent.isCommander() &&agent.seeResource();
 			}
 			@ Override
 			protected void action() {
@@ -77,10 +90,10 @@ public class DivineStrategy extends AbstractStrategy {
 			}
 		});
 		//-------------------------------------------->
-		createRule(new Rule(30, "PickUp Resource") {
+		createRule(new Rule(30, "PickUp 1P Resource") {
 			@ Override
 			protected boolean constraint() {
-				return agent.touchResource() && agent.touchResourceType() != Resource.ResourceType.Mine;
+				return !agent.isCommander() && agent.isTouchingResource(ResourceType.Normal);
 			}
 			@ Override
 			protected void action() {
@@ -91,23 +104,83 @@ public class DivineStrategy extends AbstractStrategy {
 		createRule(new Rule(31, "PickUp and Place") {
 			@ Override
 			protected boolean constraint() {
-				return agent.touchResource() && !agent.touchResourceType(Resource.ResourceType.Mine) && (agent.touchResourceType(Resource.ResourceType.ExtremPoint) || agent.touchResourceType(Resource.ResourceType.DoublePoints));
+				return !agent.isCommander() && (agent.isTouchingResource(ResourceType.ExtremPoint) || agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(ResourceType.ExtraMothershipFuel));
 			}
 			@ Override
 			protected void action() {
-				agent.placeMarker();
+				if(!mothership.isMarkerDeployed()) {
+					agent.deployMarker();
+				}
 				agent.pickupResource();
 			}
 		});
 		//-------------------------------------------->
-		createRule(new Rule(35, "Support Agent") {
+		createRule(new Rule(32, "PickUp 5P and Place") {
 			@ Override
 			protected boolean constraint() {
-				return mothership.needSomeoneSupport();
+				return agent.isTouchingResource(ResourceType.ExtremPoint);
 			}
 			@ Override
 			protected void action() {
-				agent.goToSuppordAgent();
+				agent.deployMarker();
+				agent.pickupResource();
+			}
+		});
+		//-------------------------------------------->
+		createRule(new Rule(33, "Ignore") {
+			@ Override
+			protected boolean constraint() {
+				return agent.isTouchingResource(ResourceType.Mine) || agent.isTouchingResource(ResourceType.ExtraAgentFuel);
+			}
+			@ Override
+			protected void action() {
+				agent.go();
+			}
+		});
+
+
+		//-------------------------------------------->
+		createRule(new Rule(34, "Secure") {
+			@ Override
+			protected boolean constraint() {
+				return agent.isGameOverSoon();
+			}
+			@ Override
+			protected void action() {
+				agent.goToMothership();
+			}
+		});
+		//-------------------------------------------->
+		createRule(new Rule(35, "Saved") {
+			@ Override
+			protected boolean constraint() {
+				return agent.isGameOverSoon() && agent.isAtMothership();
+			}
+			@ Override
+			protected void action() {
+
+			}
+		});
+		//-------------------------------------------->
+		createRule(new Rule(36, "Order Fuel") {
+			@ Override
+			protected boolean constraint() {
+				return agent.isAtMothership() && agent.isGameOverSoon() && mothership.hasFuel()&& agent.getFuelInPercent() < 100;
+			}
+			@ Override
+			protected void action() {
+				agent.orderFuel(100);
+			}
+		});
+		//-------------------------------------------->
+		createRule(new Rule(39, "Support Agent") {
+			@ Override
+			protected boolean constraint() {
+				return mothership.needSomeoneSupport() && !agent.isSupportOrdered();
+			}
+			@ Override
+			protected void action() {
+				agent.goToSupportAgent();
 			}
 		});
 		//-------------------------------------------->
@@ -118,7 +191,7 @@ public class DivineStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-				agent.moveOneStepInTheMothershipDirection();
+				agent.goToMothership();
 			}
 		});
 		//-------------------------------------------->
@@ -129,7 +202,7 @@ public class DivineStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-				agent.spendFuelTeamAgent(300);
+				agent.spendTeamAgentFuel(300);
 			}
 		});
 		//-------------------------------------------->
@@ -141,10 +214,20 @@ public class DivineStrategy extends AbstractStrategy {
 			@ Override
 			protected void action() {
 				agent.fightWithAdversaryMothership();
+			}
+		});
+		//-------------------------------------------->
+		createRule(new Rule(91, "FightAgainstMothership & Order Support") {
+			@ Override
+			protected boolean constraint() {
+				return !agent.isSupportOrdered() && agent.seeAdversaryMothership();
+			}
+			@ Override
+			protected void action() {
+				agent.fightWithAdversaryMothership();
 				agent.orderSupport();
 			}
 		});
-		
 		//-------------------------------------------->
 		createRule(new Rule(100, "TurnToAdversaryAgent") {
 			@ Override
@@ -160,18 +243,18 @@ public class DivineStrategy extends AbstractStrategy {
 		createRule(new Rule(110, "SaveMothership") {
 			@ Override
 			protected boolean constraint() {
-				return agent.getMothership().isDamaged();
+				return mothership.isDamaged();
 			}
 			@ Override
 			protected void action() {
-				agent.moveOneStepInTheMothershipDirection();
+				agent.goToMothership();
 			}
 		});
 		//-------------------------------------------->
 		createRule(new Rule(120, "RepaireMothership") {
 			@ Override
 			protected boolean constraint() {
-				return agent.getMothership().isDamaged() && agent.isAtMothership();
+				return mothership.isDamaged() && agent.isAtMothership();
 			}
 			@ Override
 			protected void action() {
@@ -197,10 +280,8 @@ public class DivineStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-				agent.placeMine();
-				agent.turnAround();
-				agent.goStraightAhead();
-				agent.goStraightAhead();
+				agent.deployMine();
+				agent.goLeft(180);
 			}
 		});
 		//-------------------------------------------->
@@ -211,14 +292,14 @@ public class DivineStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-				agent.moveOneStepInTheMothershipDirection();
+				agent.goToMothership();
 			}
 		});
 		//-------------------------------------------->
 		createRule(new Rule(400, "OrderFuel") {
 			@ Override
 			protected boolean constraint() {
-				return (agent.getFuel() < 300) && (agent.isAtMothership());
+				return mothership.hasFuel() && (agent.getFuelInPercent() < 90) && (agent.isAtMothership());
 			}
 			@ Override
 			protected void action() {
@@ -229,11 +310,24 @@ public class DivineStrategy extends AbstractStrategy {
 		createRule(new Rule(500, "OrderFuelDuringFight") {
 			@ Override
 			protected boolean constraint() {
-				return (agent.getFuel() < 100) && (agent.seeAdversaryAgent()  || agent.isUnderAttack()) && agent.isAtMothership();
+				return mothership.hasFuel() && (agent.getFuel() < 100) && agent.isUnderAttack() && agent.isAtMothership();
 			}
 			@ Override
 			protected void action() {
-				agent.orderFuel(10);
+				agent.orderFuel(5);
+				agent.goLeft(10);
+			}
+		});
+		//-------------------------------------------->
+		createRule(new Rule(501, "OrderFuelDuringFight") {
+			@ Override
+			protected boolean constraint() {
+				return mothership.hasFuel() && (agent.getFuel() < 100) && agent.seeAdversaryAgent() && agent.isAtMothership();
+			}
+			@ Override
+			protected void action() {
+				agent.orderFuel(5);
+				agent.fightWithAdversaryAgent();
 			}
 		});
 		//-------------------------------------------->
@@ -251,7 +345,7 @@ public class DivineStrategy extends AbstractStrategy {
 		createRule(new Rule(600, "CallForHelp") {
 			@ Override
 			protected boolean constraint() {
-				return (!agent.supportOrdered()) && ((agent.getFuel() < 5) || agent.isUnderAttack());
+				return (!agent.isSupportOrdered()) && ((agent.getFuel() < 5) || agent.isUnderAttack());
 			}
 			@ Override
 			protected void action() {
@@ -259,16 +353,52 @@ public class DivineStrategy extends AbstractStrategy {
 			}
 		});
 		//-------------------------------------------->
-		createRule(new Rule(1000, "AvoidWall") {
+		createRule(new Rule(800, "PickUp Fuel") {
 			@ Override
 			protected boolean constraint() {
-				return agent.collisionDetected();
+				return agent.getFuelInPercent() < 50 && agent.isTouchingResource(ResourceType.ExtraAgentFuel);
 			}
 			@ Override
 			protected void action() {
-				agent.turnRandom();
+				agent.pickupResource();
 			}
 		});
 		//-------------------------------------------->
+		createRule(new Rule(900, "Follow Wall") {
+			@ Override
+			protected boolean constraint() {
+				return agent.isCommander() && agent.isCollisionDetected();
+			}
+			@ Override
+			protected void action() {
+				agent.turnLeft(3);
+				
+			}
+		});
+		//-------------------------------------------->
+		createRule(new Rule(1000, "AvoidWall") {
+			@ Override
+			protected boolean constraint() {
+				return !agent.isCommander() && agent.isCollisionDetected();
+			}
+			@ Override
+			protected void action() {
+				agent.turnRandom(150);
+
+			}
+		});
+//		//-------------------------------------------->
+//		createRule(new Rule(1001, "Cancel Support") {
+//			@ Override
+//			protected boolean constraint() {
+//				return agent.isSupportOrdered() && !agent.seeAdversaryMothership() && agent.getFuel() > 10 && !agent.isUnderAttack() && !agent.seeAdversaryAgent();
+//			}
+//			@ Override
+//			protected void action() {
+//				agent.cancelSupport();
+//
+//			}
+//		});
+//		//-------------------------------------------->
 	}
 }

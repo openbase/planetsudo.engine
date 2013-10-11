@@ -36,7 +36,7 @@ public abstract class AbstractLevelObject extends AbstractGameObject implements 
 	protected double width;
 	protected double height;
 	protected final PropertyChangeSupport changes;
-	private ObjectType objectType;
+//	private ObjectType objectType;
 
 	public AbstractLevelObject() {
 		this(0, "Level", ObjectType.Static, null, new Point2D(), 100, 100, null);
@@ -51,12 +51,12 @@ public abstract class AbstractLevelObject extends AbstractGameObject implements 
 		this.height = height;
 		this.shape = shape;
 		this.changes = new PropertyChangeSupport(this);
-		this.objectType = ObjectType.Static;
+//		this.objectType = ObjectType.Static;
 
 		if (!(this instanceof Resource)) {
 			this.levelView = new LevelView(this);
 		}
-		this.setObjectType(objectType);
+//		this.setObjectType(objectType);
 	}
 
 	@ Override
@@ -81,24 +81,24 @@ public abstract class AbstractLevelObject extends AbstractGameObject implements 
 		return position;
 	}
 	
-	public boolean isObjectType(final ObjectType type) {
-		return objectType == type;
-	}
+//	public boolean isObjectType(final ObjectType type) {
+//		return objectType == type;
+//	}
 
-	public ObjectType getObjectType() {
-		return objectType;
-	}
+//	public ObjectType getObjectType() {
+//		return objectType;
+//	}
 
-	public final void setObjectType(final ObjectType objectType) {
-		if (this.objectType == objectType) {
-			return;
-		}
-		if (levelView != null) {
-			levelView.updateObjectMovement();
-		}
-		this.objectType = objectType;
-		changes.firePropertyChange(OBJECT_TYPE_UPDATE, null, objectType);
-	}
+//	public final void setObjectType(final ObjectType objectType) {
+//		if (this.objectType == objectType) {
+//			return;
+//		}
+//		if (levelView != null) {
+//			levelView.updateObjectMovement();
+//		}
+//		this.objectType = objectType;
+//		changes.firePropertyChange(OBJECT_TYPE_UPDATE, null, objectType);
+//	}
 
 	public Rectangle2D.Double getBounds() {
 		return new Rectangle2D.Double((int) position.getX() - (width / 2),

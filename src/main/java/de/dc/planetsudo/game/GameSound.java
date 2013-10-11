@@ -41,7 +41,7 @@ public enum GameSound {
 	private final AudioData audioData;
 	private final boolean disabled;
 
-	private static final AudioServer AUDIO_SERVER = AudioServer.getInstance();
+	private static final AudioServer AUDIO_SERVER = new AudioServer(20);
 
 	private GameSound(final String uri) {
 		AudioData tmpData = null;

@@ -6,6 +6,7 @@
 package de.dc.planetsudo.game.strategy;
 
 import de.dc.planetsudo.level.levelobjects.Agent;
+import de.dc.planetsudo.level.levelobjects.AgentInterface;
 import de.dc.planetsudo.level.levelobjects.Resource;
 
 /**
@@ -16,7 +17,7 @@ public class Robot extends AbstractStrategy {
 
 	public Robot() {
 	}
-	public Robot(Agent a) {
+	public Robot(AgentInterface a) {
 		super(a);
 	}
 
@@ -35,7 +36,7 @@ public class Robot extends AbstractStrategy {
 		createRule(new Rule(1000, "Drehe bei Wand") {
 			@ Override
 			protected boolean constraint() {
-				return agent.collisionDetected();
+				return agent.isCollisionDetected();
 			}
 			@ Override
 			protected void action() {
@@ -60,7 +61,7 @@ public class Robot extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-				agent.moveOneStepInTheMothershipDirection();
+				agent.goToMothership();
 			}
 		});
                 createRule(new Rule(960, "Tanken") {
@@ -80,7 +81,7 @@ public class Robot extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-				agent.spendFuelTeamAgent(200);
+				agent.spendTeamAgentFuel(200);
 			}
 		});
                 createRule(new Rule(950, "Mine setzten") {
@@ -90,7 +91,7 @@ public class Robot extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-				agent.placeMine();
+				agent.deployMine();
 			}
 		});
                 createRule(new Rule(940, "Angriff Mothership") {
@@ -132,14 +133,14 @@ public class Robot extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-				agent.moveOneStepInTheMothershipDirection();
+				agent.goToMothership();
 			}
 		});
                                  //-------------------------------------------->
 		createRule(new Rule(595, "Bomben Vermeiden") {
 			@ Override
 			protected boolean constraint() {
-				return agent.touchResource() && agent.touchResourceType()==Resource.ResourceType.Mine ;
+				return agent.isTouchingResource() && agent.getResourceType()==Resource.ResourceType.Mine ;
 			}
 			@ Override
 			protected void action() {
@@ -150,7 +151,7 @@ public class Robot extends AbstractStrategy {
 		createRule(new Rule(590, "sammle resource") {
 			@ Override
 			protected boolean constraint() {
-				return agent.touchResource() && agent.touchResourceType()!=Resource.ResourceType.Mine ;
+				return agent.isTouchingResource() && agent.getResourceType()!=Resource.ResourceType.Mine ;
 			}
 			@ Override
 			protected void action() {
@@ -178,7 +179,7 @@ public class Robot extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-				agent.goStraightAhead();
+				agent.go();
 			}
 		});
 	}

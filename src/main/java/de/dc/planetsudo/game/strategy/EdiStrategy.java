@@ -6,18 +6,17 @@
 package de.dc.planetsudo.game.strategy;
 
 import de.dc.planetsudo.level.levelobjects.Agent;
-import de.dc.planetsudo.level.levelobjects.AgentInterface;
-import de.dc.planetsudo.level.levelobjects.Resource;
+
 
 /**
  *
  * @author divine
  */
-public class SimpleStrategy extends AbstractStrategy {
+public class EdiStrategy extends AbstractStrategy {
 
-	public SimpleStrategy() {
+	public EdiStrategy() {
 	}
-	public SimpleStrategy(AgentInterface a) {
+	public EdiStrategy(Agent a) {
 		super(a);
 	}
 
@@ -27,7 +26,7 @@ public class SimpleStrategy extends AbstractStrategy {
 	 */
 	@Override
 	protected int loadAgentCount() {
-		return 10;
+		return 5;
 	}
 
 	@Override
@@ -40,86 +39,108 @@ public class SimpleStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-				agent.go();
+                            agent.goStraightAhead();
 			}
 		});
 		//-------------------------------------------->
-		createRule(new Rule(20, "Search Resources") {
+		createRule(new Rule(400, "resource sehen") {
 			@ Override
 			protected boolean constraint() {
 				return agent.seeResource();
 			}
 			@ Override
 			protected void action() {
-				agent.goToResource();
+                            agent.goToResource();
 			}
 		});
 		//-------------------------------------------->
-		createRule(new Rule(30, "PickUp Resource") {
+		createRule(new Rule(500, "resource aufheben") {
 			@ Override
 			protected boolean constraint() {
-				return agent.isTouchingResource() && agent.getResourceType() != Resource.ResourceType.Mine;
+				return agent.touchResource();
 			}
 			@ Override
 			protected void action() {
-				agent.pickupResource();
+                            agent.pickupResource();
 			}
 		});
 		//-------------------------------------------->
-		createRule(new Rule(40, "Save Resource") {
+		createRule(new Rule(600, "zum Mutterschiff") {
 			@ Override
 			protected boolean constraint() {
 				return agent.isCarringResource();
 			}
 			@ Override
 			protected void action() {
-				agent.goToMothership();
+                            agent.moveOneStepInTheMothershipDirection();
 			}
 		});
 		//-------------------------------------------->
-		createRule(new Rule(50, "Pass Resource") {
+		createRule(new Rule(700, "ablegen resource") {
 			@ Override
 			protected boolean constraint() {
 				return agent.isCarringResource() && agent.isAtMothership();
 			}
 			@ Override
 			protected void action() {
-				agent.deliverResourceToMothership();
+                            agent.deliverResourceToMothership();
 			}
 		});
 		//-------------------------------------------->
-		createRule(new Rule(200, "GoBackToMothership") {
+		createRule(new Rule(750, "agent töten") {
 			@ Override
 			protected boolean constraint() {
-				return agent.getFuel() < 300;
+				return agent.seeAdversaryAgent();
 			}
 			@ Override
 			protected void action() {
-				agent.goToMothership();
+                            agent.fightWithAdversaryAgent();
 			}
 		});
 		//-------------------------------------------->
-		createRule(new Rule(400, "OrderFuel") {
+		createRule(new Rule(720, "agent töten") {
 			@ Override
 			protected boolean constraint() {
-				return (agent.getFuel() < 300) && (agent.isAtMothership());
+				return agent.seeAdversaryMothership();
 			}
 			@ Override
 			protected void action() {
-				agent.orderFuel(100);
+                            agent.fightWithAdversaryMothership();
 			}
 		});
+		
 		//-------------------------------------------->
-		createRule(new Rule(1000, "AvoidWall") {
+		createRule(new Rule(800, "benzin tanken") {
 			@ Override
 			protected boolean constraint() {
-				return agent.isCollisionDetected();
+				return agent.getFuelInPercent() < 20;
 			}
 			@ Override
 			protected void action() {
-				agent.turnRandom();
+                            agent.moveOneStepInTheMothershipDirection();
+			}
+		});
+                //-------------------------------------------->
+		createRule(new Rule(900, "benzin tanken") {
+			@ Override
+			protected boolean constraint() {
+				return agent.getFuelInPercent() < 20 && agent.isAtMothership();
+			}
+			@ Override
+			protected void action() {
+                            agent.orderFuel(100);
 			}
 		});
 		//-------------------------------------------->
+		createRule(new Rule(1000, "wände ausweichen") {
+			@ Override
+			protected boolean constraint() {
+				return agent.collisionDetected();
+			}
+			@ Override
+			protected void action() {
+                            agent.turnRandom();
+			}
+		});
 	}
 }

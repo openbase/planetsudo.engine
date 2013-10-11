@@ -105,6 +105,8 @@ public abstract class AbstractLevelObjectPanel<R extends AbstractLevelObject, PR
 	}
 
 	public AffineTransform getSkaleImageToBoundsTransformation() {
+		assert boundingBox != null;
+		assert image != null;
 		return new AffineTransform(
 				boundingBox.getWidth() / image.getWidth(), 0,
 				0, boundingBox.getHeight() / image.getHeight(),

@@ -6,6 +6,7 @@
 package de.dc.planetsudo.game.strategy;
 
 import de.dc.planetsudo.level.levelobjects.Agent;
+import de.dc.planetsudo.level.levelobjects.AgentInterface;
 import de.dc.planetsudo.level.levelobjects.Resource;
 
 /**
@@ -16,7 +17,7 @@ public class NoNameStrategy extends AbstractStrategy {
 
 	public NoNameStrategy() {
 	}
-	public NoNameStrategy(Agent a) {
+	public NoNameStrategy(AgentInterface a) {
 		super(a);
 	}
 
@@ -39,14 +40,14 @@ public class NoNameStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-                            agent.goStraightAhead();
+                            agent.go();
 			}
 		});
 		//-------------------------------------------->
 		createRule(new Rule(1000, "NO_COLLISION") {
 			@ Override
 			protected boolean constraint() {
-				return agent.collisionDetected();
+				return agent.isCollisionDetected();
 			}
 			@ Override
 			protected void action() {
@@ -66,7 +67,7 @@ public class NoNameStrategy extends AbstractStrategy {
 		createRule(new Rule(700, "Pick_up_Resource") {
 			@ Override
 			protected boolean constraint() {
-				return agent.touchResource() && agent.touchResourceType() != Resource.ResourceType.Mine;
+				return agent.isTouchingResource() && agent.getResourceType() != Resource.ResourceType.Mine;
 			}
 			@ Override
 			protected void action() {
@@ -80,7 +81,7 @@ public class NoNameStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-                            agent.moveOneStepInTheMothershipDirection();
+                            agent.goToMothership();
 			}
 		});//-------------------------------------------->
 		createRule(new Rule(900, "Resource_to_Mothership_2") {
@@ -100,7 +101,7 @@ public class NoNameStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-                            agent.moveOneStepInTheMothershipDirection();
+                            agent.goToMothership();
 			}
 		});
                 //-------------------------------------------->
@@ -122,7 +123,7 @@ public class NoNameStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-                            agent.spendFuelTeamAgent(30);
+                            agent.spendTeamAgentFuel(30);
 			}
 		});
 
@@ -146,7 +147,7 @@ public class NoNameStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-                            agent.placeMine();
+                            agent.deployMine();
 
 			}
 		});

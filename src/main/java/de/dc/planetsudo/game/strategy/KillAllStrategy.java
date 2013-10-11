@@ -6,6 +6,7 @@
 package de.dc.planetsudo.game.strategy;
 
 import de.dc.planetsudo.level.levelobjects.Agent;
+import de.dc.planetsudo.level.levelobjects.AgentInterface;
 import de.dc.planetsudo.level.levelobjects.Resource;
 
 /**
@@ -16,7 +17,7 @@ public class KillAllStrategy extends AbstractStrategy {
 
 	public KillAllStrategy() {
 	}
-	public KillAllStrategy(Agent a) {
+	public KillAllStrategy(AgentInterface a) {
 		super(a);
 	}
 
@@ -39,14 +40,14 @@ public class KillAllStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-			agent.goStraightAhead();
+			agent.go();
 			}
 		});
                 		//-------------------------------------------->
 		createRule(new Rule(1010, "Wand!") {
 			@ Override
 			protected boolean constraint() {
-				return agent.collisionDetected();
+				return agent.isCollisionDetected();
 			}
 			@ Override
 			protected void action() {
@@ -69,8 +70,8 @@ public class KillAllStrategy extends AbstractStrategy {
 		createRule(new Rule(510, "Rohstoff T.") {
 			@ Override
 			protected boolean constraint() {
-				return   agent.touchResourceType()!=Resource.ResourceType.Mine &&
-                                        agent.touchResource() 
+				return   agent.getResourceType()!=Resource.ResourceType.Mine &&
+                                        agent.isTouchingResource()
                                         ;
 			}
 			@ Override
@@ -87,7 +88,7 @@ public class KillAllStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-                            agent.moveOneStepInTheMothershipDirection();
+                            agent.goToMothership();
 			}
 		});
                                 		//-------------------------------------------->
@@ -112,7 +113,7 @@ public class KillAllStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-                            agent.moveOneStepInTheMothershipDirection();
+                            agent.goToMothership();
                             
 			}
 		});
@@ -160,7 +161,7 @@ public class KillAllStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-                            agent.spendFuelTeamAgent(400);
+                            agent.spendTeamAgentFuel(400);
 
 			}
 		});
@@ -187,7 +188,7 @@ public class KillAllStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-                            agent.moveOneStepInTheMothershipDirection();
+                            agent.goToMothership();
 
 			}
 		});
@@ -199,7 +200,7 @@ public class KillAllStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-                            agent.moveOneStepInTheMothershipDirection();
+                            agent.goToMothership();
                               
 			}
 		});

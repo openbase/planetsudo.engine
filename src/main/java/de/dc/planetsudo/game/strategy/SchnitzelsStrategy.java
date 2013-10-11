@@ -6,6 +6,7 @@
 package de.dc.planetsudo.game.strategy;
 
 import de.dc.planetsudo.level.levelobjects.Agent;
+import de.dc.planetsudo.level.levelobjects.AgentInterface;
 import de.dc.planetsudo.level.levelobjects.Resource;
 
 /**
@@ -16,7 +17,7 @@ public class SchnitzelsStrategy extends AbstractStrategy {
 
 	public SchnitzelsStrategy() {
 	}
-	public SchnitzelsStrategy(Agent a) {
+	public SchnitzelsStrategy(AgentInterface a) {
 		super(a);
 	}
 
@@ -35,7 +36,7 @@ public class SchnitzelsStrategy extends AbstractStrategy {
 		createRule(new Rule(1000, "Drehe bei Wand") {
 			@ Override
 			protected boolean constraint() {
-			      return agent.collisionDetected();
+			      return agent.isCollisionDetected();
 			}
 			@ Override
 			protected void action() {
@@ -51,7 +52,7 @@ public class SchnitzelsStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-			    agent.goStraightAhead();
+			    agent.go();
 			}
 		});
 
@@ -71,7 +72,7 @@ public class SchnitzelsStrategy extends AbstractStrategy {
 		createRule(new Rule(901, "Berührt Resource") {
 			@ Override
 			protected boolean constraint() {
-		   return agent.touchResource() && agent.touchResourceType() !=
+		   return agent.isTouchingResource() && agent.getResourceType() !=
 Resource.ResourceType.Mine;
 
 			}
@@ -89,7 +90,7 @@ Resource.ResourceType.Mine;
 			}
 			@ Override
 			protected void action() {
-			    agent.moveOneStepInTheMothershipDirection();
+			    agent.goToMothership();
 			}
 		});
 
@@ -148,7 +149,7 @@ Resource.ResourceType.Mine;
 			}
 			@ Override
 			protected void action() {
-			    agent.spendFuelTeamAgent(75);
+			    agent.spendTeamAgentFuel(75);
 			}
 		});
 		//-------------------------------------------->

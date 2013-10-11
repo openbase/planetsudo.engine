@@ -6,6 +6,7 @@
 package de.dc.planetsudo.game.strategy;
 
 import de.dc.planetsudo.level.levelobjects.Agent;
+import de.dc.planetsudo.level.levelobjects.AgentInterface;
 
 /**
  *
@@ -15,7 +16,7 @@ public class MarcosStrategy extends AbstractStrategy {
 
 	public MarcosStrategy() {
 	}
-	public MarcosStrategy(Agent agent) {
+	public MarcosStrategy(AgentInterface agent) {
 		super(agent);	
 	}
 
@@ -38,7 +39,7 @@ public class MarcosStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-				agent.goStraightAhead();
+				agent.go();
 				agent.turnRight(1);
 			}
 		});
@@ -57,7 +58,7 @@ public class MarcosStrategy extends AbstractStrategy {
 		createRule(new Rule(30, "Resource aufsammeln") {
 			@ Override
 			protected boolean constraint() {
-				return agent.touchResource();
+				return agent.isTouchingResource();
 			}
 			@ Override
 			protected void action() {
@@ -72,7 +73,7 @@ public class MarcosStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-				agent.spendFuelTeamAgent(agent.getFuelVolume()/10);
+				agent.spendTeamAgentFuel(agent.getFuelVolume()/10);
 			}
 		});
 
@@ -83,7 +84,7 @@ public class MarcosStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-				agent.moveOneStepInTheMothershipDirection();
+				agent.goToMothership();
 			}
 		});
 
@@ -112,18 +113,18 @@ public class MarcosStrategy extends AbstractStrategy {
 		createRule(new Rule(80, "Leerer Tank - Zurück gehen") {
 			@ Override
 			protected boolean constraint() {
-				return agent.getFuel() <= agent.getFuelVolume()/5 && agent.getMothership().hasFuel();
+				return agent.getFuel() <= agent.getFuelVolume()/5 && mothership.hasFuel();
 			}
 			@ Override
 			protected void action() {
-				agent.moveOneStepInTheMothershipDirection();
+				agent.goToMothership();
 			}
 		});
 
 		createRule(new Rule(90, "Tanken") {
 			@ Override
 			protected boolean constraint() {
-				return agent.isAtMothership() && agent.getFuel() <= agent.getFuelVolume()/5 && agent.getMothership().hasFuel();
+				return agent.isAtMothership() && agent.getFuel() <= agent.getFuelVolume()/5 && mothership.hasFuel();
 			}
 			@ Override
 			protected void action() {
@@ -134,18 +135,18 @@ public class MarcosStrategy extends AbstractStrategy {
 		createRule(new Rule(100, "Fire in the house!") {
 			@ Override
 			protected boolean constraint() {
-				return agent.getMothership().isDamaged();
+				return mothership.isDamaged();
 			}
 			@ Override
 			protected void action() {
-				agent.moveOneStepInTheMothershipDirection();
+				agent.goToMothership();
 			}
 		});
 
 		createRule(new Rule(110, "Repariere Mutterschiff") {
 			@ Override
 			protected boolean constraint() {
-				return agent.getMothership().isDamaged() && agent.isAtMothership();
+				return mothership.isDamaged() && agent.isAtMothership();
 			}
 			@ Override
 			protected void action() {
@@ -167,18 +168,18 @@ public class MarcosStrategy extends AbstractStrategy {
 		createRule(new Rule(130, "Alarm!") {
 			@ Override
 			protected boolean constraint() {
-				return agent.getMothership().isBurning();
+				return mothership.isBurning();
 			}
 			@ Override
 			protected void action() {
-				agent.moveOneStepInTheMothershipDirection();
+				agent.goToMothership();
 			}
 		});
 
 		createRule(new Rule(1000, "Collision detected") {
 			@ Override
 			protected boolean constraint() {
-				return agent.collisionDetected();
+				return agent.isCollisionDetected();
 			}
 			@ Override
 			protected void action() {

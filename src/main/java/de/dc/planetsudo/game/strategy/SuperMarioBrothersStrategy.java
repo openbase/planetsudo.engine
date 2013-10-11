@@ -6,6 +6,7 @@
 package de.dc.planetsudo.game.strategy;
 
 import de.dc.planetsudo.level.levelobjects.Agent;
+import de.dc.planetsudo.level.levelobjects.AgentInterface;
 import de.dc.planetsudo.level.levelobjects.Resource.ResourceType;
 
 /**
@@ -16,7 +17,7 @@ public class SuperMarioBrothersStrategy extends AbstractStrategy {
 
 	public SuperMarioBrothersStrategy() {
 	}
-	public SuperMarioBrothersStrategy(Agent a) {
+	public SuperMarioBrothersStrategy(AgentInterface a) {
 		super(a);
 	}
 
@@ -40,14 +41,14 @@ public class SuperMarioBrothersStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-				agent.goStraightAhead();
+				agent.go();
 			}
 		});
               //------------------------------------------------------
                 	createRule(new Rule(10000, "Erkenne Wand") {
 			@ Override
 			protected boolean constraint() {
-				return agent.collisionDetected();
+				return agent.isCollisionDetected();
 			}
 			@ Override
 			protected void action() {
@@ -84,15 +85,15 @@ public class SuperMarioBrothersStrategy extends AbstractStrategy {
                 }
 			@ Override
 			protected void action() {
-				agent.goStraightAhead();
-                                agent.placeMine();
+				agent.go();
+                                agent.deployMine();
 			}
 		});
                   //------------------------------------------------------
             createRule(new Rule(7000, "Recoursetyp 1 abholen") {
 			@ Override
 			protected boolean constraint() {
-				return agent.seeResource() && agent.touchResourceType() == ResourceType.Normal;
+				return agent.seeResource() && agent.getResourceType() == ResourceType.Normal;
 			}
 			@ Override
 			protected void action() {
@@ -102,7 +103,7 @@ public class SuperMarioBrothersStrategy extends AbstractStrategy {
             createRule(new Rule(7200, "Recoursetyp 2 abholen") {
 			@ Override
 			protected boolean constraint() {
-				return agent.seeResource() && agent.touchResourceType() == ResourceType.DoublePoints;
+				return agent.seeResource() && agent.getResourceType() == ResourceType.DoublePoints;
 			}
 			@ Override
 			protected void action() {
@@ -112,7 +113,7 @@ public class SuperMarioBrothersStrategy extends AbstractStrategy {
             createRule(new Rule(7300, "Recoursetyp 3 abholen") {
 			@ Override
 			protected boolean constraint() {
-				return agent.seeResource() && agent.touchResourceType() == ResourceType.ExtremPoint;
+				return agent.seeResource() && agent.getResourceType() == ResourceType.ExtremPoint;
 			}
 			@ Override
 			protected void action() {
@@ -122,7 +123,7 @@ public class SuperMarioBrothersStrategy extends AbstractStrategy {
             createRule(new Rule(7400, "Recoursetyp 4 abholen") {
 			@ Override
 			protected boolean constraint() {
-				return agent.seeResource() &&agent.touchResourceType() == ResourceType.ExtraMothershipFuel;
+				return agent.seeResource() &&agent.getResourceType() == ResourceType.ExtraMothershipFuel;
 			}
 			@ Override
 			protected void action() {
@@ -132,7 +133,7 @@ public class SuperMarioBrothersStrategy extends AbstractStrategy {
             createRule(new Rule(7500, "Auftanken an Resource") {
 			@ Override
 			protected boolean constraint() {
-				return agent.seeResource() && agent.touchResourceType() == ResourceType.ExtraAgentFuel && agent.getFuelInPercent() <=85;
+				return agent.seeResource() && agent.getResourceType() == ResourceType.ExtraAgentFuel && agent.getFuelInPercent() <=85;
 			}
 			@ Override
 			protected void action() {
@@ -147,7 +148,7 @@ public class SuperMarioBrothersStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-				agent.moveOneStepInTheMothershipDirection();
+				agent.goToMothership();
 
 
 			}
@@ -168,11 +169,11 @@ public class SuperMarioBrothersStrategy extends AbstractStrategy {
 			@ Override
 			protected boolean constraint() {
 				return agent.getFuelInPercent() <=60
-                                    && agent.mothershipController.hasFuel();
+                                    && mothership.hasFuel();
 			}
 			@ Override
 			protected void action() {
-			        agent.moveOneStepInTheMothershipDirection();
+			        agent.goToMothership();
                  }
 		});
                 //------------------------------------------------------
@@ -210,7 +211,7 @@ public class SuperMarioBrothersStrategy extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-			        agent.spendFuelTeamAgent(400);
+			        agent.spendTeamAgentFuel(400);
 
                  }
 		});
@@ -218,7 +219,7 @@ public class SuperMarioBrothersStrategy extends AbstractStrategy {
             createRule(new Rule(9999, "Reparieren") {
 			@ Override
 			protected boolean constraint() {
-				return agent.mothershipController.isDamaged();
+				return mothership.isDamaged();
 			}
 			@ Override
 			protected void action() {
@@ -231,11 +232,11 @@ public class SuperMarioBrothersStrategy extends AbstractStrategy {
             createRule(new Rule(9998, "Ende") {
 			@ Override
 			protected boolean constraint() {
-				return !agent.mothershipController.hasFuel();
+				return !mothership.hasFuel();
 			}
 			@ Override
 			protected void action() {
-			        agent.moveOneStepInTheMothershipDirection();
+			        agent.goToMothership();
 
                  }
 		});

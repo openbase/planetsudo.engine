@@ -83,10 +83,11 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
         teamPointsLabel = new javax.swing.JLabel();
         teamFinalStateLabel = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        teamMemberLabel = new javax.swing.JLabel();
-        teamMemberLabel2 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
         teamAgentLabel2 = new javax.swing.JLabel();
         teamAgentLabel = new javax.swing.JLabel();
+        teamMemberLabel = new javax.swing.JLabel();
+        teamMemberLabel2 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         teamColorPanel = new javax.swing.JPanel();
         teamNameLabel = new javax.swing.JLabel();
@@ -197,41 +198,62 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
 
         jPanel2.setOpaque(false);
 
-        teamMemberLabel.setText("Member Member");
-        teamMemberLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jPanel4.setOpaque(false);
 
-        teamMemberLabel2.setText("Entwickler:");
-
+        teamAgentLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         teamAgentLabel2.setText("Agenten:");
 
         teamAgentLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         teamAgentLabel.setText("0");
 
+        teamMemberLabel.setText("Member Member");
+        teamMemberLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+
+        teamMemberLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        teamMemberLabel2.setText("Entwickler:");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(teamAgentLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(teamMemberLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(teamMemberLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(teamAgentLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(teamAgentLabel2)
+                    .addComponent(teamAgentLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(teamMemberLabel2)
+                    .addComponent(teamMemberLabel))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(65, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(teamMemberLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(teamAgentLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(teamAgentLabel)
-                    .addComponent(teamMemberLabel)))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(21, Short.MAX_VALUE)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(22, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(teamAgentLabel2)
-                    .addComponent(teamAgentLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(teamMemberLabel2)
-                    .addComponent(teamMemberLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         jPanel3.setOpaque(false);
@@ -299,7 +321,7 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(teamFinalStateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
+                .addGap(60, 60, 60)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -320,6 +342,7 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
 		teamFinalStateLabel.setEnabled(false);
 		teamFinalStateLabel.setText("");
 		saveAgentsPointsLabel.setText("-");
+		teamPointsLabel.setText("-");
 		mothershipShieldPointsLabel.setText("-");
 	}
 
@@ -336,7 +359,7 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
 	}
 
 	public final static int BLINK_ANIMATION = 100;
-	public final static int COUNT_ANIMATION = 50;
+	public final static int COUNT_ANIMATION = 30;
 	private void animateEndCalculation() {
 		int tmpValue;
 		try {
@@ -451,6 +474,7 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JProgressBar mothershipFuelProgressBar;
     private javax.swing.JLabel mothershipShieldPointsLabel;
     private javax.swing.JLabel mothershipShieldPointsNameLabel;

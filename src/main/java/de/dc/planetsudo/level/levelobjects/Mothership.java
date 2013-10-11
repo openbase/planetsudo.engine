@@ -30,12 +30,13 @@ import java.util.ArrayList;
  *
  * @author divine
  */
-public class Mothership extends AbstractLevelObject implements ActionListener {
+public class Mothership extends AbstractLevelObject implements ActionListener, MothershipInterface {
 
 	public final static String FUEL_STATE_CHANGE = "FuelStateChange";
 	public final static String SHIELD_STATE_CHANGE = "ShieldStateChange";
 	public final static int MOTHERSHIP_FUEL_VOLUME = 15000;
-	public final static int AGENT_FUEL_VOLUME = 10000;
+	public final static int AGENT_FUEL_VOLUME = 9000;
+	public final static int COMMANDER_BONUS_FUEL_VOLUME = 1000;
 	public final static int MAX_AGENT_COUNT = 10; // range 0-9999
 	public final static int BURNING_MOTHERSHIP = 20;
 	public final Object AGENTLOCK = new Object();
@@ -58,7 +59,6 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 		this.agents = new HashMap<Integer, Agent>();
 		this.supportChannel = new ArrayList<Agent>();
 		this.teamMarker = new TeamMarker(team, level);
-		this.reset();
 		this.timer = new Timer(50, this);
 		this.mineCounter = 0;
 	}
@@ -92,11 +92,13 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 	private void loadAgents() {
 		GUIController.setEvent(new PropertyChangeEvent(this, GUIController.LOADING_STATE_CHANGE, stradegyAgentCount, "Lade " + team.getName() + " Agent"));
 		Agent agent;
-		final int agendFuelVolume = (AGENT_FUEL_VOLUME/stradegyAgentCount);
+		final int agendFuelVolume = (AGENT_FUEL_VOLUME / stradegyAgentCount);
+		int currentFuelVolume;
 		boolean commanderFlag = true;
 		for (int i = 0; i < stradegyAgentCount; i++) {
 			GUIController.setEvent(new PropertyChangeEvent(this, GUIController.LOADING_STEP, null, i));
-			agent = new Agent(team.getName() + "Agent", commanderFlag, agendFuelVolume, this);
+			currentFuelVolume = commanderFlag ? agendFuelVolume + COMMANDER_BONUS_FUEL_VOLUME : agendFuelVolume;
+			agent = new Agent(team.getName() + "Agent", commanderFlag, currentFuelVolume, this);
 			commanderFlag = false;
 			Agent replacedAgent;
 			synchronized (AGENTLOCK) {
@@ -155,15 +157,17 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 		}
 		changes.firePropertyChange(FUEL_STATE_CHANGE, null, this.fuel);
 	}
+	public static final Object TILL_END_WAITER = new Object();
 
 	public void waitTillGameEnd() {
 		synchronized (this) {
-			Logger.info(this, "Create " + this);
 			if (fuel == 0) {
 				return;
 			}
 			try {
-				this.wait();
+				synchronized (TILL_END_WAITER) {
+					TILL_END_WAITER.wait();
+				}
 			} catch (InterruptedException ex) {
 				Logger.error(this, "", ex);
 			}
@@ -189,7 +193,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 				nextAgent = agents.get(agentKeyArray[agentIndex]);
 			}
 			if (nextAgent != null) {
-				nextAgent.getActionPoints().addActionPoint();
+				nextAgent.addActionPoint();
 			}
 		}
 	}
@@ -253,7 +257,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 	}
 
 	public synchronized void attack() {
-		Logger.info(this, "Attack A. Mothership");
+		Logger.debug(this, "Attack Mothership");
 		if (shield > 0) {
 			shield--;
 			if (shield <= BURNING_MOTHERSHIP) {
@@ -297,15 +301,15 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 	}
 
 	@Override
-		public void actionPerformed(final ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 		if (!GameManager.getInstance().isPause()) {
 			orderFuel(Math.max(0, BURNING_MOTHERSHIP - shield), null);
 		}
 	}
+
 	public int getAgentsAtHomePoints() {
 		return ((getAgentsAtHomePosition() * 100) / agentCount);
 	}
-
 
 	public int getAgentsAtHomePosition() {
 		int counter = 0;
@@ -329,20 +333,13 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 		}
 	}
 
-	public boolean needSomeoneSupport(final Agent helper) {
+	public boolean needSomeoneSupport() {
 		synchronized (SUPPORT_CHANNEL_LOCK) {
-			switch (supportChannel.size()) {
-				case 0:
-					return false;
-				case 1:
-					return !supportChannel.contains(helper);
-				default:
-					return true;
-			}
+			return supportChannel.size() > 0;
 		}
 	}
 
-	public Agent getAgentSupportDirection(final Agent helper) throws CouldNotPerformException {
+	public Agent getAgentToSupport(final Agent helper) throws CouldNotPerformException {
 		synchronized (SUPPORT_CHANNEL_LOCK) {
 			if (supportChannel.isEmpty()) {
 				throw new CouldNotPerformException("No support necessary.");
@@ -367,33 +364,41 @@ public class Mothership extends AbstractLevelObject implements ActionListener {
 
 			// remove caller from support channel if support possible
 			if (supportCaller.getBounds().intersects(helper.getViewBounds())) {
-				supportChannel.remove(supportCaller);
-				supportCaller.setNeedSupport(false);
+				cancelSupport(supportCaller);
 			}
+			supportCaller.getLevelView().updateObjectMovement();
 			return supportCaller;
 		}
 	}
 
-	public void cancelSupport(Agent agent) {
+	public void cancelSupport(final Agent agent) {
 		synchronized (SUPPORT_CHANNEL_LOCK) {
 			supportChannel.remove(agent);
 			agent.setNeedSupport(false);
 		}
 	}
 
-	public boolean existMarker() {
+	@Override
+	public boolean isMarkerDeployed() {
 		return teamMarker.isPlaced();
 	}
 
+	@Override
 	public void clearMarker() {
 		teamMarker.clear();
 	}
 
-	public void placeMarker(final Point2D position) {
+	protected void placeMarker(final Point2D position) {
 		teamMarker.place(position);
 	}
 
-	public TeamMarker getMarker() throws CouldNotPerformException {
+	protected TeamMarker getMarker() throws CouldNotPerformException {
 		return teamMarker.getMarker();
+	}
+
+	public void setGameOverSoon() {
+		for(Agent agent : agents.values()) {
+			agent.setGameOverSoon();
+		}
 	}
 }

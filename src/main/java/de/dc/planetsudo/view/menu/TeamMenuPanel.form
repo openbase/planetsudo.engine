@@ -47,7 +47,7 @@
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="teamFinalStateLabel" min="-2" pref="79" max="-2" attributes="0"/>
-              <EmptySpace pref="72" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
               <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -245,62 +245,92 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace pref="65" max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="teamMemberLabel2" max="32767" attributes="1"/>
-                      <Component id="teamAgentLabel2" alignment="0" min="-2" max="-2" attributes="1"/>
-                  </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="teamAgentLabel" min="-2" max="-2" attributes="0"/>
-                      <Component id="teamMemberLabel" min="-2" max="-2" attributes="0"/>
-                  </Group>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace pref="21" max="32767" attributes="0"/>
+                  <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="22" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
+              <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="teamAgentLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="teamAgentLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="teamMemberLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="teamMemberLabel" alignment="3" min="-2" pref="73" max="-2" attributes="0"/>
-                  </Group>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="teamMemberLabel">
+        <Container class="javax.swing.JPanel" name="jPanel4">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Member Member"/>
-            <Property name="verticalAlignment" type="int" value="1"/>
+            <Property name="opaque" type="boolean" value="false"/>
           </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="teamMemberLabel2">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Entwickler:"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="teamAgentLabel2">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Agenten:"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="teamAgentLabel">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Dialog" size="14" style="1"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="0"/>
-          </Properties>
-        </Component>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="teamAgentLabel2" max="32767" attributes="1"/>
+                          <Component id="teamMemberLabel2" min="-2" max="-2" attributes="1"/>
+                      </Group>
+                      <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="teamMemberLabel" max="32767" attributes="0"/>
+                          <Component id="teamAgentLabel" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="teamAgentLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="teamAgentLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="teamMemberLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="teamMemberLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Component class="javax.swing.JLabel" name="teamAgentLabel2">
+              <Properties>
+                <Property name="horizontalAlignment" type="int" value="4"/>
+                <Property name="text" type="java.lang.String" value="Agenten:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="teamAgentLabel">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Dialog" size="14" style="1"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="0"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="teamMemberLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Member Member"/>
+                <Property name="verticalAlignment" type="int" value="1"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="teamMemberLabel2">
+              <Properties>
+                <Property name="horizontalAlignment" type="int" value="4"/>
+                <Property name="text" type="java.lang.String" value="Entwickler:"/>
+              </Properties>
+            </Component>
+          </SubComponents>
+        </Container>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="jPanel3">

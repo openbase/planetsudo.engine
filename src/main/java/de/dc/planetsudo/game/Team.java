@@ -45,7 +45,7 @@ public class Team {
 			this.points = 0;
 			this.changes = new PropertyChangeSupport(this);
 			this.members = new ArrayList<String>();
-			this.members.addAll(members);
+			this.members.addAll(data.getMembers());
 		} catch (CouldNotPerformException ex) {
 			throw new ConstructionException(this, ex);
 		}
@@ -113,7 +113,7 @@ public class Team {
 		return teamColor;
 	}
 
-	public ArrayList<String> getMembers() {
+	public List<String> getMembers() {
 		return members;
 	}
 

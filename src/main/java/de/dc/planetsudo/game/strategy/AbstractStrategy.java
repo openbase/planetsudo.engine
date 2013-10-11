@@ -10,8 +10,13 @@ import de.dc.planetsudo.level.levelobjects.Agent;
 import java.util.TreeMap;
 import de.dc.util.logging.Logger;
 import de.dc.planetsudo.game.GameManager;
+import de.dc.planetsudo.level.AbstractLevel;
 import de.dc.planetsudo.level.levelobjects.AgentController;
-import de.dc.planetsudo.level.levelobjects.MothershipController;
+import de.dc.planetsudo.level.levelobjects.AgentInterface;
+import de.dc.planetsudo.level.levelobjects.MothershipInterface;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 
 /**
  *
@@ -20,19 +25,12 @@ import de.dc.planetsudo.level.levelobjects.MothershipController;
 public abstract class AbstractStrategy implements Runnable {
 
 	private final Agent strategyOwner;
-	public final AgentController agent;
-	public final MothershipController mothership;
+	public final AgentInterface agent;
+	public final MothershipInterface mothership;
 	private final TreeMap<Integer, Rule> rules;
 	private final GameManager gameManager;
 	private final int agentCount;
-
-
-//	private final Agent strategyOwner;
-//	protected final AgentController agent;
-//	protected final MothershipController mothership;
-//	private final TreeMap<Integer, Rule> rules;
-//	private final GameManager gameManager;
-//	private final int agentCount;
+	private int gameSpeed;
 
 	public AbstractStrategy() {
 		this.mothership = null;
@@ -44,21 +42,30 @@ public abstract class AbstractStrategy implements Runnable {
 		Logger.info(this, null);
 	}
 
-	public AbstractStrategy(Agent agent) {
+	public AbstractStrategy(AgentInterface agent) {
 		this.gameManager = GameManager.getInstance();
-		this.strategyOwner = agent;
-		this.agent = new AgentController(strategyOwner);
-		this.mothership = this.agent.getMothership();
+		this.strategyOwner = (Agent) agent;
+		this.agent = agent;
+		this.mothership = strategyOwner.getMothership();
 		this.rules = new TreeMap<Integer, Rule>();
 		this.agentCount = loadAgentCount();
 		this.loadRules();
+		this.gameSpeed = strategyOwner.getMothership().getLevel().getGameSpeed();
+		strategyOwner.getMothership().getLevel().addPropertyChangeListener(new PropertyChangeListener() {
+
+			@Override
+			public void propertyChange(final PropertyChangeEvent evt) {
+				if(evt.getPropertyName().equals(AbstractLevel.GAME_SPEED_CHANGED)) {
+					gameSpeed = (Integer) evt.getNewValue();
+				}
+			}
+		});
 	}
 
 	@ Override
 	public void run() {
 		while(strategyOwner.isAlive()) {
 				if(gameManager.isGameOver()) {
-					//agent.kill();
 					break;
 				}
 				try {
@@ -72,8 +79,8 @@ public abstract class AbstractStrategy implements Runnable {
 					strategyOwner.kill();
 				}
 			try {
-				Thread.sleep(50);
-			} catch (InterruptedException ex) {
+				Thread.sleep(gameSpeed);
+			} catch (Exception ex) {
 				Logger.warn(this, "", ex);
 			}
 		}

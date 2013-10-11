@@ -94,7 +94,7 @@ public class AgentPanel extends AbstractLevelObjectPanel<Agent, MothershipPanel>
 			g22.transform(getBoundsTransformation(direction));
 			//g22.fillRect(3, 10, 19, 9);
 			g22.fill(TEAM_COLOR_POLYGON);
-			if(resource.needSupport() && animationFlag) {
+			if(resource.isSupportOrdered() && animationFlag) {
 //				if(((System.currentTimeMillis()/500)%500)>5) {
 					g22.setColor(COLOR_DISABLED);
 //				}

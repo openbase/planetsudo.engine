@@ -4,6 +4,7 @@
  */
 package de.dc.planetsudo.level.levelobjects;
 
+import de.dc.planetsudo.game.GameSound;
 import de.dc.planetsudo.game.Team;
 import de.dc.planetsudo.level.AbstractLevel;
 import de.dc.util.data.Point2D;
@@ -29,10 +30,14 @@ public class TeamMarker extends AbstractLevelObject {
 
 	public void place(final Point2D position) {
 		synchronized (MARKER_LOCK) {
+			if(placed && this.position.equals(position)) {
+				return;
+			}
 			this.position = position;
 			levelView.updateObjectMovement();
 			placed = true;
 		}
+		GameSound.DeployMarker.play();
 	}
 
 	public void clear() {

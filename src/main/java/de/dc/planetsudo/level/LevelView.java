@@ -11,6 +11,7 @@ import java.util.PriorityQueue;
 import java.util.TreeMap;
 import de.dc.util.logging.Logger;
 import de.dc.planetsudo.level.levelobjects.AbstractLevelObject;
+import de.dc.util.data.Point2D;
 import de.dc.util.view.engine.draw2d.AbstractResourcePanel.ObjectType;
 import java.awt.geom.Rectangle2D;
 
@@ -24,6 +25,7 @@ public class LevelView {
 	private final AbstractLevelObject levelObject;
 	private final LevelRasterElement[] levelRepresentation;
 	private final int x_base, y_base, width, height, rasterSize;
+	private Point2D lastPosition;
 
 	public LevelView(AbstractLevel level) {
 		this(level, null);
@@ -57,7 +59,7 @@ public class LevelView {
 		}
 		this.levelRepresentation = new LevelRasterElement[width * height];
 		this.initLevelRepresentation();
-		this.updateObjectMovement();
+		this.updateObjectMovement(true);
 	}
 
 	private void initLevelRepresentation() {
@@ -98,19 +100,20 @@ public class LevelView {
 		}
 	}
 
-	private LevelRasterElement calcLevelRasterElement(AbstractLevelObject levelObject) {
+	private LevelRasterElement calcLevelRasterElement(final AbstractLevelObject levelObject) {
 		Logger.debug(this, "CalcLevelRasterElement");
 		return get(((int) levelObject.getPosition().getX() - levelObject.getLevel().getX()) / rasterSize, ((int) levelObject.getPosition().getY() - levelObject.getLevel().getY()) / rasterSize);
 	}
 
-	public int getAbsolutAngle(AbstractLevelObject levelObject) {
+	public int getAbsolutAngle(final AbstractLevelObject levelObject) {
 //		Logger.info(this, "BEGIN: GetAbsoluteAngle");
-		int angle = getAngle(calcLevelRasterElement(levelObject), calcLevelRasterElement(this.levelObject));
+		final int angle = getAngle(calcLevelRasterElement(levelObject), calcLevelRasterElement(this.levelObject));
 //		Logger.info(this, "END: GetAbsoluteAngle: "+angle);
+		assert angle != -1;
 		return angle;
 	}
 
-	public int getDistance(AbstractLevelObject levelObject) {
+	public int getDistance(final AbstractLevelObject levelObject) {
 //		Logger.debug(this, "GetDistance");
 		return getDistance(calcLevelRasterElement(levelObject), calcLevelRasterElement(this.levelObject));
 	}
@@ -142,13 +145,18 @@ public class LevelView {
 		return neigbourNextToDestination.getAngle();
 	}
 
-	public final void updateObjectMovement() {
+	public final void updateObjectMovement(final boolean force) {
 		Logger.debug(this, "UpdateObjectMovement");
-		dijkstra(null, calcLevelRasterElement(levelObject), true);
+		dijkstra(null, calcLevelRasterElement(levelObject), force);
 	}
 
-	private void dijkstra2(LevelRasterElement position, LevelRasterElement destination) {
-		if (levelObject.isObjectType(ObjectType.Static)) {
+	public final void updateObjectMovement() {
+		updateObjectMovement(false);
+	}
+
+	private void dijkstra2(LevelRasterElement position, LevelRasterElement destination, final boolean force) {
+		if (!force && stablePosition()) {
+			Logger.debug(this, "Skip dijkstra.");
 			return;
 		}
 		assert !destination.isPartOfWall();
@@ -182,19 +190,24 @@ public class LevelView {
 		} while (element != position && element != null); //
 	}
 
+	private boolean stablePosition() {
+		return levelObject.getPosition().equals(lastPosition);
+	}
+
 	private void dijkstra(LevelRasterElement position, LevelRasterElement destination) {
 		dijkstra(position, destination, false);
 	}
 
-	private void dijkstra(LevelRasterElement position, LevelRasterElement destination, boolean force) {
-		if (!force && levelObject.isObjectType(ObjectType.Static)) {
-			Logger.debug(this, "Skip dijkstra of static object");
+	private synchronized void dijkstra(LevelRasterElement position, LevelRasterElement destination, boolean force) {
+		if (!force && stablePosition()) {
+			Logger.debug(this, "Skip dijkstra.");
 			return;
 		}
+		this.lastPosition = levelObject.getPosition();
 //		Logger.debug(this, "BEGINN: dijkstra new calc.");
 //		long startTime = System.currentTimeMillis();
 		// Initialisation
-		PriorityQueue<LevelRasterElement> distanceQueue = new PriorityQueue<LevelRasterElement>();
+		final PriorityQueue<LevelRasterElement> distanceQueue = new PriorityQueue<LevelRasterElement>();
 		for (LevelRasterElement element : levelRepresentation) {
 			element.reset(destination);
 		}
@@ -212,7 +225,8 @@ public class LevelView {
 				}
 			}
 			element = distanceQueue.poll();
-		} while (element != null && element != position);
+		//} while (element != null && element != position);
+			} while (element != null);
 //		Logger.debug(this, "END["+(System.currentTimeMillis()-startTime)+"]: dijkstra new calc.");
 	}
 

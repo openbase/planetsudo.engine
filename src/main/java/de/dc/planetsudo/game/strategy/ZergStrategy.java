@@ -5,6 +5,7 @@
 package de.dc.planetsudo.game.strategy;
 
 import de.dc.planetsudo.level.levelobjects.Agent;
+import de.dc.planetsudo.level.levelobjects.AgentInterface;
 import de.dc.planetsudo.level.levelobjects.Resource;
 
 /**
@@ -16,7 +17,7 @@ public class ZergStrategy extends AbstractStrategy {
 	public ZergStrategy() {
 	}
 
-	public ZergStrategy(Agent a) {
+	public ZergStrategy(AgentInterface a) {
 		super(a);
 	}
 
@@ -54,7 +55,7 @@ public class ZergStrategy extends AbstractStrategy {
 			@ Override
 			protected void action() {
 				agent.fightWithAdversaryMothership();
-				agent.placeMine();
+				agent.deployMine();
 			}
 		});
 		//-------------------------------------------->
@@ -90,7 +91,7 @@ public class ZergStrategy extends AbstractStrategy {
 
 			@ Override
 			protected void action() {
-				agent.moveOneStepInTheMothershipDirection();
+				agent.goToMothership();
 			}
 		});
 		//-------------------------------------------->
@@ -102,14 +103,14 @@ public class ZergStrategy extends AbstractStrategy {
 
 			@ Override
 			protected void action() {
-				agent.spendFuelTeamAgent((int) (agent.getFuelVolume() * 0.10));
+				agent.spendTeamAgentFuel((int) (agent.getFuelVolume() * 0.10));
 			}
 		});
 		//-------------------------------------------->
 		createRule(new Rule(500, "Dreh Bei Wand") {
 			@ Override
 			protected boolean constraint() {
-				return agent.collisionDetected();
+				return agent.isCollisionDetected();
 			}
 
 			@ Override
@@ -139,14 +140,14 @@ public class ZergStrategy extends AbstractStrategy {
 
 			@ Override
 			protected void action() {
-				agent.moveOneStepInTheMothershipDirection();
+				agent.goToMothership();
 			}
 		});
 		//-------------------------------------------->
 		createRule(new Rule(200, "Sammel Ressource") {
 			@ Override
 			protected boolean constraint() {
-				return agent.touchResource() && agent.touchResourceType() != Resource.ResourceType.Mine;
+				return agent.isTouchingResource() && agent.getResourceType() != Resource.ResourceType.Mine;
 			}
 
 			@ Override
@@ -175,7 +176,7 @@ public class ZergStrategy extends AbstractStrategy {
 
 			@ Override
 			protected void action() {
-				agent.goStraightAhead();
+				agent.go();
 			}
 		});
 	}

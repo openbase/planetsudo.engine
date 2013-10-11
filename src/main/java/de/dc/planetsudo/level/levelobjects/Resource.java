@@ -76,7 +76,7 @@ public class Resource extends AbstractLevelObject {
 		return type;
 	}
 
-	public boolean setBusy(Team team) {
+	public boolean setBusy(final Team team) {
 		if(isOwned()) {
 			return false;
 		}
@@ -103,7 +103,6 @@ public class Resource extends AbstractLevelObject {
 			conquerors.clear();
 		}
 		position = agent.getPosition();
-		setObjectType(ObjectType.Dynamic);
 		switch (type) {
 			case ExtraAgentFuel:
 				use(agent);
@@ -146,7 +145,6 @@ public class Resource extends AbstractLevelObject {
 			owner = null;
 			position = position.clone();
 		}
-		setObjectType(ObjectType.Static);
 	}
 
 	public int use(Agent agent) throws NotValidException {

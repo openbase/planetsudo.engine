@@ -32,6 +32,7 @@ import de.dc.planetsudo.view.level.levelobjects.AgentPanel;
 import de.dc.planetsudo.view.loading.LevelLoadingPanel;
 import de.dc.planetsudo.view.menu.GameContext;
 import de.dc.planetsudo.view.menu.HelpFrame;
+import de.dc.planetsudo.view.menu.SpeedControlFrame;
 import javax.swing.JFrame;
 
 /**
@@ -272,6 +273,7 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
         fileMenu = new javax.swing.JMenu();
         finalCalculationMenuItem = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem3 = new javax.swing.JMenuItem();
         startPauseMenuItem = new javax.swing.JMenuItem();
         stopMenuItem = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
@@ -283,6 +285,7 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
         toolMenu = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
         createTeamMenuItem = new javax.swing.JMenuItem();
         jCheckBoxMenuItem2 = new javax.swing.JCheckBoxMenuItem();
         helpMenu = new javax.swing.JMenu();
@@ -318,6 +321,15 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
         });
         fileMenu.add(finalCalculationMenuItem);
         fileMenu.add(jSeparator3);
+
+        jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_BACK_SPACE, 0));
+        jMenuItem3.setText("Leite Spielende ein");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        fileMenu.add(jMenuItem3);
 
         startPauseMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SPACE, 0));
         startPauseMenuItem.setText("Start");
@@ -390,6 +402,15 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 
         toolMenu.setText("Einstellungen");
 
+        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem2.setText("Spielgeschwindigkeit");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        toolMenu.add(jMenuItem2);
+
         createTeamMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_MASK));
         createTeamMenuItem.setText("Team Erstellen");
         createTeamMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -442,7 +463,7 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
+            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
         );
 
         pack();
@@ -502,6 +523,14 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
         CreateTeamFrame.display();
     }//GEN-LAST:event_createTeamMenuItemActionPerformed
 
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        SpeedControlFrame.display();
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        GameManager.getInstance().setGameOverSoon();
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
 	public static LevelView levelView;
     /**
     * @param args the command line arguments
@@ -532,6 +561,8 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
     private javax.swing.JFrame jFrame1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;

@@ -24,14 +24,13 @@ import de.dc.util.view.engine.draw2d.AbstractResourcePanel.ObjectType;
  *
  * @author divineactionPoints.getActionPoint();
  */
-public class Agent extends AbstractLevelObject {
+public class Agent extends AbstractLevelObject implements AgentInterface {
 
 //	public final static int DEFAULT_START_FUEL = 2000;
 	//public final static int DEFAULT_START_FUEL = 1000;
 	public final static int AGENT_SIZE = 50;
 	public final static int AGENT_VIEW_DISTANCE = AGENT_SIZE;
 	public final static int DEFAULT_AGENT_SPEED = 6;
-
 	private final int fuelVolume;
 	protected final Mothership mothership;
 	private final ActionPoints actionPoints;
@@ -45,6 +44,7 @@ public class Agent extends AbstractLevelObject {
 	private boolean commanderFlag;
 	private String lastAction;
 	private AbstractLevelObject adversaryObject;
+	private boolean gameOverSoon;
 
 	public Agent(final String name, final boolean commanderFlag, final int fuelVolume, final Mothership mothership) {
 		super(mothership.registerAgent(), name, ObjectType.Dynamic, mothership.getLevel(), mothership.getAgentHomePosition(), AGENT_SIZE, AGENT_SIZE, ObjectShape.Oval);
@@ -56,6 +56,7 @@ public class Agent extends AbstractLevelObject {
 		this.actionPoints = new ActionPoints(this);
 		this.alive = true;
 		this.attacked = false;
+		this.gameOverSoon = false;
 		if (id == -1) { // check if valid
 			kill();
 			return;
@@ -65,6 +66,10 @@ public class Agent extends AbstractLevelObject {
 
 	public int getFuelVolume() {
 		return fuelVolume;
+	}
+
+	public int getAngle() {
+		return direction.getAngle();
 	}
 
 	public Direction2D getDirection() {
@@ -80,12 +85,13 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	protected void spendFuel(int value) {
-		fuel = Math.min(fuelVolume, fuel +value);
+		fuel = Math.min(fuelVolume, fuel + value);
 	}
 
 	@ Override
 	protected void reset() {
 		fuel = fuelVolume;
+		gameOverSoon = false;
 		position = mothership.getAgentHomePosition();
 		hasMine = mothership.orderMine();
 		try {
@@ -101,8 +107,13 @@ public class Agent extends AbstractLevelObject {
 		return new Rectangle2D.Double(point.getX() - AGENT_VIEW_DISTANCE, point.getY() - AGENT_VIEW_DISTANCE, AGENT_VIEW_DISTANCE * 2, AGENT_VIEW_DISTANCE * 2);
 	}
 
-	public ActionPoints getActionPoints() {
-		return actionPoints;
+	@Override
+	public int getActionPoints() {
+		return actionPoints.getActionPoints();
+	}
+
+	protected void addActionPoint() {
+		actionPoints.addActionPoint();
 	}
 
 	public int getFuel() {
@@ -125,7 +136,7 @@ public class Agent extends AbstractLevelObject {
 		return hasMine;
 	}
 
-	public synchronized void placeMine() {
+	public synchronized void deployMine() {
 		actionPoints.getActionPoint(50);
 		if (useFuel(5) == 5 || hasMine) {
 			Resource newMine = new Resource(level.generateNewResourceID(), level, this);
@@ -144,9 +155,7 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	private void disable() {
-		if (isCarringResource()) {
-			resource.release();
-		}
+		releaseResource();
 		adversaryObject = null;
 		isHelping = false;
 	}
@@ -171,6 +180,13 @@ public class Agent extends AbstractLevelObject {
 		return !isAlive() || !hasFuel();
 	}
 
+	public boolean isCarringResource(final ResourceType type) {
+		if (!isCarringResource()) {
+			return resource.getType().equals(type);
+		}
+		return false;
+	}
+
 	public boolean isCarringResource() {
 		return resource != null;
 	}
@@ -179,8 +195,14 @@ public class Agent extends AbstractLevelObject {
 		return mothership;
 	}
 
+	/**
+	 * Wenn der Agent eine Resource trägt, lässt er sie wieder fallen.
+	 */
 	public void releaseResource() {
-		resource.release();
+		if (isCarringResource()) {
+			resource.release();
+			resource = null;
+		}
 	}
 
 	protected Resource getResource() {
@@ -204,7 +226,7 @@ public class Agent extends AbstractLevelObject {
 		return alive;
 	}
 
-	public boolean collisionDetected() {
+	public boolean isCollisionDetected() {
 		return level.collisionDetected(getFutureBounds());
 	}
 
@@ -221,7 +243,7 @@ public class Agent extends AbstractLevelObject {
 		// ############## Load strategy #########################
 		Constructor<? extends AbstractStrategy> constructor;
 		try {
-			constructor = mothership.getTeam().getStrategy().getConstructor(this.getClass());
+			constructor = mothership.getTeam().getStrategy().getConstructor(AgentInterface.class);
 		} catch (Exception ex) {
 			Logger.error(this, "Could not load strategy!", ex);
 			kill();
@@ -239,7 +261,7 @@ public class Agent extends AbstractLevelObject {
 		// ######################################################
 	}
 
-	public void goStraightAhead() {
+	public void go() {
 		if (isCarringResource()) {
 			actionPoints.getActionPoint(8);
 		} else {
@@ -263,6 +285,21 @@ public class Agent extends AbstractLevelObject {
 		}
 	}
 
+	public void goLeft(final int beta) {
+		go();
+		if (hasFuel()) {
+			direction.setAngle(direction.getAngle() - beta);
+		}
+
+	}
+
+	public void goRight(final int beta) {
+		go();
+		if (hasFuel()) {
+			direction.setAngle(direction.getAngle() + beta);
+		}
+	}
+
 	public void turnLeft(final int beta) {
 		actionPoints.getActionPoint();
 		if (useFuel()) {
@@ -278,26 +315,35 @@ public class Agent extends AbstractLevelObject {
 	}
 
 	public void turnRandom() {
+		turnRandom(360);
+	}
+
+	public void turnRandom(int opening) {
 		actionPoints.getActionPoint();
 		try {
 			if (useFuel()) {
-				direction.setAngle(RandomGenerator.getRandom(1, 360));
+				final int randomAngle = RandomGenerator.getRandom(0, opening) - (opening / 2);
+				direction.setAngle(direction.getAngle() + randomAngle);
 			}
 		} catch (NotValidException ex) {
 			Logger.error(this, "Could not turn random.", ex);
 		}
 	}
 
-	public void moveOneStepInTheMothershipDirection() {
+	public void goToMothership() {
 		actionPoints.getActionPoint();
-		direction.setAngle(mothership.getLevelView().getAbsolutAngle(this));
-		goStraightAhead();
+		go();
+		if (hasFuel()) {
+			direction.setAngle(mothership.getLevelView().getAbsolutAngle(this));
+		}
 	}
 
+	@Override
 	public boolean isAtMothership() {
 		return mothership.getBounds().contains(getBounds());
 	}
 
+	@Override
 	public void orderFuel(final int percent) {
 		actionPoints.getActionPoint(20);
 		if (percent < 0 || percent > 100) {
@@ -312,10 +358,12 @@ public class Agent extends AbstractLevelObject {
 		GameSound.RechargeFuel.play();
 	}
 
+	@Override
 	public boolean seeResource() {
 		return level.getCloseResource(this) != null;
 	}
 
+	@Override
 	public void goToResource() {
 		actionPoints.getActionPoint();
 		if (useFuel()) {
@@ -327,6 +375,7 @@ public class Agent extends AbstractLevelObject {
 		}
 	}
 
+	@Override
 	public void deliverResourceToMothership() {
 		actionPoints.getActionPoint(10);
 		try {
@@ -339,34 +388,47 @@ public class Agent extends AbstractLevelObject {
 		}
 	}
 
-	public boolean touchResourceType(Resource.ResourceType type) {
-		return touchResourceType() == type;
+	@Override
+	public boolean isTouchingResource(Resource.ResourceType type) {
+		return getResourceType() == type;
 	}
 
-	public Resource.ResourceType touchResourceType() {
+	@Override
+	public void searchResources() {
+		final int startAngle = direction.getAngle();
+		for (int i = 0; i < 18; i++) {
+			actionPoints.getActionPoint(10);
+			if (seeResource()) {
+				return;
+			}
+			turnLeft(20);
+		}
+	}
+
+	@Override
+	public Resource.ResourceType getResourceType() {
 		final Resource tmpResource = level.getTouchableResource(this);
 		if (tmpResource == null) {
-			Logger.warn(this, "No resource in range!");
 			return Resource.ResourceType.Unknown;
 		}
 
-		if(tmpResource.getType() == ResourceType.Mine && tmpResource.wasPlacedByTeam() != getTeam()) {
+		if (tmpResource.getType() == ResourceType.Mine && tmpResource.wasPlacedByTeam() != getTeam()) {
 			return ResourceType.ExtremPoint;
 		}
 		return tmpResource.getType();
 	}
 
-	public boolean touchResource() {
+	@Override
+	public boolean isTouchingResource() {
 		return level.getTouchableResource(this) != null;
 	}
 
+	@Override
 	public void pickupResource() {
 		actionPoints.getActionPoint(10);
 		try {
 			if (useFuel()) {
-				if (isCarringResource()) {
-					getResource().release();
-				}
+				releaseResource();
 				final Resource resourceToCollect = level.getTouchableResource(this);
 				if (resourceToCollect != null && resourceToCollect.setBusy(getTeam())) {
 					direction.turnTo(position, resourceToCollect.position);
@@ -387,15 +449,27 @@ public class Agent extends AbstractLevelObject {
 		}
 	}
 
+	/**
+	 * Zeigt an, ob der Agent einen feindlichen Agenten sieht.
+	 *
+	 * @return true oder false.
+	 */
+	@Override
 	public boolean seeAdversaryAgent() {
 		return level.getAdversaryAgent(this) != null;
 	}
 
+	/**
+	 * Zeigt an, ob der Agent das feindliche Mutterschiff sieht.
+	 *
+	 * @return true oder false.
+	 */
+	@Override
 	public boolean seeAdversaryMothership() {
 		return level.getAdversaryMothership(this) != null;
 	}
-	
 
+	@Override
 	public boolean isUnderAttack() {
 		final boolean oldattackedValue;
 		oldattackedValue = attacked;
@@ -404,6 +478,11 @@ public class Agent extends AbstractLevelObject {
 	}
 	private int catchedfuel;
 
+	/**
+	 * Der Befehl zum bek&auml;mpfen eines feindlichen Agenten. Aktionspunkte:
+	 * 20 Treibstoff: 1
+	 */
+	@Override
 	public void fightWithAdversaryAgent() {
 		actionPoints.getActionPoint();
 		if (useFuel()) {
@@ -422,6 +501,11 @@ public class Agent extends AbstractLevelObject {
 		}
 	}
 
+	/**
+	 * Der Befehl zum Angreifen des feindlichen Mutterschiffs. Aktionspunkte: 10
+	 * Treibstoff: 1
+	 */
+	@Override
 	public void fightWithAdversaryMothership() {
 		actionPoints.getActionPoint();
 		if (useFuel()) {
@@ -431,10 +515,17 @@ public class Agent extends AbstractLevelObject {
 				actionPoints.getActionPoint(30);
 				direction.turnTo(position, adversaryMothership.position);
 				adversaryMothership.attack();
+				GameSound.Laser.play();
 			}
 		}
 	}
 
+	/**
+	 * Abfrage, ob der Agent sich im Kampf befindet oder nicht.
+	 *
+	 * @return true oder false.
+	 */
+	@Override
 	public boolean isFighting() {
 		return adversaryObject != null;
 	}
@@ -445,13 +536,28 @@ public class Agent extends AbstractLevelObject {
 		return adversary;
 	}
 
+	/**
+	 * Zeigt an, ob sich in der N&auml;he des Agenten ein Teammitglied ohne
+	 * Treibstoff befindet.
+	 *
+	 * @return true oder false.
+	 */
+	@Override
 	public boolean seeLostTeamAgent() {
 		return level.getLostTeamAgent(this) != null;
 	}
 	private boolean isHelping = false;
 	private AbstractLevelObject helpLevelObject = null;
 
-	public void spendFuelTeamAgent(int value) {
+	/**
+	 * Der Agent spendet einem Teammitglied
+	 *
+	 * @param value Treibstoff. Ein Agent ist Bewegungsunf&auml;hig, solange er
+	 * Treibstoff spendet! Aktionspunkte: value*2 Treibstoff: 1 + value
+	 * @param value Der zu spendende Treibstoff.
+	 */
+	@Override
+	public void spendTeamAgentFuel(int value) {
 		if (useFuel()) {
 			Agent teamAgent = level.getLostTeamAgent(this);
 			if (teamAgent != null) {
@@ -476,6 +582,11 @@ public class Agent extends AbstractLevelObject {
 		return helpLevelObject;
 	}
 
+	/**
+	 * Der Befehl zum reparieren des eigenen Mutterschiffs. Hierzu muss sich der
+	 * Agent am Mutterschiff befinden! Aktionspunkte: 50 Treibstoff: 1
+	 */
+	@Override
 	public void repairMothership() {
 		actionPoints.getActionPoint(30);
 		if (useFuel()) {
@@ -483,27 +594,32 @@ public class Agent extends AbstractLevelObject {
 		}
 	}
 
-	public boolean needSomeoneSupport() {
-		return mothership.needSomeoneSupport(this);
-	}
-
+	@Override
 	public void orderSupport() {
-		if(!needSupport) {
+		actionPoints.getActionPoint(5);
+		if (!needSupport) {
 			mothership.callForSupport(this);
 			GameSound.CallForSupport.play();
 		}
 	}
 
-	public void goToSuppordAgent() {
+	@Override
+	public void goToSupportAgent() {
 		try {
-			direction.setAngle(mothership.getAgentSupportDirection(this).getLevelView().getAbsolutAngle(this));
-			goStraightAhead();
+			Agent agentToSupport = mothership.getAgentToSupport(this);
+			if (agentToSupport != this) {
+				go();
+				direction.setAngle(agentToSupport.getLevelView().getAbsolutAngle(this));
+			} else {
+				throw new CouldNotPerformException("Could not support himself!");
+			}
 		} catch (CouldNotPerformException ex) {
 			Logger.warn(this, "Could not goToSuppordAgent!", ex);
 		}
 	}
 
-	public boolean needSupport() {
+	@Override
+	public boolean isSupportOrdered() {
 		return needSupport;
 	}
 
@@ -511,31 +627,49 @@ public class Agent extends AbstractLevelObject {
 		this.needSupport = needSupport;
 	}
 
+	@Override
 	public void cancelSupport() {
-		if(needSupport) {
+		if (needSupport) {
 			mothership.cancelSupport(this);
 		}
 	}
 
-	public void placeMarker() {
+	@Override
+	public void deployMarker() {
 		mothership.placeMarker(position.clone());
-		GameSound.DeployMarker.play();
 	}
 
 	public void goToMarker() {
 		try {
+			go();
 			direction.setAngle(mothership.getMarker().getLevelView().getAbsolutAngle(this));
-			goStraightAhead();
 		} catch (CouldNotPerformException ex) {
 			Logger.warn(this, "Could not goToMarker!", ex);
 		}
 	}
 
+	@Override
 	public boolean isCommander() {
 		return commanderFlag;
 	}
 
-	protected boolean seeMarker() {
+	@Override
+	public boolean seeMarker() {
 		return mothership.getTeamMarker().seeMarker(this);
+	}
+
+	@Override
+	public int getTeamPoints() {
+		return mothership.getTeam().getPoints();
+	}
+
+	@Override
+	public boolean isGameOverSoon() {
+		return gameOverSoon;
+	}
+
+	protected void setGameOverSoon() {
+		this.gameOverSoon = true;
+		Logger.info(this, "Game over soon!");
 	}
 }

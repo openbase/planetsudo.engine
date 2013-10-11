@@ -28,13 +28,41 @@ public class TeamMarkerPanel extends AbstractLevelObjectPanel<TeamMarker, LevelP
 		resource.addPropertyChangeListener(this);
 	}
 	private Graphics2D gg2;
+	private int animationCounter = 0;
 
 	@Override
 	protected void paintComponent(Graphics2D g2, Graphics2D gl) {
 		if (resource.isPlaced()) {
 			boundingBox = resource.getBounds();
-			g2.setColor(resource.getTeam().getTeamColor());
-			g2.drawOval((int) boundingBox.getX(), (int) boundingBox.getY(), (int) boundingBox.getWidth(), (int) boundingBox.getHeight());
+
+			switch (animationCounter) {
+				case 0:
+					g2.setColor(resource.getTeam().getTeamColor());
+					g2.fillOval((int) boundingBox.getCenterX() - 4, (int) boundingBox.getCenterY() - 4, (int) 8, (int) 8);
+					g2.setColor(Color.WHITE);
+					break;
+				case 1:
+					g2.setColor(resource.getTeam().getTeamColor());
+					g2.drawOval((int) boundingBox.getCenterX() - 8, (int) boundingBox.getCenterY() - 8, 16, 16);
+					g2.setColor(Color.WHITE);
+					g2.fillOval((int) boundingBox.getCenterX() - 4, (int) boundingBox.getCenterY() - 4, (int) 8, (int) 8);
+					//g2.fillOval((int) boundingBox.getCenterX() - 16, (int) boundingBox.getCenterY() - 16, 32, 32);
+					break;
+				case 2:
+					g2.setColor(resource.getTeam().getTeamColor());
+					g2.drawOval((int) boundingBox.getCenterX() - 16, (int) boundingBox.getCenterY() - 16, 32, 32);
+					g2.fillOval((int) boundingBox.getCenterX() - 4, (int) boundingBox.getCenterY() - 4, (int) 8, (int) 8);
+					g2.setColor(Color.WHITE);
+					g2.drawOval((int) boundingBox.getCenterX() - 8, (int) boundingBox.getCenterY() - 8, 16, 16);
+
+					break;
+			}
+
+			//g2.drawOval((int) boundingBox.getX(), (int) boundingBox.getY(), (int) boundingBox.getWidth(), (int) boundingBox.getHeight());
+			animationCounter++;
+			if (animationCounter > 2) {
+				animationCounter = 0;
+			}
 		}
 	}
 
