@@ -35,7 +35,7 @@ public class StrategieNoxus extends AbstractStrategy {
 		createRule(new Rule(99, "Kollision!") {
 			@ Override
 			protected boolean constraint() {
-				return agent.collisionDetected();
+				return agent.isCollisionDetected();
 			}
 			@ Override
 			protected void action() {
@@ -74,7 +74,7 @@ public class StrategieNoxus extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-				agent.moveOneStepInTheMothershipDirection();
+				agent.goToMothership();
 			}
 		});
 		//-------------------------------------------->
@@ -98,7 +98,7 @@ public class StrategieNoxus extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-				agent.moveOneStepInTheMothershipDirection();
+				agent.goToMothership();
 			}
 		});
 		//-------------------------------------------->
@@ -134,7 +134,7 @@ public class StrategieNoxus extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-				agent.placeMine();
+				agent.deployMine();
 			}
 		});
 		//-------------------------------------------->
@@ -146,7 +146,7 @@ public class StrategieNoxus extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-				agent.placeMarker();
+				agent.deployMarker();
 				agent.fightWithAdversaryMothership();
 			}
 		});
@@ -155,7 +155,7 @@ public class StrategieNoxus extends AbstractStrategy {
 		createRule(new Rule(35, "Notkanal schließen.") {
 			@ Override
 			protected boolean constraint() {
-				return agent.supportOrdered() && agent.getFuelInPercent() >=7;
+				return agent.isSupportOrdered() && agent.getFuelInPercent() >=7;
 			}
 			@ Override
 			protected void action() {
@@ -183,7 +183,7 @@ public class StrategieNoxus extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-				agent.spendFuelTeamAgent(7);
+				agent.spendTeamAgentFuel(7);
 			}
 		});
 		//-------------------------------------------->
@@ -195,7 +195,7 @@ public class StrategieNoxus extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-				agent.goToSuppordAgent();
+				agent.goToSupportAgent();
 			}
 		});
 		//-------------------------------------------->
@@ -220,19 +220,19 @@ public class StrategieNoxus extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-				agent.moveOneStepInTheMothershipDirection();
+				agent.goToMothership();
 			}
 		});
 		//-------------------------------------------->
 		//-------------------------------------------->
-		createRule(new Rule(22, "Resource aufheben!") {
+		createRule(new Rule(22, "Mine!") {
 			@ Override
 			protected boolean constraint() {
-				return agent.touchResource() && (agent.touchResourceType(Resource.ResourceType.Mine) || agent.touchResourceType(Resource.ResourceType.ExtremPoint));
+				return (agent.isTouchingResource(Resource.ResourceType.Mine) || agent.isTouchingResource(Resource.ResourceType.ExtremPoint));
 			}
 			@ Override
 			protected void action() {
-				agent.goStraightAhead();
+				agent.go();
 			}
 		});
 		//-------------------------------------------->
@@ -240,7 +240,7 @@ public class StrategieNoxus extends AbstractStrategy {
 		createRule(new Rule(21, "Resource aufheben!") {
 			@ Override
 			protected boolean constraint() {
-				return agent.touchResource() && !agent.touchResourceType(Resource.ResourceType.Mine) && !agent.touchResourceType(Resource.ResourceType.ExtremPoint);
+				return agent.isTouchingResource() && !agent.isTouchingResource(Resource.ResourceType.Mine) && !agent.isTouchingResource(Resource.ResourceType.ExtremPoint);
 			}
 			@ Override
 			protected void action() {
@@ -288,7 +288,7 @@ public class StrategieNoxus extends AbstractStrategy {
 		createRule(new Rule(1, "Bewege zu Marker...") {
 			@ Override
 			protected boolean constraint() {
-				return mothership.existMarker();
+				return mothership.isMarkerDeployed();
 			}
 			@ Override
 			protected void action() {
@@ -304,7 +304,7 @@ public class StrategieNoxus extends AbstractStrategy {
 			}
 			@ Override
 			protected void action() {
-				agent.goStraightAhead();
+				agent.go();
 			}
 		});
 		//-------------------------------------------->

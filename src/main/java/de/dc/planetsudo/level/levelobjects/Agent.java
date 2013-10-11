@@ -195,9 +195,6 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
 		return mothership;
 	}
 
-	/**
-	 * Wenn der Agent eine Resource trägt, lässt er sie wieder fallen.
-	 */
 	public void releaseResource() {
 		if (isCarringResource()) {
 			resource.release();

@@ -201,6 +201,9 @@ public interface AgentInterface {
 	 */
 	void pickupResource();
 
+	/**
+	 * Wenn der Agent eine Resource trägt, lässt er sie wieder fallen.
+	 */
 	void releaseResource();
 
 	void repairMothership();
