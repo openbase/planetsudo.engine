@@ -22,12 +22,16 @@ package de.dc.planetsudo.level.levelobjects;
  */
 public interface MothershipInterface {
 
+	/**
+	 * Löscht den Marker sofern dieser gesetzt wurde.
+	 */
 	void clearMarker();
 
 	/**
 	 * Gibt zur&uuml;ck, wie viele Agenten das Team hat.
+	 * @return Anzahl der Agenten
 	 */
-	void getAgentCount();
+	int getAgentCount();
 
 	/**
 	 * Gibt die Schildst&auml;rke des Mutterschiffs wieder.
@@ -37,7 +41,7 @@ public interface MothershipInterface {
 
 	/**
 	 * Gibt zur&uuml;ck, ob das Mutterschiff Treibstoff hat.
-	 * @return Einen der Resourcentypen: Unknown, Normal, DoublePoints, ExtremPoint, ExtraAgentFuel, ExtraMothershipFuel, Bomb
+	 * @return true oder false.
 	 */
 	boolean hasFuel();
 
@@ -53,14 +57,22 @@ public interface MothershipInterface {
 	 */
 	boolean isDamaged();
 
+	/**
+	 * Gibt zurück ob der Marker gesetzt wurde.
+	 * @return true oder false.
+	 */
 	boolean isMarkerDeployed();
 
 	/**
-	 * Gibt zur&uuml;ck, ob das Mutterschiff maximal besch&auml;digt wurde. (Der Schutzschild is komplett zerst&ouml;rt)
+	 * Gibt zur&uuml;ck, ob das Mutterschiff maximal besch&auml;digt wurde. (Das Schutzschild is komplett zerst&ouml;rt)
 	 * @return true oder false.
 	 */
 	boolean isMaxDamaged();
 
+	/**
+	 * Gibt zurück ob ein Agent des eigenen Teams Hilfe benötigt.
+	 * @return true oder false.
+	 */
 	boolean needSomeoneSupport();
 
 }

@@ -227,9 +227,10 @@ public class Mothership extends AbstractLevelObject implements ActionListener, M
 		return teamMarker;
 	}
 
-	public void getAgentCount() {
+	@Override
+	public int getAgentCount() {
 		synchronized (AGENTLOCK) {
-			agents.size();
+			return agents.size();
 		}
 	}
 

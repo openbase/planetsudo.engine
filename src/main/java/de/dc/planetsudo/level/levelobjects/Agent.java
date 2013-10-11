@@ -594,6 +594,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
 
 	@Override
 	public void cancelSupport() {
+		actionPoints.getActionPoint(5);
 		if (needSupport) {
 			mothership.cancelSupport(this);
 		}
@@ -601,7 +602,10 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
 
 	@Override
 	public void deployMarker() {
-		mothership.placeMarker(position.clone());
+		actionPoints.getActionPoint(5);
+		if(useFuel()) {
+			mothership.placeMarker(position.clone());
+		}
 	}
 
 	public void goToMarker() {
