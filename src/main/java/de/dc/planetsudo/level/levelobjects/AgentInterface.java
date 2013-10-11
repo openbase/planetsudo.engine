@@ -21,7 +21,10 @@ package de.dc.planetsudo.level.levelobjects;
  * @author Divine <DivineThreepwood@gmail.com>
  */
 public interface AgentInterface {
-
+	
+	/**
+	* Der Angeforderte Support des Agenten wird beendet.
+	*/
 	void cancelSupport();
 
 	/**
@@ -30,7 +33,11 @@ public interface AgentInterface {
 	 * Treibstoff: 1
 	 */
 	void deliverResourceToMothership();
-
+	
+	/**
+	 * Eine Markierung, sichtbar für das ganze Team wird gesetzt.
+	 * Alle Agenten des Teams können sich auf diesen zubewegen.
+	 */
 	void deployMarker();
 
 	/**
@@ -39,13 +46,17 @@ public interface AgentInterface {
 	 * Treibstoff: 1
 	 */
 	void deployMine();
+	
 	/**
-	 * Der Befehl zum bek&auml;mpfen eines feindlichen Agenten. Aktionspunkte:
-	 * 20 Treibstoff: 1
+	 * Der Befehl zum bek&auml;mpfen eines feindlichen Agenten.
+	 * Aktionspunkte: 20
+	 * Treibstoff: 1
 	 */
 	void fightWithAdversaryAgent();
+	
 	/**
-	 * Der Befehl zum Angreifen des feindlichen Mutterschiffs. Aktionspunkte: 10
+	 * Der Befehl zum Angreifen des feindlichen Mutterschiffs.
+	 * Aktionspunkte: 10
 	 * Treibstoff: 1
 	 */
 	void fightWithAdversaryMothership();
@@ -78,6 +89,10 @@ public interface AgentInterface {
 	 */
 	int getFuelInPercent();
 
+	/**
+	 * Gibt das Maximalvolumen vom Treibstoff eines Agenten an.
+	 * @return 
+	 */
 	int getFuelVolume();
 
 	/**
@@ -99,11 +114,24 @@ public interface AgentInterface {
 	 * Treibstoff wenn der Agent eine Resource tr&auml;gt: 2
 	 */
 	void go();
-
+	
+	/**
+	 * Der Agent dreht sich um 90° nach links und bewegt sich anschließend geradeaus.
+	 * @param beta 
+	 */
 	void goLeft(int beta);
 
+	/**
+	 * Der Agent dreht sich um 90° nach rechts und bewegt sich anschließend geradeaus.
+	 * @param beta 
+	 */
 	void goRight(int beta);
-
+	
+	/**
+	 * Der Agent bewegt sich in Richtung des Markers, falls dieser gesetzt wurde.
+	 * Hierbei wird ein Weg berechnet, welcher auf k&uuml;rzester Distanz zum Mutterschiff f&uuml;hrt.
+	 * Um Hindernisse bewegt sich der Agent hierbei automatisch herum.
+	 */
 	void goToMarker();
 
 	/**
@@ -155,6 +183,11 @@ public interface AgentInterface {
 	 */
 	boolean isCarringResource();
 
+	/**
+	 * Gibt an, welchen Typ von Resource der Agent trägt.
+	 * @param type
+	 * @return 
+	 */
 	boolean isCarringResource(final Resource.ResourceType type);
 
 	/**
@@ -163,6 +196,10 @@ public interface AgentInterface {
 	 */
 	boolean isCollisionDetected();
 
+	/**
+	 * Gibt zurück, ob der Agent Commanderstatus hat oder nicht.
+	 * @return true oder false
+	 */
 	boolean isCommander();
 
 	/**
@@ -177,8 +214,16 @@ public interface AgentInterface {
 	 */
 	boolean isFighting();
 
+	/**
+	 * Abfrage, ob gerade Support von irgendeinem Agenten geordert wird.
+	 * @return true oder false
+	 */
 	boolean isSupportOrdered();
 
+	/**
+	 * Diese Abfrage checkt das bevorstehende Ende des Spiels. Wenn es bald vorbei ist gibt sie true zurück, dann sollte man schleunigst zum Mutterschiff.
+	 * @return true oder false
+	 */
 	boolean isGameOverSoon();
 
 	/**
@@ -187,6 +232,11 @@ public interface AgentInterface {
 	 */
 	boolean isTouchingResource();
 
+	/**
+	 * Gibt zurück, welche Art von Resource der Agent trägt.
+	 * @param type
+	 * @return 
+	 */
 	boolean isTouchingResource(final Resource.ResourceType type);
 
 	/**
@@ -202,6 +252,9 @@ public interface AgentInterface {
 	 */
 	void orderFuel(int percent);
 
+	/**
+	 * Befehl zum Aussenden des Hilferufs.
+	 */
 	void orderSupport();
 
 	/**
@@ -221,6 +274,9 @@ public interface AgentInterface {
 	 */
 	void repairMothership();
 
+	/**
+	 * Der Agent dreht sich einmal im Kreis. Sieht er während der Drehung eine Resource, unterbricht er und schaut in ihre Richtung.
+	 */
 	void searchResources();
 	/**
 	 * Zeigt an, ob der Agent einen feindlichen Agenten sieht.
@@ -242,6 +298,10 @@ public interface AgentInterface {
 	 */
 	boolean seeLostTeamAgent();
 
+	/**
+	 * Gibt zurück, ob der Agent den Marker sieht.
+	 * @return true oder false
+	 */
 	boolean seeMarker();
 
 	/**
@@ -280,6 +340,10 @@ public interface AgentInterface {
 	 */
 	void turnRandom();
 
+	/**
+	 * Der Agent dreht sich in eine beliebige, zufällige Richtung.
+	 * @param opening 
+	 */
 	void turnRandom(final int opening);
 
 	/**
