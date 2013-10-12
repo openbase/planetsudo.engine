@@ -367,7 +367,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener, M
 			if (supportCaller.getBounds().intersects(helper.getViewBounds())) {
 				cancelSupport(supportCaller);
 			}
-			supportCaller.getLevelView().updateObjectMovement();
+			supportCaller.getLevelView().updateObjectMovement(true);
 			return supportCaller;
 		}
 	}
