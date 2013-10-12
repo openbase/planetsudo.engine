@@ -196,7 +196,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
 	}
 
 	public void releaseResource() {
-		if (isCarringResource()) {
+		if (isCarringResource() || resource != null) {
 			resource.release();
 			resource = null;
 		}

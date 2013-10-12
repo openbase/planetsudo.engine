@@ -246,8 +246,13 @@ public class Mothership extends AbstractLevelObject implements ActionListener, M
 
 	protected void passResource(final Agent agent) throws NotValidException {
 		final Resource resource = agent.getResource();
-		if (resource != null && getBounds().contains(agent.getBounds())) {
-			team.addPoints(resource.use(agent));
+		if (resource != null){
+			if(getBounds().contains(agent.getBounds())) {
+				team.addPoints(resource.use(agent));
+			} else {
+				resource.release();
+			}
+			
 		}
 	}
 
