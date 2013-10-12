@@ -36,6 +36,8 @@ public enum GameSound {
 	MothershipUnderAttack("sound/attack_mothership.wav"),
 	DeliverResource("sound/deliver_resource.wav"),
 	Laser("sound/lasershot.wav"),
+	End("sound/end.wav"),
+	EndSoon("sound/end_soon.wav"),
 	AgentDisabled("sound/agent_empty_fuel.wav");
 
 	private final AudioData audioData;

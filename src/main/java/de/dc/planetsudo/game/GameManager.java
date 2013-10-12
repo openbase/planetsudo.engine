@@ -167,6 +167,7 @@ public class GameManager implements Runnable {
 	public void setGameOverSoon() {
 		try {
 			level.setGameOverSoon();
+			GameSound.EndSoon.play();
 		} catch (Exception ex) {
 			Logger.warn(this, "Could not init game over.");
 		}
@@ -180,6 +181,7 @@ public class GameManager implements Runnable {
 			gameOver = false;
 		} else if (state == GameState.Configuration) {
 			gameOver = true;
+
 		}
 
 	}

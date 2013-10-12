@@ -65,9 +65,9 @@ public class Revolution extends AbstractLevel {
 		ResourcePlacement[] resourcePlacement = new ResourcePlacement[5];
 		resourcePlacement[0] = new ResourceRandomRectangle(800, 0, 200, 200, 20, ResourceType.DoublePoints);
                 resourcePlacement[1] = new ResourceRandomRectangle(0, 800, 200, 200, 20, ResourceType.DoublePoints);
-		resourcePlacement[2] = new ResourceRandomRectangle(350, 400, 300, 200, 20, ResourceType.ExtremPoint);
-		resourcePlacement[3] = new ResourceRandomRectangle(350, 400, 300, 200, 10, ResourceType.ExtraAgentFuel);
-		resourcePlacement[4] = new ResourceRandomRectangle(350, 400, 300, 200, 10, ResourceType.ExtraMothershipFuel);
+		resourcePlacement[2] = new ResourceRandomRectangle(350, 450, 300, 100, 20, ResourceType.ExtremPoint);
+		resourcePlacement[3] = new ResourceRandomRectangle(350, 450, 300, 100, 10, ResourceType.ExtraAgentFuel);
+		resourcePlacement[4] = new ResourceRandomRectangle(350, 450, 300, 100, 10, ResourceType.ExtraMothershipFuel);
 		return resourcePlacement;
 	}
 

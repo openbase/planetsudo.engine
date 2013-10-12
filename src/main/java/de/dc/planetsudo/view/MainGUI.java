@@ -25,6 +25,7 @@ import de.dc.util.logging.Logger;
 import de.dc.planetsudo.main.GUIController;
 import de.dc.planetsudo.game.GameManager;
 import de.dc.planetsudo.game.GameManager.GameState;
+import de.dc.planetsudo.game.GameSound;
 import de.dc.planetsudo.level.LevelView;
 import de.dc.planetsudo.view.configuration.CreateTeamFrame;
 import de.dc.planetsudo.view.level.LevelDisplayPanel.VideoThreadCommand;
@@ -240,8 +241,11 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 	private boolean finished;
 	private void finalizeGame() {
 		finished = true;
+
 		GameManager.getInstance().switchGameState(GameState.Break);
+		GameSound.End.play();
 		gamePanel.displayEndCalculation();
+
 	}
 
 	public void showLoadingPanel() {
