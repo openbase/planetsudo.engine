@@ -49,8 +49,8 @@ public class TwoKings extends AbstractLevel {
 	@Override
 	protected ResourcePlacement[] loadResourcePlacement() {
 		ResourcePlacement[] resourcePlacement = new ResourcePlacement[10];
-		resourcePlacement[0] = new ResourceRandomRectangle(300, 650, 200, 200, 10, ResourceType.ExtremPoint);
-		resourcePlacement[1] = new ResourceRandomRectangle(1000, 650, 200, 200, 10, ResourceType.ExtremPoint);
+		resourcePlacement[0] = new ResourceRandomRectangle(350, 650, 100, 200, 10, ResourceType.ExtremPoint);
+		resourcePlacement[1] = new ResourceRandomRectangle(1050, 650, 100, 200, 10, ResourceType.ExtremPoint);
 		resourcePlacement[2] = new ResourceRandomRectangle(0, 0, 1500, 650, 5, ResourceType.ExtraAgentFuel);
 		resourcePlacement[3] = new ResourceRandomRectangle(0, 850, 1500, 650, 5, ResourceType.ExtraAgentFuel);
 		resourcePlacement[4] = new ResourceRandomRectangle(0, 0, 1500, 650, 5, ResourceType.ExtraMothershipFuel);
@@ -64,7 +64,7 @@ public class TwoKings extends AbstractLevel {
 
 	@Override
 	protected Color loadLevelColor() {
-		return new Color(137,67,162);
+		return new Color(37,67,162);
 	}
 
 	@Override
