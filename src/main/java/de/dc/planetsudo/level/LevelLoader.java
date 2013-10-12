@@ -21,6 +21,11 @@ public class LevelLoader {
 		//LevelLoader.class.
 	}
 	private final static String[] levelClasses = {"SimpleWorld",
+		"Atomum",
+		"AtomumLight",
+		"BackToBack",
+		"TwoKings",
+		"WarI",
 		"AgentK",
 		"CircleOfLife",
 		"LuckyLoop",
