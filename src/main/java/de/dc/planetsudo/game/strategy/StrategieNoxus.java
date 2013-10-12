@@ -32,7 +32,7 @@ public class StrategieNoxus extends AbstractStrategy {
 	@Override
 	protected void loadRules() {
 		//-------------------------------------------->
-		createRule(new Rule(99, "Kollision!") {
+		createRule(new Rule(1000, "Kollision!") {
 			@ Override
 			protected boolean constraint() {
 				return agent.isCollisionDetected();
@@ -44,10 +44,10 @@ public class StrategieNoxus extends AbstractStrategy {
 		});
 		//-------------------------------------------->
 		//-------------------------------------------->
-		createRule(new Rule(87, "Warte...") {
+		createRule(new Rule(870, "Warte...") {
 			@ Override
 			protected boolean constraint() {
-				return agent.getFuelInPercent() <= 6 && agent.isAtMothership() && !mothership.hasFuel() && !agent.isUnderAttack() && !mothership.isDamaged();
+				return agent.getFuelInPercent() <= 6 && agent.isAtMothership() && !mothership.hasFuel() && !agent.isUnderAttack() && !mothership.isDamaged() && !agent.isCarringResource();
 			}
 			@ Override
 			protected void action() {
@@ -55,7 +55,7 @@ public class StrategieNoxus extends AbstractStrategy {
 		});
 		//-------------------------------------------->
 		//-------------------------------------------->
-		createRule(new Rule(86, "Auftanken...") {
+		createRule(new Rule(860, "Auftanken...") {
 			@ Override
 			protected boolean constraint() {
 				return agent.getFuelInPercent() <= 7 && agent.isAtMothership() && mothership.hasFuel();
@@ -67,7 +67,7 @@ public class StrategieNoxus extends AbstractStrategy {
 		});
 		//-------------------------------------------->
 		//-------------------------------------------->
-		createRule(new Rule(85, "Wenig Energie...") {
+		createRule(new Rule(850, "Wenig Energie...") {
 			@ Override
 			protected boolean constraint() {
 				return agent.getFuelInPercent() <= 7 && agent.hasFuel() && !agent.isUnderAttack();
@@ -79,7 +79,7 @@ public class StrategieNoxus extends AbstractStrategy {
 		});
 		//-------------------------------------------->
 		//-------------------------------------------->
-		createRule(new Rule(72, "Repariere Mutterschiff...") {
+		createRule(new Rule(720, "Repariere Mutterschiff...") {
 			@ Override
 			protected boolean constraint() {
 				return mothership.isDamaged() && agent.isAtMothership() && !agent.isUnderAttack();
@@ -91,7 +91,7 @@ public class StrategieNoxus extends AbstractStrategy {
 		});
 		//-------------------------------------------->
 		//-------------------------------------------->
-		createRule(new Rule(80, "Mutterschiff helfen...") {
+		createRule(new Rule(800, "Mutterschiff helfen...") {
 			@ Override
 			protected boolean constraint() {
 				return mothership.isDamaged() && !agent.isAtMothership();
@@ -103,7 +103,7 @@ public class StrategieNoxus extends AbstractStrategy {
 		});
 		//-------------------------------------------->
 		//-------------------------------------------->
-		createRule(new Rule(75, "Bekämpfe Agent...") {
+		createRule(new Rule(750, "Bekämpfe Agent...") {
 			@ Override
 			protected boolean constraint() {
 				return agent.seeAdversaryAgent();
@@ -115,7 +115,7 @@ public class StrategieNoxus extends AbstractStrategy {
 		});
 		//-------------------------------------------->
 		//-------------------------------------------->
-		createRule(new Rule(74, "Suche Feind...") {
+		createRule(new Rule(740, "Suche Feind...") {
 			@ Override
 			protected boolean constraint() {
 				return agent.isUnderAttack();
@@ -127,7 +127,7 @@ public class StrategieNoxus extends AbstractStrategy {
 		});
 		//-------------------------------------------->
 		//-------------------------------------------->
-		createRule(new Rule(61, "Mutterschiff verminen...") {
+		createRule(new Rule(610, "Mutterschiff verminen...") {
 			@ Override
 			protected boolean constraint() {
 				return agent.seeAdversaryMothership() && agent.hasMine();
@@ -139,7 +139,7 @@ public class StrategieNoxus extends AbstractStrategy {
 		});
 		//-------------------------------------------->
 		//-------------------------------------------->
-		createRule(new Rule(60, "Bekämpfe Mutterschiff...") {
+		createRule(new Rule(600, "Bekämpfe Mutterschiff...") {
 			@ Override
 			protected boolean constraint() {
 				return agent.seeAdversaryMothership();
@@ -152,7 +152,7 @@ public class StrategieNoxus extends AbstractStrategy {
 		});
 		//-------------------------------------------->
 		//-------------------------------------------->
-		createRule(new Rule(35, "Notkanal schließen.") {
+		createRule(new Rule(350, "Notkanal schließen.") {
 			@ Override
 			protected boolean constraint() {
 				return agent.isSupportOrdered() && agent.getFuelInPercent() >=7;
@@ -164,7 +164,7 @@ public class StrategieNoxus extends AbstractStrategy {
 		});
 		//-------------------------------------------->
 		//-------------------------------------------->
-		createRule(new Rule(34, "Gestrandet...") {
+		createRule(new Rule(340, "Gestrandet...") {
 			@ Override
 			protected boolean constraint() {
 				return !agent.hasFuel() && !agent.isAtMothership();
@@ -176,7 +176,7 @@ public class StrategieNoxus extends AbstractStrategy {
 		});
 		//-------------------------------------------->
 		//-------------------------------------------->
-		createRule(new Rule(31, "Energie Spenden...") {
+		createRule(new Rule(310, "Energie Spenden...") {
 			@ Override
 			protected boolean constraint() {
 				return mothership.needSomeoneSupport() && agent.seeLostTeamAgent();
@@ -188,7 +188,7 @@ public class StrategieNoxus extends AbstractStrategy {
 		});
 		//-------------------------------------------->
 		//-------------------------------------------->
-		createRule(new Rule(30, "Agenten Helfen...") {
+		createRule(new Rule(300, "Agenten Helfen...") {
 			@ Override
 			protected boolean constraint() {
 				return mothership.needSomeoneSupport();
@@ -200,7 +200,7 @@ public class StrategieNoxus extends AbstractStrategy {
 		});
 		//-------------------------------------------->
 		//-------------------------------------------->
-		createRule(new Rule(25, "Resource abliefern!") {
+		createRule(new Rule(250, "Resource abliefern!") {
 			@ Override
 			protected boolean constraint() {
 				return agent.isAtMothership() && agent.isCarringResource();
@@ -213,7 +213,7 @@ public class StrategieNoxus extends AbstractStrategy {
 		});
 		//-------------------------------------------->
 		//-------------------------------------------->
-		createRule(new Rule(23, "Berge Resource...") {
+		createRule(new Rule(230, "Berge Resource...") {
 			@ Override
 			protected boolean constraint() {
 				return agent.isCarringResource();
@@ -225,7 +225,7 @@ public class StrategieNoxus extends AbstractStrategy {
 		});
 		//-------------------------------------------->
 		//-------------------------------------------->
-		createRule(new Rule(22, "Mine!") {
+		createRule(new Rule(220, "Mine!") {
 			@ Override
 			protected boolean constraint() {
 				return (agent.isTouchingResource(Resource.ResourceType.Mine) || agent.isTouchingResource(Resource.ResourceType.ExtremPoint));
@@ -237,7 +237,7 @@ public class StrategieNoxus extends AbstractStrategy {
 		});
 		//-------------------------------------------->
 		//-------------------------------------------->
-		createRule(new Rule(21, "Resource aufheben!") {
+		createRule(new Rule(210, "Resource aufheben!") {
 			@ Override
 			protected boolean constraint() {
 				return agent.isTouchingResource() && !agent.isTouchingResource(Resource.ResourceType.Mine) && !agent.isTouchingResource(Resource.ResourceType.ExtremPoint);
@@ -249,7 +249,7 @@ public class StrategieNoxus extends AbstractStrategy {
 		});
 		//-------------------------------------------->
 		//-------------------------------------------->
-		createRule(new Rule(20, "Resource gesichtet...") {
+		createRule(new Rule(200, "Resource gesichtet...") {
 			@ Override
 			protected boolean constraint() {
 				return agent.seeResource();
@@ -261,7 +261,7 @@ public class StrategieNoxus extends AbstractStrategy {
 		});
 		//-------------------------------------------->
 		//-------------------------------------------->
-		createRule(new Rule(3, "Zwischentanken...") {
+		createRule(new Rule(30, "Zwischentanken...") {
 			@ Override
 			protected boolean constraint() {
 				return agent.isAtMothership() && mothership.hasFuel() && !mothership.isBurning() && !mothership.isDamaged() && !agent.isUnderAttack() && agent.getFuelInPercent()<=95;
@@ -273,7 +273,7 @@ public class StrategieNoxus extends AbstractStrategy {
 		});
 		//-------------------------------------------->
 		//-------------------------------------------->
-		createRule(new Rule(2, "Marker entfernen.") {
+		createRule(new Rule(20, "Marker entfernen.") {
 			@ Override
 			protected boolean constraint() {
 				return agent.seeMarker();
@@ -285,7 +285,7 @@ public class StrategieNoxus extends AbstractStrategy {
 		});
 		//-------------------------------------------->
 		//-------------------------------------------->
-		createRule(new Rule(1, "Bewege zu Marker...") {
+		createRule(new Rule(10, "Bewege zu Marker...") {
 			@ Override
 			protected boolean constraint() {
 				return mothership.isMarkerDeployed();
