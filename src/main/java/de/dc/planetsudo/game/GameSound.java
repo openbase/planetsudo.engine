@@ -26,12 +26,12 @@ public enum GameSound {
 	 * - (tanken)
 	 * - Unterstützen
 	 * Resource abliefern	 */
-	DeployMine("sound/deplay_mine.wav"),
+	DeployMine("sound/bombpl.wav"),
 	DeployMarker("sound/set_marker.wav"),
 	RechargeFuel("sound/recharge_fuel.wav"),
-	CallForSupport("sound/lasershot.wav"),
+	CallForSupport("sound/1_need_backup.wav"),
 	SpendFuel("sound/spend_fuel.wav"),
-	AgentExplosion("sound/explosion_agent.wav"),
+	AgentExplosion("sound/c4_explode1.wav"),
 	MothershipExplosion("sound/explosion_mothership.wav"),
 	MothershipUnderAttack("sound/attack_mothership.wav"),
 	DeliverResource("sound/deliver_resource.wav"),
