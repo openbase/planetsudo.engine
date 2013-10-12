@@ -35,7 +35,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener, M
 	public final static String FUEL_STATE_CHANGE = "FuelStateChange";
 	public final static String SHIELD_STATE_CHANGE = "ShieldStateChange";
 	public final static int MOTHERSHIP_FUEL_VOLUME = 15000;
-	public final static int AGENT_FUEL_VOLUME = 9000;
+	public final static int AGENT_FUEL_VOLUME = 12000;
 	public final static int COMMANDER_BONUS_FUEL_VOLUME = 1000;
 	public final static int MAX_AGENT_COUNT = 10; // range 0-9999
 	public final static int BURNING_MOTHERSHIP = 20;

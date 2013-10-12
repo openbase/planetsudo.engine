@@ -249,7 +249,9 @@ public interface AgentInterface {
 	boolean isFighting();
 
 	/**
-	 * Abfrage, ob gerade Support von irgendeinem Agenten geordert wird.
+	 * Abfrage, ob dieser agent Support angefordert hat!
+	 * !!! Nicht of irgend einer Support angefordert hat!!!
+	 * Hierfür mothership.needSomeoneSupport(); benutzen.
 	 *
 	 * @return true oder false
 	 */

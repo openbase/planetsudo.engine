@@ -48,14 +48,17 @@ public class AgentK extends AbstractLevel {
 
 	@Override
 	protected ResourcePlacement[] loadResourcePlacement() {
-		ResourcePlacement[] resourcePlacement = new ResourcePlacement[7];
-		resourcePlacement[0] = new ResourceRandomRectangle(0, 0, 500, 2000, 5, ResourceType.Normal);
-		resourcePlacement[1] = new ResourceRandomRectangle(0, 0, 500, 700, 10, ResourceType.DoublePoints);
-		resourcePlacement[6] = new ResourceRandomRectangle(0, 1300, 500, 2000, 10, ResourceType.DoublePoints);
-		resourcePlacement[2] = new ResourceRandomRectangle(0, 0, 500, 500, 3, ResourceType.ExtremPoint);
-		resourcePlacement[5] = new ResourceRandomRectangle(0, 1500, 500, 2000, 3, ResourceType.ExtremPoint);
-		resourcePlacement[3] = new ResourceRandomRectangle(0, 0, 500, 2000, 10, ResourceType.ExtraAgentFuel);
-		resourcePlacement[4] = new ResourceRandomRectangle(0, 0, 500, 2000, 5, ResourceType.ExtraMothershipFuel);
+		ResourcePlacement[] resourcePlacement = new ResourcePlacement[10];
+		resourcePlacement[0] = new ResourceRandomRectangle(500, 0, 750, 1100, 10, ResourceType.ExtraAgentFuel);
+		resourcePlacement[1] = new ResourceRandomRectangle(500, 750, 750, 1100, 10, ResourceType.ExtraAgentFuel);
+		resourcePlacement[2] = new ResourceRandomRectangle(0, 0, 500, 50, 20, ResourceType.ExtremPoint);
+		resourcePlacement[3] = new ResourceRandomRectangle(0, 1950, 500, 50, 20, ResourceType.ExtremPoint);
+		resourcePlacement[4] = new ResourceRandomRectangle(0, 0, 500, 500, 15, ResourceType.ExtraMothershipFuel);
+		resourcePlacement[5] = new ResourceRandomRectangle(0, 1500, 500, 500, 15, ResourceType.ExtraMothershipFuel);
+		resourcePlacement[6] = new ResourceRandomRectangle(0, 500, 500, 500, 5, ResourceType.Normal);
+                resourcePlacement[7] = new ResourceRandomRectangle(0, 1000, 500, 500, 5, ResourceType.Normal);
+                resourcePlacement[8] = new ResourceRandomRectangle(0, 0, 500, 500, 5, ResourceType.DoublePoints);
+                resourcePlacement[9] = new ResourceRandomRectangle(0, 1500, 500, 500, 5, ResourceType.DoublePoints);
 		return resourcePlacement;
 	}
 

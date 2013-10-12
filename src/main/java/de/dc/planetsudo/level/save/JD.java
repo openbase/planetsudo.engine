@@ -26,38 +26,38 @@ public class JD extends AbstractLevel {
 	@Override
 	protected Polygon loadLevelBorderPolygon() {
 		Polygon levelBorders = new Polygon();
-		levelBorders.addPoint(100, 650);
-		levelBorders.addPoint(650, 650);
-		levelBorders.addPoint(650, 100);
-		levelBorders.addPoint(1350, 100);
-		levelBorders.addPoint(1350, 650);
-		levelBorders.addPoint(1900, 650);
-		levelBorders.addPoint(1900, 1350);
-		levelBorders.addPoint(1350, 1350);
-		levelBorders.addPoint(1350, 1900);
-		levelBorders.addPoint(650, 1900);
-		levelBorders.addPoint(650, 1350);
-		levelBorders.addPoint(100, 1350);
-		levelBorders.addPoint(100, 650);
+		levelBorders.addPoint(0, 550);
+		levelBorders.addPoint(550, 550);
+		levelBorders.addPoint(550, 0);
+		levelBorders.addPoint(1250, 0);
+		levelBorders.addPoint(1250, 550);
+		levelBorders.addPoint(1800, 550);
+		levelBorders.addPoint(1800, 1250);
+		levelBorders.addPoint(1250, 1250);
+		levelBorders.addPoint(1250, 1800);
+		levelBorders.addPoint(550, 1800);
+		levelBorders.addPoint(550, 1250);
+		levelBorders.addPoint(0, 1250);
+		levelBorders.addPoint(0, 550);
 		return levelBorders;
 	}
 
 	@Override
 	protected Base2D[] loadHomePositions() {
 		Base2D[] homePosition = new Base2D[2];
-		homePosition[0] = new Base2D(850, 850, Direction2D.DOWN);
-		homePosition[1] = new Base2D(1150, 1150, Direction2D.DOWN);
+		homePosition[0] = new Base2D(750, 750, Direction2D.DOWN);
+		homePosition[1] = new Base2D(1050, 1050, Direction2D.DOWN);
 		return homePosition;
 	}
 
 	@Override
 	protected ResourcePlacement[] loadResourcePlacement() {
 		ResourcePlacement[] resourcePlacement = new ResourcePlacement[5];
-		resourcePlacement[0] = new ResourceRandomRectangle(100, 100, 1900, 1900, 10, ResourceType.Normal);
-		resourcePlacement[1] = new ResourceRandomRectangle(100, 100, 1900, 1900, 20, ResourceType.DoublePoints);
-		resourcePlacement[2] = new ResourceRandomRectangle(100, 100, 1900, 1900, 10, ResourceType.ExtremPoint);
-		resourcePlacement[3] = new ResourceRandomRectangle(100, 100, 1900, 1900, 10, ResourceType.ExtraAgentFuel);
-		resourcePlacement[4] = new ResourceRandomRectangle(100, 100, 1900, 1900, 10, ResourceType.ExtraMothershipFuel);
+		resourcePlacement[0] = new ResourceRandomRectangle(0, 0, 1800, 1800, 10, ResourceType.Normal);
+		resourcePlacement[1] = new ResourceRandomRectangle(0, 0, 1800, 1800, 20, ResourceType.DoublePoints);
+		resourcePlacement[2] = new ResourceRandomRectangle(0, 0, 1800, 1800, 10, ResourceType.ExtremPoint);
+		resourcePlacement[3] = new ResourceRandomRectangle(0, 0, 1800, 1800, 10, ResourceType.ExtraAgentFuel);
+		resourcePlacement[4] = new ResourceRandomRectangle(0, 0, 1800, 1800, 10, ResourceType.ExtraMothershipFuel);
 		return resourcePlacement;
 	}
 
@@ -70,44 +70,44 @@ public class JD extends AbstractLevel {
 	protected Polygon[] loadLevelWallPolygons() {
 		Polygon[] resourcePlacement = new Polygon[1];
 		resourcePlacement[0] = new Polygon();
+		resourcePlacement[0].addPoint(200, 850);
 		resourcePlacement[0].addPoint(300, 950);
-		resourcePlacement[0].addPoint(400, 1050);
+		resourcePlacement[0].addPoint(500, 750);
 		resourcePlacement[0].addPoint(600, 850);
-		resourcePlacement[0].addPoint(700, 950);
-		resourcePlacement[0].addPoint(950, 950);
-		resourcePlacement[0].addPoint(950, 700);
-		resourcePlacement[0].addPoint(1050, 600);
-		resourcePlacement[0].addPoint(850, 400);
-		resourcePlacement[0].addPoint(950, 300);
-		resourcePlacement[0].addPoint(1050, 300);
-		resourcePlacement[0].addPoint(950, 400);
-		resourcePlacement[0].addPoint(1150, 600);
-		resourcePlacement[0].addPoint(1050, 700);
-		resourcePlacement[0].addPoint(1050, 950);
+		resourcePlacement[0].addPoint(850, 850);
+		resourcePlacement[0].addPoint(850, 600);
+		resourcePlacement[0].addPoint(950, 500);
+		resourcePlacement[0].addPoint(750, 300);
+		resourcePlacement[0].addPoint(850, 200);
+		resourcePlacement[0].addPoint(950, 200);
+		resourcePlacement[0].addPoint(850, 300);
+		resourcePlacement[0].addPoint(1050, 500);
+		resourcePlacement[0].addPoint(950, 600);
+		resourcePlacement[0].addPoint(950, 850);
+		resourcePlacement[0].addPoint(1200, 850);
 		resourcePlacement[0].addPoint(1300, 950);
-		resourcePlacement[0].addPoint(1400, 1050);
-		resourcePlacement[0].addPoint(1500, 950);
+		resourcePlacement[0].addPoint(1400, 850);
+		resourcePlacement[0].addPoint(1500, 750);
 		resourcePlacement[0].addPoint(1600, 850);
-		resourcePlacement[0].addPoint(1700, 950);
-		resourcePlacement[0].addPoint(1700, 1050);
 		resourcePlacement[0].addPoint(1600, 950);
-		resourcePlacement[0].addPoint(1400, 1150);
+		resourcePlacement[0].addPoint(1500, 850);
 		resourcePlacement[0].addPoint(1300, 1050);
-		resourcePlacement[0].addPoint(1050, 1050);
-		resourcePlacement[0].addPoint(1050, 1300);
-		resourcePlacement[0].addPoint(950, 1400);
-		resourcePlacement[0].addPoint(1150, 1600);
-		resourcePlacement[0].addPoint(1050, 1700);
-		resourcePlacement[0].addPoint(950, 1700);
-		resourcePlacement[0].addPoint(1050, 1600);
-		resourcePlacement[0].addPoint(850, 1400);
-		resourcePlacement[0].addPoint(950, 1300);
-		resourcePlacement[0].addPoint(950, 1050);
-		resourcePlacement[0].addPoint(700, 1050);
+		resourcePlacement[0].addPoint(1200, 950);
+		resourcePlacement[0].addPoint(950, 950);
+		resourcePlacement[0].addPoint(950, 1200);
+		resourcePlacement[0].addPoint(850, 1300);
+		resourcePlacement[0].addPoint(1050, 1500);
+		resourcePlacement[0].addPoint(950, 1600);
+		resourcePlacement[0].addPoint(850, 1600);
+		resourcePlacement[0].addPoint(950, 1500);
+		resourcePlacement[0].addPoint(750, 1300);
+		resourcePlacement[0].addPoint(850, 1200);
+		resourcePlacement[0].addPoint(850, 950);
 		resourcePlacement[0].addPoint(600, 950);
-		resourcePlacement[0].addPoint(400, 1150);
+		resourcePlacement[0].addPoint(500, 850);
 		resourcePlacement[0].addPoint(300, 1050);
-		resourcePlacement[0].addPoint(300, 950);
+		resourcePlacement[0].addPoint(200, 950);
+		resourcePlacement[0].addPoint(200, 850);
 		return resourcePlacement;
 	}
 }

@@ -26,11 +26,23 @@ public class Arena extends AbstractLevel {
 	@Override
 	protected Polygon loadLevelBorderPolygon() {
 		Polygon levelBorders = new Polygon();
-		levelBorders.addPoint(0, 0);
-		levelBorders.addPoint(1000, 0);
-                levelBorders.addPoint(1000, 1000);
+                levelBorders.addPoint(0, 0);
+                levelBorders.addPoint(0, 200);              
+                levelBorders.addPoint(400, 200);
+                levelBorders.addPoint(400, 0);              
+                levelBorders.addPoint(600, 0);
+                levelBorders.addPoint(600, 200);            
+                levelBorders.addPoint(1000, 200);                
+                levelBorders.addPoint(1000, 0);                          
+                levelBorders.addPoint(1000, 800);
+                levelBorders.addPoint(600, 800);              
+                levelBorders.addPoint(600, 1000);
+                levelBorders.addPoint(1000, 1000);             
                 levelBorders.addPoint(0, 1000);
-
+                levelBorders.addPoint(400, 1000); 
+                levelBorders.addPoint(400, 800);
+                levelBorders.addPoint(0, 800);
+                
 		return levelBorders;
 	}
 
@@ -44,12 +56,13 @@ public class Arena extends AbstractLevel {
 
 	@Override
 	protected ResourcePlacement[] loadResourcePlacement() {
-		ResourcePlacement[] resourcePlacement = new ResourcePlacement[5];
-		resourcePlacement[0] = new ResourceRandomRectangle(300, 300, 500, 500, 5, ResourceType.Normal);
-		resourcePlacement[1] = new ResourceRandomRectangle(300, 300, 500, 500, 5, ResourceType.DoublePoints);
-		resourcePlacement[2] = new ResourceRandomRectangle(300, 300, 500, 500, 8, ResourceType.ExtremPoint);
-		resourcePlacement[3] = new ResourceRandomRectangle(300, 300, 500, 500, 8, ResourceType.ExtraAgentFuel);
-		resourcePlacement[4] = new ResourceRandomRectangle(300, 300, 500, 500, 8, ResourceType.ExtraMothershipFuel);
+		ResourcePlacement[] resourcePlacement = new ResourcePlacement[6];
+		resourcePlacement[0] = new ResourceRandomRectangle(0, 0, 1000, 1000, 10, ResourceType.Normal);
+		resourcePlacement[1] = new ResourceRandomRectangle(300, 325, 400, 50, 10, ResourceType.DoublePoints);
+                resourcePlacement[2] = new ResourceRandomRectangle(300, 675, 400, 50, 10, ResourceType.DoublePoints);
+		resourcePlacement[3] = new ResourceRandomRectangle(400, 480, 200, 40, 10, ResourceType.ExtremPoint);
+		resourcePlacement[4] = new ResourceRandomRectangle(0, 0, 1000, 1000, 5, ResourceType.ExtraAgentFuel);
+		resourcePlacement[5] = new ResourceRandomRectangle(0, 0, 1000, 1000, 5, ResourceType.ExtraMothershipFuel);
 		return resourcePlacement;
 	}
 
@@ -59,28 +72,8 @@ public class Arena extends AbstractLevel {
 	}
 
 	@Override
-	protected Polygon[] loadLevelWallPolygons() {
-            Polygon[] walls = new Polygon[4];
-            walls[0] = new Polygon();
-		walls[0].addPoint(0, 250);
-		walls[0].addPoint(400, 250);           		
-                walls[0].addPoint(400, 0);
-                walls[0].addPoint(0, 0);
-            walls[1] = new Polygon();
-		walls[1].addPoint(0, 1000);
-		walls[1].addPoint(0, 800);           		
-                walls[1].addPoint(400, 800);
-                walls[1].addPoint(400, 1000);
-           walls[2] = new Polygon();
-		walls[2].addPoint(600, 0);
-		walls[2].addPoint(1000, 0);           		
-                walls[2].addPoint(1000, 250);
-                walls[2].addPoint(600, 250);
-           walls[3] = new Polygon();
-		walls[3].addPoint(600, 1000);
-		walls[3].addPoint(1000, 1000);           		
-                walls[3].addPoint(1000, 800);
-                walls[3].addPoint(600, 800);
-		return walls;
+    protected Polygon[] loadLevelWallPolygons() {
+        Polygon[] walls = new Polygon[0];
+        return null;
 	}
 }

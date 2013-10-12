@@ -232,13 +232,13 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
         teamMemberLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         teamMemberLabel2.setText("Entwickler:");
 
-        teamMemberA.setPreferredSize(new java.awt.Dimension(133, 133));
+        teamMemberA.setPreferredSize(new java.awt.Dimension(180, 133));
 
         javax.swing.GroupLayout teamMemberALayout = new javax.swing.GroupLayout(teamMemberA);
         teamMemberA.setLayout(teamMemberALayout);
         teamMemberALayout.setHorizontalGroup(
             teamMemberALayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 133, Short.MAX_VALUE)
+            .addGap(0, 180, Short.MAX_VALUE)
         );
         teamMemberALayout.setVerticalGroup(
             teamMemberALayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -248,13 +248,13 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
         teamMemberBLabel.setText("Member Member");
         teamMemberBLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
-        teamMemberB.setPreferredSize(new java.awt.Dimension(133, 133));
+        teamMemberB.setPreferredSize(new java.awt.Dimension(180, 133));
 
         javax.swing.GroupLayout teamMemberBLayout = new javax.swing.GroupLayout(teamMemberB);
         teamMemberB.setLayout(teamMemberBLayout);
         teamMemberBLayout.setHorizontalGroup(
             teamMemberBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 133, Short.MAX_VALUE)
+            .addGap(0, 180, Short.MAX_VALUE)
         );
         teamMemberBLayout.setVerticalGroup(
             teamMemberBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -272,7 +272,7 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(teamAgentLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(teamMemberBLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
+                    .addComponent(teamMemberBLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(teamMemberALabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(teamMemberB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(teamMemberA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))

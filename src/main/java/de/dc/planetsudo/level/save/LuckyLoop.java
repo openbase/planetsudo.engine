@@ -27,8 +27,6 @@ public class LuckyLoop extends AbstractLevel {
 		levelBorders.addPoint(00, 00);
 		levelBorders.addPoint(300, 0);
 		levelBorders.addPoint(450, 150);
-		levelBorders.addPoint(450, 300);
-		levelBorders.addPoint(550, 300);
 		levelBorders.addPoint(550, 150);
 		levelBorders.addPoint(650, 50);
 		levelBorders.addPoint(1000, 50);
@@ -42,15 +40,11 @@ public class LuckyLoop extends AbstractLevel {
 		levelBorders.addPoint(1800, 350);
 		levelBorders.addPoint(1700, 450);
 		levelBorders.addPoint(1850, 600);
-		levelBorders.addPoint(1550, 900);
-		levelBorders.addPoint(1550, 1000);
 		levelBorders.addPoint(1700, 1000);
 		levelBorders.addPoint(1850, 1150);
 		levelBorders.addPoint(1850, 1450);
 		levelBorders.addPoint(1550, 1450);
 		levelBorders.addPoint(1400, 1300);
-		levelBorders.addPoint(1400, 1150);
-		levelBorders.addPoint(1300, 1150);
 		levelBorders.addPoint(1300, 1300);
 		levelBorders.addPoint(1200, 1400);
 		levelBorders.addPoint(850, 1400);
@@ -64,8 +58,6 @@ public class LuckyLoop extends AbstractLevel {
 		levelBorders.addPoint(50, 1100);
 		levelBorders.addPoint(150, 1000);
 		levelBorders.addPoint(0, 850);
-		levelBorders.addPoint(300, 550);
-		levelBorders.addPoint(300, 450);
 		levelBorders.addPoint(150, 450);
 		levelBorders.addPoint(0, 300);
 		levelBorders.addPoint(0, 0);
@@ -87,16 +79,16 @@ public class LuckyLoop extends AbstractLevel {
 		ResourcePlacement[] resourcePlacement = new ResourcePlacement[12];
 		resourcePlacement[0] = new ResourceRandomRectangle(0, 0, 925, 1450, 10, ResourceType.Normal);
 		resourcePlacement[1] = new ResourceRandomRectangle(925, 0, 925, 1450, 10, ResourceType.Normal);
-		resourcePlacement[2] = new ResourceRandomRectangle(50, 1100, 300, 300, 8, ResourceType.DoublePoints);
-		resourcePlacement[3] = new ResourceRandomRectangle(1500, 50, 300, 300, 8, ResourceType.DoublePoints);
-		resourcePlacement[4] = new ResourceRandomRectangle(950, 350, 300, 300, 13, ResourceType.ExtremPoint);
-		resourcePlacement[5] = new ResourceRandomRectangle(550, 800, 300, 300, 13, ResourceType.ExtremPoint);
-		resourcePlacement[6] = new ResourceRandomRectangle(850, 0, 450, 300, 6, ResourceType.ExtraAgentFuel);
-		resourcePlacement[7] = new ResourceRandomRectangle(1400, 400, 450, 250, 6, ResourceType.ExtraAgentFuel);
-		resourcePlacement[8] = new ResourceRandomRectangle(0, 850, 450, 250, 6, ResourceType.ExtraAgentFuel);
-		resourcePlacement[9] = new ResourceRandomRectangle(550, 1200, 450, 300, 6, ResourceType.ExtraAgentFuel);
-		resourcePlacement[10] = new ResourceRandomRectangle(950, 350, 300, 300, 10, ResourceType.ExtraMothershipFuel);
-		resourcePlacement[11] = new ResourceRandomRectangle(550, 800, 300, 300, 10, ResourceType.ExtraMothershipFuel);
+		resourcePlacement[2] = new ResourceRandomRectangle(50, 1100, 300, 300, 10, ResourceType.DoublePoints);
+		resourcePlacement[3] = new ResourceRandomRectangle(1500, 50, 300, 300, 10, ResourceType.DoublePoints);
+		resourcePlacement[4] = new ResourceRandomRectangle(950, 350, 300, 300, 40, ResourceType.ExtremPoint);
+		resourcePlacement[5] = new ResourceRandomRectangle(550, 800, 300, 300, 40, ResourceType.ExtremPoint);
+		resourcePlacement[6] = new ResourceRandomRectangle(0, 0, 925, 725, 30, ResourceType.ExtraAgentFuel);
+		resourcePlacement[7] = new ResourceRandomRectangle(0, 725, 925, 725, 30, ResourceType.ExtraAgentFuel);
+		resourcePlacement[8] = new ResourceRandomRectangle(925, 0, 925, 725, 30, ResourceType.ExtraAgentFuel);
+		resourcePlacement[9] = new ResourceRandomRectangle(925, 725, 925, 725, 30, ResourceType.ExtraAgentFuel);
+		resourcePlacement[10] = new ResourceRandomRectangle(950, 350, 300, 300, 20, ResourceType.ExtraMothershipFuel);
+		resourcePlacement[11] = new ResourceRandomRectangle(550, 800, 300, 300, 20, ResourceType.ExtraMothershipFuel);
 		return resourcePlacement;
 	}
 

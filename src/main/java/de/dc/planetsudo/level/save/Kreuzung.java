@@ -44,12 +44,13 @@ public class Kreuzung extends AbstractLevel {
 
 	@Override
 	protected ResourcePlacement[] loadResourcePlacement() {
-		ResourcePlacement[] resourcePlacement = new ResourcePlacement[5];
-		resourcePlacement[0] = new ResourceRandomRectangle(400, 400, 200, 200, 2, ResourceType.Normal);
-		resourcePlacement[1] = new ResourceRandomRectangle(400, 400, 200, 200, 2, ResourceType.DoublePoints);
-		resourcePlacement[2] = new ResourceRandomRectangle(400, 400, 200, 200, 5, ResourceType.ExtremPoint);
-		resourcePlacement[3] = new ResourceRandomRectangle(400, 400, 200, 200, 5, ResourceType.ExtraAgentFuel);
-		resourcePlacement[4] = new ResourceRandomRectangle(400, 400, 200, 200, 5, ResourceType.ExtraMothershipFuel);
+		ResourcePlacement[] resourcePlacement = new ResourcePlacement[6];
+		resourcePlacement[0] = new ResourceRandomRectangle(0, 0, 1000, 1000, 10, ResourceType.Normal);
+		resourcePlacement[1] = new ResourceRandomRectangle(375, 350, 300, 10, 8, ResourceType.DoublePoints);
+		resourcePlacement[2] = new ResourceRandomRectangle(375, 650, 300, 10, 8, ResourceType.DoublePoints);
+		resourcePlacement[3] = new ResourceRandomRectangle(450, 450, 100, 100, 8, ResourceType.ExtremPoint);
+		resourcePlacement[4] = new ResourceRandomRectangle(400, 400, 200, 200, 0, ResourceType.ExtraAgentFuel);
+		resourcePlacement[5] = new ResourceRandomRectangle(400, 400, 200, 200, 0, ResourceType.ExtraMothershipFuel);
 		return resourcePlacement;
 	}
 

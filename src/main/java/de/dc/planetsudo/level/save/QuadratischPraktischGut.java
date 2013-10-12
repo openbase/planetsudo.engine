@@ -63,14 +63,15 @@ public class QuadratischPraktischGut extends AbstractLevel {
 
 	@Override
 	protected ResourcePlacement[] loadResourcePlacement() {
-		ResourcePlacement[] resourcePlacement = new ResourcePlacement[7];
-		resourcePlacement[0] = new ResourceRandomRectangle(0, 500, 1600, 600, 50, ResourceType.Normal);
-		resourcePlacement[1] = new ResourceRandomRectangle(500, 0, 600, 1650, 25, ResourceType.DoublePoints);
-		resourcePlacement[2] = new ResourceRandomRectangle(1100, 0, 500, 500, 10, ResourceType.ExtremPoint);
-		resourcePlacement[3] = new ResourceRandomRectangle(0, 1100, 500, 500, 10, ResourceType.ExtremPoint);
-		resourcePlacement[4] = new ResourceRandomRectangle(500, 500, 600, 600, 4, ResourceType.ExtraAgentFuel);
-		resourcePlacement[5] = new ResourceRandomRectangle(500, 500, 600, 600, 4, ResourceType.ExtraMothershipFuel);
-		resourcePlacement[6] = new ResourceRandomRectangle(500, 500, 600, 600, 4, ResourceType.Mine);
+		ResourcePlacement[] resourcePlacement = new ResourcePlacement[8];
+		resourcePlacement[0] = new ResourceRandomRectangle(0, 500, 500, 600, 20, ResourceType.Normal);
+                resourcePlacement[1] = new ResourceRandomRectangle(1100, 500, 500, 600, 20, ResourceType.Normal);
+		resourcePlacement[2] = new ResourceRandomRectangle(500, 0, 600, 200, 35, ResourceType.DoublePoints);
+		resourcePlacement[3] = new ResourceRandomRectangle(1350, 0, 250, 250, 50, ResourceType.ExtremPoint);
+		resourcePlacement[4] = new ResourceRandomRectangle(0, 1350, 250, 250, 50, ResourceType.ExtremPoint);
+		resourcePlacement[5] = new ResourceRandomRectangle(500, 500, 600, 600, 10, ResourceType.ExtraAgentFuel);
+		resourcePlacement[6] = new ResourceRandomRectangle(500, 500, 600, 600, 10, ResourceType.ExtraMothershipFuel);
+		resourcePlacement[7] = new ResourceRandomRectangle(500, 1400, 600, 200, 35, ResourceType.DoublePoints);
 		return resourcePlacement;
 	}
 

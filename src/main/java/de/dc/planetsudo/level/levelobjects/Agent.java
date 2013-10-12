@@ -367,7 +367,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
 			final Resource resourceToGo = level.getCloseResource(this);
 			if (resourceToGo != null) {
 				direction.turnTo(position, resourceToGo.position);
-				position.translate(direction, calcSpeed());
+				go();
 			}
 		}
 	}
@@ -376,7 +376,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
 	public void deliverResourceToMothership() {
 		actionPoints.getActionPoint(10);
 		try {
-			if (isCarringResource() && useFuel()) {
+			if (isCarringResource() && useFuel() && isAtMothership()) {
 				mothership.passResource(this);
 				GameSound.DeliverResource.play();
 			}
