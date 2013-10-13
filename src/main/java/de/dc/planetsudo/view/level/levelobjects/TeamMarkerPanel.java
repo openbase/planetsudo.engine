@@ -10,8 +10,11 @@ import de.dc.planetsudo.level.levelobjects.Resource;
 import de.dc.planetsudo.level.levelobjects.TeamMarker;
 import de.dc.planetsudo.view.level.LevelPanel;
 import de.dc.util.logging.Logger;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -30,11 +33,13 @@ public class TeamMarkerPanel extends AbstractLevelObjectPanel<TeamMarker, LevelP
 	private Graphics2D gg2;
 	private int animationCounter = 0;
 
+//	private static final stroke = new Stroke.
+
 	@Override
 	protected void paintComponent(Graphics2D g2, Graphics2D gl) {
 		if (resource.isPlaced()) {
 			boundingBox = resource.getBounds();
-
+			g2.setStroke(new BasicStroke(5));
 			switch (animationCounter) {
 				case 0:
 					g2.setColor(resource.getTeam().getTeamColor());
@@ -54,7 +59,6 @@ public class TeamMarkerPanel extends AbstractLevelObjectPanel<TeamMarker, LevelP
 					g2.fillOval((int) boundingBox.getCenterX() - 4, (int) boundingBox.getCenterY() - 4, (int) 8, (int) 8);
 					g2.setColor(Color.WHITE);
 					g2.drawOval((int) boundingBox.getCenterX() - 8, (int) boundingBox.getCenterY() - 8, 16, 16);
-
 					break;
 			}
 

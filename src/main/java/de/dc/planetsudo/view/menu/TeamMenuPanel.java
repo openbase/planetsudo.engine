@@ -61,8 +61,12 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
 		//		memberList += "</html>";
 		List<String> members = team.getMembers();
 		teamMemberALabel.setText(members.get(0));
+		teamMemberBLabel.setText("");
+		teamMemberA.setVisible(false);
+		teamMemberB.setVisible(false);
 		try {
 			teamMemberA.setImage(IMAGE_DIRECTORY + "/teams/team_"+team.getName()+"_A.jpg");
+			teamMemberA.setVisible(true);
 		} catch (Exception ex) {
 			Logger.warn(this, "Could not load member image!", ex);
 		}
@@ -70,10 +74,11 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
 			teamMemberBLabel.setText(members.get(1));
 			try {
 				teamMemberB.setImage(IMAGE_DIRECTORY + "/teams/team_"+team.getName()+"_B.jpg");
+				teamMemberB.setVisible(true);
 			} catch (Exception ex) {
 				Logger.warn(this, "Could not load member image!", ex);
 			}
-		}
+		} 
 	}
 
 	/**
@@ -628,3 +633,4 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
 		}
 	}
 }
+

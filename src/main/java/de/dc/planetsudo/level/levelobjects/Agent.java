@@ -366,8 +366,8 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
 		if (useFuel()) {
 			final Resource resourceToGo = level.getCloseResource(this);
 			if (resourceToGo != null) {
-				direction.turnTo(position, resourceToGo.position);
 				go();
+				direction.turnTo(position, resourceToGo.position);
 			}
 		}
 	}
@@ -424,9 +424,12 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
 	public void pickupResource() {
 		actionPoints.getActionPoint(10);
 		try {
-			if (useFuel()) {
-				releaseResource();
+			if(useFuel()) {
+				
 				final Resource resourceToCollect = level.getTouchableResource(this);
+				if(resourceToCollect != null && resourceToCollect.getType() != ResourceType.ExtraAgentFuel) {
+					releaseResource();
+				}
 				if (resourceToCollect != null && resourceToCollect.setBusy(getTeam())) {
 					direction.turnTo(position, resourceToCollect.position);
 					actionPoints.getActionPoint(resourceToCollect.getCapturingActionPoints());
@@ -467,7 +470,6 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
 	}
 	private int catchedfuel;
 
-
 	@Override
 	public void fightWithAdversaryAgent() {
 		actionPoints.getActionPoint();
@@ -479,7 +481,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
 				actionPoints.getActionPoint(20);
 				direction.turnTo(position, adversaryAgent.position);
 				if (adversaryAgent.hasFuel()) {
-					catchedfuel = (adversaryAgent.useFuel((Mothership.AGENT_FUEL_VOLUME / 500) * 2) / 2);
+					catchedfuel = (adversaryAgent.useFuel((Mothership.AGENT_FUEL_VOLUME / 500) * 2) / 3);
 					fuel = Math.min(fuelVolume, fuel + catchedfuel);
 				}
 				GameSound.Laser.play();
@@ -554,7 +556,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
 	@Override
 	public void repairMothership() {
 		actionPoints.getActionPoint(30);
-		if (useFuel()) {
+		if (useFuel() && isAtMothership()) {
 			mothership.repair();
 		}
 	}
