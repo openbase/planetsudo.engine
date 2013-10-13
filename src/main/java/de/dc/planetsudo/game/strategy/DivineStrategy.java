@@ -107,10 +107,22 @@ public class DivineStrategy extends AbstractStrategy {
 			}
 		});
 		//-------------------------------------------->
-		createRule(new Rule(6000, "PickUp and Place") {
+		createRule(new Rule(6000, "PickUp") {
 			@ Override
 			protected boolean constraint() {
-				return !agent.isCommander() && (agent.isTouchingResource(ResourceType.ExtremPoint) || agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(ResourceType.ExtraMothershipFuel));
+				return !agent.isCommander() && (agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(ResourceType.ExtraMothershipFuel));
+			}
+
+			@ Override
+			protected void action() {
+				agent.pickupResource();
+			}
+		});
+		//-------------------------------------------->
+		createRule(new Rule(6250, "PickUp and Place") {
+			@ Override
+			protected boolean constraint() {
+				return !agent.isCommander() && agent.isTouchingResource(ResourceType.ExtremPoint);
 			}
 
 			@ Override
@@ -181,6 +193,18 @@ public class DivineStrategy extends AbstractStrategy {
 			@ Override
 			protected void action() {
 				agent.goToMothership();
+			}
+		});
+		//-------------------------------------------->
+		createRule(new Rule(9500, "Mark Resource") {
+			@ Override
+			protected boolean constraint() {
+				return agent.isCarringResource() && !mothership.isMarkerDeployed() && agent.seeResource();
+			}
+
+			@ Override
+			protected void action() {
+				agent.deployMarker();
 			}
 		});
 		//-------------------------------------------->
