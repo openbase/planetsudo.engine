@@ -38,6 +38,8 @@
 						<argument>-classpath</argument>
 						<classpath/>
 						<argument>de.dc.planetsudo.main.Main</argument>
+						<argument>-p</argument>
+						<argument>.</argument>
 					</arguments>
 				</configuration>
 			</plugin>

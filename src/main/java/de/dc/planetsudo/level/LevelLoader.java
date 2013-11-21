@@ -25,7 +25,6 @@ public class LevelLoader {
 		"AtomumLight",
 		"BackToBack",
 		"TwoKings",
-		"WarI",
 		"AgentK",
 		"CircleOfLife",
 		"LuckyLoop",

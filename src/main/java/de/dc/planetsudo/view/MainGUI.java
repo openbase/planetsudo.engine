@@ -26,6 +26,7 @@ import de.dc.planetsudo.main.GUIController;
 import de.dc.planetsudo.game.GameManager;
 import de.dc.planetsudo.game.GameManager.GameState;
 import de.dc.planetsudo.game.GameSound;
+import de.dc.planetsudo.game.Team;
 import de.dc.planetsudo.level.LevelView;
 import de.dc.planetsudo.view.configuration.CreateTeamFrame;
 import de.dc.planetsudo.view.level.LevelDisplayPanel.VideoThreadCommand;
@@ -291,6 +292,7 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
         toolMenu = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         createTeamMenuItem = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
         jCheckBoxMenuItem2 = new javax.swing.JCheckBoxMenuItem();
         helpMenu = new javax.swing.JMenu();
         contentsMenuItem = new javax.swing.JMenuItem();
@@ -424,6 +426,14 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
         });
         toolMenu.add(createTeamMenuItem);
 
+        jMenuItem4.setText("Reset Standard Team");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        toolMenu.add(jMenuItem4);
+
         jCheckBoxMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         jCheckBoxMenuItem2.setText("DebugModus");
         jCheckBoxMenuItem2.addActionListener(new java.awt.event.ActionListener() {
@@ -467,7 +477,7 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
+            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
         );
 
         pack();
@@ -535,6 +545,14 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
         GameManager.getInstance().setGameOverSoon();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        try {
+			Team.resetDefaultTeam();
+		} catch (Exception ex) {
+			Logger.warn(this, "Could not reset default team!");
+		}
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
 	public static LevelView levelView;
     /**
     * @param args the command line arguments
@@ -567,6 +585,7 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;

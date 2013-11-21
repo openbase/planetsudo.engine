@@ -29,6 +29,8 @@ public class Team {
 	public static final String DEFAULT_ID = "default";
 
 	public final static String POINT_STATE_CHANGE = "PointStateChange";
+
+
 	private final String name;
 	private final Color teamColor;
 	private Mothership mothership;
@@ -146,6 +148,10 @@ public class Team {
 		} catch (Exception ex) {
 			throw new CouldNotPerformException("Could not save TeamData[" + data.getName() + "] as default team!", ex);
 		}
+	}
+
+	public static void resetDefaultTeam() {
+		new File(CLParser.getAttribute(SetTeamPathCommand.class).getValue().getAbsolutePath() + "/" + DEFAULT_ID + ".team").delete();
 	}
 
 	public static TeamData loadDefaultTeam() throws CouldNotPerformException {

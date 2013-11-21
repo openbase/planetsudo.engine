@@ -465,19 +465,19 @@ public class DivineStrategy extends AbstractStrategy {
 
 			}
 		});
-		//-------------------------------------------->
-		createRule(new Rule(32000, "Cancel Support") {
-			@ Override
-			protected boolean constraint() {
-				return agent.isSupportOrdered() && !agent.seeAdversaryMothership() && agent.getFuel() > 10 && !agent.isUnderAttack() && !agent.seeAdversaryAgent();
-			}
-
-			@ Override
-			protected void action() {
-				agent.cancelSupport();
-
-			}
-		});
-		//-------------------------------------------->
+//		//-------------------------------------------->
+//		createRule(new Rule(32000, "Cancel Support") {
+//			@ Override
+//			protected boolean constraint() {
+//				return agent.isSupportOrdered() && !agent.seeAdversaryMothership() && agent.getFuel() > 10 && !agent.isUnderAttack() && !agent.seeAdversaryAgent();
+//			}
+//
+//			@ Override
+//			protected void action() {
+//				agent.cancelSupport();
+//
+//			}
+//		});
+//		//-------------------------------------------->
 	}
 }
