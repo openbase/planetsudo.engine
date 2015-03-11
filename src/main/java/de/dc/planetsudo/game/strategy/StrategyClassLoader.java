@@ -4,10 +4,10 @@
  */
 package de.dc.planetsudo.game.strategy;
 
+import de.citec.jps.core.JPService;
 import de.dc.planetsudo.main.command.SetExternalStrategyJar;
 import de.dc.util.exceptions.CouldNotPerformException;
 import de.dc.util.logging.Logger;
-import de.unibi.agai.clparser.CLParser;
 import java.io.File;
 import java.util.Vector;
 import org.apache.tomcat.loader.AdaptiveClassLoader;
@@ -19,7 +19,7 @@ import org.apache.tomcat.loader.ClassRepository;
  */
 public class StrategyClassLoader {
 
-	private static File strategyJar = CLParser.getAttribute(SetExternalStrategyJar.class).getValue();
+	private static File strategyJar = JPService.getProperty(SetExternalStrategyJar.class).getValue();
 	private static AdaptiveClassLoader adaptiveClassLoader;
 
 	static {

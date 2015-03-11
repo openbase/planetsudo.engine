@@ -5,10 +5,10 @@
 
 package de.dc.planetsudo.main.command;
 
-import de.unibi.agai.clparser.CLParser;
-import de.unibi.agai.clparser.command.AbstractCLDirectory;
-import de.unibi.agai.clparser.command.SetPrefix;
-import de.unibi.agai.tools.FileHandler;
+import de.citec.jps.core.JPService;
+import de.citec.jps.preset.AbstractJPDirectory;
+import de.citec.jps.preset.JPPrefix;
+import de.citec.jps.tools.FileHandler;
 import java.io.File;
 
 
@@ -16,7 +16,7 @@ import java.io.File;
  *
  * @author divine
  */
-public class SetLevelPathCommand extends AbstractCLDirectory {
+public class SetLevelPathCommand extends AbstractJPDirectory {
 	public final static String[] COMMAND_IDENTIFIERS = {"-l", "--levelfolder"};
 	public final static String[] ARGUMENT_IDENTIFIERS = {"LevelPath"};
 
@@ -30,7 +30,7 @@ public class SetLevelPathCommand extends AbstractCLDirectory {
 	}
 
 	@Override
-	protected File getCommandDefaultValue() {
-		return new File(CLParser.getAttribute(SetPrefix.class).getValue().getAbsolutePath()+"/target/classes/de/dc/planetsudo/level/save/");
+	protected File getPropertyDefaultValue() {
+		return new File(JPService.getProperty(JPPrefix.class).getValue().getAbsolutePath()+"/target/classes/de/dc/planetsudo/level/save/");
 	}
 }

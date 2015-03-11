@@ -4,16 +4,14 @@
  */
 package de.dc.planetsudo.main.command;
 
-import de.unibi.agai.clparser.command.AbstractCLString;
-import org.apache.log4j.Logger;
+import de.citec.jps.preset.AbstractJPString;
+
 
 /**
  *
  * @author Divine <DivineThreepwood@gmail.com>
  */
-public class SetServer extends AbstractCLString {
-
-	private final Logger LOGGER = Logger.getLogger(getClass());
+public class SetServer extends AbstractJPString {
 
 	public final static String[] COMMAND_IDENTIFIERS = {"--server"};
 	public final static String[] ARGUMENT_IDENTIFIERS = {"HOSTNAME"};
@@ -23,7 +21,7 @@ public class SetServer extends AbstractCLString {
 	}
 	
 	@Override
-	protected String getCommandDefaultValue() {
+	protected String getPropertyDefaultValue() {
 		return "localhost";
 	}
 

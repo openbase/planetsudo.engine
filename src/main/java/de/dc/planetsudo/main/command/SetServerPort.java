@@ -4,26 +4,23 @@
  */
 package de.dc.planetsudo.main.command;
 
-import de.unibi.agai.clparser.command.AbstractCLInteger;
-import org.apache.log4j.Logger;
+import de.citec.jps.preset.AbstractJPInteger;
+
 
 /**
  *
  * @author Divine <DivineThreepwood@gmail.com>
  */
-public class SetServerPort extends AbstractCLInteger {
-
-	private final Logger LOGGER = Logger.getLogger(getClass());
+public class SetServerPort extends AbstractJPInteger {
 
 	public final static String[] COMMAND_IDENTIFIERS = {"--port"};
-	public final static String[] ARGUMENT_IDENTIFIERS = {"HOSTPORT"};
 
 	public SetServerPort() {
-		super(COMMAND_IDENTIFIERS, ARGUMENT_IDENTIFIERS);
+		super(COMMAND_IDENTIFIERS);
 	}
 	
 	@Override
-	protected Integer getCommandDefaultValue() {
+	protected Integer getPropertyDefaultValue() {
 		return 8253;
 	}
 

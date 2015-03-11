@@ -5,22 +5,21 @@
 
 package de.dc.planetsudo.main.command;
 
-import de.unibi.agai.clparser.CLParser;
-import de.unibi.agai.clparser.command.AbstractCLDirectory;
-import de.unibi.agai.clparser.command.SetPrefix;
-import de.unibi.agai.tools.FileHandler;
+import de.citec.jps.core.JPService;
+import de.citec.jps.preset.AbstractJPDirectory;
+import de.citec.jps.preset.JPPrefix;
+import de.citec.jps.tools.FileHandler;
 import java.io.File;
 
 /**
  *
  * @author divine
  */
-public class SetStrategyPathCommand extends AbstractCLDirectory {
+public class SetStrategyPathCommand extends AbstractJPDirectory {
 	public final static String[] COMMAND_IDENTIFIERS = {"-s", "--strategy"};
-	public final static String[] ARGUMENT_IDENTIFIERS = {"LevelPath"};
 
 	public SetStrategyPathCommand() {
-		super(COMMAND_IDENTIFIERS, ARGUMENT_IDENTIFIERS, FileHandler.ExistenceHandling.CanExist, FileHandler.AutoMode.On);
+		super(COMMAND_IDENTIFIERS, FileHandler.ExistenceHandling.CanExist, FileHandler.AutoMode.On);
 	}
 
 	@Override
@@ -29,7 +28,7 @@ public class SetStrategyPathCommand extends AbstractCLDirectory {
 	}
 
 	@Override
-	protected File getCommandDefaultValue() {
-		return new File(CLParser.getAttribute(SetPrefix.class).getValue().getAbsolutePath()+"/target/classes/de/dc/planetsudo/game/strategy");
+	protected File getPropertyDefaultValue() {
+		return new File(JPService.getProperty(JPPrefix.class).getValue().getAbsolutePath()+"/target/classes/de/dc/planetsudo/game/strategy");
 	}
 }

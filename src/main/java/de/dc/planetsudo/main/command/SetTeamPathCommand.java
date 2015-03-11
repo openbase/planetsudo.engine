@@ -4,23 +4,22 @@
  */
 package de.dc.planetsudo.main.command;
 
-import de.unibi.agai.clparser.CLParser;
-import de.unibi.agai.clparser.command.AbstractCLDirectory;
-import de.unibi.agai.clparser.command.SetPrefix;
-import de.unibi.agai.tools.FileHandler;
+import de.citec.jps.core.JPService;
+import de.citec.jps.preset.AbstractJPDirectory;
+import de.citec.jps.preset.JPPrefix;
+import de.citec.jps.tools.FileHandler;
 import java.io.File;
 
 /**
  *
  * @author divine
  */
-public class SetTeamPathCommand extends AbstractCLDirectory {
+public class SetTeamPathCommand extends AbstractJPDirectory {
 
 	public final static String[] COMMAND_IDENTIFIERS = {"-t", "--teamfolder"};
-	public final static String[] ARGUMENT_IDENTIFIERS = {"LevelPath"};
 
 	public SetTeamPathCommand() {
-		super(COMMAND_IDENTIFIERS, ARGUMENT_IDENTIFIERS, FileHandler.ExistenceHandling.CanExist, FileHandler.AutoMode.On);
+		super(COMMAND_IDENTIFIERS, FileHandler.ExistenceHandling.CanExist, FileHandler.AutoMode.On);
 	}
 
 	@Override
@@ -29,7 +28,7 @@ public class SetTeamPathCommand extends AbstractCLDirectory {
 	}
 
 	@Override
-	protected File getCommandDefaultValue() {
-		return new File(CLParser.getAttribute(SetPrefix.class).getValue().getAbsolutePath()+"/teams");
+	protected File getPropertyDefaultValue() {
+		return new File(JPService.getProperty(JPPrefix.class).getValue().getAbsolutePath()+"/teams");
 	}
 }

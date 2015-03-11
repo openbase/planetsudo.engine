@@ -4,6 +4,7 @@
  */
 package de.dc.planetsudo.game;
 
+import de.citec.jps.core.JPService;
 import java.awt.Color;
 import de.dc.planetsudo.game.strategy.AbstractStrategy;
 import de.dc.planetsudo.game.strategy.StrategyClassLoader;
@@ -15,7 +16,6 @@ import de.dc.planetsudo.main.command.SetTeamPathCommand;
 import de.dc.util.controller.ObjectFileController;
 import de.dc.util.exceptions.ConstructionException;
 import de.dc.util.exceptions.CouldNotPerformException;
-import de.unibi.agai.clparser.CLParser;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.List;
@@ -137,7 +137,7 @@ public class Team {
 
 	public static void save(final TeamData data, final String teamName, final boolean force) throws CouldNotPerformException {
 		try {
-			final String fileURL = CLParser.getAttribute(SetTeamPathCommand.class).getValue().getAbsolutePath() + "/" + teamName + ".team";
+			final String fileURL = JPService.getProperty(SetTeamPathCommand.class).getValue().getAbsolutePath() + "/" + teamName + ".team";
 
 			if(!force && new File(fileURL).exists()) {
 				throw new CouldNotPerformException("File already exist!");
@@ -151,7 +151,7 @@ public class Team {
 	}
 
 	public static void resetDefaultTeam() {
-		new File(CLParser.getAttribute(SetTeamPathCommand.class).getValue().getAbsolutePath() + "/" + DEFAULT_ID + ".team").delete();
+		new File(JPService.getProperty(SetTeamPathCommand.class).getValue().getAbsolutePath() + "/" + DEFAULT_ID + ".team").delete();
 	}
 
 	public static TeamData loadDefaultTeam() throws CouldNotPerformException {
@@ -160,7 +160,7 @@ public class Team {
 
 	public static TeamData load(final String teamName) throws CouldNotPerformException {
 		try {
-			final ObjectFileController<TeamData> fileWriter = new ObjectFileController<TeamData>(CLParser.getAttribute(SetTeamPathCommand.class).getValue().getAbsolutePath() + "/" + teamName + ".team");
+			final ObjectFileController<TeamData> fileWriter = new ObjectFileController<TeamData>(JPService.getAttribute(SetTeamPathCommand.class).getValue().getAbsolutePath() + "/" + teamName + ".team");
 			return fileWriter.readObject();
 		} catch (Exception ex) {
 			throw new CouldNotPerformException("Could not load TeamData[" + teamName + "]!", ex);
@@ -171,7 +171,7 @@ public class Team {
 
 		final List<TeamData> teamList = new ArrayList<TeamData>();
 
-		final File teamFolder = CLParser.getAttribute(SetTeamPathCommand.class).getValue();
+		final File teamFolder = JPService.getProperty(SetTeamPathCommand.class).getValue();
 		if (!teamFolder.exists()) {
 			throw new CouldNotPerformException("Could not find team folder! ");
 		}
@@ -189,7 +189,7 @@ public class Team {
 				String teamStringID = teamClassName.replace(".team", "");
 
 				try {
-					final ObjectFileController<TeamData> teamDataController = new ObjectFileController<TeamData>(CLParser.getAttribute(SetTeamPathCommand.class).getValue() + "/" + teamStringID + ".team");
+					final ObjectFileController<TeamData> teamDataController = new ObjectFileController<TeamData>(JPService.getAttribute(SetTeamPathCommand.class).getValue() + "/" + teamStringID + ".team");
 					teamList.add(teamDataController.readObject());
 				} catch (Exception ex) {
 					Logger.warn(Team.class, "Could not load team " + teamClassName + "!", ex);

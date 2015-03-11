@@ -4,6 +4,7 @@
  */
 package de.dc.planetsudo.net;
 
+import de.citec.jps.core.JPService;
 import de.dc.planetsudo.game.Team;
 import de.dc.planetsudo.game.TeamData;
 import de.dc.planetsudo.game.strategy.StrategyClassLoader;
@@ -14,7 +15,6 @@ import de.dc.planetsudo.main.command.SetStrategySourceDirectory;
 import de.dc.planetsudo.view.MainGUI;
 import de.dc.util.exceptions.CouldNotPerformException;
 import de.dc.util.logging.Logger;
-import de.unibi.agai.clparser.CLParser;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
@@ -110,7 +110,7 @@ public class PlanetSudoClient {
 	private void connecting() {
 		setConnectionState(ConnectionState.Connecting);
 		try {
-			Socket clientSocket = new Socket(CLParser.getAttribute(SetServer.class).getValue(), CLParser.getAttribute(SetServerPort.class).getValue());
+			Socket clientSocket = new Socket(JPService.getAttribute(SetServer.class).getValue(), JPService.getProperty(SetServerPort.class).getValue());
 			out = new ObjectOutputStream(clientSocket.getOutputStream());
 			in = new ObjectInputStream(clientSocket.getInputStream());
 		} catch (Exception ex) {
@@ -144,7 +144,7 @@ public class PlanetSudoClient {
 	private void uploadDefaultStrategy() throws CouldNotPerformException, FileNotFoundException, IOException {
 		setConnectionState(ConnectionState.UploadDefaultStrategy);
 		final TeamData defaultTeamData = Team.loadDefaultTeam();
-		final File sourceFile = new File(CLParser.getAttribute(SetStrategySourceDirectory.class).getValue(), defaultTeamData.getStrategy()+".java");
+		final File sourceFile = new File(JPService.getAttribute(SetStrategySourceDirectory.class).getValue(), defaultTeamData.getStrategy()+".java");
 		if(!sourceFile.exists()) {
 			throw new CouldNotPerformException("File["+sourceFile.getAbsolutePath()+"] does not exist!");
 		}
@@ -157,7 +157,7 @@ public class PlanetSudoClient {
 
 	private void downloadStrategies() throws IOException {
 		setConnectionState(ConnectionState.DownloadStrategies);
-		final File jarFile = CLParser.getAttribute(SetExternalStrategyJar.class).getValue();
+		final File jarFile = JPService.getAttribute(SetExternalStrategyJar.class).getValue();
 		final int fileByteLenght = in.readInt();
 		final byte[] fileBytes = new byte[fileByteLenght];
 		IOUtils.readFully(in, fileBytes);

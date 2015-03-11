@@ -5,10 +5,10 @@
 
 package de.dc.planetsudo.main.command;
 
-import de.unibi.agai.clparser.CLParser;
-import de.unibi.agai.clparser.command.AbstractCLFile;
-import de.unibi.agai.clparser.command.SetPrefix;
-import de.unibi.agai.tools.FileHandler;
+import de.citec.jps.core.JPService;
+import de.citec.jps.preset.AbstractJPFile;
+import de.citec.jps.preset.JPPrefix;
+import de.citec.jps.tools.FileHandler;
 import java.io.File;
 
 
@@ -16,7 +16,7 @@ import java.io.File;
  *
  * @author divine
  */
-public class SetExternalStrategyJar extends AbstractCLFile {
+public class SetExternalStrategyJar extends AbstractJPFile {
 	public final static String[] COMMAND_IDENTIFIERS = {"--buildTarget"};
 	public final static String[] ARGUMENT_IDENTIFIERS = {"PATH"};
 
@@ -30,7 +30,7 @@ public class SetExternalStrategyJar extends AbstractCLFile {
 	}
 
 	@Override
-	protected File getCommandDefaultValue() {
-		return new File(CLParser.getAttribute(SetPrefix.class).getValue().getAbsolutePath()+"/ext/Strategy.jar");
+	protected File getPropertyDefaultValue() {
+		return new File(JPService.getProperty(JPPrefix.class).getValue().getAbsolutePath()+"/ext/Strategy.jar");
 	}
 }
