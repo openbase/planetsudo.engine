@@ -41,7 +41,8 @@ public class LevelLoader {
 		"JD",
 		"Arena",
 		"Kreuzung",
-		"Entropie"
+		"Entropie",
+                "Offensive"
 	};
 
 	public LevelLoader() {
