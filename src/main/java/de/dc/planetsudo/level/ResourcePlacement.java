@@ -17,4 +17,5 @@ public interface ResourcePlacement {
 	public ArrayList<Resource> getResources(AbstractLevel level);
 	public int getResourceCount();
 	public Point2D calcRandomLevelPosition(AbstractLevel level);
+    public void translateIntoBase(final Point2D base);
 }

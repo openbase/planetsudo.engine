@@ -40,6 +40,10 @@ public class ResourceGausOval extends Rectangle2D.Double implements ResourcePlac
 	public Point2D calcRandomLevelPosition(AbstractLevel level) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
-
-
+    
+    @Override
+    public void translateIntoBase(final Point2D base) {
+        x -= base.getX();
+		y -= base.getY();
+    }
 }

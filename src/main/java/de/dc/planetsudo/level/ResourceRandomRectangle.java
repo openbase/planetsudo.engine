@@ -106,7 +106,13 @@ public class ResourceRandomRectangle extends Rectangle2D.Double implements Resou
 		}
 		return new Point2D(resourceXPos, resourceYPos);
 	}
-
+    
+    @Override
+    public void translateIntoBase(final Point2D base) {
+        x -= base.getX();
+		y -= base.getY();
+    }
+    
 	@Override
 	public int getResourceCount() {
 		return resourceCount;

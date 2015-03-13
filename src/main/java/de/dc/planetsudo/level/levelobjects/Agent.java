@@ -208,6 +208,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
 		return tmp2Resource;
 	}
 
+    @Override
 	public void kill() {
 		Logger.info(this, "Kill " + name);
 		mothership.removeAgent(this);

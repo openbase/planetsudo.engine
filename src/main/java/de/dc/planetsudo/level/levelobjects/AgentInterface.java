@@ -423,4 +423,9 @@ public interface AgentInterface {
 	 * Treibstoff: 1
 	 */
 	void turnRight(int beta);
+    
+    /**
+     * Der Agent läuft amok.
+     */
+    void kill();
 }

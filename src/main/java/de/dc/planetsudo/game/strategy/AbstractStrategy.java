@@ -30,7 +30,7 @@ public abstract class AbstractStrategy implements Runnable {
 	private final GameManager gameManager;
 	private final int agentCount;
 	private int gameSpeed;
-
+    
 	public AbstractStrategy() {
 		this.mothership = null;
 		this.rules = null;
@@ -90,6 +90,7 @@ public abstract class AbstractStrategy implements Runnable {
 		Logger.debug(this, "Create rule "+rule);
 		if(rules.containsKey(getKey(rule))) {
 			Logger.error(this, "There exist min two rules with the same priority!");
+            agent.kill();
 		}
 		rules.put(getKey(rule), rule);
 	}

@@ -11,6 +11,8 @@ import java.awt.Color;
 import java.awt.Polygon;
 import de.dc.planetsudo.level.AbstractLevel;
 import de.dc.planetsudo.level.ResourcePlacement;
+import de.dc.planetsudo.level.ResourceRandomRectangle;
+import de.dc.planetsudo.level.levelobjects.Resource.ResourceType;
 
 /**
  *
@@ -69,19 +71,19 @@ public class Offensive extends AbstractLevel {
 
 	@Override
 	protected ResourcePlacement[] loadResourcePlacement() {
-		ResourcePlacement[] resourcePlacement = new ResourcePlacement[0];
-//		resourcePlacement[0] = new ResourceRandomRectangle(1700, 1200, 150, 150, 5, ResourceType.Normal);
-//		resourcePlacement[1] = new ResourceRandomRectangle(750, 1200, 150, 150, 5, ResourceType.Normal);
-//		resourcePlacement[2] = new ResourceRandomRectangle(750, 450, 150, 150, 5, ResourceType.Normal);
-//		resourcePlacement[3] = new ResourceRandomRectangle(1700, 450, 150, 150, 5, ResourceType.Normal);
-//		resourcePlacement[4] = new ResourceRandomRectangle(750, 350, 150, 100, 3, ResourceType.DoublePoints);
-//		resourcePlacement[5] = new ResourceRandomRectangle(1700, 350, 150, 100, 3, ResourceType.DoublePoints);
-//		resourcePlacement[6] = new ResourceRandomRectangle(750, 1350, 150, 100, 3, ResourceType.DoublePoints);
-//		resourcePlacement[7] = new ResourceRandomRectangle(1700, 1350, 150, 100, 3, ResourceType.DoublePoints);
-//		resourcePlacement[8] = new ResourceRandomRectangle(1150, 300, 300, 150, 8, ResourceType.ExtremPoint);
-//		resourcePlacement[9] = new ResourceRandomRectangle(1150, 1350, 300, 150, 8, ResourceType.ExtremPoint);
-//		resourcePlacement[10] = new ResourceRandomRectangle(1150, 800, 300, 200, 3, ResourceType.ExtraAgentFuel);
-//		resourcePlacement[11] = new ResourceRandomRectangle(1150, 800, 300, 200, 2, ResourceType.ExtraMothershipFuel);
+		ResourcePlacement[] resourcePlacement = new ResourcePlacement[12];
+		resourcePlacement[0] = new ResourceRandomRectangle(1700, 1200, 150, 150, 5, ResourceType.Normal);
+		resourcePlacement[1] = new ResourceRandomRectangle(750, 1200, 150, 150, 5, ResourceType.Normal);
+		resourcePlacement[2] = new ResourceRandomRectangle(750, 450, 150, 150, 5, ResourceType.Normal);
+		resourcePlacement[3] = new ResourceRandomRectangle(1700, 450, 150, 150, 5, ResourceType.Normal);
+		resourcePlacement[4] = new ResourceRandomRectangle(750, 350, 150, 100, 3, ResourceType.DoublePoints);
+		resourcePlacement[5] = new ResourceRandomRectangle(1700, 350, 150, 100, 3, ResourceType.DoublePoints);
+		resourcePlacement[6] = new ResourceRandomRectangle(750, 1350, 150, 100, 3, ResourceType.DoublePoints);
+		resourcePlacement[7] = new ResourceRandomRectangle(1700, 1350, 150, 100, 3, ResourceType.DoublePoints);
+		resourcePlacement[8] = new ResourceRandomRectangle(1150, 300, 300, 150, 8, ResourceType.ExtremPoint);
+		resourcePlacement[9] = new ResourceRandomRectangle(1150, 1350, 300, 150, 8, ResourceType.ExtremPoint);
+		resourcePlacement[10] = new ResourceRandomRectangle(1150, 800, 300, 200, 3, ResourceType.ExtraAgentFuel);
+		resourcePlacement[11] = new ResourceRandomRectangle(1150, 800, 300, 200, 2, ResourceType.ExtraMothershipFuel);
 		return resourcePlacement;
 	}
 
