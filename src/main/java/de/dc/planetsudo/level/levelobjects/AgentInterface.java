@@ -18,7 +18,7 @@ package de.dc.planetsudo.level.levelobjects;
 
 /**
  *
- * @author Divine <DivineThreepwood@gmail.com>
+ * @author Divine Threepwood
  */
 public interface AgentInterface {
 
@@ -128,13 +128,13 @@ public interface AgentInterface {
 	 * Der Agent dreht sich um {
 	 * Aktionspunkte: 4 + 4 wenn resource geladen
 	 * Treibstoff: 1
-	 * @paramref beta}° nach links und bewegt sich anschließend geradeaus.
+	 * {@code beta}° nach links und bewegt sich anschließend geradeaus.
 	 * @param beta Drehwinkel
 	 */
 	void goLeft(int beta);
 
 	/**
-	 * Der Agent dreht sich um {@paramref beta}° nach rechts und bewegt sich anschließend geradeaus.
+	 * Der Agent dreht sich um {@code beta}° nach rechts und bewegt sich anschließend geradeaus.
 	 * Aktionspunkte: 4 + 4 wenn resource geladen
 	 * Treibstoff: 1
 	 * @param beta Drehwinkel
@@ -213,7 +213,7 @@ public interface AgentInterface {
 	/**
 	 * Gibt an ob der Agent eine Resource vom Typ {
 	 *
-	 * @paramref type} trägt.
+	 * {@code type} trägt.
 	 * @param type
 	 * @return true oder false.
 	 */
@@ -275,7 +275,7 @@ public interface AgentInterface {
 	boolean isTouchingResource();
 
 	/**
-	 * Gibt zur&uuml;ck, ob der Agent eine Resource vom Typ {@paramref type} ber&uuml;hrt und diese somit aufgeben kann.
+	 * Gibt zur&uuml;ck, ob der Agent eine Resource vom Typ {@code type} ber&uuml;hrt und diese somit aufgeben kann.
 	 * @param type
 	 * @return
 	 */
@@ -289,7 +289,7 @@ public interface AgentInterface {
 	boolean isUnderAttack();
 
 	/**
-	 * Der Agent fordert {@paramref percent} Prozent Treibstoff vom Mutterschiff an.
+	 * Der Agent fordert {@code percent} Prozent Treibstoff vom Mutterschiff an.
 	 * @param percent Der anzufordernde Treibstoffwert in Prozent als ganze Zahl
 	 * von 0 - 100.
 	 * Aktionspunkte: 20 + 2 für jeden getankten Treibstoff.
@@ -408,7 +408,7 @@ public interface AgentInterface {
 	 * Der Agent dreht sich in eine beliebige, zufällige Richtung mit dem
 	 * Offnungswinkel {
 	 *
-	 * @paramref opening}°. Aktionspunkte: 1
+	 * {@code opening}°. Aktionspunkte: 1
 	 * Treibstoff: 1
 	 * @param opening
 	 */
@@ -417,7 +417,7 @@ public interface AgentInterface {
 	/**
 	 * Der Agent dreht sich um Winkel {
 	 *
-	 * @paramref beta}° nach rechts.
+	 * {@code beta}° nach rechts.
 	 * @param beta Gew&uuml;nschter Winkel in Grad (0 - 360)
 	 * Aktionspunkte: 1
 	 * Treibstoff: 1

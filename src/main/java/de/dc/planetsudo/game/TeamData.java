@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  *
- * @author Divine <DivineThreepwood@gmail.com>
+ * @author Divine Threepwood
  */
 public class TeamData implements Serializable {
 

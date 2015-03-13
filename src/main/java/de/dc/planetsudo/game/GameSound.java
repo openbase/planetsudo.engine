@@ -12,7 +12,7 @@ import java.io.File;
 
 /**
  *
- * @author Divine <DivineThreepwood@gmail.com>
+ * @author Divine Threepwood
  */
 public enum GameSound {
 

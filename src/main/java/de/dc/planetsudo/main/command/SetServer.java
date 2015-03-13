@@ -9,7 +9,7 @@ import de.citec.jps.preset.AbstractJPString;
 
 /**
  *
- * @author Divine <DivineThreepwood@gmail.com>
+ * @author Divine Threepwood
  */
 public class SetServer extends AbstractJPString {
 

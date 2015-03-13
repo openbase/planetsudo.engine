@@ -21,7 +21,7 @@ import java.util.logging.Level;
 
 /**
  *
- * @author Divine <DivineThreepwood@gmail.com>
+ * @author Divine Threepwood
  */
 public class SpeedControlFrame extends javax.swing.JFrame {
 

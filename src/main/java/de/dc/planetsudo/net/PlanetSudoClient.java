@@ -29,7 +29,7 @@ import org.apache.commons.io.IOUtils;
 
 /**
  *
- * @author Divine <DivineThreepwood@gmail.com>
+ * @author Divine Threepwood
  */
 public class PlanetSudoClient {
 

@@ -18,7 +18,7 @@ package de.dc.planetsudo.level.levelobjects;
 
 /**
  *
- * @author Divine <DivineThreepwood@gmail.com>
+ * @author Divine Threepwood
  */
 public interface MothershipInterface {
 

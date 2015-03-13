@@ -15,7 +15,7 @@ import org.apache.tomcat.loader.ClassRepository;
 
 /**
  *
- * @author Divine <DivineThreepwood@gmail.com>
+ * @author Divine Threepwood
  */
 public class StrategyClassLoader {
 
