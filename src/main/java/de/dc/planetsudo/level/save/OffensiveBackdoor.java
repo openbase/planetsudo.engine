@@ -18,9 +18,9 @@ import de.dc.planetsudo.level.levelobjects.Resource.ResourceType;
  *
  * @author divine
  */
-public class Offensive extends AbstractLevel {
+public class OffensiveBackdoor extends AbstractLevel {
 
-	public Offensive() {
+	public OffensiveBackdoor() {
 	}
 
 	@Override
@@ -44,20 +44,12 @@ public class Offensive extends AbstractLevel {
 		levelBorders.addPoint(1950, 850);
 		levelBorders.addPoint(1950, 600);
 		levelBorders.addPoint(2250, 600);
-		levelBorders.addPoint(2250, 1200);
-		levelBorders.addPoint(1850, 1200);
-		levelBorders.addPoint(1850, 1450);
-		levelBorders.addPoint(1700, 1450);
-		levelBorders.addPoint(1700, 1200);
-		levelBorders.addPoint(1450, 1200);
-		levelBorders.addPoint(1450, 1500);
-		levelBorders.addPoint(1150, 1500);
-		levelBorders.addPoint(1150, 1200);
-		levelBorders.addPoint(900, 1200);
-		levelBorders.addPoint(900, 1450);
-		levelBorders.addPoint(750, 1450);
-		levelBorders.addPoint(750, 1200);
-		levelBorders.addPoint(350, 1200);
+		levelBorders.addPoint(2250, 650);
+		levelBorders.addPoint(2550, 650);
+		levelBorders.addPoint(2550, 1800);
+		levelBorders.addPoint(50, 1800);
+		levelBorders.addPoint(50, 650);
+		levelBorders.addPoint(350, 650);
 		return levelBorders;
 	}
 
@@ -94,6 +86,29 @@ public class Offensive extends AbstractLevel {
 
 	@Override
 	protected Polygon[] loadLevelWallPolygons() {
-		return null;
+        Polygon[] polygon = new Polygon[1];
+        polygon[0] = new Polygon();
+        polygon[0].addPoint(350, 800);
+        polygon[0].addPoint(350, 1200);
+        polygon[0].addPoint(750, 1200);
+        polygon[0].addPoint(750, 1450);
+        polygon[0].addPoint(900, 1450);
+        polygon[0].addPoint(900, 1200);
+        polygon[0].addPoint(1150, 1200);
+        polygon[0].addPoint(1150, 1500);
+        polygon[0].addPoint(1450, 1500);
+        polygon[0].addPoint(1450, 1200);
+        polygon[0].addPoint(1700, 1200);
+        polygon[0].addPoint(1700, 1450);
+        polygon[0].addPoint(1850, 1450);
+        polygon[0].addPoint(1850, 1200);
+        polygon[0].addPoint(2250, 1200);
+        polygon[0].addPoint(2250, 800);
+        polygon[0].addPoint(2350, 800);
+        polygon[0].addPoint(2350, 1650);
+        polygon[0].addPoint(250, 1650);
+        polygon[0].addPoint(250, 800);
+        polygon[0].addPoint(350, 800);
+		return polygon;
 	}
 }

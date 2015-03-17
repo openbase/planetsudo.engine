@@ -181,7 +181,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
 	}
 
 	public boolean isCarringResource(final ResourceType type) {
-		if (!isCarringResource()) {
+		if (isCarringResource()) {
 			return resource.getType().equals(type);
 		}
 		return false;
