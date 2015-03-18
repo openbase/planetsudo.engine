@@ -35,7 +35,7 @@ public abstract class AbstractLevel extends AbstractGameObject implements Runnab
     public final static String GAME_SPEED_CHANGED = "SpeedChanged";
     private final Object RESOURCES_LOCK = new SyncObject("ResourcesLock");
     private final GameManager gameManager;
-    private final Point2D base;
+    private Point2D base;
     private final Polygon levelBorderPolygon;
     private final Polygon[] levelWallPolygons;
     private final Base2D[] homePositions;
@@ -65,11 +65,12 @@ public abstract class AbstractLevel extends AbstractGameObject implements Runnab
 
         // Base transformation
         this.base = calculateBasePosition(levelBorderPolygon);
+//        this.base = calculateBasePosition(levelWallPolygons, base);
 
-        levelBorderPolygon.translate((int) -base.getX(), (int) -base.getX());
+        levelBorderPolygon.translate((int) -base.getX(), (int) -base.getY());
         if (levelWallPolygons != null) {
             for (Polygon p : levelWallPolygons) {
-                p.translate((int) -base.getX(), (int) -base.getX());
+                p.translate((int) -base.getX(), (int) -base.getY());
             }
         }
         for (Base2D homepos : homePositions) {
@@ -237,14 +238,27 @@ public abstract class AbstractLevel extends AbstractGameObject implements Runnab
         }
     }
 
+//    private static Point2D calculateBasePosition(final Polygon outerWalls, final Polygon[] walls, final Point2D existingBase) {
+////        ;
+////        ;
+////        int x = (int) existingBase.getX();
+////        int y = (int) existingBase.getY();
+////        for (int i = 0; i < polygon.npoints; i++) {
+////            x = Math.min(x, polygon.xpoints[i]);
+////            y = Math.min(y, polygon.ypoints[i]);
+////        }
+//        Rectangle2D bounds;
+//        for(Polygon polygon : polygons) {
+//             bounds= polygon.getBounds2D();
+//        }
+//        
+//        bounds.add(existingBase);
+//        return new Point2D(bounds.getMinX(), bounds.getMinY());
+//    }
+    
     private static Point2D calculateBasePosition(final Polygon polygon) {
-        int x = Integer.MAX_VALUE;
-        int y = Integer.MAX_VALUE;
-        for (int i = 0; i < polygon.npoints; i++) {
-            x = Math.min(x, polygon.xpoints[i]);
-            y = Math.min(y, polygon.ypoints[i]);
-        }
-        return new Point2D(x, y);
+        Rectangle2D bounds = polygon.getBounds2D();
+        return new Point2D(bounds.getMinX(), bounds.getMinY());
     }
 
     public int getX() {
