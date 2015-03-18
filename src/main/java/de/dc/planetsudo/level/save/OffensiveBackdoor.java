@@ -63,7 +63,7 @@ public class OffensiveBackdoor extends AbstractLevel {
 
 	@Override
 	protected ResourcePlacement[] loadResourcePlacement() {
-		ResourcePlacement[] resourcePlacement = new ResourcePlacement[12];
+		ResourcePlacement[] resourcePlacement = new ResourcePlacement[15];
 		resourcePlacement[0] = new ResourceRandomRectangle(1700, 1200, 150, 150, 5, ResourceType.Normal);
 		resourcePlacement[1] = new ResourceRandomRectangle(750, 1200, 150, 150, 5, ResourceType.Normal);
 		resourcePlacement[2] = new ResourceRandomRectangle(750, 450, 150, 150, 5, ResourceType.Normal);
@@ -76,6 +76,9 @@ public class OffensiveBackdoor extends AbstractLevel {
 		resourcePlacement[9] = new ResourceRandomRectangle(1150, 1350, 300, 150, 8, ResourceType.ExtremPoint);
 		resourcePlacement[10] = new ResourceRandomRectangle(1150, 800, 300, 200, 3, ResourceType.ExtraAgentFuel);
 		resourcePlacement[11] = new ResourceRandomRectangle(1150, 800, 300, 200, 2, ResourceType.ExtraMothershipFuel);
+		resourcePlacement[12] = new ResourceRandomRectangle(900, 1650, 800, 100, 7, ResourceType.ExtraAgentFuel);
+		resourcePlacement[13] = new ResourceRandomRectangle(50, 1650, 200, 150, 3, ResourceType.ExtremPoint);
+		resourcePlacement[14] = new ResourceRandomRectangle(2350, 1650, 200, 150, 3, ResourceType.ExtremPoint);
 		return resourcePlacement;
 	}
 
