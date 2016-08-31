@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-/*
+ /*
  * ConfigurationPanel.java
  *
  * Created on Jun 17, 2010, 1:02:56 AM
@@ -31,7 +31,6 @@ package org.openbase.planetsudo.view.configuration;
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-
 import java.awt.Color;
 import java.io.IOException;
 import javax.swing.ImageIcon;
@@ -50,6 +49,7 @@ import java.beans.PropertyChangeListener;
 import java.util.List;
 import javax.swing.SwingWorker;
 import org.openbase.jul.exception.CouldNotPerformException;
+import org.openbase.jul.exception.printer.ExceptionPrinter;
 import org.openbase.jul.visual.swing.image.ImageLoader;
 import org.slf4j.LoggerFactory;
 
@@ -59,102 +59,100 @@ import org.slf4j.LoggerFactory;
  */
 public class ConfigurationPanel extends javax.swing.JPanel {
 
-private final Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
-	/**
-	 * Creates new form ConfigurationPanel
-	 */
-	public ConfigurationPanel() {
-		initComponents();
-		try {
-			logoLabel.setIcon(new ImageIcon(ImageLoader.getInstance().loadImage("img/PlanetSudoLogoMedium.png")));
-		} catch (IOException ex) {
-			logger.warn("Could not display image");
-		}
+    /**
+     * Creates new form ConfigurationPanel
+     */
+    public ConfigurationPanel() {
+        initComponents();
+        try {
+            logoLabel.setIcon(new ImageIcon(ImageLoader.getInstance().loadImage("img/PlanetSudoLogoMedium.png")));
+        } catch (CouldNotPerformException ex) {
+            ExceptionPrinter.printHistory(new CouldNotPerformException("Could not display image", ex), logger);
+        }
 
-		PlanetSudoClient.getInstance().addPropertyChangeListener(new PropertyChangeListener() {
-			@Override
-			public void propertyChange(final PropertyChangeEvent evt) {
-				if (evt.getPropertyName().equals(PlanetSudoClient.CONNECTION_STATE_UPDATE)) {
-					final ConnectionState state = (ConnectionState) evt.getNewValue();
+        PlanetSudoClient.getInstance().addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(final PropertyChangeEvent evt) {
+                if (evt.getPropertyName().equals(PlanetSudoClient.CONNECTION_STATE_UPDATE)) {
+                    final ConnectionState state = (ConnectionState) evt.getNewValue();
 
-					connectionStateLabel.setText(state.getDescription());
+                    connectionStateLabel.setText(state.getDescription());
 
-					switch (state) {
-						case Connecting:
-						case DownloadStrategies:
-						case DownloadTeams:
-						case UploadDefaultStrategy:
-						case UploadDefaultTeam:
-							connectionStateLabel.setBackground(new Color(100, 200, 100));
-							syncButton.setEnabled(false);
-							break;
-						case SyncSuccessful:
-							connectionStateLabel.setBackground(new Color(100, 100, 200));
-							syncButton.setEnabled(true);
-							break;
-						case ConnectionError:
-							connectionStateLabel.setBackground(new Color(200, 100, 100));
-							syncButton.setEnabled(true);
-							break;
-						default:
-							assert false;
-					}
-				}
-			}
-		});
+                    switch (state) {
+                        case Connecting:
+                        case DownloadStrategies:
+                        case DownloadTeams:
+                        case UploadDefaultStrategy:
+                        case UploadDefaultTeam:
+                            connectionStateLabel.setBackground(new Color(100, 200, 100));
+                            syncButton.setEnabled(false);
+                            break;
+                        case SyncSuccessful:
+                            connectionStateLabel.setBackground(new Color(100, 100, 200));
+                            syncButton.setEnabled(true);
+                            break;
+                        case ConnectionError:
+                            connectionStateLabel.setBackground(new Color(200, 100, 100));
+                            syncButton.setEnabled(true);
+                            break;
+                        default:
+                            assert false;
+                    }
+                }
+            }
+        });
 
-		initDynamicComponents();
-	}
+        initDynamicComponents();
+    }
 
-	private void initDynamicComponents() {
-		LevelChooserComboBox.removeAllItems();
-		for (String levelName : LevelLoader.getInstance().getLevelNameSet()) {
-			LevelChooserComboBox.addItem(levelName);
-		}
-		updateTeamList();
+    private void initDynamicComponents() {
+        LevelChooserComboBox.removeAllItems();
+        for (String levelName : LevelLoader.getInstance().getLevelNameSet()) {
+            LevelChooserComboBox.addItem(levelName);
+        }
+        updateTeamList();
 
+        // setup default team
+        setdefaultTeamButton.setForeground(Color.BLACK);
+        setdefaultTeamButton.setEnabled(true);
+        defaultTeamComboBox.setEnabled(true);
+        syncButton.setEnabled(false);
+        try {
+            final TeamData loadDefaultTeam = Team.loadDefaultTeam();
+            setDefaultTeam(loadDefaultTeam);
+        } catch (CouldNotPerformException ex) {
+            logger.warn("Could not load default team!", ex);
+        }
+    }
 
-		// setup default team
+    public void updateTeamList() {
+        try {
+            teamAComboBox.removeAllItems();
+            teamBComboBox.removeAllItems();
+            if (defaultTeamComboBox.isEnabled()) {
+                defaultTeamComboBox.removeAllItems();
+            }
+            List<TeamData> teams = Team.loadAll();
+            for (TeamData teamData : teams) {
+                teamAComboBox.addItem(teamData);
+                teamBComboBox.addItem(teamData);
+                if (defaultTeamComboBox.isEnabled()) {
+                    defaultTeamComboBox.addItem(teamData);
+                }
+            }
+        } catch (CouldNotPerformException ex) {
+            logger.warn("Could not load teams!", ex);
+        }
+    }
 
-		setdefaultTeamButton.setForeground(Color.BLACK);
-		setdefaultTeamButton.setEnabled(true);
-		defaultTeamComboBox.setEnabled(true);
-		syncButton.setEnabled(false);
-		try {
-			final TeamData loadDefaultTeam = Team.loadDefaultTeam();
-			setDefaultTeam(loadDefaultTeam);
-		} catch (CouldNotPerformException ex) {
-			logger.warn("Could not load default team!", ex);
-		}
-	}
-
-	public void updateTeamList() {
-		try {
-			teamAComboBox.removeAllItems();
-			teamBComboBox.removeAllItems();
-			if (defaultTeamComboBox.isEnabled()) {
-				defaultTeamComboBox.removeAllItems();
-			}
-			List<TeamData> teams = Team.loadAll();
-			for (TeamData teamData : teams) {
-				teamAComboBox.addItem(teamData);
-				teamBComboBox.addItem(teamData);
-				if (defaultTeamComboBox.isEnabled()) {
-					defaultTeamComboBox.addItem(teamData);
-				}
-			}
-		} catch (CouldNotPerformException ex) {
-			logger.warn("Could not load teams!", ex);
-		}
-	}
-
-	/**
-	 * This method is called from within the constructor to initialize the form.
-	 * WARNING: Do NOT modify this code. The content of this method is always
-	 * regenerated by the Form Editor.
-	 */
-	@SuppressWarnings("unchecked")
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -478,74 +476,74 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
     }// </editor-fold>//GEN-END:initComponents
 
 	private void LevelChooserComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LevelChooserComboBoxActionPerformed
-		new SwingWorker() {
-			@Override
-			protected Object doInBackground() throws Exception {
-				if (LevelChooserComboBox.getSelectedItem() != null) {
-					try {
-					final AbstractLevel level = LevelLoader.getInstance().loadLevel(LevelChooserComboBox.getSelectedItem().toString());
-					GameManager.getInstance().setLevel(level);
-					levelPreviewDisplayPanel.setLevel(level);
-					levelPreviewDisplayPanel.setOpaque(true);
-					levelPreviewDisplayPanel.setBackground(level.getColor());
-					} catch(Exception ex) {
-						logger.error("Could not update level preview!", ex);
-					}
-				}
-				return null;
-			}
-		}.execute();
+        new SwingWorker() {
+            @Override
+            protected Object doInBackground() throws Exception {
+                if (LevelChooserComboBox.getSelectedItem() != null) {
+                    try {
+                        final AbstractLevel level = LevelLoader.getInstance().loadLevel(LevelChooserComboBox.getSelectedItem().toString());
+                        GameManager.getInstance().setLevel(level);
+                        levelPreviewDisplayPanel.setLevel(level);
+                        levelPreviewDisplayPanel.setOpaque(true);
+                        levelPreviewDisplayPanel.setBackground(level.getColor());
+                    } catch (Exception ex) {
+                        logger.error("Could not update level preview!", ex);
+                    }
+                }
+                return null;
+            }
+        }.execute();
 	}//GEN-LAST:event_LevelChooserComboBoxActionPerformed
 
 	private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-		MainGUI.getInstance().showLoadingPanel();
-		GameManager.getInstance().startGame();
+        MainGUI.getInstance().showLoadingPanel();
+        GameManager.getInstance().startGame();
 	}//GEN-LAST:event_jButton1ActionPerformed
 
 	private void teamAComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_teamAComboBoxActionPerformed
-		GameManager.getInstance().addTeam((TeamData) teamAComboBox.getSelectedItem(), GameManager.TeamType.A);
+        GameManager.getInstance().addTeam((TeamData) teamAComboBox.getSelectedItem(), GameManager.TeamType.A);
 	}//GEN-LAST:event_teamAComboBoxActionPerformed
 
 	private void teamBComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_teamBComboBoxActionPerformed
-		GameManager.getInstance().addTeam((TeamData) teamBComboBox.getSelectedItem(), GameManager.TeamType.B);
+        GameManager.getInstance().addTeam((TeamData) teamBComboBox.getSelectedItem(), GameManager.TeamType.B);
 	}//GEN-LAST:event_teamBComboBoxActionPerformed
 
 	private void defaultTeamComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_defaultTeamComboBoxActionPerformed
 	}//GEN-LAST:event_defaultTeamComboBoxActionPerformed
 
-	private void setDefaultTeam(final TeamData defaultTeamData) {
-		setdefaultTeamButton.setForeground(Color.BLACK);
-		setdefaultTeamButton.setEnabled(false);
-		defaultTeamComboBox.setEnabled(false);
-		syncButton.setEnabled(true);
-		try {
-			for(int i =0; i<defaultTeamComboBox.getModel().getSize(); i++) {
-				if(((TeamData) defaultTeamComboBox.getModel().getElementAt(i)).getName().equals(defaultTeamData.getName())) {
-					defaultTeamComboBox.setSelectedItem(defaultTeamComboBox.getModel().getElementAt(i));
-					break;
-				}
-			}
-		} catch (Exception ex) {
-			logger.warn("Could not resolve default Team!", ex);
-		}
-		
-	}
+    private void setDefaultTeam(final TeamData defaultTeamData) {
+        setdefaultTeamButton.setForeground(Color.BLACK);
+        setdefaultTeamButton.setEnabled(false);
+        defaultTeamComboBox.setEnabled(false);
+        syncButton.setEnabled(true);
+        try {
+            for (int i = 0; i < defaultTeamComboBox.getModel().getSize(); i++) {
+                if (((TeamData) defaultTeamComboBox.getModel().getElementAt(i)).getName().equals(defaultTeamData.getName())) {
+                    defaultTeamComboBox.setSelectedItem(defaultTeamComboBox.getModel().getElementAt(i));
+                    break;
+                }
+            }
+        } catch (Exception ex) {
+            logger.warn("Could not resolve default Team!", ex);
+        }
+
+    }
 
 	private void setdefaultTeamButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setdefaultTeamButtonActionPerformed
-		try {
-			TeamData defaultTeamData = (TeamData) defaultTeamComboBox.getSelectedItem();
-			setdefaultTeamButton.setForeground(Color.BLACK);
-			Team.saveDefaultTeam(defaultTeamData);
-			setDefaultTeam(defaultTeamData);
-		} catch (Exception exx) {
-			logger.error("Could not define default team!", exx);
-			setdefaultTeamButton.setForeground(Color.RED);
-			return;
-		}
+        try {
+            TeamData defaultTeamData = (TeamData) defaultTeamComboBox.getSelectedItem();
+            setdefaultTeamButton.setForeground(Color.BLACK);
+            Team.saveDefaultTeam(defaultTeamData);
+            setDefaultTeam(defaultTeamData);
+        } catch (Exception exx) {
+            logger.error("Could not define default team!", exx);
+            setdefaultTeamButton.setForeground(Color.RED);
+            return;
+        }
 	}//GEN-LAST:event_setdefaultTeamButtonActionPerformed
 
     private void syncButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_syncButtonActionPerformed
-		PlanetSudoClient.getInstance().runSync();
+        PlanetSudoClient.getInstance().runSync();
     }//GEN-LAST:event_syncButtonActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox LevelChooserComboBox;
