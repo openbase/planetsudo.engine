@@ -53,6 +53,6 @@ public class JPLevelPath extends AbstractJPDirectory {
 
 	@Override
 	protected File getPropertyDefaultValue() throws JPNotAvailableException {
-		return new File(JPService.getProperty(JPPrefix.class).getValue().getAbsolutePath()+"/target/classes/de/dc/planetsudo/level/save/");
+		return new File(JPService.getProperty(JPPrefix.class).getValue().getAbsolutePath()+"/target/classes/org/openbase/planetsudo/level/save/");
 	}
 }

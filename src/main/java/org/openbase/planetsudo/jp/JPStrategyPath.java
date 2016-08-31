@@ -52,6 +52,6 @@ public class JPStrategyPath extends AbstractJPDirectory {
 
 	@Override
 	protected File getPropertyDefaultValue() throws JPNotAvailableException {
-		return new File(JPService.getProperty(JPPrefix.class).getValue().getAbsolutePath()+"/target/classes/de/dc/planetsudo/game/strategy");
+		return new File(JPService.getProperty(JPPrefix.class).getValue().getAbsolutePath()+"/target/classes/org/openbase/planetsudo/game/strategy");
 	}
 }
