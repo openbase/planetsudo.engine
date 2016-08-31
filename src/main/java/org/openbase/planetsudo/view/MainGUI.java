@@ -1,15 +1,26 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * MainGui.java
- *
- * Created on Jun 9, 2010, 9:04:17 AM
- */
-
 package org.openbase.planetsudo.view;
+
+/*-
+ * #%L
+ * PlanetSudo GameEngine
+ * %%
+ * Copyright (C) 2009 - 2016 openbase.org
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
+ */
 
 import org.openbase.planetsudo.view.configuration.ConfigurationPanel;
 import org.openbase.planetsudo.view.game.GamePanel;
@@ -48,7 +59,7 @@ public class MainGUI extends javax.swing.JFrame implements PropertyChangeListene
 	public final static String LOADING_PANEL="LoadingPanel";
 	public final static String CONFIGURATION_PANEL="ConfigurationPanel";
 
-private final Logger logger = LoggerFactory.getLogger(getClass());
+private static final Logger LOGGER = LoggerFactory.getLogger(MainGUI.class);
     
 	private ConfigurationPanel configurationPanel;
 	private LevelLoadingPanel levelLoadingPanel;
@@ -113,7 +124,7 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 
 	public void setFullScreenMode(boolean enabled) {
 		fullscreenMode = enabled;
-		logger.info("setFullscreenMode "+fullscreenMode);
+		LOGGER.info("setFullscreenMode "+fullscreenMode);
 		setVisible(false);
 		if(fullscreenMode) {
 			//setSize(guiController.getVisualFeedbackConfig().getFrameDimension());
@@ -131,7 +142,7 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 				//fullscreenModeMenuItem.setText("Leave FullScreen Mode");
 			}
 			catch(Exception e) {
-				Logger.error(this,"no Fullscreen.", e);
+				LOGGER.error("no Fullscreen.", e);
 				device.setFullScreenWindow(null);
 			}
 		} else {
@@ -151,7 +162,7 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 					//fullscreenModeMenuItem.setText("Enter FullScreen Mode");
 			}
 			catch(Exception e) {
-				logger.error("no Fullscreen.", e);
+				LOGGER.error("no Fullscreen.", e);
 				device.setFullScreenWindow(null);
 			}
 		}
@@ -168,7 +179,7 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent changeEvent) {
-		logger.debug("PropertyChange input: "+changeEvent.getPropertyName());
+		LOGGER.debug("PropertyChange input: "+changeEvent.getPropertyName());
 		try {
 			if(changeEvent.getPropertyName().equals(GUIController.GAME_STATE_CHANGE)) {
 				updateButtons((GameState) changeEvent.getNewValue());
@@ -194,11 +205,11 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 			} else if(changeEvent.getPropertyName().equals(GUIController.LOADING_STEP)) {
 				levelLoadingPanel.setLoadingStep((Integer) changeEvent.getNewValue());
 			} else {
-				logger.warn("Event ["+changeEvent.getPropertyName()+"] is an bad property change event!");
+				LOGGER.warn("Event ["+changeEvent.getPropertyName()+"] is an bad property change event!");
 			}
 		}
 		catch (Exception e) {
-			logger.debug("Exception from PropertyChange");
+			LOGGER.debug("Exception from PropertyChange");
 		}
 	}
 
@@ -252,7 +263,7 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 	}
 
 	public void showLoadingPanel() {
-		logger.info("ShowLoadingPanel");
+		LOGGER.info("ShowLoadingPanel");
 		((CardLayout) mainPanel.getLayout()).show(mainPanel, LOADING_PANEL);
 	}
 
@@ -295,7 +306,6 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
         jMenuItem2 = new javax.swing.JMenuItem();
         createTeamMenuItem = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
-        jCheckBoxMenuItem2 = new javax.swing.JCheckBoxMenuItem();
         helpMenu = new javax.swing.JMenu();
         contentsMenuItem = new javax.swing.JMenuItem();
         aboutMenuItem = new javax.swing.JMenuItem();
@@ -436,15 +446,6 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
         });
         toolMenu.add(jMenuItem4);
 
-        jCheckBoxMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        jCheckBoxMenuItem2.setText("DebugModus");
-        jCheckBoxMenuItem2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBoxMenuItem2ActionPerformed(evt);
-            }
-        });
-        toolMenu.add(jCheckBoxMenuItem2);
-
         menuBar.add(toolMenu);
 
         helpMenu.setText("Info");
@@ -507,10 +508,6 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 		}
 	}//GEN-LAST:event_startPauseMenuItemActionPerformed
 
-	private void jCheckBoxMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem2ActionPerformed
-		Logger.setDebugMode(jCheckBoxMenuItem2.isSelected());
-	}//GEN-LAST:event_jCheckBoxMenuItem2ActionPerformed
-
 	private void displayTeamPanelCheckBoxMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_displayTeamPanelCheckBoxMenuItemActionPerformed
 		gamePanel.displayTeamPanel(displayTeamPanelCheckBoxMenuItem.isSelected());
 	}//GEN-LAST:event_displayTeamPanelCheckBoxMenuItemActionPerformed
@@ -551,7 +548,7 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
         try {
 			Team.resetDefaultTeam();
 		} catch (Exception ex) {
-			logger.warn("Could not reset default team!");
+			LOGGER.warn("Could not reset default team!");
 		}
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
@@ -580,7 +577,6 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
     private javax.swing.JMenuItem finalCalculationMenuItem;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
-    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem2;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem3;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JMenu jMenu2;

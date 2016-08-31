@@ -5,17 +5,39 @@
 
 package org.openbase.planetsudo.level;
 
-import org.openbase.util.data.Point2D;
-import org.openbase.util.exceptions.NotValidException;
+/*-
+ * #%L
+ * PlanetSudo GameEngine
+ * %%
+ * Copyright (C) 2009 - 2016 openbase.org
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
+ */
+
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
+import org.openbase.jul.exception.InvalidStateException;
+import org.openbase.planetsudo.geometry.Point2D;
 import org.slf4j.Logger;
-import org.openbase.util.math.RandomGenerator;
 import org.openbase.planetsudo.level.levelobjects.Resource;
 import org.openbase.planetsudo.level.levelobjects.Resource.ResourceType;
 import org.openbase.planetsudo.main.GUIController;
+import org.openbase.planetsudo.util.RandomGenerator;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -68,7 +90,7 @@ public class ResourceRandomRectangle extends Rectangle2D.Double implements Resou
 //		while(true) {
 //			try {
 //				index = RandomGenerator.getRandom(0, width * height);
-//			} catch (NotValidException ex) {
+//			} catch (InvalidStateException ex) {
 //				logger.error("Could not generate resource position.", ex);
 //			}
 //
@@ -94,7 +116,7 @@ public class ResourceRandomRectangle extends Rectangle2D.Double implements Resou
 			try {
 				resourceXPos = RandomGenerator.getRandom((int) getMinX(), (int) getMaxX());
 				resourceYPos = RandomGenerator.getRandom((int) getMinY(), (int) getMaxY());
-			} catch (NotValidException ex) {
+			} catch (InvalidStateException ex) {
 				logger.warn("Could not place Resource["+type+"]! Bad resoure bounds!", ex);
 				break;
 			}

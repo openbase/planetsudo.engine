@@ -4,12 +4,32 @@
  */
 package org.openbase.planetsudo.game;
 
+/*-
+ * #%L
+ * PlanetSudo GameEngine
+ * %%
+ * Copyright (C) 2009 - 2016 openbase.org
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
+ */
+
 import java.beans.PropertyChangeEvent;
 import org.slf4j.Logger;
 import org.openbase.planetsudo.level.AbstractLevel;
-import org.openbase.planetsudo.level.levelobjects.Mothership;
 import org.openbase.planetsudo.main.GUIController;
-import org.openbase.planetsudo.view.level.levelobjects.ResourcePanel;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -18,7 +38,7 @@ import org.slf4j.LoggerFactory;
  */
 public class GameManager implements Runnable {
 
-    private static final Logger logger = LoggerFactory.getLogger(GameManager.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GameManager.class);
     
 	public static final int DEFAULT_GAME_SPEED = 50;
 
@@ -42,7 +62,7 @@ public class GameManager implements Runnable {
 
 	public GameManager() {
 		instance = this;
-		logger.info("Create " + this + ".");
+		LOGGER.info("Create " + this + ".");
 		this.gameThread = new Thread(this, "GameThread");
 		this.resetAndInit();
 		this.gameThread.start();
@@ -75,14 +95,14 @@ public class GameManager implements Runnable {
 				try {
 					this.wait();
 				} catch (InterruptedException ex) {
-					logger.error("", ex);
+					LOGGER.error("", ex);
 				}
 			}
 		}
 	}
 
 	public void resetAndInit() {
-		logger.info("Load default values.");
+		LOGGER.info("Load default values.");
 		teamA = null;
 		teamB = null;
 	}
@@ -90,15 +110,15 @@ public class GameManager implements Runnable {
 	public boolean addTeam(TeamData teamData, TeamType type) {
 		try {
 			if (teamData == null) {
-				logger.warn("Ignore invalid team.");
+				LOGGER.warn("Ignore invalid team.");
 				return false;
 			}
 
 			if (gameState != GameState.Configuration) {
-				logger.warn("Could not add team in " + gameState.name() + " State.");
+				LOGGER.warn("Could not add team in " + gameState.name() + " State.");
 				return false;
 			}
-			logger.info("Add team " + teamData + ".");
+			LOGGER.info("Add team " + teamData + ".");
 
 			switch (type) {
 				case A:
@@ -108,12 +128,12 @@ public class GameManager implements Runnable {
 					teamB = new Team(teamData);
 					break;
 				default:
-					logger.warn("Unknown team type!");
+					LOGGER.warn("Unknown team type!");
 					return false;
 			}
 
 		} catch (Exception ex) {
-			logger.warn("Could not add team!", ex);
+			LOGGER.warn("Could not add team!", ex);
 			return false;
 		}
 		return true;
@@ -121,32 +141,32 @@ public class GameManager implements Runnable {
 
 	public void setLevel(final AbstractLevel level) {
 		if (gameState != GameState.Configuration) {
-			logger.warn("Could not set level in " + gameState.name() + " State.");
+			LOGGER.warn("Could not set level in " + gameState.name() + " State.");
 			return;
 		}
 		this.level = level;
-		logger.info("Set " + level + " as new level.");
+		LOGGER.info("Set " + level + " as new level.");
 	}
 
 	public void startGame() {
 		Thread gameStartThread = new Thread("Gamestart Thread") {
 			@Override
 			public void run() {
-				logger.info("Init game start...");
+				LOGGER.info("Init game start...");
 				if (gameState != GameState.Configuration) {
-					logger.error("Abord gamestart because Game manager is in state " + gameState.name() + ".");
+					LOGGER.error("Abord gamestart because Game manager is in state " + gameState.name() + ".");
 					return;
 				}
 
 				setGameState(GameState.Initialisation);
 
 				if (level == null) {
-					logger.error("Abord gamestart: No level set!");
+					LOGGER.error("Abord gamestart: No level set!");
 					setGameState(GameState.Configuration);
 					return;
 				}
 				if (teamA == null || teamB == null) {
-					logger.error("Abord gamestart: Not enough teams set!");
+					LOGGER.error("Abord gamestart: Not enough teams set!");
 					setGameState(GameState.Configuration);
 					return;
 				}
@@ -161,7 +181,7 @@ public class GameManager implements Runnable {
 				synchronized (this) {
 					this.notify();
 				}
-				logger.info("Game is Running.");
+				LOGGER.info("Game is Running.");
 			}
 		};
 		gameStartThread.setPriority(4);
@@ -173,7 +193,7 @@ public class GameManager implements Runnable {
 			level.setGameOverSoon();
 			GameSound.EndSoon.play();
 		} catch (Exception ex) {
-			logger.warn("Could not init game over.");
+			LOGGER.warn("Could not init game over.");
 		}
 	}
 

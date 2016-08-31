@@ -4,26 +4,48 @@
  */
 package org.openbase.planetsudo.level.levelobjects;
 
-import org.openbase.util.data.Direction2D;
-import org.openbase.util.data.Point2D;
-import org.openbase.util.exceptions.NotValidException;
+/*-
+ * #%L
+ * PlanetSudo GameEngine
+ * %%
+ * Copyright (C) 2009 - 2016 openbase.org
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
+ */
+
 import java.awt.geom.Rectangle2D;
 import java.lang.reflect.Constructor;
 import java.util.logging.Level;
+import org.openbase.jul.exception.CouldNotPerformException;
+import org.openbase.jul.exception.InvalidStateException;
+import org.openbase.jul.visual.swing.engine.draw2d.AbstractResourcePanel.ObjectType;
 import org.slf4j.Logger;
-import org.openbase.util.math.RandomGenerator;
 import org.openbase.planetsudo.game.ActionPoints;
 import org.openbase.planetsudo.game.GameSound;
 import org.openbase.planetsudo.game.Team;
 import org.openbase.planetsudo.game.strategy.AbstractStrategy;
+import org.openbase.planetsudo.geometry.Direction2D;
+import org.openbase.planetsudo.geometry.Point2D;
 import org.openbase.planetsudo.level.levelobjects.Resource.ResourceType;
-import org.openbase.util.exceptions.CouldNotPerformException;
-import org.openbase.util.view.engine.draw2d.AbstractResourcePanel.ObjectType;
+import org.openbase.planetsudo.util.RandomGenerator;
 import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author divineactionPoints.getActionPoint();
+ * @author divine
  */
 public class Agent extends AbstractLevelObject implements AgentInterface {
 
@@ -100,7 +122,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
 		hasMine = mothership.orderMine();
 		try {
 			direction = new Direction2D(RandomGenerator.getRandom(1, 360));
-		} catch (NotValidException ex) {
+		} catch (InvalidStateException ex) {
 			java.util.logging.Logger.getLogger(Agent.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		alive = true;
@@ -327,7 +349,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
 				final int randomAngle = RandomGenerator.getRandom(0, opening) - (opening / 2);
 				direction.setAngle(direction.getAngle() + randomAngle);
 			}
-		} catch (NotValidException ex) {
+		} catch (InvalidStateException ex) {
 			logger.error("Could not turn random.", ex);
 		}
 	}
@@ -385,7 +407,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
 				mothership.passResource(this);
 				GameSound.DeliverResource.play();
 			}
-		} catch (NotValidException ex) {
+		} catch (CouldNotPerformException ex) {
 			logger.warn("Could not deliver resource to Mothership!", ex);
 		}
 	}
@@ -441,12 +463,12 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
 					carryResource(resourceToCollect);
 				}
 			}
-		} catch (NotValidException ex) {
+		} catch (InvalidStateException ex) {
 			logger.warn("Could not pickup resource!", ex);
 		}
 	}
 
-	private void carryResource(final Resource resource) throws NotValidException {
+	private void carryResource(final Resource resource) throws InvalidStateException {
 		if (resource != null) {
 			if (resource.capture(this)) {
 				this.resource = resource;

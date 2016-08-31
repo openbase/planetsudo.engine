@@ -1,8 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package org.openbase.planetsudo.game;
+package org.openbase.planetsudo.util;
 
 /*-
  * #%L
@@ -26,12 +22,24 @@ package org.openbase.planetsudo.game;
  * #L%
  */
 
-import org.openbase.jul.iface.provider.NameProvider;
+import java.util.Random;
+import org.openbase.jul.exception.InvalidStateException;
 
 /**
  *
  * @author divine
  */
-public abstract class AbstractGameObject implements NameProvider {
+public class RandomGenerator {
 
+    private static final Random RANDOM = new Random(System.currentTimeMillis());
+
+    public static int getRandom(int min, int max) throws InvalidStateException {
+        if (min > max) {
+            throw new InvalidStateException("Could not generate random value, because min value is greater than max value!");
+        }
+        //TODO 
+        // http://stackoverflow.com/questions/738629/math-random-versus-random-nextintint
+        return (int) (Math.random() * (max - min)) + min;
+        // return RANDOM.nextInt(min)ints(min, max+1).;
+    }
 }
