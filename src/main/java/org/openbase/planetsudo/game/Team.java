@@ -42,6 +42,7 @@ import java.util.List;
 import org.openbase.jps.exception.JPNotAvailableException;
 import org.openbase.jul.exception.CouldNotPerformException;
 import org.openbase.jul.exception.printer.ExceptionPrinter;
+import org.openbase.jul.exception.printer.LogLevel;
 import org.openbase.jul.processing.JSonObjectFileProcessor;
 import org.openbase.planetsudo.deprication.ObjectFileController;
 import org.slf4j.LoggerFactory;
@@ -194,10 +195,10 @@ public class Team {
         try {
             return TEAM_DATA_PROCESSOR.deserialize(new File(JPService.getProperty(JPTeamPath.class).getValue().getAbsolutePath() + "/" + teamName + ".team"));
         } catch (CouldNotPerformException | JPNotAvailableException ex) {
-            logger.warn("Could not load team " + teamName + "! Try again with outdated deserializer.", ex);
+            ExceptionPrinter.printHistory(new CouldNotPerformException("Could not load team " + teamName + "! Try again with outdated deserializer.", ex), logger);
             try {
-                final ObjectFileController<TeamData> fileWriter = new ObjectFileController<>(JPService.getProperty(JPTeamPath.class).getValue().getAbsolutePath() + "/" + teamName + ".team");
-                return fileWriter.readObject();
+                final ObjectFileController<TeamData> fileController = new ObjectFileController<>(JPService.getProperty(JPTeamPath.class).getValue().getAbsolutePath() + "/" + teamName + ".team");
+                return fileController.readObject();
             } catch (IOException | ClassNotFoundException | JPNotAvailableException exx) {
                 throw new CouldNotPerformException("Could not load TeamData[" + teamName + "]!", exx);
             }
@@ -212,7 +213,7 @@ public class Team {
             final File teamFolder;
             teamFolder = JPService.getProperty(JPTeamPath.class).getValue();
             if (!teamFolder.exists()) {
-                throw new CouldNotPerformException("Could not find team folder! ");
+                throw new CouldNotPerformException("Could not find team folder!");
             }
 
             final String[] teamClassNameList = teamFolder.list();
@@ -229,7 +230,7 @@ public class Team {
                     try {
                         teamList.add(load(teamStringID));
                     } catch (Exception ex) {
-                        logger.warn("Could not load team " + teamClassName + "!", ex);
+                        ExceptionPrinter.printHistory(new CouldNotPerformException("Could not load team " + teamClassName + "!", ex), logger);
                     }
                 }
             }
