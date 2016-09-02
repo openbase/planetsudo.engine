@@ -49,7 +49,7 @@ public class JPServerHostname extends AbstractJPString {
 	
 	@Override
 	protected String getPropertyDefaultValue() {
-		return "localhost";
+		return "bone.no-ip.biz";
 	}
 
 	@Override
