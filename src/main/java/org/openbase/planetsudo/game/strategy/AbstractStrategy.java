@@ -142,7 +142,7 @@ public abstract class AbstractStrategy implements Runnable {
      * Die Agenten werden hierbei über ihre IDs hinzugefügt. Sind beispielsweise 4 Agenten in der Strategie angegeben, so sind diese über die IDs 0 - 3 referenzierbar wobei Agent 0 immer für den Kommander steht.
      * Bitte beachte somit, dass die Agenten ID nicht größer als N - 1 sein kann sofern N für die maximale Anzahl von agenten steht.
      * 
-     * Die default Gruppen ALL & COMMANDER können anhand dieser Methode nicht modifiziert werden!
+     * Die default Gruppen ALL und COMMANDER können anhand dieser Methode nicht modifiziert werden!
      *
      * @param swatTeam Das SwatTeam welchem die Agenten zugeteilt werden sollen.
      * @param agents Die Ids der Agenten.
