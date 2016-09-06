@@ -73,6 +73,7 @@ public class Main {
 		JPService.registerProperty(JPExternalStrategyJar.class);
 		JPService.parseAndExitOnError(args);
 		
+//        System.setProperty("-Dsun.java2d.opengl", "true");
 		new Main();
 	}
 

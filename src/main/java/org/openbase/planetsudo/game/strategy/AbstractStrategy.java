@@ -3,7 +3,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.openbase.planetsudo.game.strategy;
 
 /*-
@@ -27,7 +26,6 @@ package org.openbase.planetsudo.game.strategy;
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-
 import org.openbase.planetsudo.level.levelobjects.Agent;
 import java.util.TreeMap;
 import org.openbase.planetsudo.game.GameManager;
@@ -36,8 +34,10 @@ import org.openbase.planetsudo.level.levelobjects.AgentInterface;
 import org.openbase.planetsudo.level.levelobjects.MothershipInterface;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import org.openbase.planetsudo.game.SwatTeam;
+import org.openbase.planetsudo.level.levelobjects.Mothership;
 import org.slf4j.LoggerFactory;
-
 
 /**
  *
@@ -46,100 +46,138 @@ import org.slf4j.LoggerFactory;
 public abstract class AbstractStrategy implements Runnable {
 
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(getClass());
-    
-	private final Agent strategyOwner;
-	public final AgentInterface agent;
-	public final MothershipInterface mothership;
-	private final TreeMap<Integer, Rule> rules;
-	private final GameManager gameManager;
-	private final int agentCount;
-	private int gameSpeed;
-    
-	public AbstractStrategy() {
-		this.mothership = null;
-		this.rules = null;
-		this.gameManager = null;
-		this.strategyOwner = null;
-		this.agent = null;
-		this.agentCount = loadAgentCount();
-	}
 
-	public AbstractStrategy(AgentInterface agent) {
-		this.gameManager = GameManager.getInstance();
-		this.strategyOwner = (Agent) agent;
-		this.agent = agent;
-		this.mothership = strategyOwner.getMothership();
-		this.rules = new TreeMap<Integer, Rule>();
-		this.agentCount = loadAgentCount();
-		this.loadRules();
-		this.gameSpeed = strategyOwner.getMothership().getLevel().getGameSpeed();
-		strategyOwner.getMothership().getLevel().addPropertyChangeListener(new PropertyChangeListener() {
+    private final Agent strategyOwner;
+    public final AgentInterface agent;
+    public final MothershipInterface mothership;
+    public final Mothership mothershipInternal;
+    private final TreeMap<Integer, Rule> rules;
+    private final GameManager gameManager;
+    private final int agentCount;
+    private int gameSpeed;
 
-			@Override
-			public void propertyChange(final PropertyChangeEvent evt) {
-				if(evt.getPropertyName().equals(AbstractLevel.GAME_SPEED_CHANGED)) {
-					gameSpeed = (Integer) evt.getNewValue();
-				}
-			}
-		});
-	}
+    public AbstractStrategy() {
+        this.mothership = null;
+        this.rules = null;
+        this.gameManager = null;
+        this.strategyOwner = null;
+        this.agent = null;
+        this.mothershipInternal = null;
+        this.agentCount = loadAgentCount();
+    }
 
-	@ Override
-	public void run() {
-		while(strategyOwner.isAlive()) {
-				if(gameManager.isGameOver()) {
-					break;
-				}
-				try {
-					if(!gameManager.isPause()) {
-						executeRule();
-					} else {
-						logger.debug("ignore roule because game is paused!");
-					}
-				} catch(Exception ex) {
-					logger.error("Could not execute rule["+strategyOwner.getLastAction()+"]!", ex);
-					strategyOwner.kill();
-				}
-			try {
-				Thread.sleep(gameSpeed);
-			} catch (Exception ex) {
-				logger.warn("", ex);
-			}
-		}
-		logger.info("AI dies from agent "+agent+"!");
-	}
+    public AbstractStrategy(AgentInterface agent) {
+        this.gameManager = GameManager.getInstance();
+        this.strategyOwner = (Agent) agent;
+        this.agent = agent;
+        this.mothership = strategyOwner.getMothership();
+        this.mothershipInternal = strategyOwner.getMothership();
+        this.rules = new TreeMap<>();
+        this.agentCount = loadAgentCount();
+        this.loadRules();
+        this.loadSwatTeams();
+        this.gameSpeed = strategyOwner.getMothership().getLevel().getGameSpeed();
+        this.strategyOwner.getMothership().getLevel().addPropertyChangeListener((final PropertyChangeEvent evt) -> {
+            if (evt.getPropertyName().equals(AbstractLevel.GAME_SPEED_CHANGED)) {
+                gameSpeed = (Integer) evt.getNewValue();
+            }
+        });
+    }
 
-	public void createRule(Rule rule) {
-		logger.debug("Create rule "+rule);
-		if(rules.containsKey(getKey(rule))) {
-			logger.error("There exist min two rules with the same priority!");
+    @Override
+    public void run() {
+        while (strategyOwner.isAlive()) {
+            if (gameManager.isGameOver()) {
+                break;
+            }
+            try {
+                if (!gameManager.isPause()) {
+                    executeRule();
+                } else {
+                    logger.debug("ignore rule because game is paused!");
+                }
+            } catch (Exception ex) {
+                logger.error("Could not execute rule[" + strategyOwner.getLastAction() + "]!", ex);
+                strategyOwner.kill();
+            }
+            try {
+                Thread.sleep(gameSpeed);
+            } catch (Exception ex) {
+                logger.warn("", ex);
+            }
+        }
+        logger.info("AI dies from agent " + agent + "!");
+    }
+
+    public void createRule(Rule rule) {
+        logger.debug("Create rule " + rule);
+        if (rules.containsKey(getKey(rule))) {
+            logger.error("There exist min two rules with the same priority!");
             agent.kill();
-		}
-		rules.put(getKey(rule), rule);
-	}
+        }
+        rules.put(getKey(rule), rule);
+    }
 
-	public int getKey(Rule rule) {
-		return -rule.getPriority(); // invert priority to swap list order.
-	}
+    public int getKey(Rule rule) {
+        // Auto generate priority if rule does not contain any priority. 
+        if(rule.getPriority() == -1) {
+            return -rules.size();
+        }
+        return -rule.getPriority(); // invert priority to swap list order.
+    }
 
+    protected void executeRule() {
+        for (final Rule rule : rules.values()) {
+            if (rule.constraint() && agent.isMemberOfSwatTeam(rule.getSwatTeams())) {
+                logger.debug("Select " + rule);
+                strategyOwner.setLastAction(rule.getName());
+                rule.action();
+                break;
+            }
+        }
+    }
 
+    /**
+     * Mit dieser Methode ist es möglich neue SwatTeams aus mehreren Agenten zu bilden.
+     * Die Agenten werden hierbei über ihre IDs hinzugefügt. Sind beispielsweise 4 Agenten in der Strategie angegeben, so sind diese über die IDs 0 - 3 referenzierbar wobei Agent 0 immer für den Kommander steht.
+     * Bitte beachte somit, dass die Agenten ID nicht größer als N - 1 sein kann sofern N für die maximale Anzahl von agenten steht.
+     * 
+     * Die default Gruppen ALL & COMMANDER können anhand dieser Methode nicht modifiziert werden!
+     *
+     * @param swatTeam Das SwatTeam welchem die Agenten zugeteilt werden sollen.
+     * @param agents Die Ids der Agenten.
+     */
+    protected void createSwat(final SwatTeam swatTeam, final Integer... agents) {
 
-	protected void executeRule() {
-		for(Rule rule : rules.values()) {
-			if(rule.constraint()) {
-				logger.debug("Select "+rule);
-				strategyOwner.setLastAction(rule.getName());
-				rule.action();
-				break;
-			}
-		}
-	}
+        switch (swatTeam) {
+            case ALL:
+            case COMMANDER:
+                logger.error("SwatTeam[" + swatTeam.name() + "] is not modifiable!");
+                agent.kill();
+                return;
+        }
 
-	public int getAgentCount() {
-		return agentCount;
-	}
+        ArrayList<Agent> agentList = new ArrayList<>(mothershipInternal.getAgents());
+        for (Integer agentID : agents) {
+            if (agentID >= agentCount || agentID >= agentList.size()) {
+                logger.error("Could not create SwatTeam[" + swatTeam.name() + "] because team has not enought member!");
+                agent.kill();
+                return;
+            }
 
-	protected abstract void loadRules();
-	protected abstract int loadAgentCount();
+            agentList.get(agentID).joinSwatTeam(swatTeam);
+        }
+    }
+
+    public int getAgentCount() {
+        return agentCount;
+    }
+
+    protected abstract void loadRules();
+
+    protected void loadSwatTeams() {
+        // Please overwrite to create swats within your strategy!
+    }
+
+    protected abstract int loadAgentCount();
 }
-

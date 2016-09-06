@@ -49,6 +49,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.openbase.jps.exception.JPNotAvailableException;
 import org.openbase.jul.exception.CouldNotPerformException;
+import org.openbase.jul.exception.printer.ExceptionPrinter;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -140,7 +141,7 @@ public class PlanetSudoClient {
             out = new ObjectOutputStream(clientSocket.getOutputStream());
             in = new ObjectInputStream(clientSocket.getInputStream());
         } catch (Exception ex) {
-            logger.error("Error during transfer occured!", ex);
+            ExceptionPrinter.printHistory(new CouldNotPerformException("Error during transfer occured!", ex), logger);
         }
     }
 

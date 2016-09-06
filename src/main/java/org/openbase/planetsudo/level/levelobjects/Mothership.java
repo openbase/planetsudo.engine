@@ -68,7 +68,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener, M
 	public final Object SUPPORT_CHANNEL_LOCK = new Object();
 	private final Team team;
 	private int fuel;
-	private int stradegyAgentCount;
+	private int strategyAgentCount;
 	private int shield;
 	private final Timer timer;
 	private final Map<Integer, Agent> agents;
@@ -101,7 +101,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener, M
 		for (Agent agent : tmpCollection) {
 			agent.kill();
 		}
-		stradegyAgentCount = team.getAgentCount();
+		strategyAgentCount = team.getAgentCount();
 		loadAgents();
 		this.shield = 100;
 	}
@@ -115,14 +115,14 @@ public class Mothership extends AbstractLevelObject implements ActionListener, M
 	}
 
 	private void loadAgents() {
-		GUIController.setEvent(new PropertyChangeEvent(this, GUIController.LOADING_STATE_CHANGE, stradegyAgentCount, "Lade " + team.getName() + " Agent"));
+		GUIController.setEvent(new PropertyChangeEvent(this, GUIController.LOADING_STATE_CHANGE, strategyAgentCount, "Lade " + team.getName() + " Agent"));
 		Agent agent;
-		final int agendFuelVolume = (AGENT_FUEL_VOLUME / stradegyAgentCount);
+		final int agentFuelVolume = (AGENT_FUEL_VOLUME / strategyAgentCount);
 		int currentFuelVolume;
 		boolean commanderFlag = true;
-		for (int i = 0; i < stradegyAgentCount; i++) {
+		for (int i = 0; i < strategyAgentCount; i++) {
 			GUIController.setEvent(new PropertyChangeEvent(this, GUIController.LOADING_STEP, null, i));
-			currentFuelVolume = commanderFlag ? agendFuelVolume + COMMANDER_BONUS_FUEL_VOLUME : agendFuelVolume;
+			currentFuelVolume = commanderFlag ? agentFuelVolume + COMMANDER_BONUS_FUEL_VOLUME : agentFuelVolume;
 			agent = new Agent(team.getName() + "Agent", commanderFlag, currentFuelVolume, this);
 			commanderFlag = false;
 			Agent replacedAgent;
@@ -130,7 +130,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener, M
 				replacedAgent = agents.put(agent.getId(), agent);
 			}
 			if (replacedAgent != null) {
-				logger.error("Agend with id " + id + " already defined! Kill old instance.");
+				logger.error("Agent with id " + id + " already defined! Kill old instance.");
 				replacedAgent.kill();
 			}
 		}
@@ -235,7 +235,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener, M
 					break;
 				}
 			}
-			if (i >= stradegyAgentCount || i > 9999) {
+			if (i >= strategyAgentCount || i > 1000) {
 				logger.error("Already to many agents alive.");
 				return -1;
 			}
@@ -244,7 +244,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener, M
 	}
 
 	/**
-	 * Methode just for visual purpose
+	 * Method just for visual purpose
 	 *
 	 * @return
 	 */

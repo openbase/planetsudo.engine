@@ -123,7 +123,7 @@ public class ConfigurationPanel extends javax.swing.JPanel {
             final TeamData loadDefaultTeam = Team.loadDefaultTeam();
             setDefaultTeam(loadDefaultTeam);
         } catch (CouldNotPerformException ex) {
-            logger.warn("Could not load default team!", ex);
+            ExceptionPrinter.printHistory(new CouldNotPerformException("Could not load default team!", ex), logger);
         }
     }
 
