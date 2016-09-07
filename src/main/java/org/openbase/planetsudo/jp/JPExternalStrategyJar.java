@@ -37,7 +37,7 @@ import org.openbase.jps.exception.JPNotAvailableException;
 
 /**
  *
- * @author divine
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a
  */
 public class JPExternalStrategyJar extends AbstractJPFile {
 	public final static String[] COMMAND_IDENTIFIERS = {"--buildTarget"};

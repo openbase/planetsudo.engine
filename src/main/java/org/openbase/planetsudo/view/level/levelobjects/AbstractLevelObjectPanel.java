@@ -45,7 +45,7 @@ import org.openbase.planetsudo.util.RandomGenerator;
 
 /**
  *
- * @author divine
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a
  */
 public abstract class AbstractLevelObjectPanel<R extends AbstractLevelObject, PRP extends AbstractGameObjectPanel> extends AbstractGameObjectPanel<R, PRP> {
 

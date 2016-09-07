@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author divine
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a
  */
 public class Main {
 

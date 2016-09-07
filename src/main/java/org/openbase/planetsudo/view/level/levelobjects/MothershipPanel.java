@@ -37,7 +37,7 @@ import org.openbase.planetsudo.view.level.LevelPanel;
 
 /**
  *
- * @author divine
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a
  */
 public class MothershipPanel extends AbstractLevelObjectPanel<Mothership, LevelPanel> {
 

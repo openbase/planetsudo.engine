@@ -28,7 +28,7 @@ package org.openbase.planetsudo.game;
 
 /**
  *
- * @author divine
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a
  */
 public enum GameObjectImages {
 
@@ -41,7 +41,9 @@ public enum GameObjectImages {
 	ResourceExtremPoint("resource6.png"),
 	ResourceExtraAgentFuel("resource5.png"),
 	ResourceExtraMothershipFuel("resource7.png"),
-	ResourceMine("mine.png");
+	ResourceMine("mine.png"),
+	DefenceTower("observation-tower.png"),
+	ObservationTower("defence-tower.png");
 
 	public static final String IMAGE_DIRECTORY = "img";
 	public final String imagesURL;

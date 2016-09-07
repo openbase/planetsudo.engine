@@ -34,7 +34,7 @@ import org.openbase.planetsudo.level.levelobjects.Agent;
 
 /**
  *
- * @author divine
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a
  */
 public class LevelRasterElement implements Comparable<LevelRasterElement> {
 	private final int index, x, y;

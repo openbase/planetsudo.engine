@@ -31,7 +31,7 @@ import java.util.TimerTask;
 
 /**
  *
- * @author divine
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a
  */
 public class BurningMothershipEffect extends TimerTask {
 

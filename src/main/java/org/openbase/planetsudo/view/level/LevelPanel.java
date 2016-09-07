@@ -44,7 +44,7 @@ import org.openbase.jul.visual.swing.engine.draw2d.ResourceDisplayPanel;
 
 /**
  *
- * @author divine
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a
  */
 public class LevelPanel extends AbstractGameObjectPanel<AbstractLevel, LevelPanel> implements PropertyChangeListener {
 

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.openbase.planetsudo.level.levelobjects;
 
 /*-
@@ -50,7 +46,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author divine
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a
  */
 public class Mothership extends AbstractLevelObject implements ActionListener, MothershipInterface {
 

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.openbase.planetsudo.level.levelobjects;
 
 /*-
@@ -53,7 +49,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author divine
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a
  */
 public class Agent extends AbstractLevelObject implements AgentInterface {
 
@@ -74,6 +70,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
     private boolean attacked;
     private Resource resource;
     private boolean hasMine;
+    private boolean hasTower;
     private boolean needSupport;
     private boolean commanderFlag;
     private String lastAction;
@@ -138,6 +135,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
         gameOverSoon = false;
         position = mothership.getAgentHomePosition();
         hasMine = mothership.orderMine();
+        hasTower = isCommander();
         try {
             direction = new Direction2D(RandomGenerator.getRandom(1, 360));
         } catch (InvalidStateException ex) {
@@ -160,10 +158,12 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
         actionPoints.addActionPoint();
     }
 
+    @Override
     public int getFuel() {
         return fuel;
     }
 
+    @Override
     public int getFuelInPercent() {
         return (fuel * 100) / fuelVolume;
     }
@@ -172,14 +172,21 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
         return mothership.getTeam();
     }
 
+    @Override
     public boolean hasFuel() {
         return fuel > 0;
     }
 
+    @Override
     public boolean hasMine() {
         return hasMine;
     }
+    
+    public boolean hasTower() {
+        return hasTower;
+    }
 
+    @Override
     public synchronized void deployMine() {
         actionPoints.getActionPoint(50);
         if (useFuel(5) == 5 || hasMine) {
@@ -188,6 +195,17 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
             hasMine = false;
             GameSound.DeployMine.play();
         }
+    }
+    
+    public synchronized void deployTower(final Tower.TowerType type) {
+        actionPoints.getActionPoint(1000);
+        useFuel(50);
+        if(!isCommander()) {
+            logger.warn("Only commander is carring a tower, deployment failed!");
+            return;
+        }
+        new Tower(level.generateNewResourceID(), type, level, this);
+        hasTower = false;
     }
 
     private int calcSpeed() {
@@ -220,10 +238,12 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
         }
     }
 
+    @Override
     public boolean isDisabled() {
         return !isAlive() || !hasFuel();
     }
 
+    @Override
     public boolean isCarringResource(final ResourceType type) {
         if (isCarringResource()) {
             return resource.getType().equals(type);
@@ -231,6 +251,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
         return false;
     }
 
+    @Override
     public boolean isCarringResource() {
         return resource != null;
     }
@@ -239,6 +260,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
         return mothership;
     }
 
+    @Override
     public void releaseResource() {
         if (isCarringResource() || resource != null) {
             resource.release();
@@ -264,10 +286,12 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
         GameSound.AgentExplosion.play();
     }
 
+    @Override
     public boolean isAlive() {
         return alive;
     }
 
+    @Override
     public boolean isCollisionDetected() {
         return level.collisionDetected(getFutureBounds());
     }

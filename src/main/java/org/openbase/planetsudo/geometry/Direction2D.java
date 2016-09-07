@@ -30,7 +30,7 @@ package org.openbase.planetsudo.geometry;
 
 /**
  *
- * @author divine
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a
  * Rebuild because all functions are already supported from the Retange2D by the default swing framework
  */
 public class Direction2D {

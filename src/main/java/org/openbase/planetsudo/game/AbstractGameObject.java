@@ -30,7 +30,7 @@ import org.openbase.jul.iface.provider.NameProvider;
 
 /**
  *
- * @author divine
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a
  */
 public abstract class AbstractGameObject implements NameProvider {
 

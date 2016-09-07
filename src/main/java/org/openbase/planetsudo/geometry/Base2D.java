@@ -29,7 +29,7 @@ package org.openbase.planetsudo.geometry;
 
 /**
  *
- * @author divine
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a
  */
 public class Base2D {
 	private Direction2D direction;

@@ -33,7 +33,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author divine
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a
  */
 public class Test {
 

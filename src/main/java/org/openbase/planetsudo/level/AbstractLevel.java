@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.openbase.planetsudo.level;
 
 /*-
@@ -49,7 +45,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author divine
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a
  */
 public abstract class AbstractLevel extends AbstractGameObject implements Runnable {
 
@@ -61,7 +57,7 @@ public abstract class AbstractLevel extends AbstractGameObject implements Runnab
     
     private final Object RESOURCES_LOCK = new SyncObject("ResourcesLock");
     private final GameManager gameManager;
-    private Point2D base;
+    private final Point2D base;
     private final Polygon levelBorderPolygon;
     private final Polygon[] levelWallPolygons;
     private final Base2D[] homePositions;
@@ -91,7 +87,6 @@ public abstract class AbstractLevel extends AbstractGameObject implements Runnab
 
         // Base transformation
         this.base = calculateBasePosition(levelBorderPolygon);
-//        this.base = calculateBasePosition(levelWallPolygons, base);
 
         levelBorderPolygon.translate((int) -base.getX(), (int) -base.getY());
         if (levelWallPolygons != null) {
@@ -116,7 +111,6 @@ public abstract class AbstractLevel extends AbstractGameObject implements Runnab
         final Rectangle2D bounds = levelBorderPolygon.getBounds2D();
         this.x = (int) bounds.getX();
         this.y = (int) bounds.getY();
-        //this.levelView = new LevelView();
     }
 
     @Override
@@ -126,7 +120,6 @@ public abstract class AbstractLevel extends AbstractGameObject implements Runnab
         try {
             for (Mothership mothership : motherships) {
                 mothership.startGame();
-//				gameManager.setGameState(GameManager.GameState.Configuration);
             }
         } catch (Exception ex) {
             logger.warn("Could not start Level!", ex);
@@ -260,7 +253,7 @@ public abstract class AbstractLevel extends AbstractGameObject implements Runnab
 
     public List<Resource> getResources() {
         synchronized (RESOURCES_LOCK) {
-            return new ArrayList<Resource>(resources);
+            return new ArrayList<>(resources);
         }
     }
 
@@ -421,6 +414,7 @@ public abstract class AbstractLevel extends AbstractGameObject implements Runnab
         changes.firePropertyChange(GAME_SPEED_CHANGED, null, gameSpeed);
     }
 
+    @Override
     public String getName() {
         return name;
     }
