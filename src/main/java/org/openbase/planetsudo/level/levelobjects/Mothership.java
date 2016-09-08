@@ -40,13 +40,14 @@ import org.openbase.planetsudo.main.GUIController;
 import java.util.ArrayList;
 import org.openbase.jul.exception.CouldNotPerformException;
 import org.openbase.jul.exception.InvalidStateException;
+import org.openbase.jul.exception.NotAvailableException;
 import org.openbase.jul.visual.swing.engine.draw2d.AbstractResourcePanel;
 import org.openbase.planetsudo.geometry.Point2D;
 import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a>
  */
 public class Mothership extends AbstractLevelObject implements ActionListener, MothershipInterface {
 
@@ -197,7 +198,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener, M
 
 	public void startGame() {
 		synchronized (AGENTLOCK) {
-			for (Agent agent : agents.values()) {
+			for (Agent agent : new ArrayList<>(agents.values())) {
 				agent.startGame();
 			}
 		}
@@ -326,6 +327,10 @@ public class Mothership extends AbstractLevelObject implements ActionListener, M
 	public boolean isDamaged() {
 		return shield < 100;
 	}
+    
+    public Tower getTower() throws NotAvailableException {
+        return level.getTower(this);
+    }
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {

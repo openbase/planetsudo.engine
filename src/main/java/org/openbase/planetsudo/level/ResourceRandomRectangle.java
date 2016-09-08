@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a>
  */
 public class ResourceRandomRectangle extends Rectangle2D.Double implements ResourcePlacement {
     

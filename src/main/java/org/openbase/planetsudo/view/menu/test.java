@@ -35,7 +35,7 @@ package org.openbase.planetsudo.view.menu;
 
 /**
  *
- * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a>
  */
 public class test extends javax.swing.JPanel {
 

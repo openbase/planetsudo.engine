@@ -27,7 +27,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import org.slf4j.Logger;
 import java.awt.event.MouseEvent;
-import org.openbase.planetsudo.level.levelobjects.Agent;
 import org.openbase.planetsudo.view.level.LevelPanel;
 import org.openbase.planetsudo.geometry.Direction2D;
 import org.openbase.planetsudo.level.levelobjects.Tower;
@@ -36,7 +35,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a>
  */
 public class TowerPanel extends AbstractLevelObjectPanel<Tower, LevelPanel> implements PropertyChangeListener {
 
@@ -51,7 +50,6 @@ public class TowerPanel extends AbstractLevelObjectPanel<Tower, LevelPanel> impl
     private static String getImageURI(TowerType type) {
         return GameObjectImages.valueOf(type.name()).imagesURL;
     }
-    private Agent owner;
     private Graphics2D gg2;
     private Direction2D direction;
 
@@ -59,19 +57,19 @@ public class TowerPanel extends AbstractLevelObjectPanel<Tower, LevelPanel> impl
     protected void paintComponent(Graphics2D g2, Graphics2D gl) {
         boundingBox = resource.getBounds();
 
-        direction = owner.getDirection();
+        direction = resource.getDirection();
         gg2 = (Graphics2D) g2.create();
-        gg2.translate(-direction.getVector().getX() * owner.getWidth() * 0.35, -direction.getVector().getY() * owner.getHeight() * 0.35);
         paintImageRotated(direction, gg2);
         gg2.dispose();
-
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-//        if (evt.getPropertyName().equals(Resource.KILL_EVENT)) {
-//            parentResourcePanel.removeChild(this);
-//        }
+        if (evt.getPropertyName().equals(Tower.REMOVE_TOWER)) {
+            if (((Tower) evt.getNewValue()).equals(resource)) {
+                parentResourcePanel.removeChild(this);
+            }
+        }
     }
 
     @Override

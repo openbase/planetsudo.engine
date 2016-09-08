@@ -36,7 +36,7 @@ import org.openbase.jps.exception.JPNotAvailableException;
 
 /**
  *
- * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a>
  */
 public class JPStrategyPath extends AbstractJPDirectory {
 	public final static String[] COMMAND_IDENTIFIERS = {"-s", "--strategy"};

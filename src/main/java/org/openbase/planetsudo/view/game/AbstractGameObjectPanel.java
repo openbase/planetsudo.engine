@@ -35,7 +35,7 @@ import org.openbase.jul.visual.swing.engine.draw2d.ResourceDisplayPanel;
 
 /**
  *
- * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a>
  */
 public abstract class AbstractGameObjectPanel<R extends AbstractGameObject, PRP extends AbstractGameObjectPanel> extends AbstractResourcePanel<R, AbstractGameObjectPanel, PRP> {
 

@@ -32,7 +32,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
  *
- * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a>
  * 
  */
 public class Point2D extends java.awt.geom.Point2D implements Cloneable {

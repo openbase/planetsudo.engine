@@ -37,7 +37,7 @@ import org.openbase.planetsudo.game.GameManager;
 
 /**
  *
- * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a>
  */
 public class MenuLoadingPanel extends javax.swing.JPanel {
 

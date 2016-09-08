@@ -21,7 +21,6 @@ package org.openbase.planetsudo.level;
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-
 import org.openbase.planetsudo.game.AbstractGameObject;
 import org.slf4j.Logger;
 import java.awt.Color;
@@ -38,24 +37,29 @@ import org.openbase.planetsudo.level.levelobjects.Mothership;
 import org.openbase.planetsudo.level.levelobjects.Resource;
 import org.openbase.planetsudo.main.GUIController;
 import java.util.ArrayList;
+import org.openbase.jul.exception.CouldNotPerformException;
+import org.openbase.jul.exception.NotAvailableException;
 import org.openbase.jul.schedule.SyncObject;
 import org.openbase.planetsudo.geometry.Base2D;
 import org.openbase.planetsudo.geometry.Point2D;
+import org.openbase.planetsudo.level.levelobjects.Tower;
 import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a>
  */
 public abstract class AbstractLevel extends AbstractGameObject implements Runnable {
 
     public final static long DEFAULT_AP_SPEED = 12 / Mothership.MAX_AGENT_COUNT; // Optimised Game Speed
     public final static String CREATE_RESOURCE = "create resource";
+    public final static String CREATE_TOWER = "create tower";
     public final static String GAME_SPEED_CHANGED = "SpeedChanged";
-    
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    
+
     private final Object RESOURCES_LOCK = new SyncObject("ResourcesLock");
+    private final Object TOWER_LOCK = new SyncObject("TowerLock");
     private final GameManager gameManager;
     private final Point2D base;
     private final Polygon levelBorderPolygon;
@@ -66,6 +70,7 @@ public abstract class AbstractLevel extends AbstractGameObject implements Runnab
     private final PropertyChangeSupport changes;
     private final String name;
     private final Mothership[] motherships;
+    private final Tower[] tower;
     private final List<Resource> resources;
     private final long apSpeed;
     private int gameSpeed;
@@ -76,6 +81,7 @@ public abstract class AbstractLevel extends AbstractGameObject implements Runnab
     public AbstractLevel() {
         this.gameManager = GameManager.getInstance();
         this.teams = new Team[2];
+        this.tower = new Tower[2];
         this.changes = new PropertyChangeSupport(this);
         this.name = getClass().getSimpleName();
 
@@ -274,7 +280,6 @@ public abstract class AbstractLevel extends AbstractGameObject implements Runnab
 //        bounds.add(existingBase);
 //        return new Point2D(bounds.getMinX(), bounds.getMinY());
 //    }
-    
     private static Point2D calculateBasePosition(final Polygon polygon) {
         Rectangle2D bounds = polygon.getBounds2D();
         return new Point2D(bounds.getMinX(), bounds.getMinY());
@@ -306,6 +311,46 @@ public abstract class AbstractLevel extends AbstractGameObject implements Runnab
             for (ResourcePlacement placement : resourcePlacements) {
                 resources.addAll(placement.getResources(this));
             }
+        }
+    }
+
+    public void placeTower(final Tower towerToPlace) throws CouldNotPerformException {
+        synchronized (RESOURCES_LOCK) {
+            int index = -1;
+            // find empty tower slot
+            for (int i = 0; i <= 1; i++) {
+                if (tower[i] == null) {
+                    index = i;
+                    break;
+                }
+            }
+
+            if (index == -1) {
+                throw new CouldNotPerformException("Could not deploy tower because all slots are busy!");
+            }
+
+            tower[index] = towerToPlace;
+            changes.firePropertyChange(CREATE_TOWER, null, towerToPlace);
+        }
+    }
+
+    public void removeTower(final Agent commander) throws CouldNotPerformException {
+        synchronized (RESOURCES_LOCK) {
+            int index = -1;
+            // find empty tower slot
+            for (int i = 0; i <= 1; i++) {
+                if (tower[i] != null && tower[i].getCommander().equals(commander)) {
+                    index = i;
+                    break;
+                }
+            }
+
+            if (index == -1) {
+                throw new CouldNotPerformException("Could not remove tower because placer could not be detected!");
+            }
+
+            tower[index].shutdown();
+            tower[index] = null;
         }
     }
 
@@ -431,6 +476,25 @@ public abstract class AbstractLevel extends AbstractGameObject implements Runnab
 
     public int getGameSpeed() {
         return gameSpeed;
+    }
+
+    public Tower getTower(final Mothership mothership) throws NotAvailableException {
+        synchronized (RESOURCES_LOCK) {
+            int index = -1;
+            // find empty tower slot
+            for (int i = 0; i <= 1; i++) {
+                if (tower[i] != null && tower[i].getCommander().getMothership().equals(mothership)) {
+                    index = i;
+                    break;
+                }
+            }
+
+            if (index == -1) {
+                throw new NotAvailableException("Tower");
+            }
+
+            return tower[index];
+        }
     }
 
     public void setGameOverSoon() {

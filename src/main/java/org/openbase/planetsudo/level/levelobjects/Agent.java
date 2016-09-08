@@ -32,6 +32,8 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import org.openbase.jul.exception.CouldNotPerformException;
 import org.openbase.jul.exception.InvalidStateException;
+import org.openbase.jul.exception.NotAvailableException;
+import org.openbase.jul.exception.printer.ExceptionPrinter;
 import org.openbase.jul.visual.swing.engine.draw2d.AbstractResourcePanel.ObjectType;
 import org.slf4j.Logger;
 import org.openbase.planetsudo.game.ActionPoints;
@@ -49,7 +51,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a>
  */
 public class Agent extends AbstractLevelObject implements AgentInterface {
 
@@ -59,7 +61,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
     public final static int AGENT_VIEW_DISTANCE = AGENT_SIZE;
     public final static int DEFAULT_AGENT_SPEED = 6;
 
-    private static final Logger logger = LoggerFactory.getLogger(Agent.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Agent.class);
 
     private final int fuelVolume;
     protected final Mothership mothership;
@@ -72,15 +74,15 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
     private boolean hasMine;
     private boolean hasTower;
     private boolean needSupport;
-    private boolean commanderFlag;
+    private final boolean commanderFlag;
     private String lastAction;
     private AbstractLevelObject adversaryObject;
     private boolean gameOverSoon;
-    private Set<SwatTeam> swatTeamSet;
+    private final Set<SwatTeam> swatTeamSet;
 
     public Agent(final String name, final boolean commanderFlag, final int fuelVolume, final Mothership mothership) {
         super(mothership.registerAgent(), name, ObjectType.Dynamic, mothership.getLevel(), mothership.getAgentHomePosition(), AGENT_SIZE, AGENT_SIZE, ObjectShape.Oval);
-        logger.info("Create " + this);
+        LOGGER.info("Create " + this);
         this.lastAction = "Init";
         this.fuelVolume = fuelVolume;
         this.commanderFlag = commanderFlag;
@@ -181,7 +183,8 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
     public boolean hasMine() {
         return hasMine;
     }
-    
+
+    @Override
     public boolean hasTower() {
         return hasTower;
     }
@@ -196,16 +199,22 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
             GameSound.DeployMine.play();
         }
     }
-    
+
+    @Override
     public synchronized void deployTower(final Tower.TowerType type) {
-        actionPoints.getActionPoint(1000);
-        useFuel(50);
-        if(!isCommander()) {
-            logger.warn("Only commander is carring a tower, deployment failed!");
-            return;
+        try {
+            actionPoints.getActionPoint(1000);
+            useFuel(50);
+            if (!isCommander()) {
+                LOGGER.warn("Only the commander is able to deploy a tower, deployment failed!");
+                return;
+            }
+            mothership.getLevel().placeTower(new Tower(level.generateNewResourceID(), type, level, this));
+            hasTower = false;
+        } catch (CouldNotPerformException ex) {
+            kill();
+            ExceptionPrinter.printHistory(new CouldNotPerformException("Could not deploy Tower!", ex), LOGGER);
         }
-        new Tower(level.generateNewResourceID(), type, level, this);
-        hasTower = false;
     }
 
     private int calcSpeed() {
@@ -276,7 +285,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
 
     @Override
     public void kill() {
-        logger.info("Kill " + name);
+        LOGGER.info("Kill " + name);
         mothership.removeAgent(this);
         alive = false;
         fuel = 0;
@@ -305,13 +314,13 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
     }
 
     protected void startGame() {
-        logger.info("startAgent" + this);
+        LOGGER.info("startAgent" + this);
         // ############## Load strategy #########################
         Constructor<? extends AbstractStrategy> constructor;
         try {
             constructor = mothership.getTeam().getStrategy().getConstructor(AgentInterface.class);
         } catch (Exception ex) {
-            logger.error("Could not load strategy!", ex);
+            LOGGER.error("Could not load strategy!", ex);
             kill();
             return;
         }
@@ -319,7 +328,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
         try {
             strategy = constructor.newInstance(this);
         } catch (Exception ex) {
-            logger.error("Could not load strategy!", ex);
+            LOGGER.error("Could not load strategy!", ex);
             kill();
             return;
         }
@@ -327,6 +336,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
         // ######################################################
     }
 
+    @Override
     public void go() {
         if (isCarringResource()) {
             actionPoints.getActionPoint(8);
@@ -344,6 +354,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
         }
     }
 
+    @Override
     public void turnAround() {
         actionPoints.getActionPoint();
         if (useFuel()) {
@@ -351,6 +362,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
         }
     }
 
+    @Override
     public void goLeft(final int beta) {
         go();
         if (hasFuel()) {
@@ -359,6 +371,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
 
     }
 
+    @Override
     public void goRight(final int beta) {
         go();
         if (hasFuel()) {
@@ -366,6 +379,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
         }
     }
 
+    @Override
     public void turnLeft(final int beta) {
         actionPoints.getActionPoint();
         if (useFuel()) {
@@ -373,6 +387,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
         }
     }
 
+    @Override
     public void turnRight(final int beta) {
         actionPoints.getActionPoint();
         if (useFuel()) {
@@ -380,10 +395,12 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
         }
     }
 
+    @Override
     public void turnRandom() {
         turnRandom(360);
     }
 
+    @Override
     public void turnRandom(int opening) {
         actionPoints.getActionPoint();
         try {
@@ -392,10 +409,11 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
                 direction.setAngle(direction.getAngle() + randomAngle);
             }
         } catch (InvalidStateException ex) {
-            logger.error("Could not turn random.", ex);
+            LOGGER.error("Could not turn random.", ex);
         }
     }
 
+    @Override
     public void goToMothership() {
         actionPoints.getActionPoint();
         go();
@@ -413,7 +431,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
     public void orderFuel(final int percent) {
         actionPoints.getActionPoint(20);
         if (percent < 0 || percent > 100) {
-            logger.error("Could not refill fuel! Percent value[" + percent + "] is not in bounds! Valuerange 0-100");
+            LOGGER.error("Could not refill fuel! Percent value[" + percent + "] is not in bounds! Valuerange 0-100");
             return;
         }
 
@@ -450,7 +468,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
                 GameSound.DeliverResource.play();
             }
         } catch (CouldNotPerformException ex) {
-            logger.warn("Could not deliver resource to Mothership!", ex);
+            LOGGER.warn("Could not deliver resource to Mothership!", ex);
         }
     }
 
@@ -506,7 +524,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
                 }
             }
         } catch (InvalidStateException ex) {
-            logger.warn("Could not pickup resource!", ex);
+            LOGGER.warn("Could not pickup resource!", ex);
         }
     }
 
@@ -643,7 +661,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
                 throw new CouldNotPerformException("Could not support himself!");
             }
         } catch (CouldNotPerformException ex) {
-            logger.warn("Could not goToSuppordAgent!", ex);
+            ExceptionPrinter.printHistory(new CouldNotPerformException("Could not goToSuppordAgent!", ex), LOGGER);
         }
     }
 
@@ -677,7 +695,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
             go();
             direction.setAngle(mothership.getMarker().getLevelView().getAbsolutAngle(this));
         } catch (CouldNotPerformException ex) {
-            logger.warn("Could not goToMarker!", ex);
+            LOGGER.warn("Could not goToMarker!", ex);
         }
     }
 
@@ -689,6 +707,15 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
     @Override
     public boolean seeMarker() {
         return mothership.getTeamMarker().seeMarker(this);
+    }
+    
+    @Override
+    public boolean seeTower() {
+        try {
+            return mothership.getTower().seeTower(this);
+        } catch (NotAvailableException ex) {
+            return false;
+        }
     }
 
     @Override
@@ -704,17 +731,17 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
     public void joinSwatTeam(final SwatTeam... swatTeams) {
         List<SwatTeam> swatTeamList = Arrays.asList(swatTeams);
         if (!Collections.disjoint(swatTeamList, SwatTeam.NEGATED_TEAM_LIST)) {
-            logger.error("It's not allowed to join any negated swat teams!");
+            LOGGER.error("It's not allowed to join any negated swat teams!");
             kill();
             return;
         }
         if (swatTeamList.contains(COMMANDER)) {
-            logger.error("It's not allowed to setup the commander manually!");
+            LOGGER.error("It's not allowed to setup the commander manually!");
             kill();
             return;
         }
         if (swatTeamList.contains(ALL)) {
-            logger.error("ALL is not a vaild swat team!");
+            LOGGER.error("ALL is not a vaild swat team!");
             kill();
             return;
         }
@@ -749,6 +776,6 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
 
     protected void setGameOverSoon() {
         this.gameOverSoon = true;
-        logger.info("Game over soon!");
+        LOGGER.info("Game over soon!");
     }
 }

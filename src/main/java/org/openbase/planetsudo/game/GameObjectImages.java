@@ -28,7 +28,7 @@ package org.openbase.planetsudo.game;
 
 /**
  *
- * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a>
  */
 public enum GameObjectImages {
 

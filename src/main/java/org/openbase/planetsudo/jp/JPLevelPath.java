@@ -37,7 +37,7 @@ import org.openbase.jps.exception.JPNotAvailableException;
 
 /**
  *
- * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a>
  */
 public class JPLevelPath extends AbstractJPDirectory {
 	public final static String[] COMMAND_IDENTIFIERS = {"-l", "--levelfolder"};

@@ -40,7 +40,7 @@ import org.openbase.planetsudo.level.AbstractLevel;
 
 /**
  *
- * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a>
  */
 public class LevelMenuPanel extends javax.swing.JPanel implements ActionListener {
 

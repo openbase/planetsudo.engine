@@ -17,6 +17,7 @@
 package org.openbase.planetsudo.level.levelobjects;
 
 import java.util.Collection;
+import org.openbase.jul.exception.CouldNotPerformException;
 import org.openbase.planetsudo.game.SwatTeam;
 
 /*-
@@ -390,6 +391,13 @@ public interface AgentInterface {
      * @return true oder false
      */
     boolean seeMarker();
+    
+    /**
+     * Gibt zurück, ob der Agent den Turm sieht.
+     *
+     * @return true oder false
+     */
+    boolean seeTower();
 
     /**
      * Zeigt an ob der Agent eine Resource sehen kann.
@@ -465,7 +473,7 @@ public interface AgentInterface {
      * @param swatTeams
      * @return
      */
-    public boolean isMemberOfSwatTeam(final SwatTeam... swatTeams);
+    boolean isMemberOfSwatTeam(final SwatTeam... swatTeams);
 
     /**
      * Überprüft ob dieser Agent in mindestens einer der übergebenen SwatTeams enthalten ist.
@@ -473,5 +481,24 @@ public interface AgentInterface {
      * @param swatTeams
      * @return
      */
-    public boolean isMemberOfSwatTeam(final Collection<SwatTeam> swatTeams);
+    boolean isMemberOfSwatTeam(final Collection<SwatTeam> swatTeams);
+
+    /**
+     * Errichtet den Turm an der Position des Commanders.
+     * Diese Action kann durch von dem Commander durchgeführt werden!
+     *
+     * Es gibt hierbei zwei Arten von Türmen:
+     * - Einen Verteidigungsturm (DefenceTower) der feindliche Agenten für alle Agenten des Teams sichtbar macht und diese angreift.
+     * - Einen Beobachtungsturm (ObservationTower) der Ressourcen in Reichweite für all Agenten des Teams sichtbar macht und zudem Agenten in Reichweite mit Energie beliefert.
+     *
+     * @param type Hierrüber kannst du den Turmtypen auwählen welcher errichtet werden soll.
+     */
+    void deployTower(final Tower.TowerType type);
+    
+    /**
+     * Überprüft ob dieser Agent einen Turm aufbauen könnte.
+     * Bedenke das nur Kommander einen Turm tragen!
+     * @return 
+     */
+    boolean hasTower();
 }

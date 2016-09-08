@@ -32,7 +32,7 @@ import org.openbase.planetsudo.level.levelobjects.AgentInterface;
 
 /**
  *
- * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a>
  */
 public class MarcosStrategy extends AbstractStrategy {
 
