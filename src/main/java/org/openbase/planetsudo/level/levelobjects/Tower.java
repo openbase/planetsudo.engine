@@ -21,12 +21,14 @@ package org.openbase.planetsudo.level.levelobjects;
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.Timer;
 import org.openbase.jul.exception.CouldNotPerformException;
-import org.openbase.jul.exception.InstantiationException;
-import org.openbase.jul.iface.Shutdownable;
 import org.openbase.jul.visual.swing.engine.draw2d.AbstractResourcePanel;
+import org.openbase.planetsudo.game.GameManager;
+import org.openbase.planetsudo.game.GameSound;
 import org.openbase.planetsudo.geometry.Direction2D;
-import org.openbase.planetsudo.geometry.Point2D;
 import org.slf4j.Logger;
 import org.openbase.planetsudo.level.AbstractLevel;
 import org.openbase.planetsudo.level.ResourcePlacement;
@@ -36,10 +38,13 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a>
  */
-public class Tower extends AbstractLevelObject implements Shutdownable {
+public class Tower extends AbstractLevelObject  implements ActionListener {
 
-    public final static int SIZE = 100;
-    public final static String REMOVE_TOWER = "remove tower";
+    public final static int SIZE = 50;
+    public final static String TOWER_FUEL_STATE_CHANGE = "FuelStateChange";
+    public final static String TOWER_SHIELD_STATE_CHANGE = "ShieldStateChange";
+    public final static String TOWER_ERECT = "erect tower";
+    public final static String TOWER_DISMANTLE = "dismantle tower";
 
     public enum TowerType {
 
@@ -48,48 +53,50 @@ public class Tower extends AbstractLevelObject implements Shutdownable {
 
     private static final Logger logger = LoggerFactory.getLogger(Tower.class);
 
-    private final TowerType type;
-    private final Agent commander;
+    private TowerType type;
     private final Object TOWER_LOCK = new Object();
     private ResourcePlacement placement;
-    
+    private final Timer timer;
+
     private int shield;
     private int fuel;
     private final Direction2D direction;
     private boolean attacked;
-    private boolean placed;
+    private boolean erected;
+    private final Mothership mothership;
 
-    public Tower(final int id, final TowerType type, final AbstractLevel level, final Agent commander) throws InstantiationException {
-        super(id, Tower.class.getSimpleName() + "[" + id + "]", AbstractResourcePanel.ObjectType.Static, level, commander.getPosition(), SIZE, SIZE, ObjectShape.Rec);
-        try {
-            this.type = type;
-            if (!commander.isCommander()) {
-                commander.kill();
-                throw new CouldNotPerformException("Only the commander can place a tower!");
-            }
-            this.commander = commander;
-            this.position = new Point2D(commander.getPosition());
-            this.direction = commander.getDirection();
-            this.placed = true;
-            this.reset();
-            logger.info("Create " + this);
-        } catch (CouldNotPerformException ex) {
-            throw new org.openbase.jul.exception.InstantiationException(this, ex);
+    public Tower(final int id, final AbstractLevel level, final Mothership mothership) {
+        super(id, Tower.class.getSimpleName() + "[" + id + "]", AbstractResourcePanel.ObjectType.Static, level, mothership.getPosition(), SIZE, SIZE, ObjectShape.Rec);
+        this.mothership = mothership;
+        this.direction = new Direction2D(0);
+        this.timer = new Timer(50, this);
+        this.reset();
+        logger.info("Create " + this);
+    }
+
+    public void erect(final Tower.TowerType type, final Agent commander) throws CouldNotPerformException {
+        if (!commander.isCommander()) {
+            commander.kill();
+            throw new CouldNotPerformException("Only the commander can erect a tower!");
         }
+        this.type = type;
+        erected = true;
+        changes.firePropertyChange(TOWER_ERECT, null, this);
     }
 
-    public ResourcePlacement getPlacement() {
-        return placement;
-    }
-
-    public Agent getCommander() {
-        return commander;
+    public void dismantle(final Agent commander) throws CouldNotPerformException {
+        if (!commander.isCommander()) {
+            commander.kill();
+            throw new CouldNotPerformException("Only the commander can dismantle a tower!");
+        }
+        erected = false;
+        changes.firePropertyChange(TOWER_DISMANTLE, null, this);
     }
 
     @Override
     public void reset() {
-        fuel = 1000;
-        placed = true;
+        fuel = 100;
+        erected = false;
     }
 
     public TowerType getType() {
@@ -111,17 +118,105 @@ public class Tower extends AbstractLevelObject implements Shutdownable {
     public Direction2D getDirection() {
         return direction;
     }
-    
-    public boolean seeTower(final Agent agent) {
-		if(!placed) {
-			return false;
-		}
 
-		return getBounds().intersects(agent.getBounds());
-	}
+    public boolean seeTower(final Agent agent) {
+        if (!erected) {
+            return false;
+        }
+
+        return getBounds().intersects(agent.getBounds());
+    }
+
+    public int orderFuel(int fuel, final Agent agent) {
+        if (agent == null || getBounds().contains(agent.getBounds())) {
+            try {
+                final int oldFuel = this.fuel;
+                if (fuel <= 0) { // fuel emty
+                    fuel = 0;
+                } else if (this.fuel < fuel) { // use last fuel
+                    fuel = this.fuel;
+                    this.fuel = 0;
+                    synchronized (this) {
+                        notifyAll();
+                    }
+                } else {
+                    this.fuel -= fuel;
+                }
+                changes.firePropertyChange(TOWER_FUEL_STATE_CHANGE, oldFuel, this.fuel);
+            } catch (Exception e) {
+                logger.error("Could not order fuel!", e);
+            }
+        } else {
+            return 0;
+        }
+        return fuel;
+    }
+
+    public boolean hasFuel() {
+        return fuel > 0;
+    }
+
+    protected void spendFuel(final int value) {
+        if (value + fuel > Mothership.TOWER_FUEL_VOLUME) {
+            fuel = Mothership.TOWER_FUEL_VOLUME;
+        } else {
+            fuel += value;
+        }
+        changes.firePropertyChange(TOWER_FUEL_STATE_CHANGE, null, this.fuel);
+    }
+
+    public synchronized void attack() {
+        logger.debug("Attack Mothership");
+        if (shield > 0) {
+            shield--;
+            if (shield <= Mothership.BURNING_TOWER) {
+                if (!timer.isRunning()) {
+                    timer.start();
+                    GameSound.MothershipExplosion.play();
+                }
+            }
+            changes.firePropertyChange(TOWER_SHIELD_STATE_CHANGE, null, shield);
+        }
+    }
+
+    public synchronized void repair() {
+        if (shield < 100) {
+            shield++;
+            if (shield > Mothership.BURNING_TOWER && timer.isRunning()) {
+                timer.stop();
+            }
+            changes.firePropertyChange(TOWER_SHIELD_STATE_CHANGE, null, shield);
+        }
+    }
+
+    public boolean isBurning() {
+        return shield < Mothership.BURNING_TOWER && hasFuel();
+    }
+
+    public int getShieldForce() {
+        return shield;
+    }
+
+    public int getShieldPoints() {
+        return shield / 2;
+    }
+
+    public boolean isMaxDamaged() {
+        return shield == 0;
+    }
+
+    public boolean isDamaged() {
+        return shield < 100;
+    }
     
+    public boolean isErected() {
+        return erected;
+    }
+
     @Override
-    public void shutdown() {
-        changes.firePropertyChange(REMOVE_TOWER, null, this);
+    public void actionPerformed(final ActionEvent e) {
+        if (!GameManager.getInstance().isPause()) {
+            orderFuel(Math.max(0, Mothership.BURNING_TOWER - shield), null);
+        }
     }
 }

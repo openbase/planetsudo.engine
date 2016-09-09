@@ -40,6 +40,7 @@ import org.slf4j.LoggerFactory;
 public class TowerPanel extends AbstractLevelObjectPanel<Tower, LevelPanel> implements PropertyChangeListener {
 
     private static final Logger logger = LoggerFactory.getLogger(TowerPanel.class);
+    
 
     public TowerPanel(final Tower tower, final LevelPanel parentPanel) {
         super(tower, tower.getPolygon(), getImageURI(tower.getType()), parentPanel, DrawLayer.BACKGROUND);
@@ -48,15 +49,19 @@ public class TowerPanel extends AbstractLevelObjectPanel<Tower, LevelPanel> impl
     }
 
     private static String getImageURI(TowerType type) {
-        return GameObjectImages.valueOf(type.name()).imagesURL;
+        return GameObjectImages.Tower.imagesURL;
     }
     private Graphics2D gg2;
     private Direction2D direction;
 
     @Override
     protected void paintComponent(Graphics2D g2, Graphics2D gl) {
+        // only paint if erected
+        if(!resource.isErected()) {
+            return;
+        }
+        
         boundingBox = resource.getBounds();
-
         direction = resource.getDirection();
         gg2 = (Graphics2D) g2.create();
         paintImageRotated(direction, gg2);
@@ -65,11 +70,11 @@ public class TowerPanel extends AbstractLevelObjectPanel<Tower, LevelPanel> impl
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals(Tower.REMOVE_TOWER)) {
-            if (((Tower) evt.getNewValue()).equals(resource)) {
-                parentResourcePanel.removeChild(this);
-            }
-        }
+//        if (evt.getPropertyName().equals(Tower.REMOVE_TOWER)) {
+//            if (((Tower) evt.getNewValue()).equals(resource)) {
+//                parentResourcePanel.removeChild(this);
+//            }
+//        }
     }
 
     @Override
