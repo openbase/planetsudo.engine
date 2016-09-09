@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.openbase.planetsudo.view.level;
 
 /*-
@@ -26,7 +25,6 @@ package org.openbase.planetsudo.view.level;
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-
 import org.openbase.planetsudo.game.GameObjectImages;
 import java.beans.PropertyChangeEvent;
 import org.openbase.planetsudo.view.level.levelobjects.MothershipPanel;
@@ -41,75 +39,79 @@ import org.openbase.planetsudo.view.level.levelobjects.ResourcePanel;
 import java.awt.Polygon;
 import org.openbase.jul.visual.swing.engine.draw2d.AbstractResourcePanel.ObjectType;
 import org.openbase.jul.visual.swing.engine.draw2d.ResourceDisplayPanel;
+import org.openbase.planetsudo.level.levelobjects.Tower;
+import org.openbase.planetsudo.view.level.levelobjects.TowerPanel;
 
 /**
  *
- * @author divine
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a>
  */
 public class LevelPanel extends AbstractGameObjectPanel<AbstractLevel, LevelPanel> implements PropertyChangeListener {
 
-	private final boolean hasInternalWalls;
-	private boolean enabledLevelObjects;
+    private final boolean hasInternalWalls;
+    private boolean enabledLevelObjects;
 
-	public LevelPanel(AbstractLevel resource, ResourceDisplayPanel parentPanel) {
-		super(resource, resource.getLevelBorderPolygon(), ObjectType.Dynamic, GameObjectImages.Default.imagesURL, parentPanel);
-		hasInternalWalls = resource.getLevelWallPolygons() != null;
-		boundingBox = resource.getLevelBorderPolygon().getBounds2D();
-		
-		updateBounds();
-		parentPanel.setDoubleBuffered(true);
-		resource.addPropertyChangeListener(this);
-		enabledLevelObjects = false;
-	}
+    public LevelPanel(AbstractLevel resource, ResourceDisplayPanel parentPanel) {
+        super(resource, resource.getLevelBorderPolygon(), ObjectType.Dynamic, GameObjectImages.Default.imagesURL, parentPanel);
+        hasInternalWalls = resource.getLevelWallPolygons() != null;
+        boundingBox = resource.getLevelBorderPolygon().getBounds2D();
 
-	public void loadLevelObjects() {
-		enabledLevelObjects = true;
-		loadResourcePanels();
-		loadMothershipPanels();
-		updateBounds();
-	}
+        updateBounds();
+        parentPanel.setDoubleBuffered(true);
+        resource.addPropertyChangeListener(this);
+        enabledLevelObjects = false;
+    }
 
-	private void loadResourcePanels() {
-		for(Resource res : resource.getResources()) {
-			new ResourcePanel(res, this);
-		}
-	}
+    public void loadLevelObjects() {
+        enabledLevelObjects = true;
+        loadResourcePanels();
+        loadMothershipPanels();
+        updateBounds();
+    }
 
-	private void loadMothershipPanels() {
-		for(Mothership mothership : resource.getMotherships()) {
-			new MothershipPanel(mothership, this);
-		}
-	}
+    private void loadResourcePanels() {
+        for (Resource res : resource.getResources()) {
+            new ResourcePanel(res, this);
+        }
+    }
 
-	@Override
-	protected void paintComponent(Graphics2D g2, Graphics2D gl) {
-		g2.fill(resource.getLevelBorderPolygon());
+    private void loadMothershipPanels() {
+        for (Mothership mothership : resource.getMotherships()) {
+            new MothershipPanel(mothership, this);
+        }
+    }
+
+    @Override
+    protected void paintComponent(Graphics2D g2, Graphics2D gl) {
+        g2.fill(resource.getLevelBorderPolygon());
 //		g2.fill(tranformedPlacement);
-		if(hasInternalWalls) {
-			g2.setColor(resource.getColor());
-			for(Polygon wall : resource.getLevelWallPolygons()) {
-				g2.fill(wall);
-			}
-		}
-	}
+        if (hasInternalWalls) {
+            g2.setColor(resource.getColor());
+            for (Polygon wall : resource.getLevelWallPolygons()) {
+                g2.fill(wall);
+            }
+        }
+    }
 
-	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
-		if(evt.getPropertyName().equals(AbstractLevel.CREATE_RESOURCE) && enabledLevelObjects) {
-			new ResourcePanel((Resource) evt.getNewValue(), this);
-		}
-	}
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getPropertyName().equals(AbstractLevel.CREATE_RESOURCE) && enabledLevelObjects) {
+            new ResourcePanel((Resource) evt.getNewValue(), this);
+        } else if (evt.getPropertyName().equals(AbstractLevel.CREATE_TOWER) && enabledLevelObjects) {
+            new TowerPanel((Tower) evt.getNewValue(), this);
+        }
+    }
 
-	@Override
-	public boolean isFocusable() {
-		return false;
-	}
+    @Override
+    public boolean isFocusable() {
+        return false;
+    }
 
-	@Override
-	protected void notifyMouseEntered() {
-	}
+    @Override
+    protected void notifyMouseEntered() {
+    }
 
-	@Override
-	protected void notifyMouseClicked(MouseEvent evt) {
-	}
+    @Override
+    protected void notifyMouseClicked(MouseEvent evt) {
+    }
 }

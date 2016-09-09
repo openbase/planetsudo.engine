@@ -36,7 +36,7 @@ import org.openbase.planetsudo.level.ResourcePlacement;
 
 /**
  *
- * @author divine
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a>
  */
 public class SimpleFight extends AbstractLevel {
 

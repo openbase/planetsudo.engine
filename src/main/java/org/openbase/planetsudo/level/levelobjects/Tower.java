@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.openbase.planetsudo.level.levelobjects;
 
 /*-
@@ -25,153 +21,107 @@ package org.openbase.planetsudo.level.levelobjects;
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-
-import java.util.ArrayList;
-import java.util.List;
-import org.openbase.jul.exception.InvalidStateException;
+import org.openbase.jul.exception.CouldNotPerformException;
+import org.openbase.jul.exception.InstantiationException;
+import org.openbase.jul.iface.Shutdownable;
 import org.openbase.jul.visual.swing.engine.draw2d.AbstractResourcePanel;
-import org.slf4j.Logger;
-import org.openbase.planetsudo.game.Team;
+import org.openbase.planetsudo.geometry.Direction2D;
 import org.openbase.planetsudo.geometry.Point2D;
+import org.slf4j.Logger;
 import org.openbase.planetsudo.level.AbstractLevel;
 import org.openbase.planetsudo.level.ResourcePlacement;
 import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author divine
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a>
  */
-public class Tower extends AbstractLevelObject {
+public class Tower extends AbstractLevelObject implements Shutdownable {
 
-	public final static int SIZE = 100;
+    public final static int SIZE = 100;
+    public final static String REMOVE_TOWER = "remove tower";
 
-	public enum TowerType {
+    public enum TowerType {
 
-		DefenceTower, ObservationTower, DoublePoints, ExtremPoint, ExtraAgentFuel, ExtraMothershipFuel, Mine
-	};
-    
+        DefenceTower, ObservationTower
+    };
+
     private static final Logger logger = LoggerFactory.getLogger(Tower.class);
+
+    private final TowerType type;
+    private final Agent commander;
+    private final Object TOWER_LOCK = new Object();
+    private ResourcePlacement placement;
     
-	private TowerType type;
-	private Agent owner;
-	private final List<String> conquerors;
-	private final Object RESOURCE_LOCK = new Object();
-	private boolean used;
-	private ResourcePlacement placement;
+    private int shield;
+    private int fuel;
+    private final Direction2D direction;
+    private boolean attacked;
+    private boolean placed;
 
+    public Tower(final int id, final TowerType type, final AbstractLevel level, final Agent commander) throws InstantiationException {
+        super(id, Tower.class.getSimpleName() + "[" + id + "]", AbstractResourcePanel.ObjectType.Static, level, commander.getPosition(), SIZE, SIZE, ObjectShape.Rec);
+        try {
+            this.type = type;
+            if (!commander.isCommander()) {
+                commander.kill();
+                throw new CouldNotPerformException("Only the commander can place a tower!");
+            }
+            this.commander = commander;
+            this.position = new Point2D(commander.getPosition());
+            this.direction = commander.getDirection();
+            this.placed = true;
+            this.reset();
+            logger.info("Create " + this);
+        } catch (CouldNotPerformException ex) {
+            throw new org.openbase.jul.exception.InstantiationException(this, ex);
+        }
+    }
 
-	// Constructor just for mine
-	public Tower(int id, AbstractLevel level, Agent placer) {
-		this(id, TowerType.Mine, level, new Point2D(placer.getPosition()));
-		this.placedBy = placer.getTeam();
-	}
+    public ResourcePlacement getPlacement() {
+        return placement;
+    }
 
-	public Tower(int id, TowerType type, AbstractLevel level, ResourcePlacement placement) {
-		this(id, type, level, placement.calcRandomLevelPosition(level));
-		this.placement = placement;
-	}
+    public Agent getCommander() {
+        return commander;
+    }
 
-	public Tower(int id, TowerType type, AbstractLevel level, Point2D position) {
-		super(id, Tower.class.getSimpleName() + "[" + id + "]", AbstractResourcePanel.ObjectType.Dynamic, level, position, SIZE, SIZE, ObjectShape.Rec);
-		this.type = type;
-		this.owner = null;
-		this.used = false;
-		this.conquerors = new ArrayList<>();
-		logger.info("Create " + this);
-	}
+    @Override
+    public void reset() {
+        fuel = 1000;
+        placed = true;
+    }
 
-	public ResourcePlacement getPlacement() {
-		return placement;
-	}
+    public TowerType getType() {
+        return type;
+    }
 
-	@Override
-	public void reset() {
-	}
+    public int getShield() {
+        return shield;
+    }
 
-	public boolean isOwned() {
-		return owner != null;
-	}
+    public int getFuel() {
+        return fuel;
+    }
 
-	public Agent getOwner() {
-		return owner;
-	}
+    public boolean isAttacked() {
+        return attacked;
+    }
 
-	public TowerType getType() {
-		return type;
-	}
-
-	public boolean setBusy(final Team team) {
-		if(isOwned()) {
+    public Direction2D getDirection() {
+        return direction;
+    }
+    
+    public boolean seeTower(final Agent agent) {
+		if(!placed) {
 			return false;
 		}
-		synchronized (RESOURCE_LOCK) {
-			if (conquerors.contains(team.getName())) {
-				return false;
-			}
-			conquerors.add(team.getName());
-			return true;
-		}
-	}
 
-	public boolean isSaveFor(final Agent agent) {
-		return wasPlacedByTeam() != agent.getTeam();
+		return getBounds().intersects(agent.getBounds());
 	}
-
-	protected boolean capture(final Agent agent) throws InvalidStateException {
-		synchronized (RESOURCE_LOCK) {
-			if (owner != null) {
-				return false;
-			}
-
-			owner = agent;
-			conquerors.clear();
-		}
-		position = agent.getPosition();
-		switch (type) {
-			case ExtraAgentFuel:
-				use(agent);
-				return false;
-			case Mine:
-				use(agent);
-				return false;
-			default:
-				return true;
-		}
-	}
-
-	public int getCapturingActionPoints() {
-		switch (type) {
-			case Normal:
-				return 200;
-			case DoublePoints:
-				return 400;
-			case ExtremPoint:
-				return 700;
-			case ExtraAgentFuel:
-				return 400;
-			case ExtraMothershipFuel:
-				return 400;
-			case Mine:
-				return 200;
-			default:
-				logger.error("Could not calculate capturing time because resource type is unknown!");
-				return 1000;
-		}
-	}
-	private Team placedBy = null;
-
-	public Team wasPlacedByTeam() {
-		return placedBy;
-	}
-
-	protected void release() {
-		synchronized (RESOURCE_LOCK) {
-			owner = null;
-			position = position.clone();
-		}
-	}
-
-	public boolean isUsed() {
-		return used;
-	}
+    
+    @Override
+    public void shutdown() {
+        changes.firePropertyChange(REMOVE_TOWER, null, this);
+    }
 }

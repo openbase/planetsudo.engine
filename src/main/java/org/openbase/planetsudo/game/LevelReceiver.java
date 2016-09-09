@@ -28,9 +28,9 @@ package org.openbase.planetsudo.game;
 
 /**
  *
- * @author divine
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a>
  */
-public class LevelReciver{
+public class LevelReceiver{
 
 
 }

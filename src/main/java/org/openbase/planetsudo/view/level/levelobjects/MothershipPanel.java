@@ -32,12 +32,11 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import org.openbase.planetsudo.level.levelobjects.Agent;
 import org.openbase.planetsudo.level.levelobjects.Mothership;
-import org.openbase.planetsudo.view.MainGUI;
 import org.openbase.planetsudo.view.level.LevelPanel;
 
 /**
  *
- * @author divine
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a>
  */
 public class MothershipPanel extends AbstractLevelObjectPanel<Mothership, LevelPanel> {
 

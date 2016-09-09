@@ -31,7 +31,7 @@ import org.openbase.planetsudo.level.levelobjects.AgentInterface;
 
 /**
  *
- * @author divine
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a>
  */
 public class SilviaStrategy extends AbstractStrategy {
 

@@ -41,7 +41,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author divine
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a>
  */
 public class HelpFrame extends javax.swing.JFrame {
 
@@ -105,6 +105,9 @@ public class HelpFrame extends javax.swing.JFrame {
         logoDisplayLabel = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Über PlanetSudo");
@@ -115,12 +118,12 @@ public class HelpFrame extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel2.setIcon(new ImageIcon("res/img/agent.png"));
-        jLabel2.setText("PlanetSudo");
+        jLabel2.setText("PlanetSudo 3");
 
         jLabel3.setText("Entwickler:");
 
         jLabel4.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jLabel4.setText("Divine [Marian Pohling] MarianPohling@djdivine.de");
+        jLabel4.setText("Divine [Marian Pohling] divine@openbase.org");
 
         jLabel5.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel5.setText("Noxus [Marco Wellmann] Marco.Wellmann@gmx.de");
@@ -128,7 +131,7 @@ public class HelpFrame extends javax.swing.JFrame {
         jLabel6.setText("Veröffentlichung:");
 
         jLabel7.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jLabel7.setText("29.10.2010");
+        jLabel7.setText("<html>PlanetSudo 1 (2010)<br>PlanetSudo 2 (2013)<br>PlanetSudo 3 (2016)</html>");
 
         jLabel8.setText("Entwicklungszeit:");
 
@@ -136,7 +139,7 @@ public class HelpFrame extends javax.swing.JFrame {
         jLabel9.setText("6 Monate");
 
         jLabel10.setFont(new java.awt.Font("Dialog", 2, 14)); // NOI18N
-        jLabel10.setText("<html><b>PlanetSudo</b> wurde im Rahmen des 26. Computerwochenendes der ev. Jugendarbeit in Halle (Westf.) entwickelt. Das Lernziel besteht darin den Teilnehmern einen Einblick in das Design und die Implementierung primitiver Verhaltensweisen zu geben welche im Zusammenspiel ein komplexes Verhalten erzeugen. Das Projekt endet mit einer kurzen Präsentation der erstellten Regeln und einer Reflexion der entwickelten Verhaltensweisen im Kontext eines Turniers.</html>");
+        jLabel10.setText("<html><div align=\"justify\"><b>PlanetSudo</b> wurde im Rahmen des 26. 32. & 38. Computerwochenendes der ev. Jugendarbeit in Halle (Westf.) entwickelt. Das Lernziel besteht darin den Teilnehmern zwischen 16 und 25 Jahren einen Einblick in das Design und die Implementierung primitiver Verhaltensweisen zu geben welche im Zusammenspiel ein komplexes Verhalten erzeugen. Das Projekt endet mit einer kurzen Präsentation der erstellten Regeln und einer Reflexion der entwickelten Verhaltensweisen anhand eines Turniers.</dev></html>");
         jLabel10.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jLabel10.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
 
@@ -149,7 +152,14 @@ public class HelpFrame extends javax.swing.JFrame {
         jLabel12.setText("Lizenz:");
 
         jLabel13.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jLabel13.setText("<html>GNU LIBRARY GENERAL PUBLIC LICENSE<br/>Version 2, June 1991   Copyright (C) 1991 Free Software Foundation, Inc</html>");
+        jLabel13.setText("GNU General Public License");
+
+        jLabel11.setText("Designer:");
+
+        jLabel14.setText("Copyright:");
+
+        jLabel15.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        jLabel15.setText("<html>&copy; 2009 - 2016 openbase.org</html>");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -158,25 +168,32 @@ public class HelpFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 901, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE))
-                            .addComponent(jLabel12))
+                                .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
+                                .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel12)
+                            .addComponent(jLabel14))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(logoDisplayLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 876, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel15)
+                                .addGap(220, 220, 220))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel7)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(logoDisplayLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -193,11 +210,13 @@ public class HelpFrame extends javax.swing.JFrame {
                             .addComponent(jLabel3)
                             .addComponent(jLabel4))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel5)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel11))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
-                            .addComponent(jLabel7))
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8)
@@ -205,10 +224,14 @@ public class HelpFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel12)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel13)))
                     .addComponent(logoDisplayLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
-                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel14)
+                    .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -229,8 +252,11 @@ public class HelpFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

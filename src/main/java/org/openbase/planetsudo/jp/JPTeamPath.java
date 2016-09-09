@@ -35,7 +35,7 @@ import org.openbase.jps.exception.JPNotAvailableException;
 
 /**
  *
- * @author divine
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a>
  */
 public class JPTeamPath extends AbstractJPDirectory {
 

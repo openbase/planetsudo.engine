@@ -28,7 +28,7 @@ import org.openbase.planetsudo.view.menu.LevelMenuPanel;
 
 /**
  *
- * @author divine
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a>
  */
 public class GamePanel extends javax.swing.JPanel {
 

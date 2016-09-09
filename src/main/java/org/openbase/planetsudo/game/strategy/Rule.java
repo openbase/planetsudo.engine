@@ -36,7 +36,7 @@ import org.openbase.planetsudo.game.SwatTeam;
  */
 /**
  *
- * @author divine
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a>
  */
 public abstract class Rule {
 

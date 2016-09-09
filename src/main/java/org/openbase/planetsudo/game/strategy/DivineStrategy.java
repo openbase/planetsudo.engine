@@ -22,13 +22,13 @@ package org.openbase.planetsudo.game.strategy;
  * #L%
  */
 import static org.openbase.planetsudo.game.SwatTeam.*;
-import org.openbase.planetsudo.level.levelobjects.Agent;
 import org.openbase.planetsudo.level.levelobjects.AgentInterface;
 import org.openbase.planetsudo.level.levelobjects.Resource.ResourceType;
+import org.openbase.planetsudo.level.levelobjects.Tower;
 
 /**
  *
- * @author divine
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a>
  */
 public class DivineStrategy extends AbstractStrategy {
 
@@ -46,7 +46,7 @@ public class DivineStrategy extends AbstractStrategy {
      */
     @Override
     protected int loadAgentCount() {
-        return 5;
+        return 999;
     }
 
     @Override
@@ -183,16 +183,28 @@ public class DivineStrategy extends AbstractStrategy {
             }
         });
         //-------------------------------------------->
-        createRule(new Rule("PickUp 5P and Place") {
+        createRule(new Rule("PickUp 5P and Place", COMMANDER) {
             @Override
             protected boolean constraint() {
-                return agent.isCommander() && agent.isTouchingResource(ResourceType.ExtremPoint) && !agent.seeMarker();
+                return agent.isTouchingResource(ResourceType.ExtremPoint) && !agent.seeMarker();
             }
 
             @Override
             protected void action() {
                 agent.deployMarker();
 
+            }
+        });
+        //-------------------------------------------->
+        createRule(new Rule("Follow Wall", COMMANDER) {
+            @Override
+            protected boolean constraint() {
+                return agent.isTouchingResource(ResourceType.ExtremPoint) && agent.hasTower();
+            }
+
+            @Override
+            protected void action() {
+                agent.deployTower(Tower.TowerType.ObservationTower);
             }
         });
         //-------------------------------------------->
@@ -473,7 +485,6 @@ public class DivineStrategy extends AbstractStrategy {
             @Override
             protected void action() {
                 agent.turnLeft(4);
-
             }
         });
         //-------------------------------------------->
