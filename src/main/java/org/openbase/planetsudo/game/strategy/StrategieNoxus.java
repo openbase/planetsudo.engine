@@ -27,6 +27,7 @@ package org.openbase.planetsudo.game.strategy;
  * #L%
  */
 
+import static org.openbase.planetsudo.game.SwatTeam.*;
 import org.openbase.planetsudo.level.levelobjects.AgentInterface;
 import org.openbase.planetsudo.level.levelobjects.Resource;
 
@@ -51,10 +52,24 @@ public class StrategieNoxus extends AbstractStrategy {
 		return 2;
 	}
 
+    /**
+     * Hier kannst du SwatTeams aus mehreren Agenten bilden.
+     * =====================================================
+     * Die Agenten werden hierbei über ihre IDs hinzugefügt. Sind beispielsweise 4 Agenten in der Strategie angegeben,
+     * so sind diese über die IDs 0 - 3 referenzierbar wobei Agent 0 immer für den Kommander steht.
+     * Bitte beachte somit, dass die Agenten ID nicht größer als N - 1 sein kann sofern N für die maximale Anzahl von Agenten steht.
+     *
+     * Die default Gruppen ALL und COMMANDER können anhand dieser Methode nicht modifiziert werden!
+     */
+    @Override
+    protected void loadSwatTeams() {
+         createSwat(ALPHA, 1);
+    }
+    
 	@Override
 	protected void loadRules() {
 		//-------------------------------------------->
-		createRule(new Rule(1000, "Kollision!") {
+		createRule(new Rule(1000, "Kollision!", ALPHA) {
 			@ Override
 			protected boolean constraint() {
 				return agent.isCollisionDetected();

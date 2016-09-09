@@ -524,7 +524,7 @@ public class ConfigurationPanel extends javax.swing.JPanel {
                 }
             }
         } catch (Exception ex) {
-            logger.warn("Could not resolve default Team!", ex);
+            ExceptionPrinter.printHistory(new CouldNotPerformException("Could not resolve default Team!", ex), logger);
         }
 
     }
