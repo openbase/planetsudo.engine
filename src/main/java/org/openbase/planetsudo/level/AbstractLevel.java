@@ -315,6 +315,28 @@ public abstract class AbstractLevel extends AbstractGameObject implements Runnab
      * WARNING: method returns null in case of no close resource.
      *
      * @param agent
+     * @param resourceType
+     * @return
+     */
+    public Resource getCloseResource(Agent agent, final Resource.ResourceType resourceType) {
+        synchronized (RESOURCES_LOCK) {
+            for (Resource resource : resources) {
+                if (!resource.isUsed()
+                        && resource.getType().equals(resourceType)
+                        && (!resource.isOwned() || resource.getOwner().getTeam() != agent.getTeam())
+                        && resource.isSaveFor(agent)
+                        && resource.getBounds().intersects(agent.getViewBounds())) {
+                    return resource;
+                }
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * WARNING: method returns null in case of no close resource.
+     *
+     * @param agent
      * @return
      */
     public Resource getCloseResource(Agent agent) {

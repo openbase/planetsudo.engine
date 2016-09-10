@@ -46,7 +46,7 @@ public class DivineStrategy extends AbstractStrategy {
      */
     @Override
     protected int loadAgentCount() {
-        return 999;
+        return 7;
     }
 
     @Override
@@ -485,6 +485,18 @@ public class DivineStrategy extends AbstractStrategy {
             @Override
             protected void action() {
                 agent.turnLeft(4);
+            }
+        });
+        //-------------------------------------------->
+        createRule(new Rule("Erect Tower", COMMANDER) {
+            @Override
+            protected boolean constraint() {
+                return agent.hasTower() && agent.seeResource();
+            }
+
+            @Override
+            protected void action() {
+                agent.erectTower(Tower.TowerType.DefenceTower);
             }
         });
         //-------------------------------------------->

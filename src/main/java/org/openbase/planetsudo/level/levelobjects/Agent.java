@@ -32,7 +32,6 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import org.openbase.jul.exception.CouldNotPerformException;
 import org.openbase.jul.exception.InvalidStateException;
-import org.openbase.jul.exception.NotAvailableException;
 import org.openbase.jul.exception.printer.ExceptionPrinter;
 import org.openbase.jul.visual.swing.engine.draw2d.AbstractResourcePanel.ObjectType;
 import org.slf4j.Logger;
@@ -429,12 +428,29 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
     public boolean seeResource() {
         return level.getCloseResource(this) != null;
     }
+    
+    @Override
+    public boolean seeResource(final ResourceType resourceType) {
+        return level.getCloseResource(this, resourceType) != null;
+    }
 
     @Override
     public void goToResource() {
         actionPoints.getActionPoint();
         if (useFuel()) {
             final Resource resourceToGo = level.getCloseResource(this);
+            if (resourceToGo != null) {
+                go();
+                direction.turnTo(position, resourceToGo.position);
+            }
+        }
+    }
+    
+    @Override
+    public void goToResource(final ResourceType resourceType) {
+        actionPoints.getActionPoint();
+        if (useFuel()) {
+            final Resource resourceToGo = level.getCloseResource(this, resourceType);
             if (resourceToGo != null) {
                 go();
                 direction.turnTo(position, resourceToGo.position);
@@ -784,8 +800,13 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
                 LOGGER.warn("Only the commander is able to dismantle a tower, deployment failed!");
                 return;
             }
+            
+            if(!mothership.getTower().seeTower(this)) {
+                LOGGER.warn("The commander is not close enough to dismantle the tower!");
+                return;
+            }
             mothership.getTower().dismantle(this);
-            hasTower = false;
+            hasTower = true;
         } catch (CouldNotPerformException ex) {
             kill();
             ExceptionPrinter.printHistory(new CouldNotPerformException("Could not dismantle Tower!", ex), LOGGER);

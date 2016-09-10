@@ -69,7 +69,7 @@ public class StrategieNoxus extends AbstractStrategy {
 	@Override
 	protected void loadRules() {
 		//-------------------------------------------->
-		createRule(new Rule(1000, "Kollision!", ALPHA) {
+		createRule(new Rule(1000, "Kollision!", ALL) {
 			@ Override
 			protected boolean constraint() {
 				return agent.isCollisionDetected();
