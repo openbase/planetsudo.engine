@@ -204,7 +204,7 @@ public class HeyZwerge extends AbstractStrategy {
 
             @Override
             protected void action() {
-                agent.deployTower(Tower.TowerType.ObservationTower);
+                agent.erectTower(Tower.TowerType.ObservationTower);
             }
         });
         //-------------------------------------------->
