@@ -7,7 +7,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
             </goals>
             <properties>
-                <exec.args>-ea -Dsun.java2d.opengl=true -Dsun.java2d.d3d=true -classpath %classpath org.openbase.planetsudo.main.Main -p . -v</exec.args>
+                <exec.args>-ea -Dsun.java2d.opengl=true -Dsun.java2d.d3d=true -classpath %classpath org.openbase.planetsudo.main.Main -p . -v --server bone.no-ip.biz</exec.args>
                 <exec.executable>java</exec.executable>
                 
             </properties>
@@ -19,7 +19,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
             </goals>
             <properties>
-                <exec.args>-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address} -ea -Dsun.java2d.opengl=true -Dsun.java2d.d3d=true -classpath %classpath org.openbase.planetsudo.main.Main -p . -v</exec.args>
+                <exec.args>-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address} -ea -Dsun.java2d.opengl=true -Dsun.java2d.d3d=true -classpath %classpath org.openbase.planetsudo.main.Main -p . -v --server bone.no-ip.biz</exec.args>
                 <exec.executable>java</exec.executable>
                 <jpda.listen>true</jpda.listen>
             </properties>
@@ -31,7 +31,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
             </goals>
             <properties>
-                <exec.args>-ea -Dsun.java2d.opengl=true -Dsun.java2d.d3d=true -classpath %classpath org.openbase.planetsudo.main.Main -p . -v</exec.args>
+                <exec.args>-ea -Dsun.java2d.opengl=true -Dsun.java2d.d3d=true -classpath %classpath org.openbase.planetsudo.main.Main -p . -v --server bone.no-ip.biz</exec.args>
                 <exec.executable>${profiler.java}</exec.executable>
             </properties>
         </action>
