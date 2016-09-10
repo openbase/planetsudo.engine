@@ -74,7 +74,8 @@ public class LevelLoader {
                 "DasBoot",
                 "Broken",
                 "Pentagon",
-                "UnbekannterWeg"
+                "UnbekannterWeg",
+                "Maze"
 	};
 
 	public LevelLoader() {
