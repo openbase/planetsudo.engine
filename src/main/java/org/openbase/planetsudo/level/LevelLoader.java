@@ -72,7 +72,10 @@ public class LevelLoader {
                 "ChemStation",
                 "HeliLandeplatz",
                 "DasBoot",
-                "Broken"
+                "Broken",
+                "Pentagon",
+                "UnbekannterWeg",
+                "Maze"
 	};
 
 	public LevelLoader() {
