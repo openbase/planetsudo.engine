@@ -68,7 +68,11 @@ public class LevelLoader {
 		"Kreuzung",
 		"Entropie",
                 "Offensive",
-                "OffensiveBackdoor"
+                "OffensiveBackdoor",
+                "ChemStation",
+                "HeliLandeplatz",
+                "DasBoot",
+                "Broken"
 	};
 
 	public LevelLoader() {

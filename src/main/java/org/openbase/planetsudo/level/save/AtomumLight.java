@@ -39,7 +39,7 @@ import org.openbase.planetsudo.level.levelobjects.Resource.ResourceType;
 
 /**
  *
- * @author noxus
+ * @author Grimmy
  */
 public class AtomumLight extends AbstractLevel {
 	

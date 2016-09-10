@@ -21,7 +21,6 @@ package org.openbase.planetsudo.view.level.levelobjects;
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-import java.awt.Color;
 import org.openbase.planetsudo.game.GameObjectImages;
 import java.awt.Graphics2D;
 import java.beans.PropertyChangeEvent;
@@ -38,24 +37,21 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a>
  */
-public class TowerPanel extends AbstractLevelObjectPanel<Tower, LevelPanel> implements PropertyChangeListener {
+public class TowerTopPanel extends AbstractLevelObjectPanel<Tower, TowerPanel> implements PropertyChangeListener {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TowerPanel.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TowerTopPanel.class);
+    
+    private final Tower tower;
 
-    private TowerTopPanel towerTopPanel;
-    private final Direction2D towerDirection2D;
-    private final Color teamColor;
-
-    public TowerPanel(final Tower tower, final LevelPanel parentPanel) {
+    public TowerTopPanel(final Tower tower, final TowerPanel parentPanel) {
         super(tower, tower.getPolygon(), getImageURI(tower.getType()), parentPanel, DrawLayer.BACKGROUND);
         LOGGER.info("Create " + this);
+        this.tower = tower;
         tower.addPropertyChangeListener(this);
-        this.towerDirection2D = new Direction2D(0);
-        this.teamColor = tower.getMothership().getTeam().getTeamColor();
     }
 
-    private static String getImageURI(TowerType type) {
-        return GameObjectImages.Tower.imagesURL;
+    private static String getImageURI(final TowerType type) {
+        return GameObjectImages.valueOf(type.name()+"Top").imagesURL;
     }
     private Graphics2D gg2;
     private Direction2D direction;
@@ -69,30 +65,18 @@ public class TowerPanel extends AbstractLevelObjectPanel<Tower, LevelPanel> impl
 
         boundingBox = resource.getBounds();
         direction = resource.getDirection();
-
         gg2 = (Graphics2D) g2.create();
-        gg2.setColor(teamColor);
-        gg2.fillOval((int) boundingBox.getX(), (int) boundingBox.getY(), (int) boundingBox.getWidth(), (int) boundingBox.getHeight());
-        paintImageRotated(towerDirection2D, gg2);
+        paintImageRotated(tower.getDirection(), gg2);
         gg2.dispose();
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals(Tower.TOWER_ERECT)) {
-            if (((Tower) evt.getNewValue()).equals(resource)) {
-                if (towerTopPanel == null) {
-                    towerTopPanel = new TowerTopPanel(resource, this);
-                }
-            }
-        } else if (evt.getPropertyName().equals(Tower.TOWER_DISMANTLE)) {
-            if (((Tower) evt.getNewValue()).equals(resource)) {
-                if (towerTopPanel != null) {
-                    removeChild(towerTopPanel);
-                    towerTopPanel = null;
-                }
-            }
-        }
+//        if (evt.getPropertyName().equals(Tower.REMOVE_TOWER)) {
+//            if (((Tower) evt.getNewValue()).equals(resource)) {
+//                parentResourcePanel.removeChild(this);
+//            }
+//        }
     }
 
     @Override

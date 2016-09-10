@@ -196,6 +196,14 @@ public interface AgentInterface {
     void goToResource();
 
     /**
+     * Der Agent bewegt sich zur Resource vom angegebenen Typen.
+     * Aktionspunkte: 4 + 4 wenn resource geladen
+     * Treibstoff: 1
+     * @param resourceType
+     */
+    public void goToResource(final Resource.ResourceType resourceType);
+    
+    /**
      * Gehe zu einem Agenten der Hilfe benötigt.
      * Aktionspunkte: 4 + 4 wenn resource geladen
      * Treibstoff: 1
@@ -405,6 +413,13 @@ public interface AgentInterface {
      * @return true oder false.
      */
     boolean seeResource();
+    
+    /**
+     * Zeigt an ob der Agent eine Resource vom angegebenen Typen sehen kann.
+     *
+     * @return true oder false.
+     */
+    public boolean seeResource(final Resource.ResourceType resourceType);
 
     /**
      * Der Agent spendet einem Teammitglied Treibstoff
