@@ -49,7 +49,8 @@ public class JPServerHostname extends AbstractJPString {
 	
 	@Override
 	protected String getPropertyDefaultValue() {
-		return "bone.no-ip.biz";
+		return "cpwe";
+//		return "bone.no-ip.biz";
 	}
 
 	@Override

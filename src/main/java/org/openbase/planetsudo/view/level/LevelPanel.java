@@ -37,10 +37,12 @@ import org.openbase.planetsudo.level.levelobjects.Resource;
 import org.openbase.planetsudo.view.game.AbstractGameObjectPanel;
 import org.openbase.planetsudo.view.level.levelobjects.ResourcePanel;
 import java.awt.Polygon;
+import org.openbase.jul.exception.printer.ExceptionPrinter;
 import org.openbase.jul.visual.swing.engine.draw2d.AbstractResourcePanel.ObjectType;
 import org.openbase.jul.visual.swing.engine.draw2d.ResourceDisplayPanel;
-import org.openbase.planetsudo.level.levelobjects.Tower;
 import org.openbase.planetsudo.view.level.levelobjects.TowerPanel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -48,6 +50,8 @@ import org.openbase.planetsudo.view.level.levelobjects.TowerPanel;
  */
 public class LevelPanel extends AbstractGameObjectPanel<AbstractLevel, LevelPanel> implements PropertyChangeListener {
 
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+    
     private final boolean hasInternalWalls;
     private boolean enabledLevelObjects;
 
@@ -63,10 +67,15 @@ public class LevelPanel extends AbstractGameObjectPanel<AbstractLevel, LevelPane
     }
 
     public void loadLevelObjects() {
+        try {
         enabledLevelObjects = true;
         loadResourcePanels();
+        loadTowerPanels();
         loadMothershipPanels();
         updateBounds();
+        } catch(Exception ex) {
+            ExceptionPrinter.printHistory(ex, logger);
+        }
     }
 
     private void loadResourcePanels() {
@@ -78,6 +87,12 @@ public class LevelPanel extends AbstractGameObjectPanel<AbstractLevel, LevelPane
     private void loadMothershipPanels() {
         for (Mothership mothership : resource.getMotherships()) {
             new MothershipPanel(mothership, this);
+        }
+    }
+    
+    private void loadTowerPanels() {
+        for (Mothership mothership : resource.getMotherships()) {
+            new TowerPanel(mothership.getTower(), this);
         }
     }
 
@@ -97,8 +112,6 @@ public class LevelPanel extends AbstractGameObjectPanel<AbstractLevel, LevelPane
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals(AbstractLevel.CREATE_RESOURCE) && enabledLevelObjects) {
             new ResourcePanel((Resource) evt.getNewValue(), this);
-        } else if (evt.getPropertyName().equals(AbstractLevel.CREATE_TOWER) && enabledLevelObjects) {
-            new TowerPanel((Tower) evt.getNewValue(), this);
         }
     }
 

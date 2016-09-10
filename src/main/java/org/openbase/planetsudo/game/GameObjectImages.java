@@ -42,8 +42,9 @@ public enum GameObjectImages {
 	ResourceExtraAgentFuel("resource5.png"),
 	ResourceExtraMothershipFuel("resource7.png"),
 	ResourceMine("mine.png"),
-	DefenceTower("observation-tower.png"),
-	ObservationTower("defence-tower.png");
+	Tower("tower.png"),
+	DefenceTowerTop("observation-tower-top.png"),
+	ObservationTowerTop("defence-tower-top.png");
 
 	public static final String IMAGE_DIRECTORY = "img";
 	public final String imagesURL;
