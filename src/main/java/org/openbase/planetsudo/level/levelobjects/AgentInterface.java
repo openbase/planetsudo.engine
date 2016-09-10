@@ -144,14 +144,14 @@ public interface AgentInterface {
 
     /**
      * Der Agent bewegt sich geradeaus.
-     * Aktionspunkte: 4 + 4 wenn resource geladen
+     * Aktionspunkte: 3 + 3 wenn resource geladen
      * Treibstoff: 1
      */
     void go();
 
     /**
      * Der Agent dreht sich um {
-     * Aktionspunkte: 4 + 4 wenn resource geladen
+     * Aktionspunkte: 3 + 3 wenn resource geladen
      * Treibstoff: 1
      * {@code beta}° nach links und bewegt sich anschließend geradeaus.
      *
@@ -161,7 +161,7 @@ public interface AgentInterface {
 
     /**
      * Der Agent dreht sich um {@code beta}° nach rechts und bewegt sich anschließend geradeaus.
-     * Aktionspunkte: 4 + 4 wenn resource geladen
+     * Aktionspunkte: 3 + 3 wenn resource geladen
      * Treibstoff: 1
      *
      * @param beta Drehwinkel
