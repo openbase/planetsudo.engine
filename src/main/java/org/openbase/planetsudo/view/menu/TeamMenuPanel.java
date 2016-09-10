@@ -46,7 +46,7 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private Team team;
-    private Timer timer;
+    private final Timer timer;
 
     /**
      * Creates new form TeamPanel
@@ -55,8 +55,9 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
         this.initComponents();
         this.mothershipFuelProgressBar.setMinimum(0);
         this.mothershipFuelProgressBar.setMaximum(Mothership.MOTHERSHIP_FUEL_VOLUME);
+        this.towerFuelProgressBar.setMinimum(0);
+        this.towerFuelProgressBar.setMaximum(Mothership.TOWER_FUEL_VOLUME);
         this.timer = new Timer(300, this);
-
     }
 
     private void updateComponents() {
@@ -64,11 +65,16 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
         teamNameLabel.setText(team.getName());
         mothershipFuelProgressBar.setForeground(Color.BLACK);
         mothershipFuelProgressBar.setValue(team.getMothership().getFuel());
+        towerFuelProgressBar.setForeground(Color.BLACK);
+        towerFuelProgressBar.setValue(team.getMothership().getTower().getFuel());
         teamAgentLabel.setText(team.getAgentCount() + "");
         mothershipShieldProgressBar.setValue(team.getMothership().getShieldForce());
+        towerShieldProgressBar.setValue(team.getMothership().getTower().getShieldForce());
         resourcePointsLabel.setText(team.getPoints() + "");
-        updateFuelProgressBar();
-        updateShieldProgressBar();
+        updateMothershipFuelProgressBar();
+        updateMothershipShieldProgressBar();
+        updateTowerFuelProgressBar();
+        updateTowerShieldProgressBar();
         //		String memberList = "<html>";
         //		for(String member : team.getMembers()) {
         //			memberList += member+"<br />";
@@ -614,16 +620,16 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals(Mothership.MOTHERSHIP_FUEL_STATE_CHANGE)) {
             mothershipFuelProgressBar.setValue((Integer) evt.getNewValue());
-            updateFuelProgressBar();
+            updateMothershipFuelProgressBar();
         } else if (evt.getPropertyName().equals(Mothership.MOTHERSHIP_SHIELD_STATE_CHANGE)) {
             mothershipShieldProgressBar.setValue((Integer) evt.getNewValue());
-            updateShieldProgressBar();
+            updateMothershipShieldProgressBar();
         } else if (evt.getPropertyName().equals(Team.POINT_STATE_CHANGE)) {
             resourcePointsLabel.setText(evt.getNewValue().toString() + "P");
         }
     }
 
-    private void updateFuelProgressBar() {
+    private void updateMothershipFuelProgressBar() {
 
         mothershipFuelProgressBar.setString("Treibstoff " + (int) (mothershipFuelProgressBar.getPercentComplete() * 100) + "%");
         if (mothershipFuelProgressBar.getPercentComplete() < 0.25) {
@@ -640,7 +646,7 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
         mothershipFuelProgressBar.setForeground(new Color(red, green, 0));
     }
 
-    private void updateShieldProgressBar() {
+    private void updateMothershipShieldProgressBar() {
 
         mothershipShieldProgressBar.setString("Schutzschild " + (int) (mothershipShieldProgressBar.getPercentComplete() * 100) + "%");
         if (mothershipShieldProgressBar.getPercentComplete() < Mothership.BURNING_MOTHERSHIP / 100) {
@@ -656,31 +662,90 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
         }
         mothershipShieldProgressBar.setForeground(new Color(red, 0, blue));
     }
-    private boolean blink;
+
+    private void updateTowerFuelProgressBar() {
+
+        towerFuelProgressBar.setString("Treibstoff " + (int) (towerFuelProgressBar.getPercentComplete() * 100) + "%");
+        if (towerFuelProgressBar.getPercentComplete() < 0.25) {
+            timer.start();
+        }
+        int green, red;
+        if (towerFuelProgressBar.getPercentComplete() >= 0.5) {
+            red = (int) (255 - (255 * (towerFuelProgressBar.getPercentComplete() - 0.5) * 2));
+            green = 255;
+        } else {
+            red = 255;
+            green = (int) (255 * (towerFuelProgressBar.getPercentComplete()) * 2);
+        }
+        towerFuelProgressBar.setForeground(new Color(red, green, 0));
+    }
+
+    private void updateTowerShieldProgressBar() {
+
+        towerShieldProgressBar.setString("Schutzschild " + (int) (towerShieldProgressBar.getPercentComplete() * 100) + "%");
+        if (towerShieldProgressBar.getPercentComplete() < Mothership.BURNING_TOWER / 100) {
+            timer.start();
+        }
+        int blue, red;
+        if (towerShieldProgressBar.getPercentComplete() >= 0.5) {
+            red = (int) (255 - (255 * (towerShieldProgressBar.getPercentComplete() - 0.5) * 2));
+            blue = 255;
+        } else {
+            red = 255;
+            blue = (int) (255 * (towerShieldProgressBar.getPercentComplete()) * 2);
+        }
+        towerShieldProgressBar.setForeground(new Color(red, 0, blue));
+    }
+    private boolean blinkMothership, blinkTower;
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (mothershipShieldProgressBar.getPercentComplete() < Mothership.BURNING_MOTHERSHIP / 100) {
-            if (blink) {
+            if (blinkMothership) {
                 mothershipShieldProgressBar.setForeground(Color.BLACK);
             } else {
-                updateShieldProgressBar();
+                updateMothershipShieldProgressBar();
             }
         }
 
         if (mothershipFuelProgressBar.getPercentComplete() < 0.25) {
-            if (blink) {
+            if (blinkMothership) {
                 mothershipFuelProgressBar.setForeground(Color.BLACK);
             } else {
-                updateFuelProgressBar();
+                updateMothershipFuelProgressBar();
             }
         }
-        blink = !blink;
+        blinkMothership = !blinkMothership;
+
+        if (towerShieldProgressBar.getPercentComplete() < Mothership.BURNING_TOWER / 100) {
+            if (blinkTower) {
+                towerShieldProgressBar.setForeground(Color.BLACK);
+            } else {
+                updateTowerShieldProgressBar();
+            }
+        }
+
+        if (towerFuelProgressBar.getPercentComplete() < 0.25) {
+            if (blinkTower) {
+                towerFuelProgressBar.setForeground(Color.BLACK);
+            } else {
+                updateTowerFuelProgressBar();
+            }
+        }
+        blinkTower = !blinkTower;
 
         if (mothershipFuelProgressBar.getPercentComplete() > 0.25 && mothershipShieldProgressBar.getPercentComplete() > Mothership.BURNING_MOTHERSHIP / 100) {
+            updateMothershipShieldProgressBar();
+            updateMothershipFuelProgressBar();
+        }
+
+        if (towerFuelProgressBar.getPercentComplete() > 0.25 && towerShieldProgressBar.getPercentComplete() > Mothership.BURNING_TOWER / 100) {
+            updateTowerShieldProgressBar();
+            updateTowerFuelProgressBar();
+        }
+
+        if (mothershipFuelProgressBar.getPercentComplete() > 0.25 && mothershipShieldProgressBar.getPercentComplete() > Mothership.BURNING_MOTHERSHIP / 100 && towerFuelProgressBar.getPercentComplete() > 0.25 && towerShieldProgressBar.getPercentComplete() > Mothership.BURNING_TOWER / 100) {
             timer.stop();
-            updateShieldProgressBar();
-            updateFuelProgressBar();
         }
     }
 }
