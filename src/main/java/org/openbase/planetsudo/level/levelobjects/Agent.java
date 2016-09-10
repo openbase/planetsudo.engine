@@ -191,7 +191,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
     @Override
     public synchronized void deployMine() {
         actionPoints.getActionPoint(50);
-        if (useFuel(5) == 5 || hasMine) {
+        if (useFuel(5) == 5 && hasMine) {
             Resource newMine = new Resource(level.generateNewResourceID(), level, this);
             level.addResource(newMine);
             hasMine = false;

@@ -174,30 +174,32 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Punkte"));
         jPanel1.setOpaque(false);
 
-        saveAgentsPointsNameLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        saveAgentsPointsNameLabel.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         saveAgentsPointsNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         saveAgentsPointsNameLabel.setText("Agenten Gesichert:");
 
-        mothershipShieldPointsNameLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        mothershipShieldPointsNameLabel.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         mothershipShieldPointsNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         mothershipShieldPointsNameLabel.setText("Verteidigung:");
 
-        mothershipShieldPointsLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        mothershipShieldPointsLabel.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         mothershipShieldPointsLabel.setText("-");
 
-        resourcePointsLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        resourcePointsLabel.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         resourcePointsLabel.setText("0");
 
-        resourcePointsNameLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        resourcePointsNameLabel.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         resourcePointsNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         resourcePointsNameLabel.setText("Resourcen:");
 
+        teamPointsNameLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         teamPointsNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         teamPointsNameLabel.setText("Gesamt Punktzahl:");
 
-        saveAgentsPointsLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        saveAgentsPointsLabel.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         saveAgentsPointsLabel.setText("-");
 
+        teamPointsLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         teamPointsLabel.setText("-");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -245,15 +247,18 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
         jPanel4.setBackground(new java.awt.Color(255, 128, 0));
         jPanel4.setOpaque(false);
 
+        teamAgentLabel2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         teamAgentLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         teamAgentLabel2.setText("Agenten:");
 
         teamAgentLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         teamAgentLabel.setText("0");
 
+        teamMemberALabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         teamMemberALabel.setText("Member Member");
         teamMemberALabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
+        teamMemberLabel2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         teamMemberLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         teamMemberLabel2.setText("Entwickler:");
 
@@ -270,6 +275,7 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
             .addGap(0, 133, Short.MAX_VALUE)
         );
 
+        teamMemberBLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         teamMemberBLabel.setText("Member Member");
         teamMemberBLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
@@ -443,10 +449,8 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
                 .addComponent(teamFinalStateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
-
-        teamTowerPanel.getAccessibleContext().setAccessibleName("Turm");
     }// </editor-fold>//GEN-END:initComponents
 
     public void setTeam(Team team) {
