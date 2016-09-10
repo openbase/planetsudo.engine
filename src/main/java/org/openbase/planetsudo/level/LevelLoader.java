@@ -69,7 +69,10 @@ public class LevelLoader {
 		"Entropie",
                 "Offensive",
                 "OffensiveBackdoor",
-                "Hjab"
+                "ChemStation",
+                "HeliLandeplatz",
+                "DasBoot",
+                "Broken"
 	};
 
 	public LevelLoader() {

@@ -38,11 +38,11 @@ import org.openbase.planetsudo.level.levelobjects.Resource.ResourceType;
 
 /**
  *
- * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a>
+ * @author Grimmy
  */
-public class Hjab extends AbstractLevel {
+public class ChemStation extends AbstractLevel {
 
-	public Hjab() {
+	public ChemStation() {
 	}
 
 	@Override
@@ -69,13 +69,16 @@ public class Hjab extends AbstractLevel {
 
 	@Override
 	protected ResourcePlacement[] loadResourcePlacement() {
-		ResourcePlacement[] resourcePlacement = new ResourcePlacement[6];
-		resourcePlacement[0] = new ResourceRandomRectangle(0, 0, 0, 0, 0, ResourceType.Normal);
-                resourcePlacement[1] = new ResourceRandomRectangle(0, 0, 0, 0, 0, ResourceType.Normal);
-		resourcePlacement[2] = new ResourceRandomRectangle(0, 0, 0, 0, 0, ResourceType.DoublePoints);
-                resourcePlacement[3] = new ResourceRandomRectangle(0, 0, 0, 0, 0, ResourceType.DoublePoints);
-		resourcePlacement[4] = new ResourceRandomRectangle(0, 0, 0, 0, 0, ResourceType.ExtremPoint);
-		resourcePlacement[5] = new ResourceRandomRectangle(0, 0, 0, 0, 0, ResourceType.ExtraMothershipFuel);
+		ResourcePlacement[] resourcePlacement = new ResourcePlacement[9];
+		resourcePlacement[0] = new ResourceRandomRectangle(400, 400, 600, 2000, 25, ResourceType.Normal);
+                resourcePlacement[1] = new ResourceRandomRectangle(1800, 400, 600, 2000, 25, ResourceType.Normal);
+		resourcePlacement[2] = new ResourceRandomRectangle(100, 1200, 900, 400, 15, ResourceType.DoublePoints);
+                resourcePlacement[3] = new ResourceRandomRectangle(1800, 1200, 900, 400, 15, ResourceType.DoublePoints);
+		resourcePlacement[4] = new ResourceRandomRectangle(1000, 1300, 200, 200, 5, ResourceType.ExtremPoint);
+                resourcePlacement[5] = new ResourceRandomRectangle(1600, 1300, 200, 200, 5, ResourceType.ExtremPoint);
+		resourcePlacement[6] = new ResourceRandomRectangle(400, 400, 600, 2000, 30, ResourceType.ExtraMothershipFuel);
+                resourcePlacement[7] = new ResourceRandomRectangle(1800, 400, 600, 2000, 30, ResourceType.ExtraMothershipFuel);
+                resourcePlacement[8] = new ResourceRandomRectangle(100, 1200, 2600, 400, 70, ResourceType.ExtraAgentFuel);
 		return resourcePlacement;
 	}
 
