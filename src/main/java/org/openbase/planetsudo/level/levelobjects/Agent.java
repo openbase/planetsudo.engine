@@ -321,9 +321,9 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
     @Override
     public void go() {
         if (isCarringResource()) {
-            actionPoints.getActionPoint(8);
+            actionPoints.getActionPoint(6);
         } else {
-            actionPoints.getActionPoint(4);
+            actionPoints.getActionPoint(3);
         }
 
         if (!useFuel()) {
