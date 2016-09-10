@@ -51,13 +51,15 @@ import org.slf4j.LoggerFactory;
  */
 public class Mothership extends AbstractLevelObject implements ActionListener, MothershipInterface {
 
-	public final static String FUEL_STATE_CHANGE = "FuelStateChange";
-	public final static String SHIELD_STATE_CHANGE = "ShieldStateChange";
+	public final static String MOTHERSHIP_FUEL_STATE_CHANGE = "FuelStateChange";
+	public final static String MOTHERSHIP_SHIELD_STATE_CHANGE = "ShieldStateChange";
 	public final static int MOTHERSHIP_FUEL_VOLUME = 15000;
+	public final static int TOWER_FUEL_VOLUME = 2000;
 	public final static int AGENT_FUEL_VOLUME = 12000;
 	public final static int COMMANDER_BONUS_FUEL_VOLUME = 1000;
 	public final static int MAX_AGENT_COUNT = 10; // range 0-9999
 	public final static int BURNING_MOTHERSHIP = 20;
+	public final static int BURNING_TOWER = 20;
     
     private final Logger logger = LoggerFactory.getLogger(getClass());
     
@@ -70,6 +72,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener, M
 	private final Timer timer;
 	private final Map<Integer, Agent> agents;
 	private final List<Agent> supportChannel;
+    private final Tower tower;
 	private final TeamMarker teamMarker;
 	private int mineCounter;
 
@@ -83,6 +86,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener, M
 		this.teamMarker = new TeamMarker(team, level);
 		this.timer = new Timer(50, this);
 		this.mineCounter = 0;
+        this.tower = new Tower(id, level, this);
 	}
 
 	@ Override
@@ -153,7 +157,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener, M
 				} else {
 					this.fuel -= fuel;
 				}
-				changes.firePropertyChange(FUEL_STATE_CHANGE, oldFuel, this.fuel);
+				changes.firePropertyChange(MOTHERSHIP_FUEL_STATE_CHANGE, oldFuel, this.fuel);
 			} catch (Exception e) {
 				logger.error("Could not order fuel!", e);
 			}
@@ -177,7 +181,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener, M
 		} else {
 			fuel += value;
 		}
-		changes.firePropertyChange(FUEL_STATE_CHANGE, null, this.fuel);
+		changes.firePropertyChange(MOTHERSHIP_FUEL_STATE_CHANGE, null, this.fuel);
 	}
 	public static final Object TILL_END_WAITER = new Object();
 
@@ -294,7 +298,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener, M
 					GameSound.MothershipExplosion.play();
 				}
 			}
-			changes.firePropertyChange(SHIELD_STATE_CHANGE, null, shield);
+			changes.firePropertyChange(MOTHERSHIP_SHIELD_STATE_CHANGE, null, shield);
 		}
 	}
 
@@ -304,7 +308,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener, M
 			if (shield > BURNING_MOTHERSHIP && timer.isRunning()) {
 				timer.stop();
 			}
-			changes.firePropertyChange(SHIELD_STATE_CHANGE, null, shield);
+			changes.firePropertyChange(MOTHERSHIP_SHIELD_STATE_CHANGE, null, shield);
 		}
 	}
 
@@ -328,8 +332,8 @@ public class Mothership extends AbstractLevelObject implements ActionListener, M
 		return shield < 100;
 	}
     
-    public Tower getTower() throws NotAvailableException {
-        return level.getTower(this);
+    public Tower getTower() {
+        return tower;
     }
 
 	@Override

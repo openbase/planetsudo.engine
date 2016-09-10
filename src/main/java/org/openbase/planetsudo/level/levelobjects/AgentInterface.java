@@ -484,8 +484,8 @@ public interface AgentInterface {
     boolean isMemberOfSwatTeam(final Collection<SwatTeam> swatTeams);
 
     /**
-     * Errichtet den Turm an der Position des Commanders.
-     * Diese Action kann durch von dem Commander durchgeführt werden!
+     * Errichtet den Turm an der Position des Kommanders.
+     * Diese Aktion kann nur durch den Kommander durchgeführt werden!
      *
      * Es gibt hierbei zwei Arten von Türmen:
      * - Einen Verteidigungsturm (DefenceTower) der feindliche Agenten für alle Agenten des Teams sichtbar macht und diese angreift.
@@ -493,12 +493,21 @@ public interface AgentInterface {
      *
      * @param type Hierrüber kannst du den Turmtypen auwählen welcher errichtet werden soll.
      */
-    void deployTower(final Tower.TowerType type);
+    @Deprecated
+    void erectTower(final Tower.TowerType type);
+    
+    /**
+     * Baut einen Turm wieder ab der zuvor aufgestellt wurde..
+     * Diese Aktion kann auch wieder nur vom Kommander durchgeführt werden und zwar nur dann wenn er in unmittelbarer Nähe des Turms ist.
+     */
+    @Deprecated
+    void dismantleTower();
     
     /**
      * Überprüft ob dieser Agent einen Turm aufbauen könnte.
-     * Bedenke das nur Kommander einen Turm tragen!
+     * Bedenke das nur Kommander einen Turm trägt!
      * @return 
      */
+    @Deprecated
     boolean hasTower();
 }

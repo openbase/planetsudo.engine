@@ -372,7 +372,7 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
                 .addContainerGap())
         );
 
-        teamTowerPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Mutterschiff"));
+        teamTowerPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Turm"));
         teamTowerPanel.setOpaque(false);
 
         towerFuelProgressBar.setString("Treibstoff");
@@ -612,10 +612,10 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals(Mothership.FUEL_STATE_CHANGE)) {
+        if (evt.getPropertyName().equals(Mothership.MOTHERSHIP_FUEL_STATE_CHANGE)) {
             mothershipFuelProgressBar.setValue((Integer) evt.getNewValue());
             updateFuelProgressBar();
-        } else if (evt.getPropertyName().equals(Mothership.SHIELD_STATE_CHANGE)) {
+        } else if (evt.getPropertyName().equals(Mothership.MOTHERSHIP_SHIELD_STATE_CHANGE)) {
             mothershipShieldProgressBar.setValue((Integer) evt.getNewValue());
             updateShieldProgressBar();
         } else if (evt.getPropertyName().equals(Team.POINT_STATE_CHANGE)) {

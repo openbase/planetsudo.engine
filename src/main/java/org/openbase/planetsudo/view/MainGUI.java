@@ -79,7 +79,7 @@ private static final Logger LOGGER = LoggerFactory.getLogger(MainGUI.class);
 		instance = this;
 		this.screenDim = new Dimension(X_DIM, Y_DIM);
 		this.guiController = guiController;
-		this.setIconImage(new ImageIcon("res/img/PlanetSudoLogoIcon.png").getImage());
+		this.setIconImage(new ImageIcon("img/PlanetSudoLogoIcon.png").getImage());
 	}
 
 	public static MainGUI instance;
@@ -179,7 +179,7 @@ private static final Logger LOGGER = LoggerFactory.getLogger(MainGUI.class);
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent changeEvent) {
-		LOGGER.debug("PropertyChange input: "+changeEvent.getPropertyName());
+		LOGGER.info("PropertyChange input: "+changeEvent.getPropertyName());
 		try {
 			if(changeEvent.getPropertyName().equals(GUIController.GAME_STATE_CHANGE)) {
 				updateButtons((GameState) changeEvent.getNewValue());

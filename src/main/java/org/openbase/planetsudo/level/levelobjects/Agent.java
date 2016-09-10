@@ -200,23 +200,6 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
         }
     }
 
-    @Override
-    public synchronized void deployTower(final Tower.TowerType type) {
-        try {
-            actionPoints.getActionPoint(1000);
-            useFuel(50);
-            if (!isCommander()) {
-                LOGGER.warn("Only the commander is able to deploy a tower, deployment failed!");
-                return;
-            }
-            mothership.getLevel().placeTower(new Tower(level.generateNewResourceID(), type, level, this));
-            hasTower = false;
-        } catch (CouldNotPerformException ex) {
-            kill();
-            ExceptionPrinter.printHistory(new CouldNotPerformException("Could not deploy Tower!", ex), LOGGER);
-        }
-    }
-
     private int calcSpeed() {
         return isCarringResource() ? DEFAULT_AGENT_SPEED / 2 : DEFAULT_AGENT_SPEED;
     }
@@ -708,14 +691,10 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
     public boolean seeMarker() {
         return mothership.getTeamMarker().seeMarker(this);
     }
-    
+
     @Override
     public boolean seeTower() {
-        try {
-            return mothership.getTower().seeTower(this);
-        } catch (NotAvailableException ex) {
-            return false;
-        }
+        return mothership.getTower().seeTower(this);
     }
 
     @Override
@@ -777,5 +756,39 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
     protected void setGameOverSoon() {
         this.gameOverSoon = true;
         LOGGER.info("Game over soon!");
+    }
+
+    @Override
+    public void erectTower(final Tower.TowerType type) {
+        try {
+            actionPoints.getActionPoint(1500);
+            useFuel(50);
+            if (!isCommander()) {
+                LOGGER.warn("Only the commander is able to erect a tower, deployment failed!");
+                return;
+            }
+            mothership.getTower().erect(type, this);
+            hasTower = false;
+        } catch (CouldNotPerformException ex) {
+            kill();
+            ExceptionPrinter.printHistory(new CouldNotPerformException("Could not erect Tower!", ex), LOGGER);
+        }
+    }
+
+    @Override
+    public void dismantleTower() {
+        try {
+            actionPoints.getActionPoint(500);
+            useFuel(50);
+            if (!isCommander()) {
+                LOGGER.warn("Only the commander is able to dismantle a tower, deployment failed!");
+                return;
+            }
+            mothership.getTower().dismantle(this);
+            hasTower = false;
+        } catch (CouldNotPerformException ex) {
+            kill();
+            ExceptionPrinter.printHistory(new CouldNotPerformException("Could not dismantle Tower!", ex), LOGGER);
+        }
     }
 }
