@@ -167,10 +167,23 @@ public class Mothership extends AbstractLevelObject implements ActionListener, M
 		return fuel;
 	}
 
+    @Override
 	public int getFuel() {
 		return fuel;
 	}
+    
+    @Override
+    public int getFuelVolume() {
+        return TOWER_FUEL_VOLUME;
+    }
+    
+    @Override
+    public int getFuelInPercent() {
+        return (fuel * 100) / TOWER_FUEL_VOLUME;
+    }
 
+
+    @Override
 	public boolean hasFuel() {
 		return fuel > 0;
 	}

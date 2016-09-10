@@ -1,5 +1,7 @@
 package org.openbase.planetsudo.level.levelobjects;
 
+import static org.openbase.planetsudo.level.levelobjects.Mothership.TOWER_FUEL_VOLUME;
+
 /*-
  * #%L
  * PlanetSudo GameEngine
@@ -51,6 +53,24 @@ public interface MothershipInterface {
 	 */
 	boolean hasFuel();
 
+    /**
+     * Gibt an wie viel Treibstoff das Mutterschiff noch besitzt.
+     * @return 
+     */
+    public int getFuel();
+    
+    /**
+     * Gibt an wie viel Treibstoff das Mutterschiff maximal besitzen kann.
+     * @return 
+     */
+    public int getFuelVolume();
+    
+    /**
+     * Gibt prozentual an wie viel Treibstoff das Mutterschiff aktuell besitzt.
+     * @return 
+     */
+    public int getFuelInPercent();
+    
 	/**
 	 * Gibt zur&uuml;ck, ob das Mutterschiff brennt und somit Treibstoff verliert.
 	 * @return true oder false.
