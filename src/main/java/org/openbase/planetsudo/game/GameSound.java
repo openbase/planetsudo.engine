@@ -28,7 +28,7 @@ package org.openbase.planetsudo.game;
 
 import org.slf4j.Logger;
 import java.io.File;
-import org.openbase.jul.audio.AudioData;
+import org.openbase.jul.audio.AudioDataImpl;
 import org.openbase.jul.audio.AudioPlayer;
 import org.openbase.jul.exception.CouldNotPerformException;
 import org.openbase.jul.exception.printer.ExceptionPrinter;
@@ -65,15 +65,15 @@ public enum GameSound {
 	AgentDisabled("sound/agent_empty_fuel.wav");
     
 
-	private final AudioData audioData;
+	private final AudioDataImpl audioData;
 	private final boolean disabled;
 
 	private static final AudioPlayer AUDIO_SERVER = new AudioPlayer(20);
 
 	private GameSound(final String uri) {
-		AudioData tmpData = null;
+		AudioDataImpl tmpData = null;
 		try {
-			tmpData = new AudioData(new File(ClassLoader.getSystemResource(uri).getFile()));
+			tmpData = new AudioDataImpl(new File(ClassLoader.getSystemResource(uri).getFile()));
 		} catch (Exception ex) {
 			ExceptionPrinter.printHistory(new CouldNotPerformException("Could not load Soundfile["+uri+"] of "+name() ,ex), System.err);
 		}
