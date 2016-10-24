@@ -33,8 +33,8 @@ import org.openbase.planetsudo.level.AbstractLevel;
 import org.openbase.planetsudo.level.levelobjects.AgentInterface;
 import org.openbase.planetsudo.level.levelobjects.MothershipInterface;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import org.openbase.planetsudo.control.ManualContoller;
 import org.openbase.planetsudo.game.SwatTeam;
 import org.openbase.planetsudo.level.levelobjects.Mothership;
 import org.slf4j.LoggerFactory;
@@ -127,6 +127,9 @@ public abstract class AbstractStrategy implements Runnable {
     }
 
     protected void executeRule() {
+        if(agent.isCommander() && ManualContoller.manual) {
+            return;
+        }
         for (final Rule rule : rules.values()) {
             if (rule.constraint() && agent.isMemberOfSwatTeam(rule.getSwatTeams())) {
                 logger.debug("Select " + rule);

@@ -38,6 +38,7 @@ import org.openbase.planetsudo.level.levelobjects.Resource;
 import org.openbase.planetsudo.main.GUIController;
 import java.util.ArrayList;
 import org.openbase.jul.schedule.SyncObject;
+import org.openbase.planetsudo.control.ManualContoller;
 import org.openbase.planetsudo.geometry.Base2D;
 import org.openbase.planetsudo.geometry.Point2D;
 import org.slf4j.LoggerFactory;
@@ -125,6 +126,8 @@ public abstract class AbstractLevel extends AbstractGameObject implements Runnab
             logger.warn("Could not start Level!", ex);
             return;
         }
+        
+        ManualContoller.init(motherships[0].getCommander(), motherships[1].getCommander());
 
         while (!isGameOver()) {
             if (!gameManager.isPause()) {

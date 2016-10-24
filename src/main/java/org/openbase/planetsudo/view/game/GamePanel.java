@@ -22,6 +22,7 @@ package org.openbase.planetsudo.view.game;
  * #L%
  */
 
+import org.openbase.planetsudo.control.ManualContoller;
 import org.openbase.planetsudo.game.GameManager;
 import org.openbase.planetsudo.view.level.LevelDisplayPanel.VideoThreadCommand;
 import org.openbase.planetsudo.view.menu.LevelMenuPanel;

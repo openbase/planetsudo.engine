@@ -82,10 +82,10 @@ public class DivineStrategy extends AbstractStrategy {
             }
         });
         //-------------------------------------------->
-        createRule(new Rule("See Resources") {
+        createRule(new Rule("See Resources", ALL, NOT_COMMANDER) {
             @Override
             protected boolean constraint() {
-                return !agent.isCommander() && agent.seeResource();
+                return agent.seeResource();
             }
 
             @Override
@@ -534,6 +534,18 @@ public class DivineStrategy extends AbstractStrategy {
 			protected void action() {
 				agent.cancelSupport();
 
+			}
+		});
+		//-------------------------------------------->
+		createRule(new Rule("Collect APs") {
+			@ Override
+			protected boolean constraint() {
+				return agent.getActionPoints() < 1000;
+			}
+
+			@ Override
+			protected void action() {
+                // to nothing
 			}
 		});
 		//-------------------------------------------->

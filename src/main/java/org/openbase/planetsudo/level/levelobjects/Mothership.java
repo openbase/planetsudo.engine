@@ -140,8 +140,17 @@ public class Mothership extends AbstractLevelObject implements ActionListener, M
 			agentKeyArray = new Integer[agents.size()];
 			agentKeyArray = agents.keySet().toArray(agentKeyArray);
 		}
-	}
+	}   
 
+    public Agent getCommander() {
+        for(Agent agent : getAgents()) {
+            if(agent.isCommander()) {
+                return agent;
+            }
+        }
+        return null;
+    }
+    
 	public int orderFuel(int fuel, final Agent agent) {
 		if (agent == null || getBounds().contains(agent.getBounds())) {
 			try {
