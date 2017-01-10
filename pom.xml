@@ -117,10 +117,13 @@
                 <artifactId>license-maven-plugin</artifactId>
                 <version>1.10</version>
                 <configuration>
-                    <verbose>false</verbose>
+                    <verbose>true</verbose>
                     <licenseName>gpl_v3</licenseName>
                     <failOnMissingHeader>true</failOnMissingHeader>
                     <failOnNotUptodateHeader>true</failOnNotUptodateHeader>
+                    <canUpdateCopyright>true</canUpdateCopyright>
+                    <canUpdateDescription>true</canUpdateDescription>
+                    <canUpdateLicense>true</canUpdateLicense>
                     <roots>
                         <root>src/main/java</root>
                         <root>src/test</root>
