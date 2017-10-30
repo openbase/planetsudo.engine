@@ -158,8 +158,8 @@ public class Mothership extends AbstractLevelObject implements ActionListener, M
 					this.fuel -= fuel;
 				}
 				changes.firePropertyChange(MOTHERSHIP_FUEL_STATE_CHANGE, oldFuel, this.fuel);
-			} catch (Exception e) {
-				logger.error("Could not order fuel!", e);
+			} catch (Exception ex) {
+				logger.error("Could not order fuel!", ex);
 			}
 		} else {
 			return 0;
@@ -350,7 +350,7 @@ public class Mothership extends AbstractLevelObject implements ActionListener, M
     }
 
 	@Override
-	public void actionPerformed(final ActionEvent e) {
+	public void actionPerformed(final ActionEvent ex) {
 		if (!GameManager.getInstance().isPause()) {
 			orderFuel(Math.max(0, BURNING_MOTHERSHIP - shield), null);
 		}

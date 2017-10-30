@@ -62,16 +62,16 @@ public class ObjectFileController<O> {
 				fileOutputStream = new FileOutputStream(fileURI);
 				ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
 				objectOutputStream.writeObject(object);
-			} catch (IOException e) {
-				logger.error("Could not write " + object + " in " + fileURI, e);
+			} catch (IOException ex) {
+				logger.error("Could not write " + object + " in " + fileURI, ex);
 				return false;
 			} finally {
 				try {
 					if (fileOutputStream != null) {
 						fileOutputStream.close();
 					}
-				} catch (Exception e) {
-					logger.warn("Could not close stream to " + fileURI, e);
+				} catch (Exception ex) {
+					logger.warn("Could not close stream to " + fileURI, ex);
 					return false;
 				}
 			}
@@ -107,8 +107,8 @@ public class ObjectFileController<O> {
 					if (fileInputStream != null) {
 						fileInputStream.close();
 					}
-				} catch (Exception e) {
-					throw new IOException("Could not close fileStream " + fileURI + " :" + e.getMessage());
+				} catch (Exception ex) {
+					throw new IOException("Could not close fileStream " + fileURI + " :" + ex.getMessage());
 				}
 			}
 			return object;

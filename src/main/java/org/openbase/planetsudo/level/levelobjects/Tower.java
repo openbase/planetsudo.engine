@@ -172,8 +172,8 @@ public class Tower extends AbstractLevelObject implements ActionListener {
                     this.fuel -= fuel;
                 }
                 changes.firePropertyChange(TOWER_FUEL_STATE_CHANGE, oldFuel, this.fuel);
-            } catch (Exception e) {
-                logger.error("Could not order fuel!", e);
+            } catch (Exception ex) {
+                logger.error("Could not order fuel!", ex);
             }
         } else {
             return 0;
@@ -247,7 +247,7 @@ public class Tower extends AbstractLevelObject implements ActionListener {
     }
     
     @Override
-    public void actionPerformed(final ActionEvent e) {
+    public void actionPerformed(final ActionEvent ex) {
         if (!GameManager.getInstance().isPause()) {
             orderFuel(Math.max(0, Mothership.BURNING_TOWER - shield), null);
         }

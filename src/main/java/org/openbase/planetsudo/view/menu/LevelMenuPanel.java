@@ -132,7 +132,7 @@ public class LevelMenuPanel extends javax.swing.JPanel implements ActionListener
     // End of variables declaration//GEN-END:variables
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent ex) {
 		if(secunds >= 60) {
 			minutes++;
 			secunds = 0;

@@ -141,8 +141,8 @@ private static final Logger LOGGER = LoggerFactory.getLogger(MainGUI.class);
 				this.validate();
 				//fullscreenModeMenuItem.setText("Leave FullScreen Mode");
 			}
-			catch(Exception e) {
-				LOGGER.error("no Fullscreen.", e);
+			catch(Exception ex) {
+				LOGGER.error("no Fullscreen.", ex);
 				device.setFullScreenWindow(null);
 			}
 		} else {
@@ -161,8 +161,8 @@ private static final Logger LOGGER = LoggerFactory.getLogger(MainGUI.class);
 					device.setFullScreenWindow(null); // Setzen des FullScreenmodus.
 					//fullscreenModeMenuItem.setText("Enter FullScreen Mode");
 			}
-			catch(Exception e) {
-				LOGGER.error("no Fullscreen.", e);
+			catch(Exception ex) {
+				LOGGER.error("no Fullscreen.", ex);
 				device.setFullScreenWindow(null);
 			}
 		}
@@ -208,7 +208,7 @@ private static final Logger LOGGER = LoggerFactory.getLogger(MainGUI.class);
 				LOGGER.warn("Event ["+changeEvent.getPropertyName()+"] is an bad property change event!");
 			}
 		}
-		catch (Exception e) {
+		catch (Exception ex) {
 			LOGGER.debug("Exception from PropertyChange");
 		}
 	}

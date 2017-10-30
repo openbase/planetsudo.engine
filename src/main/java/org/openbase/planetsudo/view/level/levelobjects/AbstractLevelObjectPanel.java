@@ -54,7 +54,7 @@ public abstract class AbstractLevelObjectPanel<R extends AbstractLevelObject, PR
 		new Timer(200, new ActionListener() {
 
 			@Override
-			public void actionPerformed(final ActionEvent e) {
+			public void actionPerformed(final ActionEvent ex) {
 				animationFlag = !animationFlag;
 			}
 		}).start();

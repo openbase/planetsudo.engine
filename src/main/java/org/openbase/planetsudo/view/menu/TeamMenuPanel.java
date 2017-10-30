@@ -703,7 +703,7 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
     private boolean blinkMothership, blinkTower;
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent ex) {
         if (mothershipShieldProgressBar.getPercentComplete() < Mothership.BURNING_MOTHERSHIP / 100) {
             if (blinkMothership) {
                 mothershipShieldProgressBar.setForeground(Color.BLACK);
