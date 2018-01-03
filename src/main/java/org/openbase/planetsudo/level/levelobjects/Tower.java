@@ -4,7 +4,7 @@ package org.openbase.planetsudo.level.levelobjects;
  * #%L
  * PlanetSudo GameEngine
  * %%
- * Copyright (C) 2009 - 2017 openbase.org
+ * Copyright (C) 2009 - 2018 openbase.org
  * %%
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -27,7 +27,7 @@ import javax.swing.Timer;
 import org.openbase.jul.exception.CouldNotPerformException;
 import org.openbase.jul.exception.InvalidStateException;
 import org.openbase.jul.exception.printer.ExceptionPrinter;
-import org.openbase.jul.schedule.GlobalExecutionService;
+import org.openbase.jul.schedule.GlobalCachedExecutorService;
 import org.openbase.jul.visual.swing.engine.draw2d.AbstractResourcePanel;
 import org.openbase.planetsudo.game.GameManager;
 import org.openbase.planetsudo.game.GameSound;
@@ -77,7 +77,7 @@ public class Tower extends AbstractLevelObject implements ActionListener {
         this.timer = new Timer(50, this);
         this.reset();
         logger.info("Create " + this);
-        GlobalExecutionService.execute(new Runnable() {
+        GlobalCachedExecutorService.execute(new Runnable() {
             @Override
             public void run() {
                 try {
