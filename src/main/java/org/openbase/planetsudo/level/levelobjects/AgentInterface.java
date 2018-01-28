@@ -17,7 +17,6 @@
 package org.openbase.planetsudo.level.levelobjects;
 
 import java.util.Collection;
-import org.openbase.jul.exception.CouldNotPerformException;
 import org.openbase.planetsudo.game.SwatTeam;
 
 /*-
@@ -150,10 +149,10 @@ public interface AgentInterface {
     void go();
 
     /**
-     * Der Agent dreht sich um {
+     * Der Agent dreht sich um {@code beta}° nach links und bewegt sich anschließend geradeaus.
      * Aktionspunkte: 3 + 3 wenn resource geladen
      * Treibstoff: 1
-     * {@code beta}° nach links und bewegt sich anschließend geradeaus.
+     * 
      *
      * @param beta Drehwinkel
      */
