@@ -186,11 +186,11 @@ public class Resource extends AbstractLevelObject {
 
 				switch (type) {
 					case Normal:
-						return 1;
+						return 10;
 					case DoublePoints:
-						return 2;
+						return 20;
 					case ExtremPoint:
-						return 5;
+						return 50;
 					case ExtraAgentFuel:
 						agent.spendFuel(Mothership.AGENT_FUEL_VOLUME / 10);
 						return 0;
