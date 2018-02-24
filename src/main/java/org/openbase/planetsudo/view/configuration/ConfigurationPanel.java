@@ -20,19 +20,18 @@ package org.openbase.planetsudo.view.configuration;
  * it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
 import java.awt.Color;
-import java.io.IOException;
 import javax.swing.ImageIcon;
 import org.slf4j.Logger;
 import org.openbase.planetsudo.game.GameManager;
@@ -46,8 +45,13 @@ import static org.openbase.planetsudo.net.PlanetSudoClient.ConnectionState.SyncS
 import org.openbase.planetsudo.view.MainGUI;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.List;
+import java.util.Properties;
 import javax.swing.SwingWorker;
+import org.apache.commons.io.FileUtils;
 import org.openbase.jul.exception.CouldNotPerformException;
 import org.openbase.jul.exception.printer.ExceptionPrinter;
 import org.openbase.jul.visual.swing.image.ImageLoader;
@@ -59,7 +63,12 @@ import org.slf4j.LoggerFactory;
  */
 public class ConfigurationPanel extends javax.swing.JPanel {
 
+    public final static String PROPERTY_SELECTED_TEAM_A = "TEAM_A";
+    public final static String PROPERTY_SELECTED_TEAM_B = "TEAM_B";
+    public final static String PROPERTY_SELECTED_LEVEL = "org.openbase.planetsudo.level";
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
+    private final Properties stateProperties;
 
     /**
      * Creates new form ConfigurationPanel
@@ -104,14 +113,50 @@ public class ConfigurationPanel extends javax.swing.JPanel {
             }
         });
 
+        stateProperties = new Properties();
+
+        try {
+            final File propertiesFile = new File(FileUtils.getTempDirectory(), "planetsudo.properties");
+            if (propertiesFile.exists()) {
+                stateProperties.load(new FileInputStream(propertiesFile));
+                logger.info("Load GUI Properties from " + propertiesFile.getAbsolutePath());
+            }
+        } catch (Exception ex) {
+            ExceptionPrinter.printHistory("Could not load gui properties!", ex, logger);
+        }
+
         initDynamicComponents();
+
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                try {
+                    final File propertiesFile = new File(FileUtils.getTempDirectory(), "planetsudo.properties");
+                    logger.info("Store GUI Properties to " + propertiesFile.getAbsolutePath());
+                    if (!propertiesFile.exists()) {
+                        logger.info("Create: " + propertiesFile.createNewFile());
+                    }
+                    stateProperties.store(new FileOutputStream(propertiesFile), "PlanetSudo GUI Properties");
+                } catch (Exception ex) {
+                    ExceptionPrinter.printHistory("Could not store gui properties!", ex, logger);
+                }
+            }
+        });
     }
 
     private void initDynamicComponents() {
+        // load level
+        LevelChooserComboBox.setEnabled(false);
         LevelChooserComboBox.removeAllItems();
         for (String levelName : LevelLoader.getInstance().getLevelNameSet()) {
             LevelChooserComboBox.addItem(levelName);
         }
+        if (LevelChooserComboBox.getItemCount() >= 0) {
+            LevelChooserComboBox.setSelectedIndex(Integer.parseInt(stateProperties.getProperty(PROPERTY_SELECTED_LEVEL, "0")));
+        }
+        LevelChooserComboBox.setEnabled(true);
+
+        // load teams
         updateTeamList();
 
         // setup default team
@@ -129,19 +174,37 @@ public class ConfigurationPanel extends javax.swing.JPanel {
 
     public void updateTeamList() {
         try {
+            teamAComboBox.setEnabled(false);
+            teamBComboBox.setEnabled(false);
             teamAComboBox.removeAllItems();
             teamBComboBox.removeAllItems();
+
             if (defaultTeamComboBox.isEnabled()) {
                 defaultTeamComboBox.removeAllItems();
             }
+
             List<TeamData> teams = Team.loadAll();
             for (TeamData teamData : teams) {
                 teamAComboBox.addItem(teamData);
                 teamBComboBox.addItem(teamData);
+
                 if (defaultTeamComboBox.isEnabled()) {
                     defaultTeamComboBox.addItem(teamData);
                 }
             }
+
+            // restore selection
+            if (teamAComboBox.getItemCount() >= 0) {
+                teamAComboBox.setSelectedIndex(Integer.parseInt(stateProperties.getProperty(PROPERTY_SELECTED_TEAM_A, "0")));
+            }
+
+            if (teamBComboBox.getItemCount() >= 0) {
+                teamBComboBox.setSelectedIndex(Integer.parseInt(stateProperties.getProperty(PROPERTY_SELECTED_TEAM_B, "0")));
+            }
+
+            teamAComboBox.setEnabled(true);
+            teamBComboBox.setEnabled(true);
+
         } catch (CouldNotPerformException ex) {
             logger.warn("Could not load teams!", ex);
         }
@@ -479,15 +542,20 @@ public class ConfigurationPanel extends javax.swing.JPanel {
         new SwingWorker() {
             @Override
             protected Object doInBackground() throws Exception {
-                if (LevelChooserComboBox.getSelectedItem() != null) {
-                    try {
-                        final AbstractLevel level = LevelLoader.getInstance().loadLevel(LevelChooserComboBox.getSelectedItem().toString());
-                        GameManager.getInstance().setLevel(level);
-                        levelPreviewDisplayPanel.setLevel(level);
-                        levelPreviewDisplayPanel.setOpaque(true);
-                        levelPreviewDisplayPanel.setBackground(level.getColor());
-                    } catch (Exception ex) {
-                        logger.error("Could not update level preview!", ex);
+                synchronized (LevelChooserComboBox) {
+                    if (LevelChooserComboBox.getSelectedItem() != null) {
+                        try {
+                            if (LevelChooserComboBox.isEnabled()) {
+                                stateProperties.setProperty(PROPERTY_SELECTED_LEVEL, Integer.toString(LevelChooserComboBox.getSelectedIndex()));
+                            }
+                            final AbstractLevel level = LevelLoader.getInstance().loadLevel(LevelChooserComboBox.getSelectedItem().toString());
+                            GameManager.getInstance().setLevel(level);
+                            levelPreviewDisplayPanel.setLevel(level);
+                            levelPreviewDisplayPanel.setOpaque(true);
+                            levelPreviewDisplayPanel.setBackground(level.getColor());
+                        } catch (Exception ex) {
+                            logger.error("Could not update level preview!", ex);
+                        }
                     }
                 }
                 return null;
@@ -502,10 +570,16 @@ public class ConfigurationPanel extends javax.swing.JPanel {
 
 	private void teamAComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_teamAComboBoxActionPerformed
         GameManager.getInstance().addTeam((TeamData) teamAComboBox.getSelectedItem(), GameManager.TeamType.A);
+        if(teamAComboBox.isEnabled()) {
+            stateProperties.setProperty(PROPERTY_SELECTED_TEAM_A, Integer.toString(teamAComboBox.getSelectedIndex()));
+        }
 	}//GEN-LAST:event_teamAComboBoxActionPerformed
 
 	private void teamBComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_teamBComboBoxActionPerformed
         GameManager.getInstance().addTeam((TeamData) teamBComboBox.getSelectedItem(), GameManager.TeamType.B);
+        if(teamBComboBox.isEnabled()) {
+            stateProperties.setProperty(PROPERTY_SELECTED_TEAM_B, Integer.toString(teamBComboBox.getSelectedIndex()));
+        }
 	}//GEN-LAST:event_teamBComboBoxActionPerformed
 
 	private void defaultTeamComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_defaultTeamComboBoxActionPerformed
