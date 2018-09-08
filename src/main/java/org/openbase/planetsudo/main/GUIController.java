@@ -58,7 +58,7 @@ public class GUIController {
 
 	public synchronized void startGUI() {
 		if(started) {
-			logger.warn("Gui allready started! Ignore...");
+			logger.warn("Gui already started! Ignore...");
 			return;
 		}
 		new MainGUI(this).initialize();
