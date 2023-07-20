@@ -194,11 +194,11 @@ public class ConfigurationPanel extends javax.swing.JPanel {
             }
 
             // restore selection
-            if (teamAComboBox.getItemCount() >= 0) {
+            if (teamAComboBox.getItemCount() > 0) {
                 teamAComboBox.setSelectedIndex(Integer.parseInt(stateProperties.getProperty(PROPERTY_SELECTED_TEAM_A, "0")));
             }
 
-            if (teamBComboBox.getItemCount() >= 0) {
+            if (teamBComboBox.getItemCount() > 0) {
                 teamBComboBox.setSelectedIndex(Integer.parseInt(stateProperties.getProperty(PROPERTY_SELECTED_TEAM_B, "0")));
             }
 

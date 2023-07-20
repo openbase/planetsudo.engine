@@ -40,6 +40,8 @@ import org.openbase.planetsudo.jp.JPStrategySourceDirectory;
 import org.openbase.planetsudo.jp.JPTeamPath;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+
 
 /**
  *
@@ -62,7 +64,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		JPService.setApplicationName("PlanetSudo");
-		JPService.registerProperty(JPPrefix.class);
+		JPService.registerProperty(JPPrefix.class, new File("."));
 		JPService.registerProperty(JPTeamPath.class);
 		JPService.registerProperty(JPStrategyPath.class);
 		JPService.registerProperty(JPDebugMode.class);
