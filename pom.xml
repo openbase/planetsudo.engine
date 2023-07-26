@@ -4,7 +4,7 @@
 
     <groupId>org.openbase</groupId>
     <artifactId>planetsudo</artifactId>
-    <version>3.0.3-SNAPSHOT</version>
+    <version>3.0.3</version>
     
     <name>PlanetSudo GameEngine</name>
     <inceptionYear>2009</inceptionYear>
@@ -46,7 +46,7 @@
         <connection>scm:git:https://github.com/openbase/planetsudo.git</connection>
         <developerConnection>scm:git:https://github.com/openbase/planetsudo.git</developerConnection>
         <url>https://github.com/openbase/planetsudo.git</url>
-      <tag>HEAD</tag>
+      <tag>v3.0.3</tag>
   </scm>
 
     <build>
