@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.openbase.jul.exception.InvalidStateException;
 import org.openbase.jul.visual.swing.engine.draw2d.AbstractResourcePanel;
+import org.openbase.planetsudo.game.GameSound;
 import org.slf4j.Logger;
 import org.openbase.planetsudo.game.Team;
 import org.openbase.planetsudo.geometry.Point2D;
@@ -179,23 +180,28 @@ public class Resource extends AbstractLevelObject {
 				throw new InvalidStateException("Resource not owned by user!");
 			}
 			if (!used) {
+				level.removeResource(this);
 				used = true;
 				position = new Point2D(position);
-				level.removeResource(this);
 				changes.firePropertyChange(KILL_EVENT, null, null);
 
 				switch (type) {
 					case Normal:
+						GameSound.EarnNormalResource.play();
 						return 10;
 					case DoublePoints:
+						GameSound.EarnDoubleResource.play();
 						return 20;
 					case ExtremPoint:
+						GameSound.EarnExtremResource.play();
 						return 50;
 					case ExtraAgentFuel:
 						agent.spendFuel(Mothership.AGENT_FUEL_VOLUME / 10);
+						GameSound.EarnAgentFuel.play();
 						return 0;
 					case ExtraMothershipFuel:
 						agent.getMothership().spendFuel(Mothership.MOTHERSHIP_FUEL_VOLUME / 5);
+						GameSound.EarnMothershipFuel.play();
 						return 0;
 					case Mine:
 						agent.kill();

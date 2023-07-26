@@ -70,15 +70,27 @@ public class DivineStrategy extends AbstractStrategy {
             }
         });
         //-------------------------------------------->
-        createRule(new Rule("Discover") {
+        createRule(new Rule("Discover", COMMANDER) {
             @Override
             protected boolean constraint() {
-                return agent.isCommander();
+                return true;
             }
 
             @Override
             protected void action() {
                 agent.goRight(4);
+            }
+        });
+        //-------------------------------------------->
+        createRule(new Rule("Avoid Agents", COMMANDER) {
+            @Override
+            protected boolean constraint() {
+                return agent.seeTeamAgent();
+            }
+
+            @Override
+            protected void action() {
+                agent.turnRandom();
             }
         });
         //-------------------------------------------->
@@ -183,7 +195,7 @@ public class DivineStrategy extends AbstractStrategy {
             }
         });
         //-------------------------------------------->
-        createRule(new Rule("PickUp 5P and Place", COMMANDER) {
+        createRule(new Rule("Discover 5P and Place Marker", COMMANDER) {
             @Override
             protected boolean constraint() {
                 return agent.isTouchingResource(ResourceType.ExtremPoint) && !agent.seeMarker();
@@ -192,11 +204,10 @@ public class DivineStrategy extends AbstractStrategy {
             @Override
             protected void action() {
                 agent.deployMarker();
-
             }
         });
         //-------------------------------------------->
-        createRule(new Rule("Follow Wall", COMMANDER) {
+        createRule(new Rule("Place Tower", COMMANDER) {
             @Override
             protected boolean constraint() {
                 return agent.isTouchingResource(ResourceType.ExtremPoint) && agent.hasTower();
@@ -452,10 +463,22 @@ public class DivineStrategy extends AbstractStrategy {
             }
         });
         //-------------------------------------------->
+        createRule(new Rule("CallForHelpDuringFight") {
+            @Override
+            protected boolean constraint() {
+                return !agent.isSupportOrdered() && agent.isUnderAttack();
+            }
+
+            @Override
+            protected void action() {
+                agent.orderSupport();
+            }
+        });
+        //-------------------------------------------->
         createRule(new Rule("CallForHelp") {
             @Override
             protected boolean constraint() {
-                return (!agent.isSupportOrdered()) && ((agent.getFuel() < 5) || agent.isUnderAttack());
+                return !agent.isSupportOrdered() && !agent.isAtMothership() && agent.getFuel() < 5;
             }
 
             @Override
