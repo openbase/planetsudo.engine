@@ -126,6 +126,7 @@ public class LevelDisplayPanel extends ResourceDisplayPanel<LevelPanel> implemen
 				Thread.sleep(50);
 			} catch (InterruptedException ex) {
 				logger.warn("VideoThread interruped!", ex);
+				break;
 			}
 		}
 		isRunning = false;

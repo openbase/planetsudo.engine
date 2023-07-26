@@ -26,49 +26,53 @@ package org.openbase.planetsudo.game;
  * #L%
  */
 
-import org.slf4j.Logger;
 import java.io.File;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.TreeMap;
+
 import org.openbase.jul.audio.AudioDataImpl;
 import org.openbase.jul.audio.AudioPlayer;
 import org.openbase.jul.exception.CouldNotPerformException;
 import org.openbase.jul.exception.printer.ExceptionPrinter;
-import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Divine Threepwood
  */
 public enum GameSound {
-
-	/*
-	 * - Agent explodier
-	 * - Muttaschiff explodiert
-	 * - Laser
-	 * - Mine Legen
-	 * - Marker setzen
-	 * - Hilferuf
-	 * - (tanken)
-	 * - Unterstützen
-	 * Resource abliefern	 */
 	DeployMine("sound/bombpl.wav"),
 	DeployMarker("sound/set_marker.wav"),
-	RechargeFuel("sound/recharge_fuel.wav"),
-	CallForSupport("sound/1_need_backup.wav"),
+	RechargeFuel("sound/the-notification-email-143029.wav"),
+	CallForSupport("sound/need_backup.wav"),
 	SpendFuel("sound/spend_fuel.wav"),
 	AgentExplosion("sound/c4_explode1.wav"),
-	MothershipExplosion("sound/explosion_mothership.wav"),
-	MothershipUnderAttack("sound/attack_mothership.wav"),
-	DeliverResource("sound/deliver_resource.wav"),
+	MothershipExplosion("sound/nuclear-explosion-63470.wav"),
+	MothershipUnderAttack("sound/sirene.wav"),
+	EarnNormalResource("sound/button-124476.wav"),
+	EarnDoubleResource("sound/deliver_resource.wav"),
+	EarnExtremResource("sound/interface-124464.wav"),
+	EarnAgentFuel("sound/cartoon-jump-6462.wav.wav"),
+	EarnMothershipFuel("sound/sci-fi-charge-up-37395.wav"),
+	ErectTower("sound/sci-fi-charge-up-37395.wav"),
 	Laser("sound/lasershot.wav"),
+
 	End("sound/end.wav"),
 	EndSoon("sound/end_soon.wav"),
 	AgentDisabled("sound/agent_empty_fuel.wav");
-    
 
 	private final AudioDataImpl audioData;
 	private final boolean disabled;
 
 	private static final AudioPlayer AUDIO_SERVER = new AudioPlayer(20);
+
+	public static final TreeMap<GameSound, Instant> soundHistory = new TreeMap<>();
+
+	static {
+		for (GameSound value : GameSound.values()) {
+			soundHistory.put(value, Instant.MIN);
+		}
+	}
 
 	private GameSound(final String uri) {
 		AudioDataImpl tmpData = null;
@@ -79,14 +83,22 @@ public enum GameSound {
 		}
 		this.audioData = tmpData;
 		this.disabled = (audioData == null);
+
 	}
 
-
-
-	public void play() {
+	public synchronized void play() {
 		if(disabled) {
 			return;
 		}
+
+		Instant now = Instant.now();
+
+		// low pass filter
+		if(Duration.between(soundHistory.get(this), now).minus(Duration.ofMillis(250)).isNegative()) {
+			return;
+		}
+
 		AUDIO_SERVER.playAudio(audioData);
+		soundHistory.put(this, Instant.now());
 	}
 }

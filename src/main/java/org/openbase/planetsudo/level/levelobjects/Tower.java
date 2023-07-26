@@ -77,21 +77,20 @@ public class Tower extends AbstractLevelObject implements ActionListener {
         this.timer = new Timer(50, this);
         this.reset();
         logger.info("Create " + this);
-        GlobalCachedExecutorService.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    while(!Thread.interrupted()) {
-                        if (!erected) {
-                            Thread.sleep(1000);
-                            continue;
-                        }
-                        direction.setAngle(direction.getAngle() + 10);
-                        Thread.sleep(100);
+        GlobalCachedExecutorService.execute(() -> {
+            try {
+                while(!Thread.interrupted()) {
+                    if (!erected) {
+                        Thread.sleep(1000);
+                        continue;
                     }
-                } catch (Exception ex) {
-                    ExceptionPrinter.printHistory(new InvalidStateException("TowerRotationThread crashed.", ex), logger);
+                    direction.setAngle(direction.getAngle() + 10);
+                    Thread.sleep(100);
                 }
+            } catch (InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            } catch (Exception ex) {
+                ExceptionPrinter.printHistory(new InvalidStateException("TowerRotationThread crashed.", ex), logger);
             }
         });
     }

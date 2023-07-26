@@ -22,6 +22,7 @@ package org.openbase.planetsudo.level;
  * #L%
  */
 import org.openbase.planetsudo.game.AbstractGameObject;
+import org.openbase.planetsudo.game.strategy.AbstractStrategy;
 import org.slf4j.Logger;
 import java.awt.Color;
 import java.awt.Polygon;
@@ -48,9 +49,10 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class AbstractLevel extends AbstractGameObject implements Runnable {
 
-    public final static long DEFAULT_AP_SPEED = 12 / Mothership.MAX_AGENT_COUNT; // Optimised Game Speed
+    public final static long AP_PER_ROUND = (long)(AbstractStrategy.DEFAULT_GAME_CYCLE * 0.8);
+
     public final static String CREATE_RESOURCE = "create resource";
-    public final static String GAME_SPEED_CHANGED = "SpeedChanged";
+    public final static String GAME_SPEED_FACTOR_CHANGED = "SpeedChanged";
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -67,8 +69,7 @@ public abstract class AbstractLevel extends AbstractGameObject implements Runnab
     private final String name;
     private final Mothership[] motherships;
     private final List<Resource> resources;
-    private final long apSpeed;
-    private int gameSpeed;
+    private double gameSpeedFactor;
     private final int x, y;
     private int resourceKeyCounter;
     private final Team[] teams;
@@ -105,8 +106,7 @@ public abstract class AbstractLevel extends AbstractGameObject implements Runnab
         this.color = loadLevelColor();
         this.motherships = new Mothership[2];
         this.resources = new ArrayList<Resource>();
-        this.apSpeed = DEFAULT_AP_SPEED;
-        this.gameSpeed = 50;
+        this.gameSpeedFactor = gameManager.getGameSpeedFactor();
 
         final Rectangle2D bounds = levelBorderPolygon.getBounds2D();
         this.x = (int) bounds.getX();
@@ -128,14 +128,16 @@ public abstract class AbstractLevel extends AbstractGameObject implements Runnab
 
         while (!isGameOver()) {
             if (!gameManager.isPause()) {
-                for (Mothership mothership : motherships) {
-                    mothership.addActionPoint();
+                for (int i = 0; i < AP_PER_ROUND; i++) {
+                    for (Mothership mothership : motherships) {
+                        mothership.addActionPoint();
+                    }
                 }
             }
             try {
-                Thread.sleep(apSpeed);
+                Thread.sleep((long) (AbstractStrategy.DEFAULT_GAME_CYCLE / gameSpeedFactor));
             } catch (InterruptedException ex) {
-                logger.warn("", ex);
+                return;
             }
         }
         logger.info("Level Ends.");
@@ -343,7 +345,7 @@ public abstract class AbstractLevel extends AbstractGameObject implements Runnab
         synchronized (RESOURCES_LOCK) {
             for (Resource resource : resources) {
                 if (!resource.isUsed()
-                        && (!resource.isOwned() || resource.getOwner().getTeam() != agent.getTeam())
+                        && (!resource.isOwned() || (resource.getOwner().getTeam() != agent.getTeam() || !resource.getOwner().hasFuel()))
                         && resource.isSaveFor(agent)
                         && resource.getBounds().intersects(agent.getViewBounds())) {
                     return resource;
@@ -395,6 +397,22 @@ public abstract class AbstractLevel extends AbstractGameObject implements Runnab
         return null;
     }
 
+    public Agent getTeamAgent(Agent agent) {
+        for (Mothership mothership : motherships) {
+            if (mothership.getTeam() == agent.getTeam()) {
+                for (Agent teamAgent : mothership.getAgents()) {
+                    if(teamAgent == agent) {
+                        continue;
+                    }
+                    if (teamAgent.hasFuel() && teamAgent.getBounds().intersects(agent.getViewBounds())) {
+                        return teamAgent;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     public Agent getLostTeamAgent(Agent agent) {
         for (Mothership mothership : motherships) {
             if (mothership.getTeam() == agent.getTeam()) {
@@ -408,13 +426,13 @@ public abstract class AbstractLevel extends AbstractGameObject implements Runnab
         return null;
     }
 
-    public void setGameSpeed(int speed) {
-        if (gameSpeed == speed) {
+    public void setGameSpeedFactor(double factor) {
+        if (gameSpeedFactor == factor) {
             return;
         }
-        logger.info("Game speed " + speed + " -> " + gameSpeed);
-        this.gameSpeed = Math.min(100, Math.max(speed, 1));
-        changes.firePropertyChange(GAME_SPEED_CHANGED, null, gameSpeed);
+        gameSpeedFactor = factor;
+        logger.info("Game speed " + factor + " -> " + gameSpeedFactor);
+        changes.firePropertyChange(GAME_SPEED_FACTOR_CHANGED, null, gameSpeedFactor);
     }
 
     @Override
@@ -432,8 +450,8 @@ public abstract class AbstractLevel extends AbstractGameObject implements Runnab
         logger.debug("Remove PropertyChangeListener " + l.getClass() + ".");
     }
 
-    public int getGameSpeed() {
-        return gameSpeed;
+    public double getGameSpeedFactor() {
+        return gameSpeedFactor;
     }
     
     public void setGameOverSoon() {

@@ -40,7 +40,6 @@ import org.openbase.planetsudo.main.GUIController;
 import java.util.ArrayList;
 import org.openbase.jul.exception.CouldNotPerformException;
 import org.openbase.jul.exception.InvalidStateException;
-import org.openbase.jul.exception.NotAvailableException;
 import org.openbase.jul.visual.swing.engine.draw2d.AbstractResourcePanel;
 import org.openbase.planetsudo.geometry.Point2D;
 import org.slf4j.LoggerFactory;
@@ -304,6 +303,11 @@ public class Mothership extends AbstractLevelObject implements ActionListener, M
 	public synchronized void attack() {
 		logger.debug("Attack Mothership");
 		if (shield > 0) {
+
+			if(shield == 100) {
+				GameSound.MothershipUnderAttack.play();
+			}
+
 			shield--;
 			if (shield <= BURNING_MOTHERSHIP) {
 				if (!timer.isRunning()) {

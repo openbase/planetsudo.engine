@@ -61,7 +61,7 @@ public class HelpFrame extends javax.swing.JFrame {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException ex) {
-                java.util.logging.Logger.getLogger(GameContext.class.getName()).log(Level.SEVERE, null, ex);
+                Thread.currentThread().interrupt();
             }
         } else {
             instance.setVisible(true);

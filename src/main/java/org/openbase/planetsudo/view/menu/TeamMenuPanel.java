@@ -482,7 +482,7 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
         t.start();
     }
     public final static int BLINK_ANIMATION = 100;
-    public final static int COUNT_ANIMATION = 30;
+    public final static int COUNT_ANIMATION = 5;
 
     private void animateEndCalculation() {
         int tmpValue;
@@ -586,7 +586,7 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
             }
 
         } catch (InterruptedException ex) {
-            logger.warn("Animation failed!", ex);
+            Thread.currentThread().interrupt();
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables

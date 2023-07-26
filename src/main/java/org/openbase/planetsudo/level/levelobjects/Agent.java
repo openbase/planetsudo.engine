@@ -417,11 +417,14 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
             return;
         }
 
-        for (int toOrder = ((fuelVolume * percent) / 100) - fuel; toOrder > 0; toOrder--) {
-            fuel += mothership.orderFuel(1, this);
-            actionPoints.getActionPoint(2);
+        if(mothership.hasFuel()) {
+
+            for (int toOrder = ((fuelVolume * percent) / 100) - fuel; toOrder > 0; toOrder--) {
+                fuel += mothership.orderFuel(1, this);
+                actionPoints.getActionPoint(2);
+            }
+            GameSound.RechargeFuel.play();
         }
-        GameSound.RechargeFuel.play();
     }
 
     @Override
@@ -464,7 +467,6 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
         try {
             if (isCarringResource() && useFuel() && isAtMothership()) {
                 mothership.passResource(this);
-                GameSound.DeliverResource.play();
             }
         } catch (CouldNotPerformException ex) {
             LOGGER.warn("Could not deliver resource to Mothership!", ex);
@@ -538,6 +540,11 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
     @Override
     public boolean seeAdversaryAgent() {
         return level.getAdversaryAgent(this) != null;
+    }
+
+    @Override
+    public boolean seeTeamAgent() {
+        return level.getTeamAgent(this) != null;
     }
 
     @Override
@@ -660,7 +667,7 @@ public class Agent extends AbstractLevelObject implements AgentInterface {
                 throw new CouldNotPerformException("Could not support himself!");
             }
         } catch (CouldNotPerformException ex) {
-            ExceptionPrinter.printHistory(new CouldNotPerformException("Could not goToSuppordAgent!", ex), LOGGER);
+            ExceptionPrinter.printHistory(new CouldNotPerformException("Could not goToSupportAgent!", ex), LOGGER);
         }
     }
 

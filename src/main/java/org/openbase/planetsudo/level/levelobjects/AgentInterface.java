@@ -285,7 +285,7 @@ public interface AgentInterface {
 
     /**
      * Abfrage, ob dieser agent Support angefordert hat!
-     * !!! Nicht of irgend einer Support angefordert hat!!!
+     * !!! Nicht ob irgend einer Support angefordert hat!!!
      * Hierfür mothership.needSomeoneSupport(); benutzen.
      *
      * @return true oder false
@@ -376,6 +376,13 @@ public interface AgentInterface {
      * @return true oder false.
      */
     boolean seeAdversaryAgent();
+
+    /**
+     * Zeigt an, ob der Agent einen Agenten des eigenen Teams sieht.
+     *
+     * @return true oder false.
+     */
+    boolean seeTeamAgent();
 
     /**
      * Zeigt an, ob der Agent das feindliche Mutterschiff sieht.
@@ -511,7 +518,7 @@ public interface AgentInterface {
     void erectTower(final Tower.TowerType type);
     
     /**
-     * Baut einen Turm wieder ab der zuvor aufgestellt wurde..
+     * Baut einen Turm wieder ab der zuvor aufgestellt wurde.
      * Diese Aktion kann auch wieder nur vom Kommander durchgeführt werden und zwar nur dann wenn er in unmittelbarer Nähe des Turms ist.
      */
     @Deprecated

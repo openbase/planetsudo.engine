@@ -33,7 +33,6 @@ import org.openbase.planetsudo.level.AbstractLevel;
 import org.openbase.planetsudo.level.levelobjects.AgentInterface;
 import org.openbase.planetsudo.level.levelobjects.MothershipInterface;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import org.openbase.planetsudo.game.SwatTeam;
 import org.openbase.planetsudo.level.levelobjects.Mothership;
@@ -45,6 +44,8 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class AbstractStrategy implements Runnable {
 
+
+    public static final long DEFAULT_GAME_CYCLE = 50; //ms
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(getClass());
 
     private final Agent strategyOwner;
@@ -54,7 +55,7 @@ public abstract class AbstractStrategy implements Runnable {
     private final TreeMap<Integer, Rule> rules;
     private final GameManager gameManager;
     private final int agentCount;
-    private int gameSpeed;
+    private double gameSpeedFactor;
 
     public AbstractStrategy() {
         this.mothership = null;
@@ -76,10 +77,10 @@ public abstract class AbstractStrategy implements Runnable {
         this.agentCount = loadAgentCount();
         this.loadRules();
         this.loadSwatTeams();
-        this.gameSpeed = strategyOwner.getMothership().getLevel().getGameSpeed();
+        this.gameSpeedFactor = strategyOwner.getMothership().getLevel().getGameSpeedFactor();
         this.strategyOwner.getMothership().getLevel().addPropertyChangeListener((final PropertyChangeEvent evt) -> {
-            if (evt.getPropertyName().equals(AbstractLevel.GAME_SPEED_CHANGED)) {
-                gameSpeed = (Integer) evt.getNewValue();
+            if (evt.getPropertyName().equals(AbstractLevel.GAME_SPEED_FACTOR_CHANGED)) {
+                gameSpeedFactor = (Double) evt.getNewValue();
             }
         });
     }
@@ -101,9 +102,9 @@ public abstract class AbstractStrategy implements Runnable {
                 strategyOwner.kill();
             }
             try {
-                Thread.sleep(gameSpeed);
-            } catch (Exception ex) {
-                logger.warn("", ex);
+                Thread.sleep((long)(DEFAULT_GAME_CYCLE / gameSpeedFactor));
+            } catch (InterruptedException e) {
+                return;
             }
         }
         logger.info("AI dies from agent " + agent + "!");
