@@ -67,7 +67,7 @@ public class CreateTeamFrame extends javax.swing.JFrame {
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException ex) {
-				java.util.logging.Logger.getLogger(CreateTeamFrame.class.getName()).log(Level.SEVERE, null, ex);
+                Thread.currentThread().interrupt();
 			}
 		} else {
 			instance.reset();

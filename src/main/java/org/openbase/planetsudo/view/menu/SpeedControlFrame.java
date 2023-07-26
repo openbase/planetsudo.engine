@@ -61,7 +61,7 @@ public class SpeedControlFrame extends javax.swing.JFrame {
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException ex) {
-				java.util.logging.Logger.getLogger(GameContext.class.getName()).log(Level.SEVERE, null, ex);
+                Thread.currentThread().interrupt();
 			}
 		} else {
 			instance.setVisible(true);
@@ -153,21 +153,35 @@ public class SpeedControlFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private double sliderValueToSpeedFactor(int value) {
+
+        double x;
+        if (value <= 1) {
+            x = 0.01;
+        } else if (value >= 100) {
+            x = 100;
+        } else {
+            x = Math.exp((value - 50) * 0.092);
+        }
+
+        System.out.println("value "+ value + " to " + x);
+        return x;
+    }
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         dispose();
     }//GEN-LAST:event_okButtonActionPerformed
 
     private void defaultButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_defaultButtonActionPerformed
         GameManager.getInstance().setDefaultSpeed();
-		speedSlider.setValue(100-GameManager.getInstance().getGameSpeed());
+		speedSlider.setValue(50);
     }//GEN-LAST:event_defaultButtonActionPerformed
 
     private void speedSliderAncestorMoved(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_speedSliderAncestorMoved
-        GameManager.getInstance().setGameSpeed(100-speedSlider.getValue());
+        GameManager.getInstance().setGameSpeedFactor(sliderValueToSpeedFactor(speedSlider.getValue()));
     }//GEN-LAST:event_speedSliderAncestorMoved
 
     private void speedSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_speedSliderStateChanged
-        GameManager.getInstance().setGameSpeed(100-speedSlider.getValue());
+        GameManager.getInstance().setGameSpeedFactor(sliderValueToSpeedFactor(speedSlider.getValue()));
     }//GEN-LAST:event_speedSliderStateChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

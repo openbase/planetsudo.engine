@@ -40,7 +40,10 @@ public class GameManager implements Runnable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GameManager.class);
     
-	public static final int DEFAULT_GAME_SPEED = 50;
+	public static final int DEFAULT_GAME_SPEED_FACTOR = 1;
+
+	public final static double MIN_GAME_SPEED_FACTOR = 0.01;
+	public final static double MAX_GAME_SPEED_FACTOR = 100.0;
 
 	public enum GameState {
 
@@ -57,7 +60,7 @@ public class GameManager implements Runnable {
 	public AbstractLevel level;
 	public GameState gameState;
 	private boolean pause, gameOver;
-	private int gameSpeed;
+	private double gameSpeedFactor;
 	public boolean gameOverSoon;
 
 	public GameManager() {
@@ -69,7 +72,7 @@ public class GameManager implements Runnable {
 		this.pause = false;
 		this.gameOver = true;
 		this.gameState = GameState.Configuration;
-		this.gameSpeed = 50;
+		this.gameSpeedFactor = DEFAULT_GAME_SPEED_FACTOR;
 		this.gameOverSoon = false;
 	}
 
@@ -217,15 +220,15 @@ public class GameManager implements Runnable {
 		}
 	}
 
-	public void setGameSpeed(int speed) {
-		this.gameSpeed = speed;
+	public void setGameSpeedFactor(double factor) {
+		this.gameSpeedFactor = Math.min(MAX_GAME_SPEED_FACTOR, Math.max(factor, MIN_GAME_SPEED_FACTOR));;
 		if (level != null) {
-			this.level.setGameSpeed(speed);
+			this.level.setGameSpeedFactor(factor);
 		}
 	}
 
-	public int getGameSpeed() {
-		return gameSpeed;
+	public double getGameSpeedFactor() {
+		return gameSpeedFactor;
 	}
 
 	public boolean isPause() {
@@ -245,7 +248,7 @@ public class GameManager implements Runnable {
 	}
 
 	public void setDefaultSpeed() {
-		setGameSpeed(DEFAULT_GAME_SPEED);
+		setGameSpeedFactor(DEFAULT_GAME_SPEED_FACTOR);
 	}
 
 	public AbstractLevel getLevel() {
