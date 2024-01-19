@@ -12,7 +12,7 @@ APP_NAME=${BLUE}${APP_NAME}${NC}
 echo -e "=== ${APP_NAME} project ${WHITE}cleanup${NC}" &&
 mvn clean --quiet $@ &&
 echo -e "=== ${APP_NAME} project ${WHITE}installation${NC}" &&
-mvn install \
+./mvnw install \
         -DassembleDirectory=${prefix} \
         -DskipTests=true \
         -Dmaven.test.skip=true \
