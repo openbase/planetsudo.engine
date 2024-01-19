@@ -9,7 +9,7 @@ package org.openbase.planetsudo.view.loading;
  * #%L
  * PlanetSudo GameEngine
  * %%
- * Copyright (C) 2009 - 2023 openbase.org
+ * Copyright (C) 2009 - 2024 openbase.org
  * %%
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
