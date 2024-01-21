@@ -8,6 +8,7 @@ plugins {
     `java-library`
     `maven-publish`
     signing
+    kotlin("jvm")
 }
 
 repositories {
@@ -15,6 +16,7 @@ repositories {
     maven {
         url = uri("https://repo.maven.apache.org/maven2/")
     }
+    mavenCentral()
 }
 
 dependencies {
@@ -27,12 +29,12 @@ dependencies {
     api(libs.tomcat.tomcat.util)
     api(libs.commons.io.commons.io)
     testImplementation(libs.junit.junit)
+    implementation(kotlin("stdlib-jdk8"))
 }
 
 group = "org.openbase"
 version = "3.0.4-SNAPSHOT"
 description = "PlanetSudo is a reactive multi-agent simulation game. This package contains the game engine of PlanetSudo."
-java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 publishing {
     publications.create<MavenPublication>("maven") {
@@ -129,4 +131,7 @@ tasks.javadoc {
     if (JavaVersion.current().isJava9Compatible) {
         (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
     }
+}
+kotlin {
+    jvmToolchain(17)
 }
