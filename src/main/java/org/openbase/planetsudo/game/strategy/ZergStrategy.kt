@@ -23,7 +23,7 @@ class ZergStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
     }
 
     override fun loadRules() {
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(1000, "Angriff bei Sichtung vom Feind") {
             override fun constraint(): Boolean {
                 return agent!!.seeAdversaryAgent()
@@ -33,7 +33,7 @@ class ZergStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.fightWithAdversaryAgent()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(900, "Angriff Auf das Mutterschiff") {
             override fun constraint(): Boolean {
                 return agent!!.seeAdversaryMothership()
@@ -44,7 +44,7 @@ class ZergStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent.deployMine()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(800, "Mutterschiff Reparieren") {
             override fun constraint(): Boolean {
                 return agent!!.isAtMothership && (agent.fuelInPercent > 15) && (mothership!!.isDamaged || mothership.isBurning)
@@ -54,7 +54,7 @@ class ZergStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.repairMothership()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(725, "Tanken") {
             override fun constraint(): Boolean {
                 return agent!!.fuelInPercent < 20 && agent.isAtMothership
@@ -64,7 +64,7 @@ class ZergStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.orderFuel(100)
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(700, "Tanken gehen") {
             override fun constraint(): Boolean {
                 return agent!!.fuelInPercent < 35
@@ -74,7 +74,7 @@ class ZergStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.goToMothership()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(600, "Helfen") {
             override fun constraint(): Boolean {
                 return agent!!.seeLostTeamAgent() && agent.fuelInPercent > 70
@@ -84,7 +84,7 @@ class ZergStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.spendTeamAgentFuel((agent.fuelVolume * 0.10).toInt())
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(500, "Dreh Bei Wand") {
             override fun constraint(): Boolean {
                 return agent!!.isCollisionDetected
@@ -94,7 +94,7 @@ class ZergStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.turnRandom()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(750, "Gib Ressource Mutterschiff") {
             override fun constraint(): Boolean {
                 return agent!!.isAtMothership && agent.isCarryingResource
@@ -105,7 +105,7 @@ class ZergStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent.orderFuel(100)
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(300, "Mit Ressource zum Mutterschiff") {
             override fun constraint(): Boolean {
                 return agent!!.isCarryingResource
@@ -115,7 +115,7 @@ class ZergStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.goToMothership()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(200, "Sammel Ressource") {
             override fun constraint(): Boolean {
                 return agent!!.isTouchingResource && agent.resourceType != ResourceType.Mine
@@ -125,7 +125,7 @@ class ZergStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.pickupResource()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(100, "Geh zu Ressource") {
             override fun constraint(): Boolean {
                 return agent!!.seeResource()
@@ -135,7 +135,7 @@ class ZergStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.goToResource()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(0, "Gehe Geradeaus") {
             override fun constraint(): Boolean {
                 return true

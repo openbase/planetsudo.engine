@@ -7,7 +7,6 @@ package org.openbase.planetsudo.level.save
 import org.openbase.planetsudo.geometry.Base2D
 import org.openbase.planetsudo.geometry.Direction2D
 import org.openbase.planetsudo.level.AbstractLevel
-import org.openbase.planetsudo.level.ResourcePlacement
 import org.openbase.planetsudo.level.ResourceRandomRectangle
 import org.openbase.planetsudo.level.levelobjects.Resource.ResourceType
 import java.awt.Color
@@ -35,7 +34,7 @@ class HeliLandeplatz : AbstractLevel() {
 
     override fun loadHomePositions() = listOf(
         Base2D(200.0, 850.0, Direction2D.DOWN),
-        Base2D(900.0, 150.0, Direction2D.DOWN),
+        Base2D(900.0, 150.0, Direction2D.DOWN)
     )
 
     override fun loadResourcePlacement() = listOf(
@@ -44,7 +43,7 @@ class HeliLandeplatz : AbstractLevel() {
         ResourceRandomRectangle(700, 600, 400, 300, 5, ResourceType.DoublePoints),
         ResourceRandomRectangle(400, 300, 300, 300, 3, ResourceType.ExtremPoint),
         ResourceRandomRectangle(400, 300, 300, 300, 5, ResourceType.ExtraAgentFuel),
-        ResourceRandomRectangle(400, 300, 300, 300, 10, ResourceType.ExtraMothershipFuel),
+        ResourceRandomRectangle(400, 300, 300, 300, 10, ResourceType.ExtraMothershipFuel)
     )
 
     override fun loadLevelColor() = Color(167, 167, 197)

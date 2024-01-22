@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory
 import java.awt.BasicStroke
 import java.awt.Color
 import java.awt.Graphics2D
-import java.awt.event.MouseEvent
 import java.beans.PropertyChangeEvent
 import java.beans.PropertyChangeListener
 
@@ -27,7 +26,8 @@ class TeamMarkerPanel(resource: TeamMarker, parentResourcePanel: LevelPanel) :
         null,
         parentResourcePanel,
         DrawLayer.BACKGROUND
-    ), PropertyChangeListener {
+    ),
+    PropertyChangeListener {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     private val gg2: Graphics2D? = null
@@ -38,7 +38,7 @@ class TeamMarkerPanel(resource: TeamMarker, parentResourcePanel: LevelPanel) :
         resource.addPropertyChangeListener(this)
     }
 
-    //	private static final stroke = new Stroke.
+    // 	private static final stroke = new Stroke.
     override fun paintComponent(g2: Graphics2D?, gl: Graphics2D?) {
         if (resource!!.isPlaced) {
             boundingBox = resource!!.bounds
@@ -65,7 +65,7 @@ class TeamMarkerPanel(resource: TeamMarker, parentResourcePanel: LevelPanel) :
                     g2.drawOval(boundingBox.centerX.toInt() - 8, boundingBox.centerY.toInt() - 8, 16, 16)
                 }
             }
-            //g2.drawOval((int) boundingBox.getX(), (int) boundingBox.getY(), (int) boundingBox.getWidth(), (int) boundingBox.height);
+            // g2.drawOval((int) boundingBox.getX(), (int) boundingBox.getY(), (int) boundingBox.getWidth(), (int) boundingBox.height);
             animationCounter++
             if (animationCounter > 2) {
                 animationCounter = 0

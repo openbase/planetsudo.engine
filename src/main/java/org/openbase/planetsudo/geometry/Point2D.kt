@@ -11,7 +11,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder
  *
  * @author [Divine Threepwood](mailto:divine@openbase.org)
  */
-class Point2D @JvmOverloads constructor(x: kotlin.Double = 0.0, y: kotlin.Double = 0.0) : java.awt.geom.Point2D(),
+class Point2D @JvmOverloads constructor(x: kotlin.Double = 0.0, y: kotlin.Double = 0.0) :
+    java.awt.geom.Point2D(),
     Cloneable {
     var xy: DoubleArray = DoubleArray(2)
 
@@ -21,7 +22,6 @@ class Point2D @JvmOverloads constructor(x: kotlin.Double = 0.0, y: kotlin.Double
     }
 
     constructor(point: Point2D) : this(point.xy[0], point.xy[1])
-
 
     override fun getX(): kotlin.Double {
         return xy[0]

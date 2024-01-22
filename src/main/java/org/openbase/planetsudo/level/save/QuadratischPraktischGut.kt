@@ -7,7 +7,6 @@ package org.openbase.planetsudo.level.save
 import org.openbase.planetsudo.geometry.Base2D
 import org.openbase.planetsudo.geometry.Direction2D
 import org.openbase.planetsudo.level.AbstractLevel
-import org.openbase.planetsudo.level.ResourcePlacement
 import org.openbase.planetsudo.level.ResourceRandomRectangle
 import org.openbase.planetsudo.level.levelobjects.Resource.ResourceType
 import java.awt.Color
@@ -47,7 +46,7 @@ class QuadratischPraktischGut : AbstractLevel() {
 
     override fun loadHomePositions() = listOf(
         Base2D(200.0, 200.0, Direction2D.DOWN),
-        Base2D(1400.0, 1400.0, Direction2D.DOWN),
+        Base2D(1400.0, 1400.0, Direction2D.DOWN)
     )
 
     override fun loadResourcePlacement() = listOf(
@@ -58,7 +57,7 @@ class QuadratischPraktischGut : AbstractLevel() {
         ResourceRandomRectangle(0, 1350, 250, 250, 50, ResourceType.ExtremPoint),
         ResourceRandomRectangle(500, 500, 600, 600, 10, ResourceType.ExtraAgentFuel),
         ResourceRandomRectangle(500, 500, 600, 600, 10, ResourceType.ExtraMothershipFuel),
-        ResourceRandomRectangle(500, 1400, 600, 200, 35, ResourceType.DoublePoints),
+        ResourceRandomRectangle(500, 1400, 600, 200, 35, ResourceType.DoublePoints)
     )
 
     override fun loadLevelColor() = Color(93, 0, 0)

@@ -42,7 +42,6 @@ class Resource(id: Int, @JvmField val type: ResourceType, level: AbstractLevel, 
     var placement: ResourcePlacement? = null
         private set
 
-
     // Constructor just for mine
     constructor(id: Int, level: AbstractLevel, placer: Agent) : this(
         id,

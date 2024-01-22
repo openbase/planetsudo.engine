@@ -80,52 +80,52 @@ class LevelRasterElement(val index: Int, private val levelView: LevelView) : Com
         // North
         if (y != 0) {
             weight = if (levelView[x, y - 1]!!.isNextToWall) 50 else 2
-            //weight += levelView.get(x, y-1).isPartOfWall() ? Integer.MAX_VALUE : 0;
+            // weight += levelView.get(x, y-1).isPartOfWall() ? Integer.MAX_VALUE : 0;
             addNeigbour(LevelRasterElementNeigbour(levelView[x, y - 1], weight, NeigbourType.North))
         }
 
         // NorthEast
         if (x != levelView.width - 1 && y != 0) {
             weight = if (levelView[x + 1, y - 1]!!.isNextToWall) 75 else 3
-            //weight += levelView.get(x, y-1).isPartOfWall() ? Integer.MAX_VALUE : 0;
+            // weight += levelView.get(x, y-1).isPartOfWall() ? Integer.MAX_VALUE : 0;
             addNeigbour(LevelRasterElementNeigbour(levelView[x + 1, y - 1], weight, NeigbourType.NorthEast))
         }
 
         // East
         if (x != levelView.width - 1) {
             weight = if (levelView[x + 1, y]!!.isNextToWall) 50 else 2
-            //weight += levelView.get(x+1, y).isPartOfWall() ? Integer.MAX_VALUE : 0;
+            // weight += levelView.get(x+1, y).isPartOfWall() ? Integer.MAX_VALUE : 0;
             addNeigbour(LevelRasterElementNeigbour(levelView[x + 1, y], weight, NeigbourType.East))
         }
 
         // SouthEast
         if (x != levelView.width - 1 && y != levelView.height - 1) {
             weight = if (levelView[x + 1, y + 1]!!.isNextToWall) 75 else 3
-            //weight += levelView.get(x+1, y).isPartOfWall() ? Integer.MAX_VALUE : 0;
+            // weight += levelView.get(x+1, y).isPartOfWall() ? Integer.MAX_VALUE : 0;
             addNeigbour(LevelRasterElementNeigbour(levelView[x + 1, y + 1], weight, NeigbourType.SouthEast))
         }
         // South
         if (y != levelView.height - 1) {
             weight = if (levelView[x, y + 1]!!.isNextToWall) 50 else 2
-            //weight += levelView.get(x, y+1).isPartOfWall() ? Integer.MAX_VALUE : 0;
+            // weight += levelView.get(x, y+1).isPartOfWall() ? Integer.MAX_VALUE : 0;
             addNeigbour(LevelRasterElementNeigbour(levelView[x, y + 1], weight, NeigbourType.South))
         }
         // SouthWest
         if (x != 0 && y != levelView.height - 1) {
             weight = if (levelView[x - 1, y + 1]!!.isNextToWall) 75 else 3
-            //weight += levelView.get(x, y+1).isPartOfWall() ? Integer.MAX_VALUE : 0;
+            // weight += levelView.get(x, y+1).isPartOfWall() ? Integer.MAX_VALUE : 0;
             addNeigbour(LevelRasterElementNeigbour(levelView[x - 1, y + 1], weight, NeigbourType.SouthWest))
         }
         // West
         if (x != 0) {
             weight = if (levelView[x - 1, y]!!.isNextToWall) 50 else 2
-            //weight += levelView.get(x-1, y).isPartOfWall() ? Integer.MAX_VALUE : 0;
+            // weight += levelView.get(x-1, y).isPartOfWall() ? Integer.MAX_VALUE : 0;
             addNeigbour(LevelRasterElementNeigbour(levelView[x - 1, y], weight, NeigbourType.West))
         }
         // NorthWest
         if (x != 0 && y != 0) {
             weight = if (levelView[x - 1, y - 1]!!.isNextToWall) 75 else 3
-            //weight += levelView.get(x-1, y).isPartOfWall() ? Integer.MAX_VALUE : 0;
+            // weight += levelView.get(x-1, y).isPartOfWall() ? Integer.MAX_VALUE : 0;
             addNeigbour(LevelRasterElementNeigbour(levelView[x - 1, y - 1], weight, NeigbourType.NorthWest))
         }
     }

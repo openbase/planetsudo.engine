@@ -7,12 +7,10 @@ package org.openbase.planetsudo.level.save
 import org.openbase.planetsudo.geometry.Base2D
 import org.openbase.planetsudo.geometry.Direction2D
 import org.openbase.planetsudo.level.AbstractLevel
-import org.openbase.planetsudo.level.ResourcePlacement
 import org.openbase.planetsudo.level.ResourceRandomRectangle
 import org.openbase.planetsudo.level.levelobjects.Resource.ResourceType
 import java.awt.Color
 import java.awt.Polygon
-
 
 /**
  *
@@ -28,7 +26,7 @@ class Atomum : AbstractLevel() {
 
     override fun loadHomePositions() = listOf(
         Base2D(150.0, 1000.0, Direction2D.DOWN),
-        Base2D(1850.0, 1000.0, Direction2D.DOWN),
+        Base2D(1850.0, 1000.0, Direction2D.DOWN)
     )
 
     override fun loadResourcePlacement() = listOf(
@@ -50,7 +48,7 @@ class Atomum : AbstractLevel() {
         ResourceRandomRectangle(1600, 600, 100, 100, 3, ResourceType.DoublePoints),
         ResourceRandomRectangle(1600, 1300, 100, 100, 3, ResourceType.DoublePoints),
         ResourceRandomRectangle(1440, 1450, 100, 100, 3, ResourceType.DoublePoints),
-        ResourceRandomRectangle(1300, 1600, 100, 100, 3, ResourceType.DoublePoints),
+        ResourceRandomRectangle(1300, 1600, 100, 100, 3, ResourceType.DoublePoints)
     )
 
     override fun loadLevelColor() = Color(169, 249, 4)
@@ -105,6 +103,6 @@ class Atomum : AbstractLevel() {
             addPoint(1000, 900)
             addPoint(1100, 1000)
             addPoint(1000, 1100)
-        },
+        }
     )
 }

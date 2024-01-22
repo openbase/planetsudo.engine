@@ -7,7 +7,6 @@ package org.openbase.planetsudo.level.save
 import org.openbase.planetsudo.geometry.Base2D
 import org.openbase.planetsudo.geometry.Direction2D
 import org.openbase.planetsudo.level.AbstractLevel
-import org.openbase.planetsudo.level.ResourcePlacement
 import org.openbase.planetsudo.level.ResourceRandomRectangle
 import org.openbase.planetsudo.level.levelobjects.Resource.ResourceType
 import java.awt.Color
@@ -37,35 +36,35 @@ class WakaWaka : AbstractLevel() {
         addPoint(900, 100)
         addPoint(950, 100)
         addPoint(950, 50)
-//		addPoint(1250, 50);
-//		addPoint(1250, 250);
-//		addPoint(1150, 300);
-//		addPoint(1050, 250);
-//		addPoint(950, 250);
-//		addPoint(900, 350);
-//		addPoint(900, 450);
-//		addPoint(1000, 450);
-//		addPoint(1000, 450);
-//		addPoint(1000, 450);
-//		addPoint(950, 400);
-//		addPoint(950, 350);
-//		addPoint(1000, 300);
-//		addPoint(1050, 300);
-//		addPoint(1150, 350);
-//		addPoint(1150, 400);
-//		addPoint(1250, 500);
-//		addPoint(1250, 550);
-//		addPoint(1200, 600);
-//		addPoint(1150, 600);
-//		addPoint(1150, 550);
-//		addPoint(1100, 550);
-//		addPoint(1100, 650);
-//		addPoint(1200, 650);
-//		addPoint(1300, 600);
-//		addPoint(1300, 500);
-//		addPoint(1250, 400);
-//		addPoint(1350, 300);
-//		addPoint(1500, 300);
+// 		addPoint(1250, 50);
+// 		addPoint(1250, 250);
+// 		addPoint(1150, 300);
+// 		addPoint(1050, 250);
+// 		addPoint(950, 250);
+// 		addPoint(900, 350);
+// 		addPoint(900, 450);
+// 		addPoint(1000, 450);
+// 		addPoint(1000, 450);
+// 		addPoint(1000, 450);
+// 		addPoint(950, 400);
+// 		addPoint(950, 350);
+// 		addPoint(1000, 300);
+// 		addPoint(1050, 300);
+// 		addPoint(1150, 350);
+// 		addPoint(1150, 400);
+// 		addPoint(1250, 500);
+// 		addPoint(1250, 550);
+// 		addPoint(1200, 600);
+// 		addPoint(1150, 600);
+// 		addPoint(1150, 550);
+// 		addPoint(1100, 550);
+// 		addPoint(1100, 650);
+// 		addPoint(1200, 650);
+// 		addPoint(1300, 600);
+// 		addPoint(1300, 500);
+// 		addPoint(1250, 400);
+// 		addPoint(1350, 300);
+// 		addPoint(1500, 300);
         addPoint(1500, 50)
         addPoint(1500, 600)
         addPoint(1450, 600)
@@ -86,13 +85,13 @@ class WakaWaka : AbstractLevel() {
         addPoint(1500, 1200)
         addPoint(1500, 1500)
         addPoint(1200, 1500)
-        //	addPoint(1200, 1300);
-        //	addPoint(1100, 1200);
-        //	addPoint(800, 1200);
-        //	addPoint(800, 1300);
-        //	addPoint(950, 1250);
-        //	addPoint(1000, 1250);
-        //	addPoint(1100, 1350);
+        // 	addPoint(1200, 1300);
+        // 	addPoint(1100, 1200);
+        // 	addPoint(800, 1200);
+        // 	addPoint(800, 1300);
+        // 	addPoint(950, 1250);
+        // 	addPoint(1000, 1250);
+        // 	addPoint(1100, 1350);
         addPoint(1100, 1500)
         addPoint(750, 1500)
         addPoint(650, 1400)
@@ -127,13 +126,13 @@ class WakaWaka : AbstractLevel() {
         addPoint(150, 900)
         addPoint(50, 800)
         addPoint(50, 450)
-        //	addPoint(200, 450);
-        //	addPoint(300, 550);
-        //	addPoint(300, 600);
-        //	addPoint(200, 700);
-        //	addPoint(350, 700);
-        //	addPoint(350, 450);
-        //	addPoint(250, 350);
+        // 	addPoint(200, 450);
+        // 	addPoint(300, 550);
+        // 	addPoint(300, 600);
+        // 	addPoint(200, 700);
+        // 	addPoint(350, 700);
+        // 	addPoint(350, 450);
+        // 	addPoint(250, 350);
         addPoint(50, 350)
         addPoint(50, 50)
     }

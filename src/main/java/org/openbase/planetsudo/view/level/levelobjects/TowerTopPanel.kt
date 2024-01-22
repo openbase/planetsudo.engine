@@ -15,13 +15,15 @@ import java.beans.PropertyChangeListener
  *
  * @author [Divine Threepwood](mailto:divine@openbase.org)
  */
-class TowerTopPanel(tower: Tower, parentPanel: TowerPanel) : AbstractLevelObjectPanel<Tower, TowerPanel>(
-    tower,
-    tower.polygon,
-    getImageURI(tower.type),
-    parentPanel,
-    DrawLayer.BACKGROUND
-), PropertyChangeListener {
+class TowerTopPanel(tower: Tower, parentPanel: TowerPanel) :
+    AbstractLevelObjectPanel<Tower, TowerPanel>(
+        tower,
+        tower.polygon,
+        getImageURI(tower.type),
+        parentPanel,
+        DrawLayer.BACKGROUND
+    ),
+    PropertyChangeListener {
     private val tower: Tower
 
     private var gg2: Graphics2D? = null

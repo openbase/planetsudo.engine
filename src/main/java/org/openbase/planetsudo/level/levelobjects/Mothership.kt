@@ -22,16 +22,19 @@ import kotlin.math.max
  *
  * @author [Divine Threepwood](mailto:divine@openbase.org)
  */
-class Mothership(id: Int, team: Team, level: AbstractLevel) : AbstractLevelObject(
-    id,
-    team.name + Mothership::class.java.simpleName,
-    AbstractResourcePanel.ObjectType.Static,
-    level,
-    level.getMothershipBase(id).point,
-    100.0,
-    100.0,
-    ObjectShape.Rec
-), ActionListener, MothershipInterface {
+class Mothership(id: Int, team: Team, level: AbstractLevel) :
+    AbstractLevelObject(
+        id,
+        team.name + Mothership::class.java.simpleName,
+        AbstractResourcePanel.ObjectType.Static,
+        level,
+        level.getMothershipBase(id).point,
+        100.0,
+        100.0,
+        ObjectShape.Rec
+    ),
+    ActionListener,
+    MothershipInterface {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     val AGENTLOCK: Any = Any()
@@ -50,7 +53,6 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) : AbstractLevelObjec
     private val timer: Timer
     private val agents: MutableMap<Int, Agent>
     private val supportChannel: MutableList<Agent>
-
 
     @JvmField
     val tower: Tower
@@ -151,7 +153,6 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) : AbstractLevelObjec
 
     override val fuelInPercent: Int
         get() = (fuel * 100) / fuelVolume
-
 
     override fun hasFuel(): Boolean {
         return fuel > 0
@@ -312,7 +313,8 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) : AbstractLevelObjec
     override fun actionPerformed(ex: ActionEvent) {
         if (!GameManager.gameManager.isPause) {
             orderFuel(
-                max(0.0, (BURNING_MOTHERSHIP - shieldForce).toDouble()).toInt(), null
+                max(0.0, (BURNING_MOTHERSHIP - shieldForce).toDouble()).toInt(),
+                null
             )
         }
     }

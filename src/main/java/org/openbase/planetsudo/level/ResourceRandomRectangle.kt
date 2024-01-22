@@ -26,62 +26,66 @@ class ResourceRandomRectangle(
     width: Int,
     height: Int,
     override val resourceCount: Int,
-    private val type: ResourceType,
+    private val type: ResourceType
 ) : Rectangle2D.Double(
-    x.toDouble(), y.toDouble(), width.toDouble(), height.toDouble()
-), ResourcePlacement {
+    x.toDouble(),
+    y.toDouble(),
+    width.toDouble(),
+    height.toDouble()
+),
+    ResourcePlacement {
     override fun getResources(level: AbstractLevel): ArrayList<Resource> {
         val resources = ArrayList<Resource>()
         for (i in 0 until resourceCount) {
             GUIController.setEvent(PropertyChangeEvent(this, GUIController.LOADING_STEP, null, -1))
-            //Point2D resourcePosition = new Point2D(RandomGenerator.getRandom((int) getX(), (int) getWidth()), RandomGenerator.getRandom((int) getY(), (int) height));
+            // Point2D resourcePosition = new Point2D(RandomGenerator.getRandom((int) getX(), (int) getWidth()), RandomGenerator.getRandom((int) getY(), (int) height));
             resources.add(Resource(level.generateNewResourceID(), type, level, this))
         }
         return resources
     }
 
     override fun calcRandomLevelPosition(level: AbstractLevel): Point2D {
-//		double widthCast = (int) level.getLevelBorderPolygon().getBounds().getWidth()/LevelView.RASTER_SIZE;
-//		double heightCast = (int) level.getLevelBorderPolygon().getBounds().height/LevelView.RASTER_SIZE;
-//		double width, height;
+// 		double widthCast = (int) level.getLevelBorderPolygon().getBounds().getWidth()/LevelView.RASTER_SIZE;
+// 		double heightCast = (int) level.getLevelBorderPolygon().getBounds().height/LevelView.RASTER_SIZE;
+// 		double width, height;
 //
 //
-//		if(widthCast < level.getLevelBorderPolygon().getBounds().getWidth()/LevelView.RASTER_SIZE) {
-//			width = ((int) heightCast)+1;
-//		} else {
-//			width = (int) widthCast;
-//		}
-//		if(heightCast < level.getLevelBorderPolygon().getBounds().height/LevelView.RASTER_SIZE) {
-//			height = ((int) heightCast)+1;
-//		} else {
-//			height = (int) heightCast;
-//		}
+// 		if(widthCast < level.getLevelBorderPolygon().getBounds().getWidth()/LevelView.RASTER_SIZE) {
+// 			width = ((int) heightCast)+1;
+// 		} else {
+// 			width = (int) widthCast;
+// 		}
+// 		if(heightCast < level.getLevelBorderPolygon().getBounds().height/LevelView.RASTER_SIZE) {
+// 			height = ((int) heightCast)+1;
+// 		} else {
+// 			height = (int) heightCast;
+// 		}
 
-//		int index = 0;
+// 		int index = 0;
 //
-//		while(true) {
-//			try {
-//				index = RandomGenerator.getRandom(0, width * height);
-//			} catch (InvalidStateException ex) {
-//				logger.error("Could not generate resource position.", ex);
-//			}
+// 		while(true) {
+// 			try {
+// 				index = RandomGenerator.getRandom(0, width * height);
+// 			} catch (InvalidStateException ex) {
+// 				logger.error("Could not generate resource position.", ex);
+// 			}
 //
-//			int x = index % width;
-//			int y = index / width;
+// 			int x = index % width;
+// 			int y = index / width;
 //
-//			int xLevelPosition = (int) level.getX()+(x*LevelView.RASTER_SIZE+LevelView.RASTER_SIZE/2);
-//			int yLevelPosition = (int) level.getY()+(y*LevelView.RASTER_SIZE+LevelView.RASTER_SIZE/2);
+// 			int xLevelPosition = (int) level.getX()+(x*LevelView.RASTER_SIZE+LevelView.RASTER_SIZE/2);
+// 			int yLevelPosition = (int) level.getY()+(y*LevelView.RASTER_SIZE+LevelView.RASTER_SIZE/2);
 //
-//			Rectangle2D rasterLevelRectangle = new Rectangle2D.Double(xLevelPosition-LevelView.RASTER_SIZE/2, yLevelPosition-LevelView.RASTER_SIZE/2, LevelView.RASTER_SIZE, LevelView.RASTER_SIZE);
-//			Rectangle2D agentBoundsRectangle = new Rectangle2D.Double(xLevelPosition-Agent.AGENT_SIZE, yLevelPosition-Agent.AGENT_SIZE, Agent.AGENT_SIZE*2, Agent.AGENT_SIZE*2);
+// 			Rectangle2D rasterLevelRectangle = new Rectangle2D.Double(xLevelPosition-LevelView.RASTER_SIZE/2, yLevelPosition-LevelView.RASTER_SIZE/2, LevelView.RASTER_SIZE, LevelView.RASTER_SIZE);
+// 			Rectangle2D agentBoundsRectangle = new Rectangle2D.Double(xLevelPosition-Agent.AGENT_SIZE, yLevelPosition-Agent.AGENT_SIZE, Agent.AGENT_SIZE*2, Agent.AGENT_SIZE*2);
 //
-//			boolean partOfWall = level.containsWall(rasterLevelRectangle);
-//			boolean nextToWall = level.containsWall(agentBoundsRectangle);
+// 			boolean partOfWall = level.containsWall(rasterLevelRectangle);
+// 			boolean nextToWall = level.containsWall(agentBoundsRectangle);
 //
-//			if(!(partOfWall || nextToWall)) {
-//				return new Point2D(xLevelPosition, yLevelPosition);
-//			}
-//		}
+// 			if(!(partOfWall || nextToWall)) {
+// 				return new Point2D(xLevelPosition, yLevelPosition);
+// 			}
+// 		}
 
         var resourceXPos = 0
         var resourceYPos = 0
@@ -96,11 +100,11 @@ class ResourceRandomRectangle(
             }
             if (!level.containsWall(
                     Rectangle(
-                        resourceXPos - Resource.RESOURCE_SIZE,
-                        resourceYPos - Resource.RESOURCE_SIZE,
-                        Resource.RESOURCE_SIZE * 2,
-                        Resource.RESOURCE_SIZE * 2
-                    )
+                            resourceXPos - Resource.RESOURCE_SIZE,
+                            resourceYPos - Resource.RESOURCE_SIZE,
+                            Resource.RESOURCE_SIZE * 2,
+                            Resource.RESOURCE_SIZE * 2
+                        )
                 )
             ) {
                 break

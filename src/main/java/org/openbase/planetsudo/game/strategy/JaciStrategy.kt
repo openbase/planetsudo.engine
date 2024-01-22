@@ -23,7 +23,7 @@ class JaciStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
     }
 
     override fun loadRules() {
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(0, "Gehen") {
             override fun constraint(): Boolean {
                 return true
@@ -33,7 +33,7 @@ class JaciStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.go()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(100, "zu Ressource gehen") {
             override fun constraint(): Boolean {
                 return agent!!.seeResource()
@@ -43,7 +43,7 @@ class JaciStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.goToResource()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(200, "Ressource einsammeln") {
             override fun constraint(): Boolean {
                 return agent!!.isTouchingResource && !agent.isTouchingResource(ResourceType.Mine)
@@ -53,7 +53,7 @@ class JaciStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.pickupResource()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(300, "Ressource zu Mutterschiff") {
             override fun constraint(): Boolean {
                 return agent!!.isCarryingResource
@@ -63,7 +63,7 @@ class JaciStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.goToMothership()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(400, "lade Ressource ab") {
             override fun constraint(): Boolean {
                 return agent!!.isCarryingResource && agent.isAtMothership
@@ -74,7 +74,7 @@ class JaciStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
             }
         })
 
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(600, "Bekämpfe feindliches Mutterschiff") {
             override fun constraint(): Boolean {
                 return agent!!.seeAdversaryMothership()
@@ -84,7 +84,7 @@ class JaciStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.fightWithAdversaryMothership()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(700, "Bekämpfe Feind") {
             override fun constraint(): Boolean {
                 return agent!!.seeAdversaryAgent()
@@ -94,7 +94,7 @@ class JaciStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.fightWithAdversaryAgent()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(800, "Lade Mine bei Feind ab") {
             override fun constraint(): Boolean {
                 return agent!!.seeAdversaryAgent() && agent.hasMine()
@@ -104,7 +104,7 @@ class JaciStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.deployMine()
                 agent.turnAround()
             }
-        }) //-------------------------------------------->
+        }) // -------------------------------------------->
         createRule(object : Rule(825, "Mutterschiff reparieren") {
             override fun constraint(): Boolean {
                 return mothership!!.isDamaged
@@ -114,7 +114,7 @@ class JaciStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.repairMothership()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(850, "Gegen Attacke suchen") {
             override fun constraint(): Boolean {
                 return agent!!.isUnderAttack
@@ -124,7 +124,7 @@ class JaciStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.turnLeft(20)
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(855, "Gegen Attacke wehren") {
             override fun constraint(): Boolean {
                 return agent!!.isUnderAttack && agent.seeAdversaryAgent()
@@ -134,7 +134,7 @@ class JaciStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.fightWithAdversaryAgent()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(860, "Mutterschiff beschützen") {
             override fun constraint(): Boolean {
                 return mothership!!.isDamaged && !agent!!.isAtMothership
@@ -145,7 +145,7 @@ class JaciStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
             }
         })
 
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(900, "Gehe tanken") {
             override fun constraint(): Boolean {
                 return agent!!.fuelInPercent < 20
@@ -155,7 +155,7 @@ class JaciStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.goToMothership()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(905, "Auftanken") {
             override fun constraint(): Boolean {
                 return agent!!.isAtMothership && agent.fuelInPercent < 20
@@ -165,7 +165,7 @@ class JaciStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.orderFuel(100)
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(1000, "Vermeide Kollision") {
             override fun constraint(): Boolean {
                 return agent!!.isCollisionDetected

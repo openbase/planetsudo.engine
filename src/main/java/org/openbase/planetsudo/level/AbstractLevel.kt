@@ -266,9 +266,9 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
     fun getCloseResource(agent: Agent, resourceType: ResourceType): Resource? {
         synchronized(RESOURCES_LOCK) {
             for (resource in resources) {
-                if (!resource.isUsed && resource.type == resourceType && (!resource.isOwned || resource.owner!!.team != agent.team)
-                    && resource.isSaveFor(agent)
-                    && resource.bounds.intersects(agent.viewBounds)
+                if (!resource.isUsed && resource.type == resourceType && (!resource.isOwned || resource.owner!!.team != agent.team) &&
+                    resource.isSaveFor(agent) &&
+                    resource.bounds.intersects(agent.viewBounds)
                 ) {
                     return resource
                 }
@@ -286,10 +286,10 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
     fun getCloseResource(agent: Agent): Resource? {
         synchronized(RESOURCES_LOCK) {
             for (resource in resources) {
-                if (!resource.isUsed
-                    && (!resource.isOwned || (resource.owner!!.team != agent.team || !resource.owner!!.hasFuel()))
-                    && resource.isSaveFor(agent)
-                    && resource.bounds.intersects(agent.viewBounds)
+                if (!resource.isUsed &&
+                    (!resource.isOwned || (resource.owner!!.team != agent.team || !resource.owner!!.hasFuel())) &&
+                    resource.isSaveFor(agent) &&
+                    resource.bounds.intersects(agent.viewBounds)
                 ) {
                     return resource
                 }
@@ -307,8 +307,8 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
     fun getTouchableResource(agent: Agent): Resource? {
         synchronized(RESOURCES_LOCK) {
             for (resource in resources) {
-                if (!resource.isUsed && resource.bounds.intersects(agent.bounds)
-                    && (resource.owner == null || resource.owner!!.team != agent.team)
+                if (!resource.isUsed && resource.bounds.intersects(agent.bounds) &&
+                    (resource.owner == null || resource.owner!!.team != agent.team)
                 ) {
                     return resource
                 }
@@ -319,9 +319,9 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
 
     fun getAdversaryMothership(agent: Agent): Mothership? {
         for (mothership in motherships) {
-            if ((mothership!!.team != agent.team)
-                && !mothership.isMaxDamaged
-                && mothership.bounds.intersects(agent.viewBounds)
+            if ((mothership!!.team != agent.team) &&
+                !mothership.isMaxDamaged &&
+                mothership.bounds.intersects(agent.viewBounds)
             ) {
                 return mothership
             }

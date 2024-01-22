@@ -5,8 +5,6 @@
 package org.openbase.planetsudo.view.level
 
 import org.openbase.jul.exception.printer.ExceptionPrinter
-import org.openbase.jul.visual.swing.engine.draw2d.ResourceDisplayPanel
-import org.openbase.jul.visual.swing.engine.draw2d.ResourcePanel
 import org.openbase.planetsudo.game.GameObjectImages
 import org.openbase.planetsudo.level.AbstractLevel
 import org.openbase.planetsudo.level.levelobjects.Resource
@@ -31,7 +29,8 @@ class LevelPanel(resource: AbstractLevel, parentPanel: LevelDisplayPanel) :
         ObjectType.Dynamic,
         GameObjectImages.Default.imagesURL,
         parentPanel
-    ), PropertyChangeListener {
+    ),
+    PropertyChangeListener {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     private val hasInternalWalls = resource.levelWallPolygons != null
@@ -77,7 +76,7 @@ class LevelPanel(resource: AbstractLevel, parentPanel: LevelDisplayPanel) :
 
     override fun paintComponent(g2: Graphics2D?, gl: Graphics2D?) {
         g2!!.fill(resource!!.levelBorderPolygon)
-        //		g2.fill(tranformedPlacement);
+        // 		g2.fill(tranformedPlacement);
         if (hasInternalWalls) {
             g2.color = resource!!.color
             for (wall in resource!!.levelWallPolygons!!) {

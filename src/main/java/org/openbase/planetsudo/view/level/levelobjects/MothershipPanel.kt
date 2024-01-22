@@ -8,7 +8,6 @@ import org.openbase.planetsudo.game.GameObjectImages
 import org.openbase.planetsudo.level.levelobjects.Mothership
 import org.openbase.planetsudo.view.level.LevelPanel
 import java.awt.Graphics2D
-import java.awt.event.MouseEvent
 
 /**
  *
@@ -35,7 +34,7 @@ class MothershipPanel(resource: Mothership, parentResourcePanel: LevelPanel) :
 
     override fun paintComponent(g2: Graphics2D?, gl: Graphics2D?) {
         boundingBox = resource!!.bounds
-        //paintShape(g2);
+        // paintShape(g2);
         g2!!.color = resource!!.team.teamColor
         g2.fillRect(boundingBox.centerX.toInt() - 45, boundingBox.centerY.toInt() - 45, 90, 90)
         paintImage(g2)

@@ -89,7 +89,8 @@ class PlanetSudoClient private constructor() {
             val clientSocket = Socket(
                 JPService.getProperty(
                     JPServerHostname::class.java
-                ).value, JPService.getProperty(JPServerPort::class.java).value
+                ).value,
+                JPService.getProperty(JPServerPort::class.java).value
             )
             out = ObjectOutputStream(clientSocket.getOutputStream())
             `in` = ObjectInputStream(clientSocket.getInputStream())
@@ -132,7 +133,8 @@ class PlanetSudoClient private constructor() {
             val sourceFile = File(
                 JPService.getProperty(
                     JPStrategySourceDirectory::class.java
-                ).value, defaultTeamData!!.strategy + ".java"
+                ).value,
+                defaultTeamData!!.strategy + ".java"
             )
             if (!sourceFile.exists()) {
                 throw CouldNotPerformException("File[" + sourceFile.absolutePath + "] does not exist!")

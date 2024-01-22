@@ -7,7 +7,6 @@ package org.openbase.planetsudo.level.save
 import org.openbase.planetsudo.geometry.Base2D
 import org.openbase.planetsudo.geometry.Direction2D
 import org.openbase.planetsudo.level.AbstractLevel
-import org.openbase.planetsudo.level.ResourcePlacement
 import org.openbase.planetsudo.level.ResourceRandomRectangle
 import org.openbase.planetsudo.level.levelobjects.Resource.ResourceType
 import java.awt.Color
@@ -37,7 +36,7 @@ class DasBoot : AbstractLevel() {
 
     override fun loadHomePositions() = listOf(
         Base2D(600.0, 1350.0, Direction2D.DOWN),
-        Base2D(1575.0, 1350.0, Direction2D.DOWN),
+        Base2D(1575.0, 1350.0, Direction2D.DOWN)
     )
 
     override fun loadResourcePlacement() = listOf(
@@ -46,7 +45,7 @@ class DasBoot : AbstractLevel() {
         ResourceRandomRectangle(825, 750, 600, 450, 15, ResourceType.ExtraMothershipFuel),
         ResourceRandomRectangle(350, 750, 375, 300, 10, ResourceType.Normal),
         ResourceRandomRectangle(1500, 750, 375, 300, 10, ResourceType.Normal),
-        ResourceRandomRectangle(750, 375, 675, 375, 15, ResourceType.DoublePoints),
+        ResourceRandomRectangle(750, 375, 675, 375, 15, ResourceType.DoublePoints)
     )
 
     override fun loadLevelColor() = Color(0, 191, 255)
@@ -57,12 +56,14 @@ class DasBoot : AbstractLevel() {
             addPoint(825, 900)
             addPoint(825, 1050)
             addPoint(675, 1050)
-        }, Polygon().apply {
+        },
+        Polygon().apply {
             addPoint(1350, 900)
             addPoint(1500, 900)
             addPoint(1500, 1050)
             addPoint(1350, 1050)
-        }, Polygon().apply {
+        },
+        Polygon().apply {
             addPoint(1012, 1200)
             addPoint(1163, 1200)
             addPoint(1163, 1500)

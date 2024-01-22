@@ -7,7 +7,6 @@ package org.openbase.planetsudo.level.save
 import org.openbase.planetsudo.geometry.Base2D
 import org.openbase.planetsudo.geometry.Direction2D
 import org.openbase.planetsudo.level.AbstractLevel
-import org.openbase.planetsudo.level.ResourcePlacement
 import org.openbase.planetsudo.level.ResourceRandomRectangle
 import org.openbase.planetsudo.level.levelobjects.Resource.ResourceType
 import java.awt.Color
@@ -76,7 +75,7 @@ class FrauenWG : AbstractLevel() {
 
     override fun loadHomePositions() = listOf(
         Base2D(750.0, 700.0, Direction2D.DOWN),
-        Base2D(1600.0, 950.0, Direction2D.DOWN),
+        Base2D(1600.0, 950.0, Direction2D.DOWN)
     )
 
     override fun loadResourcePlacement() = listOf(
@@ -87,7 +86,7 @@ class FrauenWG : AbstractLevel() {
         ResourceRandomRectangle(2000, 1300, 350, 450, 50, ResourceType.DoublePoints),
         ResourceRandomRectangle(400, 1350, 300, 300, 50, ResourceType.ExtremPoint),
         ResourceRandomRectangle(1750, 0, 300, 300, 50, ResourceType.ExtremPoint),
-        ResourceRandomRectangle(900, 550, 550, 550, 30, ResourceType.ExtraAgentFuel),
+        ResourceRandomRectangle(900, 550, 550, 550, 30, ResourceType.ExtraAgentFuel)
     )
 
     override fun loadLevelColor() = Color(0, 0, 0)

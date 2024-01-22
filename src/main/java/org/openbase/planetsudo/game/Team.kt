@@ -13,7 +13,6 @@ import org.openbase.planetsudo.deprication.ObjectFileController
 import org.openbase.planetsudo.game.strategy.AbstractStrategy
 import org.openbase.planetsudo.game.strategy.StrategyClassLoader.loadStrategy
 import org.openbase.planetsudo.jp.JPTeamPath
-import org.openbase.planetsudo.level.levelobjects.Agent
 import org.openbase.planetsudo.level.levelobjects.AgentInterface
 import org.openbase.planetsudo.level.levelobjects.AgentMock
 import org.openbase.planetsudo.level.levelobjects.Mothership
@@ -177,7 +176,8 @@ class Team(data: TeamData) {
                     CouldNotPerformException(
                         "Could not load team $teamName! Try again with outdated deserializer.",
                         ex
-                    ), logger
+                    ),
+                    logger
                 )
                 try {
                     val fileController = ObjectFileController<TeamData>(
@@ -198,7 +198,8 @@ class Team(data: TeamData) {
                     CouldNotPerformException(
                         "Could not load team $teamName! Try again with outdated deserializer.",
                         ex
-                    ), logger
+                    ),
+                    logger
                 )
                 try {
                     val fileController = ObjectFileController<TeamData>(
@@ -242,7 +243,8 @@ class Team(data: TeamData) {
                                 CouldNotPerformException(
                                     "Could not load team $teamClassName!",
                                     ex
-                                ), logger
+                                ),
+                                logger
                             )
                         }
                     }

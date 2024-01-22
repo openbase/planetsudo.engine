@@ -27,7 +27,10 @@ import kotlin.math.min
  * @author [Divine Threepwood](mailto:divine@openbase.org)
  */
 class Agent(
-    name: String, commanderFlag: Boolean, fuelVolume: Int, mothership: Mothership,
+    name: String,
+    commanderFlag: Boolean,
+    fuelVolume: Int,
+    mothership: Mothership
 ) : AbstractLevelObject(
     mothership.registerAgent(),
     name,
@@ -37,7 +40,8 @@ class Agent(
     AGENT_SIZE.toDouble(),
     AGENT_SIZE.toDouble(),
     ObjectShape.Oval
-), AgentInterface {
+),
+    AgentInterface {
     override val fuelVolume: Int
     val mothership: Mothership
     val ap: ActionPoints = ActionPoints(this)
@@ -90,7 +94,8 @@ class Agent(
             val point = direction.translate(
                 Point2D(
                     position
-                ), AGENT_VIEW_DISTANCE
+                ),
+                AGENT_VIEW_DISTANCE
             )
             return Rectangle2D.Double(
                 point.x - AGENT_VIEW_DISTANCE,
@@ -129,7 +134,9 @@ class Agent(
         ap.getActionPoint(50)
         if (useFuel(5) == 5 && hasMine) {
             val newMine = Resource(
-                level.generateNewResourceID(), level, this
+                level.generateNewResourceID(),
+                level,
+                this
             )
             level.addResource(newMine)
             hasMine = false
@@ -705,8 +712,8 @@ class Agent(
     }
 
     companion object {
-        //	public final static int DEFAULT_START_FUEL = 2000;
-        //public final static int DEFAULT_START_FUEL = 1000;
+        // 	public final static int DEFAULT_START_FUEL = 2000;
+        // public final static int DEFAULT_START_FUEL = 1000;
         const val AGENT_SIZE: Int = 50
         const val AGENT_VIEW_DISTANCE: Int = AGENT_SIZE
         const val DEFAULT_AGENT_SPEED: Int = 6

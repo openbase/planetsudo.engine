@@ -11,7 +11,6 @@ import org.openbase.planetsudo.geometry.Direction2D
 import org.openbase.planetsudo.level.levelobjects.AbstractLevelObject
 import org.openbase.planetsudo.util.RandomGenerator.getRandom
 import org.openbase.planetsudo.view.game.AbstractGameObjectPanel
-import org.openbase.planetsudo.view.level.levelobjects.AbstractLevelObjectPanel
 import java.awt.Color
 import java.awt.Dimension
 import java.awt.Graphics2D
@@ -33,14 +32,14 @@ abstract class AbstractLevelObjectPanel<R : AbstractLevelObject, PRP : ResourceP
         placementPolygon: Polygon,
         imageURI: String?,
         parentResourcePanel: PRP,
-        drawLayer: DrawLayer,
+        drawLayer: DrawLayer
     ) : super(resource, placementPolygon, ObjectType.Static, imageURI, parentResourcePanel, drawLayer)
 
     constructor(
         resource: R,
         placementPolygon: Polygon,
         imageURI: String,
-        parentPanel: ResourceDisplayPanel<ResourcePanel>,
+        parentPanel: ResourceDisplayPanel<ResourcePanel>
     ) : super(resource, placementPolygon, ObjectType.Dynamic, imageURI, parentPanel)
 
     protected fun paintShape(g2: Graphics2D) {
@@ -77,7 +76,7 @@ abstract class AbstractLevelObjectPanel<R : AbstractLevelObject, PRP : ResourceP
         direction: Direction2D,
         width: Double,
         height: Double,
-        affineTransform: AffineTransform,
+        affineTransform: AffineTransform
     ): AffineTransform {
         dimension2D.setSize(width, height)
         return getRotationTransformation(direction, dimension2D, affineTransform)
@@ -86,7 +85,7 @@ abstract class AbstractLevelObjectPanel<R : AbstractLevelObject, PRP : ResourceP
     fun getRotationTransformation(
         direction: Direction2D,
         dimension: Dimension2D,
-        affineTransform: AffineTransform,
+        affineTransform: AffineTransform
     ): AffineTransform {
         affineTransform.rotate(
             Math.toRadians(direction.angle + 90.0),
@@ -102,18 +101,24 @@ abstract class AbstractLevelObjectPanel<R : AbstractLevelObject, PRP : ResourceP
 
     val boundsTransformation: AffineTransform
         get() = AffineTransform(
-            1.0, 0.0,
-            0.0, 1.0,
-            boundingBox.x, boundingBox.y
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            boundingBox.x,
+            boundingBox.y
         )
     override val skaleImageToBoundsTransformation: AffineTransform
         get() {
             assert(boundingBox != null)
             assert(image != null)
             return AffineTransform(
-                boundingBox.width / image!!.width, 0.0,
-                0.0, boundingBox.height / image!!.height,
-                boundingBox.x, boundingBox.y
+                boundingBox.width / image!!.width,
+                0.0,
+                0.0,
+                boundingBox.height / image!!.height,
+                boundingBox.x,
+                boundingBox.y
             )
         }
 
@@ -156,7 +161,7 @@ abstract class AbstractLevelObjectPanel<R : AbstractLevelObject, PRP : ResourceP
             g22.fillOval(xa2 - 6, ya2 - 6, 12, 12)
             g22.fillOval(xa3 - 6, ya3 - 6, 12, 12)
             g22.color = Color.RED
-            //g22.drawOval(xa3-3, ya3-3, 6, 6);
+            // g22.drawOval(xa3-3, ya3-3, 6, 6);
             g22.fillOval(xa2 - 3, ya2 - 3, 6, 6)
             g22.fillOval(xa1 - 3, ya1 - 3, 6, 6)
 
@@ -167,7 +172,7 @@ abstract class AbstractLevelObjectPanel<R : AbstractLevelObject, PRP : ResourceP
             g22.fillOval(xb2 - 6, yb2 - 6, 12, 12)
             g22.fillOval(xb3 - 6, yb3 - 6, 12, 12)
             g22.color = Color.RED
-            //g22.drawOval(xb3-3, yb3-3, 6, 6);
+            // g22.drawOval(xb3-3, yb3-3, 6, 6);
             g22.fillOval(xb2 - 3, yb2 - 3, 6, 6)
             g22.fillOval(xb1 - 3, yb1 - 3, 6, 6)
         } catch (ex: InvalidStateException) {

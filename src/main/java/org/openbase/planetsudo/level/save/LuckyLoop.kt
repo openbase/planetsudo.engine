@@ -7,12 +7,10 @@ package org.openbase.planetsudo.level.save
 import org.openbase.planetsudo.geometry.Base2D
 import org.openbase.planetsudo.geometry.Direction2D
 import org.openbase.planetsudo.level.AbstractLevel
-import org.openbase.planetsudo.level.ResourcePlacement
 import org.openbase.planetsudo.level.ResourceRandomRectangle
 import org.openbase.planetsudo.level.levelobjects.Resource.ResourceType
 import java.awt.Color
 import java.awt.Polygon
-
 
 /**
  *
@@ -61,7 +59,7 @@ class LuckyLoop : AbstractLevel() {
 
     override fun loadHomePositions() = listOf(
         Base2D(150.0, 150.0, Direction2D.DOWN),
-        Base2D(1650.0, 1300.0, Direction2D.DOWN),
+        Base2D(1650.0, 1300.0, Direction2D.DOWN)
     )
 
     override fun loadResourcePlacement() = listOf(
@@ -76,7 +74,7 @@ class LuckyLoop : AbstractLevel() {
         ResourceRandomRectangle(925, 0, 925, 725, 30, ResourceType.ExtraAgentFuel),
         ResourceRandomRectangle(925, 725, 925, 725, 30, ResourceType.ExtraAgentFuel),
         ResourceRandomRectangle(950, 350, 300, 300, 20, ResourceType.ExtraMothershipFuel),
-        ResourceRandomRectangle(550, 800, 300, 300, 20, ResourceType.ExtraMothershipFuel),
+        ResourceRandomRectangle(550, 800, 300, 300, 20, ResourceType.ExtraMothershipFuel)
     )
 
     override fun loadLevelColor(): Color {

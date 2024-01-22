@@ -6,6 +6,7 @@ package org.openbase.planetsudo.game.strategy
 
 import org.openbase.planetsudo.game.GameManager
 import org.openbase.planetsudo.game.SwatTeam
+import org.openbase.planetsudo.game.SwatTeam.*
 import org.openbase.planetsudo.level.AbstractLevel
 import org.openbase.planetsudo.level.levelobjects.Agent
 import org.openbase.planetsudo.level.levelobjects.AgentInterface
@@ -15,7 +16,6 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.beans.PropertyChangeEvent
 import java.util.*
-import org.openbase.planetsudo.game.SwatTeam.*
 
 /**
  *
@@ -29,7 +29,6 @@ abstract class AbstractStrategy(val agent: AgentInterface) : Runnable {
     val mothershipInternal: Mothership by lazy { strategyOwner.mothership }
     private val rules: TreeMap<Int, Rule> = TreeMap()
     private val gameManager: GameManager = GameManager.gameManager
-
 
     @JvmField
     val agentCount: Int
@@ -85,7 +84,7 @@ abstract class AbstractStrategy(val agent: AgentInterface) : Runnable {
     }
 
     fun getKey(rule: Rule): Int {
-        // Auto generate priority if rule does not contain any priority. 
+        // Auto generate priority if rule does not contain any priority.
         if (rule.priority == -1) {
             return -rules.size
         }
@@ -143,12 +142,10 @@ abstract class AbstractStrategy(val agent: AgentInterface) : Runnable {
 
     protected abstract fun loadAgentCount(): Int
 
-
     protected infix fun RuleBuilder.then(action: AgentInterface.() -> Unit): Unit = this
         .apply { this.action = { agent.action() } }
         .build()
         .let { createRule(it) }
-
 
     protected infix fun String.all(builder: RuleBuilder): RuleBuilder =
         RuleBuilder(name = this@all).merge(builder).swat(ALL)
@@ -164,6 +161,6 @@ abstract class AbstractStrategy(val agent: AgentInterface) : Runnable {
     fun inCase(condition: () -> Boolean): RuleBuilder = RuleBuilder().inCase(condition)
 
     companion object {
-        const val DEFAULT_GAME_CYCLE: Long = 50 //ms
+        const val DEFAULT_GAME_CYCLE: Long = 50 // ms
     }
 }

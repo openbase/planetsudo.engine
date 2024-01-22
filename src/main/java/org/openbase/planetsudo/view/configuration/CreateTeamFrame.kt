@@ -45,14 +45,13 @@ class CreateTeamFrame : JFrame() {
         }
         val color = colorChooserButton!!.background
 
-
-        //			logger.info("try to load "+ AbstractStrategy.class.getPackage().getName()+"."+strategyTextField.getText());
-//			strategy = (Class<AbstractStrategy>) getClass().getClassLoader().loadClass(AbstractStrategy.class.getPackage().getName()+"."+strategyTextField.getText());
-//		} catch (ClassNotFoundException ex) {
-//			strategyTextField.setForeground(Color.RED);
-//			logger.error("Could not find strategy!", ex);
-//			return;
-//		}
+        // 			logger.info("try to load "+ AbstractStrategy.class.getPackage().getName()+"."+strategyTextField.getText());
+// 			strategy = (Class<AbstractStrategy>) getClass().getClassLoader().loadClass(AbstractStrategy.class.getPackage().getName()+"."+strategyTextField.getText());
+// 		} catch (ClassNotFoundException ex) {
+// 			strategyTextField.setForeground(Color.RED);
+// 			logger.error("Could not find strategy!", ex);
+// 			return;
+// 		}
         try {
             strategy = loadStrategy(strategyTextField!!.text)
         } catch (ex: Exception) {
@@ -184,11 +183,11 @@ class CreateTeamFrame : JFrame() {
         pack()
     } // </editor-fold>//GEN-END:initComponents
 
-    private fun createButtonActionPerformed(evt: ActionEvent) { //GEN-FIRST:event_createButtonActionPerformed
+    private fun createButtonActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_createButtonActionPerformed
         createTeam()
-    } //GEN-LAST:event_createButtonActionPerformed
+    } // GEN-LAST:event_createButtonActionPerformed
 
-    private fun colorChooserButtonActionPerformed(evt: ActionEvent) { //GEN-FIRST:event_colorChooserButtonActionPerformed
+    private fun colorChooserButtonActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_colorChooserButtonActionPerformed
         val worker: SwingWorker<*, *> = object : SwingWorker<Any?, Any?>() {
             @Throws(Exception::class)
             override fun doInBackground(): Any? {
@@ -199,11 +198,11 @@ class CreateTeamFrame : JFrame() {
             }
         }
         worker.execute()
-    } //GEN-LAST:event_colorChooserButtonActionPerformed
+    } // GEN-LAST:event_colorChooserButtonActionPerformed
 
-    private fun nameTextFieldActionPerformed(evt: ActionEvent) { //GEN-FIRST:event_nameTextFieldActionPerformed
+    private fun nameTextFieldActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_nameTextFieldActionPerformed
         // TODO add your handling code here:
-    } //GEN-LAST:event_nameTextFieldActionPerformed
+    } // GEN-LAST:event_nameTextFieldActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private var colorChooserButton: JButton? = null

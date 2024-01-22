@@ -25,17 +25,17 @@ class LevelLoader {
 
     private fun update() {
         // Read Levelfiles
-        //File levelFolder = new File("build/classes/planetsudo/level/save/");
-//		File levelFolder = new File(CommandParameterParser.getAttribute(SetLevelPathCommand.class).getValue());
-//		if(!levelFolder.exists()) {
-//			logger.error("Could not find level folder! "+CommandParameterParser.getAttribute(SetLevelPathCommand.class).getValue()+" does not exist!");
-//			return;
-//		}
-//		String[] levelClassNameList = levelFolder.list();
-//		if(levelClassNameList == null) {
-//			logger.error("Level folder is empty!!");
-//			return;
-//		}
+        // File levelFolder = new File("build/classes/planetsudo/level/save/");
+// 		File levelFolder = new File(CommandParameterParser.getAttribute(SetLevelPathCommand.class).getValue());
+// 		if(!levelFolder.exists()) {
+// 			logger.error("Could not find level folder! "+CommandParameterParser.getAttribute(SetLevelPathCommand.class).getValue()+" does not exist!");
+// 			return;
+// 		}
+// 		String[] levelClassNameList = levelFolder.list();
+// 		if(levelClassNameList == null) {
+// 			logger.error("Level folder is empty!!");
+// 			return;
+// 		}
 
         for (levelClassName in levelClasses) {
             logger.info("Load Level: $levelClassName")

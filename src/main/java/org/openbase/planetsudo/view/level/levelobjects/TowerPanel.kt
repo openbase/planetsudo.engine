@@ -9,7 +9,6 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.awt.Color
 import java.awt.Graphics2D
-import java.awt.event.MouseEvent
 import java.beans.PropertyChangeEvent
 import java.beans.PropertyChangeListener
 
@@ -17,13 +16,15 @@ import java.beans.PropertyChangeListener
  *
  * @author [Divine Threepwood](mailto:divine@openbase.org)
  */
-class TowerPanel(tower: Tower, parentPanel: LevelPanel) : AbstractLevelObjectPanel<Tower, LevelPanel>(
-    tower,
-    tower.polygon,
-    getImageURI(tower.type),
-    parentPanel,
-    DrawLayer.BACKGROUND
-), PropertyChangeListener {
+class TowerPanel(tower: Tower, parentPanel: LevelPanel) :
+    AbstractLevelObjectPanel<Tower, LevelPanel>(
+        tower,
+        tower.polygon,
+        getImageURI(tower.type),
+        parentPanel,
+        DrawLayer.BACKGROUND
+    ),
+    PropertyChangeListener {
     private var towerTopPanel: TowerTopPanel? = null
     private val towerDirection2D: Direction2D
     private val teamColor: Color?

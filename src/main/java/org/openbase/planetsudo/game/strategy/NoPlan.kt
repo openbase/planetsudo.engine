@@ -20,7 +20,7 @@ class NoPlan(agent: AgentInterface) : AbstractStrategy(agent) {
     }
 
     override fun loadRules() {
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(0, "Just Go") {
             override fun constraint(): Boolean {
                 return true
@@ -28,10 +28,10 @@ class NoPlan(agent: AgentInterface) : AbstractStrategy(agent) {
 
             override fun action() {
                 agent!!.go()
-                //agent.
+                // agent.
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(999, "Wall") {
             override fun constraint(): Boolean {
                 return agent!!.isCollisionDetected
@@ -41,7 +41,7 @@ class NoPlan(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.turnRight(95)
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(500, "Flee") {
             override fun constraint(): Boolean {
                 return agent!!.seeAdversaryAgent()
@@ -52,7 +52,7 @@ class NoPlan(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent.turnRight(90)
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(12, "Harvesting") {
             override fun constraint(): Boolean {
                 return agent!!.isCarryingResource
@@ -66,7 +66,7 @@ class NoPlan(agent: AgentInterface) : AbstractStrategy(agent) {
                 }
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(10, "Collecting") {
             override fun constraint(): Boolean {
                 return agent!!.isTouchingResource
@@ -76,7 +76,7 @@ class NoPlan(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.pickupResource()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(9, "MoveToRess") {
             override fun constraint(): Boolean {
                 return agent!!.seeResource()
@@ -86,7 +86,7 @@ class NoPlan(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.goToResource()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(13, "Help") {
             override fun constraint(): Boolean {
                 return agent!!.seeLostTeamAgent()
@@ -96,7 +96,7 @@ class NoPlan(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.spendTeamAgentFuel(3)
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(800, "Fuel") {
             override fun constraint(): Boolean {
                 return agent!!.isAtMothership && (agent.fuelInPercent <= 50)

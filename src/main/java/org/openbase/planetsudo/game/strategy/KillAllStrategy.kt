@@ -22,7 +22,7 @@ class KillAllStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
     }
 
     override fun loadRules() {
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(0, "Just Go") {
             override fun constraint(): Boolean {
                 return true
@@ -32,7 +32,7 @@ class KillAllStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.go()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(1010, "Wand!") {
             override fun constraint(): Boolean {
                 return agent!!.isCollisionDetected
@@ -42,7 +42,7 @@ class KillAllStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.turnRandom()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(500, "Rohstoff S.") {
             override fun constraint(): Boolean {
                 return agent!!.seeResource()
@@ -52,18 +52,18 @@ class KillAllStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.goToResource()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(510, "Rohstoff T.") {
             override fun constraint(): Boolean {
                 return agent!!.resourceType != ResourceType.Mine &&
-                        agent.isTouchingResource
+                    agent.isTouchingResource
             }
 
             override fun action() {
                 agent!!.pickupResource()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(600, "Rohstoff Z.") {
             override fun constraint(): Boolean {
                 return agent!!.isCarryingResource
@@ -73,11 +73,11 @@ class KillAllStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.goToMothership()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(1005, "Rohstoff A.") {
             override fun constraint(): Boolean {
                 return agent!!.isCarryingResource &&
-                        agent.isAtMothership
+                    agent.isAtMothership
             }
 
             override fun action() {
@@ -85,8 +85,7 @@ class KillAllStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
             }
         })
 
-
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(997, "Tank Bewachung") {
             override fun constraint(): Boolean {
                 return agent!!.fuelInPercent <= 40
@@ -96,18 +95,18 @@ class KillAllStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.goToMothership()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(999, "Tankbewachung2.") {
             override fun constraint(): Boolean {
                 return agent!!.fuelInPercent <= 40 &&
-                        agent.isAtMothership
+                    agent.isAtMothership
             }
 
             override fun action() {
                 agent!!.orderFuel(100)
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(701, "Feinkontakt") {
             override fun constraint(): Boolean {
                 return agent!!.seeAdversaryAgent()
@@ -117,7 +116,7 @@ class KillAllStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.fightWithAdversaryAgent()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(702, "Big Feinkontakt") {
             override fun constraint(): Boolean {
                 return agent!!.seeAdversaryMothership()
@@ -140,7 +139,7 @@ class KillAllStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(object : Rule(904, "unterbeschuss 2") {
             override fun constraint(): Boolean {
                 return agent!!.isUnderAttack &&
-                        !agent.seeAdversaryAgent() && agent.fuelInPercent >= 50
+                    !agent.seeAdversaryAgent() && agent.fuelInPercent >= 50
             }
 
             override fun action() {
@@ -150,7 +149,7 @@ class KillAllStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(object : Rule(903, "unterbeschuss 2") {
             override fun constraint(): Boolean {
                 return agent!!.isUnderAttack &&
-                        !agent.seeAdversaryAgent() && agent.fuelInPercent < 50
+                    !agent.seeAdversaryAgent() && agent.fuelInPercent < 50
             }
 
             override fun action() {
@@ -159,8 +158,10 @@ class KillAllStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         })
         createRule(object : Rule(903, "mothership repair") {
             override fun constraint(): Boolean {
-                return (mothership!!.shieldForce <= 55
-                        && !agent!!.isAtMothership)
+                return (
+                    mothership!!.shieldForce <= 55 &&
+                        !agent!!.isAtMothership
+                    )
             }
 
             override fun action() {
@@ -169,8 +170,10 @@ class KillAllStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         })
         createRule(object : Rule(903, "mothership repair") {
             override fun constraint(): Boolean {
-                return (mothership!!.shieldForce <= 55
-                        && agent!!.isAtMothership)
+                return (
+                    mothership!!.shieldForce <= 55 &&
+                        agent!!.isAtMothership
+                    )
             }
 
             override fun action() {

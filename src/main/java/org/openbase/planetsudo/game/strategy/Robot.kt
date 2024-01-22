@@ -22,7 +22,7 @@ class Robot(agent: AgentInterface) : AbstractStrategy(agent) {
     }
 
     override fun loadRules() {
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(1000, "Drehe bei Wand") {
             override fun constraint(): Boolean {
                 return agent!!.isCollisionDetected
@@ -96,7 +96,7 @@ class Robot(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.fightWithAdversaryAgent()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(820, "Resource ins Mutterschiff") {
             override fun constraint(): Boolean {
                 return agent!!.isAtMothership && agent.isCarryingResource
@@ -106,7 +106,7 @@ class Robot(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.deliverResourceToMothership()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(800, "Bewege zum Mutterschiff") {
             override fun constraint(): Boolean {
                 return agent!!.isCarryingResource
@@ -116,7 +116,7 @@ class Robot(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.goToMothership()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(595, "Bomben Vermeiden") {
             override fun constraint(): Boolean {
                 return agent!!.isTouchingResource && agent.resourceType == ResourceType.Mine
@@ -126,7 +126,7 @@ class Robot(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.turnLeft(42)
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(590, "sammle resource") {
             override fun constraint(): Boolean {
                 return agent!!.isTouchingResource && agent.resourceType != ResourceType.Mine
@@ -137,8 +137,7 @@ class Robot(agent: AgentInterface) : AbstractStrategy(agent) {
             }
         })
 
-
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(500, "gehe zu resource") {
             override fun constraint(): Boolean {
                 return agent!!.seeResource()
@@ -148,7 +147,7 @@ class Robot(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.goToResource()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(0, "gehe geradeaus") {
             override fun constraint(): Boolean {
                 return true

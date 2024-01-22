@@ -22,7 +22,7 @@ class SchnitzelsStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
     }
 
     override fun loadRules() {
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(1000, "Drehe bei Wand") {
             override fun constraint(): Boolean {
                 return agent!!.isCollisionDetected
@@ -33,7 +33,7 @@ class SchnitzelsStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
             }
         })
 
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(0, "Gehe geradeaus") {
             override fun constraint(): Boolean {
                 return true
@@ -44,7 +44,7 @@ class SchnitzelsStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
             }
         })
 
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(900, "Sehe Resource") {
             override fun constraint(): Boolean {
                 return agent!!.seeResource()
@@ -55,11 +55,11 @@ class SchnitzelsStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
             }
         })
 
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(901, "Berührt Resource") {
             override fun constraint(): Boolean {
                 return agent!!.isTouchingResource && agent.resourceType !=
-                        ResourceType.Mine
+                    ResourceType.Mine
             }
 
             override fun action() {
@@ -67,7 +67,7 @@ class SchnitzelsStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
             }
         })
 
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(902, "Trägt Resource") {
             override fun constraint(): Boolean {
                 return agent!!.isCarryingResource
@@ -78,8 +78,7 @@ class SchnitzelsStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
             }
         })
 
-
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(903, "Beim Mutterschiff und Tankcheck") {
             override fun constraint(): Boolean {
                 return agent!!.isAtMothership && agent.fuelInPercent <= 65
@@ -90,7 +89,7 @@ class SchnitzelsStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
             }
         })
 
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(904, "Beim Mutterschiff und Resource") {
             override fun constraint(): Boolean {
                 return agent!!.isAtMothership && agent.isCarryingResource
@@ -101,7 +100,7 @@ class SchnitzelsStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
             }
         })
 
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(950, "Unter beschuss") {
             override fun constraint(): Boolean {
                 return agent!!.isUnderAttack
@@ -111,7 +110,7 @@ class SchnitzelsStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.fightWithAdversaryAgent()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(945, "Feindkontakt") {
             override fun constraint(): Boolean {
                 return agent!!.seeAdversaryAgent()
@@ -121,7 +120,7 @@ class SchnitzelsStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.fightWithAdversaryAgent()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(940, "Agent helfen") {
             override fun constraint(): Boolean {
                 return agent!!.seeLostTeamAgent()
@@ -131,7 +130,7 @@ class SchnitzelsStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.spendTeamAgentFuel(75)
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(799, "Feindliches Mutterschiff") {
             override fun constraint(): Boolean {
                 return agent!!.seeAdversaryMothership()
@@ -141,7 +140,7 @@ class SchnitzelsStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.fightWithAdversaryMothership()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(400, "Mutterschiff reparieren") {
             override fun constraint(): Boolean {
                 return mothership!!.isDamaged

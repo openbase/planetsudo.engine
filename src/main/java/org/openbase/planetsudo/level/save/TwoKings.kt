@@ -7,7 +7,6 @@ package org.openbase.planetsudo.level.save
 import org.openbase.planetsudo.geometry.Base2D
 import org.openbase.planetsudo.geometry.Direction2D
 import org.openbase.planetsudo.level.AbstractLevel
-import org.openbase.planetsudo.level.ResourcePlacement
 import org.openbase.planetsudo.level.ResourceRandomRectangle
 import org.openbase.planetsudo.level.levelobjects.Resource.ResourceType
 import java.awt.Color
@@ -33,7 +32,7 @@ class TwoKings : AbstractLevel() {
 
     override fun loadHomePositions() = listOf(
         Base2D(750.0, 150.0, Direction2D.DOWN),
-        Base2D(750.0, 1350.0, Direction2D.DOWN),
+        Base2D(750.0, 1350.0, Direction2D.DOWN)
     )
 
     override fun loadResourcePlacement() = listOf(
@@ -46,7 +45,7 @@ class TwoKings : AbstractLevel() {
         ResourceRandomRectangle(0, 0, 1500, 650, 10, ResourceType.Normal),
         ResourceRandomRectangle(0, 850, 1500, 650, 10, ResourceType.Normal),
         ResourceRandomRectangle(0, 0, 1500, 650, 5, ResourceType.DoublePoints),
-        ResourceRandomRectangle(0, 850, 1500, 650, 5, ResourceType.DoublePoints),
+        ResourceRandomRectangle(0, 850, 1500, 650, 5, ResourceType.DoublePoints)
     )
 
     override fun loadLevelColor() = Color(37, 67, 162)
@@ -57,12 +56,14 @@ class TwoKings : AbstractLevel() {
             addPoint(300, 650)
             addPoint(300, 850)
             addPoint(0, 850)
-        }, Polygon().apply {
+        },
+        Polygon().apply {
             addPoint(500, 650)
             addPoint(1000, 650)
             addPoint(1000, 850)
             addPoint(500, 850)
-        }, Polygon().apply {
+        },
+        Polygon().apply {
             addPoint(1200, 650)
             addPoint(1500, 650)
             addPoint(1500, 850)

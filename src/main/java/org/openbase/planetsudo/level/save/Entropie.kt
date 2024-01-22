@@ -7,7 +7,6 @@ package org.openbase.planetsudo.level.save
 import org.openbase.planetsudo.geometry.Base2D
 import org.openbase.planetsudo.geometry.Direction2D
 import org.openbase.planetsudo.level.AbstractLevel
-import org.openbase.planetsudo.level.ResourcePlacement
 import org.openbase.planetsudo.level.ResourceRandomRectangle
 import org.openbase.planetsudo.level.levelobjects.Resource.ResourceType
 import java.awt.Color
@@ -35,7 +34,7 @@ class Entropie : AbstractLevel() {
 
     override fun loadHomePositions() = listOf(
         Base2D(100.0, 200.0, Direction2D.DOWN),
-        Base2D(100.0, 1200.0, Direction2D.DOWN),
+        Base2D(100.0, 1200.0, Direction2D.DOWN)
     )
 
     override fun loadResourcePlacement() = listOf(
@@ -43,7 +42,7 @@ class Entropie : AbstractLevel() {
         ResourceRandomRectangle(450, 0, 450, 1400, 20, ResourceType.DoublePoints),
         ResourceRandomRectangle(150, 600, 300, 200, 50, ResourceType.ExtremPoint),
         ResourceRandomRectangle(800, 0, 100, 1400, 20, ResourceType.ExtraAgentFuel),
-        ResourceRandomRectangle(150, 600, 300, 200, 10, ResourceType.ExtraMothershipFuel),
+        ResourceRandomRectangle(150, 600, 300, 200, 10, ResourceType.ExtraMothershipFuel)
     )
 
     override fun loadLevelColor(): Color {

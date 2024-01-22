@@ -7,7 +7,6 @@ package org.openbase.planetsudo.level.save
 import org.openbase.planetsudo.geometry.Base2D
 import org.openbase.planetsudo.geometry.Direction2D
 import org.openbase.planetsudo.level.AbstractLevel
-import org.openbase.planetsudo.level.ResourcePlacement
 import org.openbase.planetsudo.level.ResourceRandomRectangle
 import org.openbase.planetsudo.level.levelobjects.Resource.ResourceType
 import java.awt.Color
@@ -41,10 +40,9 @@ class Broken : AbstractLevel() {
         addPoint(0, 200)
     }
 
-
     override fun loadHomePositions(): List<Base2D> = listOf(
         Base2D(200.0, 1800.0, Direction2D.DOWN),
-        Base2D(1800.0, 200.0, Direction2D.DOWN),
+        Base2D(1800.0, 200.0, Direction2D.DOWN)
     )
 
     override fun loadResourcePlacement() = listOf(
@@ -52,7 +50,7 @@ class Broken : AbstractLevel() {
         ResourceRandomRectangle(1400, 700, 300, 500, 35, ResourceType.ExtremPoint),
         ResourceRandomRectangle(300, 800, 300, 500, 35, ResourceType.ExtremPoint),
         ResourceRandomRectangle(700, 0, 600, 2000, 30, ResourceType.ExtraMothershipFuel),
-        ResourceRandomRectangle(700, 0, 600, 2000, 50, ResourceType.ExtraAgentFuel),
+        ResourceRandomRectangle(700, 0, 600, 2000, 50, ResourceType.ExtraAgentFuel)
     )
 
     override fun loadLevelColor() = Color(74, 164, 94)

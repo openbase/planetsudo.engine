@@ -37,7 +37,6 @@ class MainGUI : JFrame, PropertyChangeListener {
     private var levelLoadingPanel: LevelLoadingPanel? = null
     private var gamePanel: GamePanel? = null
 
-
     /**
      * Creates new form MainGui
      */
@@ -87,8 +86,8 @@ class MainGUI : JFrame, PropertyChangeListener {
         LOGGER.info("setFullscreenMode $fullscreenMode")
         isVisible = false
         if (fullscreenMode) {
-            //setSize(guiController.getVisualFeedbackConfig().getFrameDimension());
-            //setSize(screenDim);
+            // setSize(guiController.getVisualFeedbackConfig().getFrameDimension());
+            // setSize(screenDim);
             setLocation(0, 0)
             if (isDisplayable) dispose()
             isUndecorated = true
@@ -99,13 +98,13 @@ class MainGUI : JFrame, PropertyChangeListener {
             try {
                 device.fullScreenWindow = this // Setzen des FullScreenmodus.
                 this.validate()
-                //fullscreenModeMenuItem.setText("Leave FullScreen Mode");
+                // fullscreenModeMenuItem.setText("Leave FullScreen Mode");
             } catch (ex: Exception) {
                 LOGGER.error("no Fullscreen.", ex)
                 device.fullScreenWindow = null
             }
         } else {
-            //pack();
+            // pack();
             setLocation(X_LOCATION, Y_LOCATION)
             size = screenDim
             extendedState = this.extendedState or MAXIMIZED_BOTH
@@ -118,7 +117,7 @@ class MainGUI : JFrame, PropertyChangeListener {
 
             try {
                 device.fullScreenWindow = null // Setzen des FullScreenmodus.
-                //fullscreenModeMenuItem.setText("Enter FullScreen Mode");
+                // fullscreenModeMenuItem.setText("Enter FullScreen Mode");
             } catch (ex: Exception) {
                 LOGGER.error("no Fullscreen.", ex)
                 device.fullScreenWindow = null
@@ -389,66 +388,66 @@ class MainGUI : JFrame, PropertyChangeListener {
         pack()
     } // </editor-fold>//GEN-END:initComponents
 
-    private fun exitMenuItemActionPerformed(evt: ActionEvent) { //GEN-FIRST:event_exitMenuItemActionPerformed
+    private fun exitMenuItemActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_exitMenuItemActionPerformed
         System.exit(0)
-    } //GEN-LAST:event_exitMenuItemActionPerformed
+    } // GEN-LAST:event_exitMenuItemActionPerformed
 
-    private fun jCheckBoxMenuItem1ActionPerformed(evt: ActionEvent) { //GEN-FIRST:event_jCheckBoxMenuItem1ActionPerformed
+    private fun jCheckBoxMenuItem1ActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_jCheckBoxMenuItem1ActionPerformed
         setFullScreenMode(jCheckBoxMenuItem1!!.isSelected)
-    } //GEN-LAST:event_jCheckBoxMenuItem1ActionPerformed
+    } // GEN-LAST:event_jCheckBoxMenuItem1ActionPerformed
 
-    private fun startPauseMenuItemActionPerformed(evt: ActionEvent) { //GEN-FIRST:event_startPauseMenuItemActionPerformed
+    private fun startPauseMenuItemActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_startPauseMenuItemActionPerformed
         when (gameManager.gameState) {
             GameState.Configuration -> gameManager.startGame()
             GameState.Running -> gameManager.switchGameState(GameState.Break)
             GameState.Break -> gameManager.switchGameState(GameState.Running)
             else -> {}
         }
-    } //GEN-LAST:event_startPauseMenuItemActionPerformed
+    } // GEN-LAST:event_startPauseMenuItemActionPerformed
 
-    private fun displayTeamPanelCheckBoxMenuItemActionPerformed(evt: ActionEvent) { //GEN-FIRST:event_displayTeamPanelCheckBoxMenuItemActionPerformed
+    private fun displayTeamPanelCheckBoxMenuItemActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_displayTeamPanelCheckBoxMenuItemActionPerformed
         gamePanel!!.displayTeamPanel(displayTeamPanelCheckBoxMenuItem!!.isSelected)
-    } //GEN-LAST:event_displayTeamPanelCheckBoxMenuItemActionPerformed
+    } // GEN-LAST:event_displayTeamPanelCheckBoxMenuItemActionPerformed
 
-    private fun jCheckBoxMenuItem3ActionPerformed(evt: ActionEvent) { //GEN-FIRST:event_jCheckBoxMenuItem3ActionPerformed
+    private fun jCheckBoxMenuItem3ActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_jCheckBoxMenuItem3ActionPerformed
         AgentPanel.showStateLabel = jCheckBoxMenuItem3!!.isSelected
-    } //GEN-LAST:event_jCheckBoxMenuItem3ActionPerformed
+    } // GEN-LAST:event_jCheckBoxMenuItem3ActionPerformed
 
-    private fun stopMenuItemActionPerformed(evt: ActionEvent) { //GEN-FIRST:event_stopMenuItemActionPerformed
+    private fun stopMenuItemActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_stopMenuItemActionPerformed
         gameManager.switchGameState(GameState.Configuration)
-    } //GEN-LAST:event_stopMenuItemActionPerformed
+    } // GEN-LAST:event_stopMenuItemActionPerformed
 
-    private fun aboutMenuItemActionPerformed(evt: ActionEvent) { //GEN-FIRST:event_aboutMenuItemActionPerformed
+    private fun aboutMenuItemActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_aboutMenuItemActionPerformed
         HelpFrame.Companion.display()
-    } //GEN-LAST:event_aboutMenuItemActionPerformed
+    } // GEN-LAST:event_aboutMenuItemActionPerformed
 
-    private fun contentsMenuItemActionPerformed(evt: ActionEvent) { //GEN-FIRST:event_contentsMenuItemActionPerformed
+    private fun contentsMenuItemActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_contentsMenuItemActionPerformed
         GameContext.Companion.display()
-    } //GEN-LAST:event_contentsMenuItemActionPerformed
+    } // GEN-LAST:event_contentsMenuItemActionPerformed
 
-    private fun finalCalculationMenuItemActionPerformed(evt: ActionEvent) { //GEN-FIRST:event_finalCalculationMenuItemActionPerformed
+    private fun finalCalculationMenuItemActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_finalCalculationMenuItemActionPerformed
         finalizeGame()
-    } //GEN-LAST:event_finalCalculationMenuItemActionPerformed
+    } // GEN-LAST:event_finalCalculationMenuItemActionPerformed
 
-    private fun createTeamMenuItemActionPerformed(evt: ActionEvent) { //GEN-FIRST:event_createTeamMenuItemActionPerformed
+    private fun createTeamMenuItemActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_createTeamMenuItemActionPerformed
         display()
-    } //GEN-LAST:event_createTeamMenuItemActionPerformed
+    } // GEN-LAST:event_createTeamMenuItemActionPerformed
 
-    private fun jMenuItem2ActionPerformed(evt: ActionEvent) { //GEN-FIRST:event_jMenuItem2ActionPerformed
+    private fun jMenuItem2ActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_jMenuItem2ActionPerformed
         SpeedControlFrame.Companion.display()
-    } //GEN-LAST:event_jMenuItem2ActionPerformed
+    } // GEN-LAST:event_jMenuItem2ActionPerformed
 
-    private fun jMenuItem3ActionPerformed(evt: ActionEvent) { //GEN-FIRST:event_jMenuItem3ActionPerformed
+    private fun jMenuItem3ActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_jMenuItem3ActionPerformed
         gameManager.setGameOverSoon()
-    } //GEN-LAST:event_jMenuItem3ActionPerformed
+    } // GEN-LAST:event_jMenuItem3ActionPerformed
 
-    private fun jMenuItem4ActionPerformed(evt: ActionEvent) { //GEN-FIRST:event_jMenuItem4ActionPerformed
+    private fun jMenuItem4ActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_jMenuItem4ActionPerformed
         try {
             resetDefaultTeam()
         } catch (ex: Exception) {
             LOGGER.warn("Could not reset default team!")
         }
-    } //GEN-LAST:event_jMenuItem4ActionPerformed
+    } // GEN-LAST:event_jMenuItem4ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private var aboutMenuItem: JMenuItem? = null

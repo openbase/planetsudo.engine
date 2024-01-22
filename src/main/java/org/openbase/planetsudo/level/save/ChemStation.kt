@@ -7,7 +7,6 @@ package org.openbase.planetsudo.level.save
 import org.openbase.planetsudo.geometry.Base2D
 import org.openbase.planetsudo.geometry.Direction2D
 import org.openbase.planetsudo.level.AbstractLevel
-import org.openbase.planetsudo.level.ResourcePlacement
 import org.openbase.planetsudo.level.ResourceRandomRectangle
 import org.openbase.planetsudo.level.levelobjects.Resource.ResourceType
 import java.awt.Color
@@ -31,7 +30,7 @@ class ChemStation : AbstractLevel() {
 
     override fun loadHomePositions() = listOf(
         Base2D(1400.0, 1000.0, Direction2D.DOWN),
-        Base2D(1400.0, 1800.0, Direction2D.DOWN),
+        Base2D(1400.0, 1800.0, Direction2D.DOWN)
     )
 
     override fun loadResourcePlacement() = listOf(
@@ -43,7 +42,7 @@ class ChemStation : AbstractLevel() {
         ResourceRandomRectangle(1600, 1300, 200, 200, 5, ResourceType.ExtremPoint),
         ResourceRandomRectangle(400, 400, 600, 2000, 30, ResourceType.ExtraMothershipFuel),
         ResourceRandomRectangle(1800, 400, 600, 2000, 30, ResourceType.ExtraMothershipFuel),
-        ResourceRandomRectangle(100, 1200, 2600, 400, 70, ResourceType.ExtraAgentFuel),
+        ResourceRandomRectangle(100, 1200, 2600, 400, 70, ResourceType.ExtraAgentFuel)
     )
 
     override fun loadLevelColor(): Color {

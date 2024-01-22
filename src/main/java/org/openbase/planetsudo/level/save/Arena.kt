@@ -7,7 +7,6 @@ package org.openbase.planetsudo.level.save
 import org.openbase.planetsudo.geometry.Base2D
 import org.openbase.planetsudo.geometry.Direction2D
 import org.openbase.planetsudo.level.AbstractLevel
-import org.openbase.planetsudo.level.ResourcePlacement
 import org.openbase.planetsudo.level.ResourceRandomRectangle
 import org.openbase.planetsudo.level.levelobjects.Resource.ResourceType
 import java.awt.Color
@@ -39,7 +38,7 @@ class Arena : AbstractLevel() {
 
     override fun loadHomePositions() = listOf(
         Base2D(500.0, 100.0, Direction2D.UP),
-        Base2D(500.0, 900.0, Direction2D.UP),
+        Base2D(500.0, 900.0, Direction2D.UP)
     )
 
     override fun loadResourcePlacement() = listOf(

@@ -36,7 +36,7 @@ class StrategieNoxus(agent: AgentInterface) : AbstractStrategy(agent) {
     }
 
     override fun loadRules() {
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(1000, "Kollision!", SwatTeam.ALL) {
             override fun constraint(): Boolean {
                 return agent!!.isCollisionDetected
@@ -46,8 +46,8 @@ class StrategieNoxus(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.turnRandom()
             }
         })
-        //-------------------------------------------->
-        //-------------------------------------------->
+        // -------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(870, "Warte...") {
             override fun constraint(): Boolean {
                 return agent!!.fuelInPercent <= 6 && agent.isAtMothership && !mothership!!.hasFuel() && !agent.isUnderAttack && !mothership.isDamaged && !agent.isCarryingResource
@@ -56,8 +56,8 @@ class StrategieNoxus(agent: AgentInterface) : AbstractStrategy(agent) {
             override fun action() {
             }
         })
-        //-------------------------------------------->
-        //-------------------------------------------->
+        // -------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(860, "Auftanken...") {
             override fun constraint(): Boolean {
                 return agent!!.fuelInPercent <= 7 && agent.isAtMothership && mothership!!.hasFuel()
@@ -67,8 +67,8 @@ class StrategieNoxus(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.orderFuel(100)
             }
         })
-        //-------------------------------------------->
-        //-------------------------------------------->
+        // -------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(850, "Wenig Energie...") {
             override fun constraint(): Boolean {
                 return agent!!.fuelInPercent <= 7 && agent.hasFuel() && !agent.isUnderAttack
@@ -78,8 +78,8 @@ class StrategieNoxus(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.goToMothership()
             }
         })
-        //-------------------------------------------->
-        //-------------------------------------------->
+        // -------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(720, "Repariere Mutterschiff...") {
             override fun constraint(): Boolean {
                 return mothership!!.isDamaged && agent!!.isAtMothership && !agent.isUnderAttack
@@ -89,8 +89,8 @@ class StrategieNoxus(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.repairMothership()
             }
         })
-        //-------------------------------------------->
-        //-------------------------------------------->
+        // -------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(800, "Mutterschiff helfen...") {
             override fun constraint(): Boolean {
                 return mothership!!.isDamaged && !agent!!.isAtMothership
@@ -100,8 +100,8 @@ class StrategieNoxus(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.goToMothership()
             }
         })
-        //-------------------------------------------->
-        //-------------------------------------------->
+        // -------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(750, "Bekämpfe Agent...") {
             override fun constraint(): Boolean {
                 return agent!!.seeAdversaryAgent()
@@ -111,8 +111,8 @@ class StrategieNoxus(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.fightWithAdversaryAgent()
             }
         })
-        //-------------------------------------------->
-        //-------------------------------------------->
+        // -------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(740, "Suche Feind...") {
             override fun constraint(): Boolean {
                 return agent!!.isUnderAttack
@@ -122,8 +122,8 @@ class StrategieNoxus(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.turnRandom()
             }
         })
-        //-------------------------------------------->
-        //-------------------------------------------->
+        // -------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(610, "Mutterschiff verminen...") {
             override fun constraint(): Boolean {
                 return agent!!.seeAdversaryMothership() && agent.hasMine()
@@ -133,8 +133,8 @@ class StrategieNoxus(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.deployMine()
             }
         })
-        //-------------------------------------------->
-        //-------------------------------------------->
+        // -------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(600, "Bekämpfe Mutterschiff...") {
             override fun constraint(): Boolean {
                 return agent!!.seeAdversaryMothership()
@@ -145,8 +145,8 @@ class StrategieNoxus(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent.fightWithAdversaryMothership()
             }
         })
-        //-------------------------------------------->
-        //-------------------------------------------->
+        // -------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(350, "Notkanal schließen.") {
             override fun constraint(): Boolean {
                 return agent!!.isSupportOrdered && agent.fuelInPercent >= 7
@@ -156,8 +156,8 @@ class StrategieNoxus(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.cancelSupport()
             }
         })
-        //-------------------------------------------->
-        //-------------------------------------------->
+        // -------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(340, "Gestrandet...") {
             override fun constraint(): Boolean {
                 return !agent!!.hasFuel() && !agent.isAtMothership
@@ -167,8 +167,8 @@ class StrategieNoxus(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.orderSupport()
             }
         })
-        //-------------------------------------------->
-        //-------------------------------------------->
+        // -------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(310, "Energie Spenden...") {
             override fun constraint(): Boolean {
                 return mothership!!.needSomeoneSupport() && agent!!.seeLostTeamAgent()
@@ -178,8 +178,8 @@ class StrategieNoxus(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.spendTeamAgentFuel(7)
             }
         })
-        //-------------------------------------------->
-        //-------------------------------------------->
+        // -------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(300, "Agenten Helfen...") {
             override fun constraint(): Boolean {
                 return mothership!!.needSomeoneSupport()
@@ -189,8 +189,8 @@ class StrategieNoxus(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.goToSupportAgent()
             }
         })
-        //-------------------------------------------->
-        //-------------------------------------------->
+        // -------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(250, "Resource abliefern!") {
             override fun constraint(): Boolean {
                 return agent!!.isAtMothership && agent.isCarryingResource
@@ -201,8 +201,8 @@ class StrategieNoxus(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent.turnAround()
             }
         })
-        //-------------------------------------------->
-        //-------------------------------------------->
+        // -------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(230, "Berge Resource...") {
             override fun constraint(): Boolean {
                 return agent!!.isCarryingResource
@@ -212,8 +212,8 @@ class StrategieNoxus(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.goToMothership()
             }
         })
-        //-------------------------------------------->
-        //-------------------------------------------->
+        // -------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(220, "Mine!") {
             override fun constraint(): Boolean {
                 return (agent!!.isTouchingResource(ResourceType.Mine) || agent.isTouchingResource(ResourceType.ExtremPoint))
@@ -223,8 +223,8 @@ class StrategieNoxus(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.go()
             }
         })
-        //-------------------------------------------->
-        //-------------------------------------------->
+        // -------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(210, "Resource aufheben!") {
             override fun constraint(): Boolean {
                 return agent!!.isTouchingResource && !agent.isTouchingResource(ResourceType.Mine) && !agent.isTouchingResource(
@@ -236,8 +236,8 @@ class StrategieNoxus(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.pickupResource()
             }
         })
-        //-------------------------------------------->
-        //-------------------------------------------->
+        // -------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(200, "Resource gesichtet...") {
             override fun constraint(): Boolean {
                 return agent!!.seeResource()
@@ -247,8 +247,8 @@ class StrategieNoxus(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.goToResource()
             }
         })
-        //-------------------------------------------->
-        //-------------------------------------------->
+        // -------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(30, "Zwischentanken...") {
             override fun constraint(): Boolean {
                 return agent!!.isAtMothership && mothership!!.hasFuel() && !mothership.isBurning && !mothership.isDamaged && !agent.isUnderAttack && agent.fuelInPercent <= 95
@@ -258,8 +258,8 @@ class StrategieNoxus(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.orderFuel(100)
             }
         })
-        //-------------------------------------------->
-        //-------------------------------------------->
+        // -------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(20, "Marker entfernen.") {
             override fun constraint(): Boolean {
                 return agent!!.seeMarker()
@@ -269,8 +269,8 @@ class StrategieNoxus(agent: AgentInterface) : AbstractStrategy(agent) {
                 mothership!!.clearMarker()
             }
         })
-        //-------------------------------------------->
-        //-------------------------------------------->
+        // -------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(10, "Bewege zu Marker...") {
             override fun constraint(): Boolean {
                 return mothership!!.isMarkerDeployed
@@ -280,8 +280,8 @@ class StrategieNoxus(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.goToMarker()
             }
         })
-        //-------------------------------------------->
-        //-------------------------------------------->
+        // -------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(0, "Bewegung...") {
             override fun constraint(): Boolean {
                 return true
@@ -291,6 +291,6 @@ class StrategieNoxus(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.go()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
     }
 }

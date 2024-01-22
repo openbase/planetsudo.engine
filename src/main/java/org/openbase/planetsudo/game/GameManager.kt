@@ -5,7 +5,6 @@
 package org.openbase.planetsudo.game
 
 import org.openbase.planetsudo.level.AbstractLevel
-import org.openbase.planetsudo.level.save.SimpleWorld
 import org.openbase.planetsudo.main.GUIController
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

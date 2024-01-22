@@ -21,7 +21,7 @@ class BerlusconiStrategy(a: AgentInterface) : AbstractStrategy(a) {
     }
 
     override fun loadRules() {
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(1000, "Drehe bei Wand") {
             override fun constraint(): Boolean {
                 return agent!!.isCollisionDetected
@@ -32,7 +32,7 @@ class BerlusconiStrategy(a: AgentInterface) : AbstractStrategy(a) {
             }
         })
 
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(700, "Sehe Resource") {
             override fun constraint(): Boolean {
                 return agent!!.seeResource()
@@ -42,7 +42,7 @@ class BerlusconiStrategy(a: AgentInterface) : AbstractStrategy(a) {
                 agent!!.goToResource()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(800, "Schnapp die Resource") {
             override fun constraint(): Boolean {
                 return agent!!.isTouchingResource
@@ -52,7 +52,7 @@ class BerlusconiStrategy(a: AgentInterface) : AbstractStrategy(a) {
                 agent!!.pickupResource()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(900, "Bring Resource heim") {
             override fun constraint(): Boolean {
                 return agent!!.isCarryingResource
@@ -62,7 +62,7 @@ class BerlusconiStrategy(a: AgentInterface) : AbstractStrategy(a) {
                 agent!!.goToMothership()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(902, "Lade ab") {
             override fun constraint(): Boolean {
                 return agent!!.isAtMothership && agent.isCarryingResource
@@ -72,7 +72,7 @@ class BerlusconiStrategy(a: AgentInterface) : AbstractStrategy(a) {
                 agent!!.deliverResourceToMothership()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(801, "Feuer") {
             override fun constraint(): Boolean {
                 return agent!!.seeAdversaryAgent() && agent.isCarryingResource != true
@@ -82,7 +82,7 @@ class BerlusconiStrategy(a: AgentInterface) : AbstractStrategy(a) {
                 agent!!.fightWithAdversaryAgent()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(500, "tanken") {
             override fun constraint(): Boolean {
                 return agent!!.isAtMothership && agent.fuelInPercent <= 80
@@ -92,7 +92,7 @@ class BerlusconiStrategy(a: AgentInterface) : AbstractStrategy(a) {
                 agent!!.orderFuel(100)
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(1, "gehe geradeaus") {
             override fun constraint(): Boolean {
                 return true

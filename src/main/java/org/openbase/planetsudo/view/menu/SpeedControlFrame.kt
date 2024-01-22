@@ -76,7 +76,8 @@ class SpeedControlFrame : JFrame() {
                             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                 .addComponent(speedSlider, GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE.toInt())
                                 .addGroup(
-                                    GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    GroupLayout.Alignment.TRAILING,
+                                    layout.createSequentialGroup()
                                         .addGap(0, 0, Short.MAX_VALUE.toInt())
                                         .addComponent(defaultButton)
                                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
@@ -128,22 +129,22 @@ class SpeedControlFrame : JFrame() {
         return x
     }
 
-    private fun okButtonActionPerformed(evt: ActionEvent) { //GEN-FIRST:event_okButtonActionPerformed
+    private fun okButtonActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_okButtonActionPerformed
         dispose()
-    } //GEN-LAST:event_okButtonActionPerformed
+    } // GEN-LAST:event_okButtonActionPerformed
 
-    private fun defaultButtonActionPerformed(evt: ActionEvent) { //GEN-FIRST:event_defaultButtonActionPerformed
+    private fun defaultButtonActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_defaultButtonActionPerformed
         gameManager.setDefaultSpeed()
         speedSlider!!.value = 50
-    } //GEN-LAST:event_defaultButtonActionPerformed
+    } // GEN-LAST:event_defaultButtonActionPerformed
 
-    private fun speedSliderAncestorMoved(evt: AncestorEvent) { //GEN-FIRST:event_speedSliderAncestorMoved
+    private fun speedSliderAncestorMoved(evt: AncestorEvent) { // GEN-FIRST:event_speedSliderAncestorMoved
         gameManager.setGameSpeedFactor(sliderValueToSpeedFactor(speedSlider!!.value))
-    } //GEN-LAST:event_speedSliderAncestorMoved
+    } // GEN-LAST:event_speedSliderAncestorMoved
 
-    private fun speedSliderStateChanged(evt: ChangeEvent) { //GEN-FIRST:event_speedSliderStateChanged
+    private fun speedSliderStateChanged(evt: ChangeEvent) { // GEN-FIRST:event_speedSliderStateChanged
         gameManager.setGameSpeedFactor(sliderValueToSpeedFactor(speedSlider!!.value))
-    } //GEN-LAST:event_speedSliderStateChanged
+    } // GEN-LAST:event_speedSliderStateChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private var defaultButton: JButton? = null

@@ -157,7 +157,8 @@ class ConfigurationPanel : JPanel() {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(
-                    GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                    GroupLayout.Alignment.TRAILING,
+                    jPanel3Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(
                             levelPreviewDisplayPanel,
@@ -211,7 +212,8 @@ class ConfigurationPanel : JPanel() {
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(
-                    GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                    GroupLayout.Alignment.TRAILING,
+                    jPanel8Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(
                             LayoutStyle.ComponentPlacement.RELATED,
@@ -415,7 +417,8 @@ class ConfigurationPanel : JPanel() {
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(
-                    GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                    GroupLayout.Alignment.TRAILING,
+                    jPanel5Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(defaultTeamComboBox, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt())
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
@@ -601,7 +604,7 @@ class ConfigurationPanel : JPanel() {
         )
     } // </editor-fold>//GEN-END:initComponents
 
-    private fun LevelChooserComboBoxActionPerformed(evt: ActionEvent) { //GEN-FIRST:event_LevelChooserComboBoxActionPerformed
+    private fun LevelChooserComboBoxActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_LevelChooserComboBoxActionPerformed
         object : SwingWorker<Any?, Any?>() {
             @Throws(Exception::class)
             override fun doInBackground(): Any? {
@@ -628,29 +631,29 @@ class ConfigurationPanel : JPanel() {
                 return null
             }
         }.execute()
-    } //GEN-LAST:event_LevelChooserComboBoxActionPerformed
+    } // GEN-LAST:event_LevelChooserComboBoxActionPerformed
 
-    private fun jButton1ActionPerformed(evt: ActionEvent) { //GEN-FIRST:event_jButton1ActionPerformed
+    private fun jButton1ActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_jButton1ActionPerformed
         MainGUI.instance!!.showLoadingPanel()
         gameManager.startGame()
-    } //GEN-LAST:event_jButton1ActionPerformed
+    } // GEN-LAST:event_jButton1ActionPerformed
 
-    private fun teamAComboBoxActionPerformed(evt: ActionEvent) { //GEN-FIRST:event_teamAComboBoxActionPerformed
+    private fun teamAComboBoxActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_teamAComboBoxActionPerformed
         gameManager.addTeam(teamAComboBox!!.selectedItem as TeamData, GameManager.TeamType.A)
         if (teamAComboBox!!.isEnabled) {
             stateProperties.setProperty(PROPERTY_SELECTED_TEAM_A, teamAComboBox!!.selectedIndex.toString())
         }
-    } //GEN-LAST:event_teamAComboBoxActionPerformed
+    } // GEN-LAST:event_teamAComboBoxActionPerformed
 
-    private fun teamBComboBoxActionPerformed(evt: ActionEvent) { //GEN-FIRST:event_teamBComboBoxActionPerformed
+    private fun teamBComboBoxActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_teamBComboBoxActionPerformed
         gameManager.addTeam(teamBComboBox!!.selectedItem as TeamData, GameManager.TeamType.B)
         if (teamBComboBox!!.isEnabled) {
             stateProperties.setProperty(PROPERTY_SELECTED_TEAM_B, teamBComboBox!!.selectedIndex.toString())
         }
-    } //GEN-LAST:event_teamBComboBoxActionPerformed
+    } // GEN-LAST:event_teamBComboBoxActionPerformed
 
-    private fun defaultTeamComboBoxActionPerformed(evt: ActionEvent) { //GEN-FIRST:event_defaultTeamComboBoxActionPerformed
-    } //GEN-LAST:event_defaultTeamComboBoxActionPerformed
+    private fun defaultTeamComboBoxActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_defaultTeamComboBoxActionPerformed
+    } // GEN-LAST:event_defaultTeamComboBoxActionPerformed
 
     private fun setDefaultTeam(defaultTeamData: TeamData?) {
         setdefaultTeamButton!!.foreground = Color.BLACK
@@ -669,7 +672,7 @@ class ConfigurationPanel : JPanel() {
         }
     }
 
-    private fun setdefaultTeamButtonActionPerformed(evt: ActionEvent) { //GEN-FIRST:event_setdefaultTeamButtonActionPerformed
+    private fun setdefaultTeamButtonActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_setdefaultTeamButtonActionPerformed
         try {
             val defaultTeamData = defaultTeamComboBox!!.selectedItem as TeamData
             setdefaultTeamButton!!.foreground = Color.BLACK
@@ -680,11 +683,11 @@ class ConfigurationPanel : JPanel() {
             setdefaultTeamButton!!.foreground = Color.RED
             return
         }
-    } //GEN-LAST:event_setdefaultTeamButtonActionPerformed
+    } // GEN-LAST:event_setdefaultTeamButtonActionPerformed
 
-    private fun syncButtonActionPerformed(evt: ActionEvent) { //GEN-FIRST:event_syncButtonActionPerformed
+    private fun syncButtonActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_syncButtonActionPerformed
         instance!!.runSync()
-    } //GEN-LAST:event_syncButtonActionPerformed
+    } // GEN-LAST:event_syncButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private var LevelChooserComboBox: JComboBox<String>? = null

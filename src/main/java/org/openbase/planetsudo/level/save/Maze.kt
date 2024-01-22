@@ -7,7 +7,6 @@ package org.openbase.planetsudo.level.save
 import org.openbase.planetsudo.geometry.Base2D
 import org.openbase.planetsudo.geometry.Direction2D
 import org.openbase.planetsudo.level.AbstractLevel
-import org.openbase.planetsudo.level.ResourcePlacement
 import org.openbase.planetsudo.level.ResourceRandomRectangle
 import org.openbase.planetsudo.level.levelobjects.Resource.ResourceType
 import java.awt.Color
@@ -41,10 +40,9 @@ class Maze : AbstractLevel() {
         addPoint(0, 500)
     }
 
-
     override fun loadHomePositions() = listOf(
         Base2D(1900.0, 100.0, Direction2D.DOWN),
-        Base2D(100.0, 1900.0, Direction2D.DOWN),
+        Base2D(100.0, 1900.0, Direction2D.DOWN)
     )
 
     override fun loadResourcePlacement() = listOf(
@@ -55,7 +53,7 @@ class Maze : AbstractLevel() {
         ResourceRandomRectangle(1100, 900, 600, 200, 50, ResourceType.ExtremPoint),
         ResourceRandomRectangle(0, 300, 2000, 1400, 40, ResourceType.ExtraAgentFuel),
         ResourceRandomRectangle(0, 300, 2000, 1400, 30, ResourceType.ExtraMothershipFuel),
-        ResourceRandomRectangle(0, 1200, 2000, 200, 7, ResourceType.DoublePoints),
+        ResourceRandomRectangle(0, 1200, 2000, 200, 7, ResourceType.DoublePoints)
     )
 
     override fun loadLevelColor() = Color(255, 211, 155)
@@ -70,7 +68,8 @@ class Maze : AbstractLevel() {
             addPoint(900, 1100)
             addPoint(900, 1200)
             addPoint(200, 1200)
-        }, Polygon().apply {
+        },
+        Polygon().apply {
             addPoint(1100, 800)
             addPoint(1800, 800)
             addPoint(1800, 1200)

@@ -74,7 +74,6 @@ class GamePanel : JPanel() {
         add(teamMenuPanel2, BorderLayout.LINE_END)
     } // </editor-fold>//GEN-END:initComponents
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private var levelDisplayPanel: LevelDisplayPanel? = null
     private var teamMenuPanel1: TeamMenuPanel? = null

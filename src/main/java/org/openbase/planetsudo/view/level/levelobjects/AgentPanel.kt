@@ -43,12 +43,12 @@ class AgentPanel(resource: Agent, parentResourcePanel: MothershipPanel) :
     private val xPoses = IntArray(3)
     private val yPoses = IntArray(4)
 
-    //public static boolean viewFlag = true;
+    // public static boolean viewFlag = true;
     init {
         logger.info("Create AgentPanel of $resource")
-        //		if(resource.getMothership().getTeam().getId() == 0) {
+        // 		if(resource.getMothership().getTeam().getId() == 0) {
         MainGUI.levelView = resource.levelView
-        //		}
+        // 		}
     }
 
     override fun paintComponent(g2: Graphics2D?, gl: Graphics2D?) {
@@ -65,19 +65,19 @@ class AgentPanel(resource: Agent, parentResourcePanel: MothershipPanel) :
             gl.drawLine(boundingBox.maxX.toInt(), boundingBox.maxY.toInt(), trans_x, trans_y)
         }
 
-        //		if(MainGUI.levelView == resource.getLevelView()) {
-//			resource.getLevelView().drawLevelView((int)parentResourcePanel.getBoundingBox().getX(), (int)parentResourcePanel.getBoundingBox().getY(), g2);
-//		}
+        // 		if(MainGUI.levelView == resource.getLevelView()) {
+// 			resource.getLevelView().drawLevelView((int)parentResourcePanel.getBoundingBox().getX(), (int)parentResourcePanel.getBoundingBox().getY(), g2);
+// 		}
         // Paint Team Color
         g22 = g2!!.create() as Graphics2D
         g22!!.color = teamColor
         g22!!.transform(getBoundsTransformation(direction!!))
-        //g22.fillRect(3, 10, 19, 9);
+        // g22.fillRect(3, 10, 19, 9);
         g22!!.fill(TEAM_COLOR_POLYGON)
         if (resource.isSupportOrdered && animationFlag) {
-//				if(((System.currentTimeMillis()/500)%500)>5) {
+// 				if(((System.currentTimeMillis()/500)%500)>5) {
             g22!!.color = COLOR_DISABLED
-            //				}
+            // 				}
         }
         g22!!.fillOval(relative(33.0), relative(33.0), relative(35.0), relative(35.0)) // Oval zeichnen
         g22!!.dispose()
@@ -113,16 +113,16 @@ class AgentPanel(resource: Agent, parentResourcePanel: MothershipPanel) :
             yPoses[2] = levelObject!!.position.y.toInt()
             g2.color = teamColor
             g2.fillPolygon(xPoses, yPoses, 3)
-            //			g2.drawPolygon((int) (resource.getPosition().getX()resource.getWidth()/2)),
-//						(int) (resource.getPosition().getY()height/3)),
-//						(int) (levelObject.getPosition().getX()),
-//						(int) (levelObject.getPosition().getY()));
+            // 			g2.drawPolygon((int) (resource.getPosition().getX()resource.getWidth()/2)),
+// 						(int) (resource.getPosition().getY()height/3)),
+// 						(int) (levelObject.getPosition().getX()),
+// 						(int) (levelObject.getPosition().getY()));
         }
 
-        //paintShape(g2);
+        // paintShape(g2);
         paintImageRotated(direction!!, g2)
 
-        //Explositon
+        // Explositon
         if (!resource!!.isAlive) {
             paintExplosion(g2)
         }

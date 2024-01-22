@@ -28,7 +28,8 @@ class LevelResourcePanel(resource: Resource, parentResourcePanel: LevelPanel) :
         getImageURI(resource.type),
         parentResourcePanel,
         DrawLayer.BACKGROUND
-    ), PropertyChangeListener {
+    ),
+    PropertyChangeListener {
     private val mine: Boolean
     private var mineColor: Color? = null
 

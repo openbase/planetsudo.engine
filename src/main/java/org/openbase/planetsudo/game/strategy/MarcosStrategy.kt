@@ -21,7 +21,7 @@ class MarcosStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
     }
 
     override fun loadRules() {
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(10, "Fly arround") {
             override fun constraint(): Boolean {
                 return true

@@ -25,7 +25,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
     }
 
     override fun loadRules() {
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("Just Go", SwatTeam.ALL) {
             override fun constraint(): Boolean {
                 return true
@@ -35,7 +35,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.go()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("Discover") {
             override fun constraint(): Boolean {
                 return agent!!.isCommander
@@ -45,7 +45,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.goRight(4)
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("See Resources") {
             override fun constraint(): Boolean {
                 return !agent!!.isCommander && agent.seeResource()
@@ -55,7 +55,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.goToResource()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("PickUp 1P Resource") {
             override fun constraint(): Boolean {
                 return !agent!!.isCommander && agent.isTouchingResource(ResourceType.Normal)
@@ -65,7 +65,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.pickupResource()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("Go to Marker") {
             override fun constraint(): Boolean {
                 return !agent!!.isCommander && mothership!!.isMarkerDeployed
@@ -75,7 +75,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.goToMarker()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("Search") {
             override fun constraint(): Boolean {
                 return !agent!!.isCommander && agent.seeMarker()
@@ -86,19 +86,21 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.searchResources()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("PickUp") {
             override fun constraint(): Boolean {
-                return !agent!!.isCommander && (agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(
-                    ResourceType.ExtraMothershipFuel
-                ))
+                return !agent!!.isCommander && (
+                    agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(
+                        ResourceType.ExtraMothershipFuel
+                    )
+                    )
             }
 
             override fun action() {
                 agent!!.pickupResource()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("PickUp and Place") {
             override fun constraint(): Boolean {
                 return !agent!!.isCommander && agent.isTouchingResource(ResourceType.ExtremPoint)
@@ -111,19 +113,21 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.pickupResource()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("PickUp and Place") {
             override fun constraint(): Boolean {
-                return agent!!.isCommander && (agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(
-                    ResourceType.ExtraMothershipFuel
-                )) && !mothership!!.isMarkerDeployed && !agent.seeMarker()
+                return agent!!.isCommander && (
+                    agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(
+                        ResourceType.ExtraMothershipFuel
+                    )
+                    ) && !mothership!!.isMarkerDeployed && !agent.seeMarker()
             }
 
             override fun action() {
                 agent!!.deployMarker()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("PickUp 5P and Place") {
             override fun constraint(): Boolean {
                 return !agent!!.isCommander && agent.isTouchingResource(ResourceType.ExtremPoint)
@@ -134,7 +138,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent.pickupResource()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("PickUp 5P and Place", SwatTeam.COMMANDER) {
             override fun constraint(): Boolean {
                 return agent!!.isTouchingResource(ResourceType.ExtremPoint) && !agent.seeMarker()
@@ -144,7 +148,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.deployMarker()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("Follow Wall", SwatTeam.COMMANDER) {
             override fun constraint(): Boolean {
                 return agent!!.isTouchingResource(ResourceType.ExtremPoint) && agent.hasTower()
@@ -154,7 +158,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.erectTower(Tower.TowerType.ObservationTower)
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("Ignore") {
             override fun constraint(): Boolean {
                 return agent!!.isTouchingResource(ResourceType.Mine) || agent.isTouchingResource(ResourceType.ExtraAgentFuel)
@@ -164,7 +168,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.go()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("Secure") {
             override fun constraint(): Boolean {
                 return agent!!.isGameOverSoon && !agent.isAtMothership
@@ -174,7 +178,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.goToMothership()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("Mark Resource") {
             override fun constraint(): Boolean {
                 return agent!!.isCarryingResource && !mothership!!.isMarkerDeployed && agent.seeResource()
@@ -184,7 +188,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.deployMarker()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("Saved") {
             override fun constraint(): Boolean {
                 return agent!!.isGameOverSoon && agent.isAtMothership
@@ -193,7 +197,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
             override fun action() {
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("Order Fuel") {
             override fun constraint(): Boolean {
                 return agent!!.isAtMothership && agent.isGameOverSoon && mothership!!.hasFuel() && agent.fuelInPercent < 100
@@ -203,7 +207,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.orderFuel(100)
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("Support Agent") {
             override fun constraint(): Boolean {
                 return mothership!!.needSomeoneSupport() && !agent!!.isSupportOrdered
@@ -213,7 +217,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.goToSupportAgent()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("Save Resource") {
             override fun constraint(): Boolean {
                 return agent!!.isCarryingResource && !agent.isAtMothership
@@ -223,7 +227,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.goToMothership()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("HelpLostAgent") {
             override fun constraint(): Boolean {
                 return agent!!.seeLostTeamAgent()
@@ -233,7 +237,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.spendTeamAgentFuel(300)
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("FightAgainstMothership") {
             override fun constraint(): Boolean {
                 return agent!!.seeAdversaryMothership()
@@ -243,7 +247,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.fightWithAdversaryMothership()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("FightAgainstMothership & Order Support") {
             override fun constraint(): Boolean {
                 return !agent!!.isSupportOrdered && agent.seeAdversaryMothership()
@@ -254,7 +258,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent.orderSupport()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("TurnToAdversaryAgent") {
             override fun constraint(): Boolean {
                 return agent!!.isUnderAttack
@@ -264,7 +268,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.turnLeft(60)
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("SaveMothership") {
             override fun constraint(): Boolean {
                 return mothership!!.isDamaged && !agent!!.isAtMothership
@@ -274,7 +278,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.goToMothership()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("RepaireMothership") {
             override fun constraint(): Boolean {
                 return mothership!!.isDamaged && agent!!.isAtMothership
@@ -284,7 +288,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.repairMothership()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("FightAgainstAgent") {
             override fun constraint(): Boolean {
                 return agent!!.seeAdversaryAgent()
@@ -294,7 +298,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.fightWithAdversaryAgent()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("PlaceMine") {
             override fun constraint(): Boolean {
                 return agent!!.hasMine() && agent.isUnderAttack
@@ -305,7 +309,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent.goLeft(180)
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("GoBackToMothership") {
             override fun constraint(): Boolean {
                 return agent!!.fuel < 300 && !agent.isAtMothership
@@ -315,7 +319,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.goToMothership()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("OrderFuel") {
             override fun constraint(): Boolean {
                 return mothership!!.hasFuel() && (agent!!.fuelInPercent < 90) && (agent.isAtMothership)
@@ -325,7 +329,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.orderFuel(100)
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("OrderFuelDuringFight") {
             override fun constraint(): Boolean {
                 return mothership!!.hasFuel() && (agent!!.fuel < 100) && agent.isUnderAttack && agent.isAtMothership
@@ -336,7 +340,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent.goLeft(10)
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("OrderFuelDuringFight") {
             override fun constraint(): Boolean {
                 return mothership!!.hasFuel() && (agent!!.fuel < 100) && agent.seeAdversaryAgent() && agent.isAtMothership
@@ -347,7 +351,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent.fightWithAdversaryAgent()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("Pass Resource") {
             override fun constraint(): Boolean {
                 return agent!!.isCarryingResource && agent.isAtMothership
@@ -358,7 +362,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent.turnAround()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("CallForHelp") {
             override fun constraint(): Boolean {
                 return (!agent!!.isSupportOrdered) && ((agent.fuel < 5) || agent.isUnderAttack)
@@ -368,7 +372,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.orderSupport()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("PickUp Fuel") {
             override fun constraint(): Boolean {
                 return agent!!.fuelInPercent < 50 && agent.isTouchingResource(ResourceType.ExtraAgentFuel)
@@ -378,7 +382,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.pickupResource()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("Follow Wall", SwatTeam.COMMANDER) {
             override fun constraint(): Boolean {
                 return agent!!.isCollisionDetected
@@ -388,7 +392,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.turnLeft(4)
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("Follow Wall", SwatTeam.ALPHA) {
             override fun constraint(): Boolean {
                 return agent!!.isCollisionDetected
@@ -398,7 +402,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.turnRight(4)
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("AvoidWall", SwatTeam.NOT_ALPHA, SwatTeam.NOT_COMMANDER) {
             override fun constraint(): Boolean {
                 return agent!!.isCollisionDetected
@@ -408,7 +412,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.turnRandom(150)
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule("Cancel Support") {
             override fun constraint(): Boolean {
                 return agent!!.isSupportOrdered && !agent.seeAdversaryMothership() && agent.fuel > 10 && !agent.isUnderAttack && !agent.seeAdversaryAgent()
@@ -418,6 +422,6 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.cancelSupport()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
     }
 }

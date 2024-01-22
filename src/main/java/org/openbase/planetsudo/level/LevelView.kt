@@ -93,8 +93,8 @@ class LevelView constructor(level: AbstractLevel, levelObject: AbstractLevelObje
                 g2.color = Color(greyValue, greyValue, greyValue)
             }
             g2.fill(element.rasterLevelRectangle)
-            //			g2.setColor(Color.ORANGE);
-//			g2.draw(element.getRasterLevelRectangle());
+            // 			g2.setColor(Color.ORANGE);
+// 			g2.draw(element.getRasterLevelRectangle());
         }
     }
 
@@ -107,30 +107,30 @@ class LevelView constructor(level: AbstractLevel, levelObject: AbstractLevelObje
     }
 
     fun getAbsolutAngle(levelObject: AbstractLevelObject?): Int {
-//		logger.info("BEGIN: GetAbsoluteAngle");
+// 		logger.info("BEGIN: GetAbsoluteAngle");
         val angle = getAngle(calcLevelRasterElement(levelObject), calcLevelRasterElement(this.levelObject))
         assert(angle != -1)
         return angle
     }
 
     fun getDistance(levelObject: AbstractLevelObject?): Int {
-//		logger.debug("GetDistance");
+// 		logger.debug("GetDistance");
         return getDistance(calcLevelRasterElement(levelObject), calcLevelRasterElement(this.levelObject))
     }
 
     fun dijkstraTest() {
-//		logger.debug("dijkstraTest");
+// 		logger.debug("dijkstraTest");
         dijkstra(levelRepresentation[0], levelRepresentation[width * height - 1])
     }
 
     private fun getDistance(position: LevelRasterElement?, destination: LevelRasterElement?): Int {
-//		logger.debug("getDistance");
+// 		logger.debug("getDistance");
         dijkstra(position, destination)
         return position!!.distance
     }
 
     private fun getAngle(position: LevelRasterElement?, destination: LevelRasterElement?): Int {
-//		logger.debug("getAngle");
+// 		logger.debug("getAngle");
         dijkstra(position, destination)
         var neigbourNextToDestination: LevelRasterElementNeigbour? = null
         for (neigbour in position!!.neigbours) {
@@ -202,8 +202,8 @@ class LevelView constructor(level: AbstractLevel, levelObject: AbstractLevelObje
             return
         }
         this.lastPosition = levelObject.position
-        //		logger.debug("BEGINN: dijkstra new calc.");
-//		long startTime = System.currentTimeMillis();
+        // 		logger.debug("BEGINN: dijkstra new calc.");
+// 		long startTime = System.currentTimeMillis();
         // Initialisation
         val distanceQueue = PriorityQueue<LevelRasterElement?>()
         for (element in levelRepresentation) {
@@ -223,9 +223,9 @@ class LevelView constructor(level: AbstractLevel, levelObject: AbstractLevelObje
                 }
             }
             element = distanceQueue.poll()
-            //} while (element != null && element != position);
+            // } while (element != null && element != position);
         } while (element != null)
-        //		logger.debug("END["+(System.currentTimeMillis()-startTime)+"]: dijkstra new calc.");
+        // 		logger.debug("END["+(System.currentTimeMillis()-startTime)+"]: dijkstra new calc.");
     }
 
     companion object {

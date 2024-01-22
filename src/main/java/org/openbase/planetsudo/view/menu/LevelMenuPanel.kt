@@ -87,13 +87,13 @@ class LevelMenuPanel : JPanel(), ActionListener {
         layout.setVerticalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(
-                    GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    GroupLayout.Alignment.TRAILING,
+                    layout.createSequentialGroup()
                         .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt())
                         .addComponent(nameAndTimeLabel)
                 )
         )
     } // </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private var nameAndTimeLabel: JLabel? = null

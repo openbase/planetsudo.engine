@@ -7,7 +7,6 @@ package org.openbase.planetsudo.level.save
 import org.openbase.planetsudo.geometry.Base2D
 import org.openbase.planetsudo.geometry.Direction2D
 import org.openbase.planetsudo.level.AbstractLevel
-import org.openbase.planetsudo.level.ResourcePlacement
 import org.openbase.planetsudo.level.ResourceRandomRectangle
 import org.openbase.planetsudo.level.levelobjects.Resource.ResourceType
 import java.awt.Color
@@ -27,7 +26,7 @@ class CircleOfLife : AbstractLevel() {
 
     override fun loadHomePositions() = listOf(
         Base2D(200.0, 500.0, Direction2D.DOWN),
-        Base2D(800.0, 500.0, Direction2D.DOWN),
+        Base2D(800.0, 500.0, Direction2D.DOWN)
     )
 
     override fun loadResourcePlacement() = listOf(
@@ -36,7 +35,7 @@ class CircleOfLife : AbstractLevel() {
         ResourceRandomRectangle(0, 0, 400, 1000, 5, ResourceType.DoublePoints),
         ResourceRandomRectangle(600, 0, 400, 1000, 5, ResourceType.DoublePoints),
         ResourceRandomRectangle(400, 800, 200, 200, 10, ResourceType.ExtremPoint),
-        ResourceRandomRectangle(400, 0, 200, 200, 10, ResourceType.ExtraMothershipFuel),
+        ResourceRandomRectangle(400, 0, 200, 200, 10, ResourceType.ExtraMothershipFuel)
     )
 
     override fun loadLevelColor() = Color(255, 153, 0)

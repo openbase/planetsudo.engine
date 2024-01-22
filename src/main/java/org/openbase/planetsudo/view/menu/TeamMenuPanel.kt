@@ -43,11 +43,11 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
         updateMothershipShieldProgressBar()
         updateTowerFuelProgressBar()
         updateTowerShieldProgressBar()
-        //		String memberList = "<html>";
-        //		for(String member : team.getMembers()) {
-        //			memberList += member+"<br />";
-        //		}
-        //		memberList += "</html>";
+        // 		String memberList = "<html>";
+        // 		for(String member : team.getMembers()) {
+        // 			memberList += member+"<br />";
+        // 		}
+        // 		memberList += "</html>";
         val members = team!!.getMembers()
         teamMemberALabel!!.text = members!![0]
         teamMemberBLabel!!.text = ""
@@ -466,7 +466,8 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(
-                    GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                    GroupLayout.Alignment.TRAILING,
+                    jPanel2Layout.createSequentialGroup()
                         .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt())
                         .addComponent(
                             jPanel4,

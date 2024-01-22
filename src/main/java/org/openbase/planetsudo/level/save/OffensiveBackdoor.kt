@@ -7,7 +7,6 @@ package org.openbase.planetsudo.level.save
 import org.openbase.planetsudo.geometry.Base2D
 import org.openbase.planetsudo.geometry.Direction2D
 import org.openbase.planetsudo.level.AbstractLevel
-import org.openbase.planetsudo.level.ResourcePlacement
 import org.openbase.planetsudo.level.ResourceRandomRectangle
 import org.openbase.planetsudo.level.levelobjects.Resource.ResourceType
 import java.awt.Color
@@ -47,7 +46,7 @@ class OffensiveBackdoor : AbstractLevel() {
 
     override fun loadHomePositions() = listOf(
         Base2D(500.0, 700.0, Direction2D.DOWN),
-        Base2D(2100.0, 700.0, Direction2D.DOWN),
+        Base2D(2100.0, 700.0, Direction2D.DOWN)
     )
 
     override fun loadResourcePlacement() = listOf(
@@ -65,7 +64,7 @@ class OffensiveBackdoor : AbstractLevel() {
         ResourceRandomRectangle(1150, 800, 300, 200, 2, ResourceType.ExtraMothershipFuel),
         ResourceRandomRectangle(900, 1650, 800, 100, 7, ResourceType.ExtraAgentFuel),
         ResourceRandomRectangle(50, 1650, 200, 150, 3, ResourceType.ExtremPoint),
-        ResourceRandomRectangle(2350, 1650, 200, 150, 3, ResourceType.ExtremPoint),
+        ResourceRandomRectangle(2350, 1650, 200, 150, 3, ResourceType.ExtremPoint)
     )
 
     override fun loadLevelColor() = Color(255, 153, 0)

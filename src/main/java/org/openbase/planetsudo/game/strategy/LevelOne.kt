@@ -22,7 +22,7 @@ class LevelOne(agent: AgentInterface) : AbstractStrategy(agent) {
     }
 
     override fun loadRules() {
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(0, "Just Go") {
             override fun constraint(): Boolean {
                 return true
@@ -32,7 +32,7 @@ class LevelOne(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.go()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(20, "Search Resources") {
             override fun constraint(): Boolean {
                 return agent!!.seeResource()
@@ -42,7 +42,7 @@ class LevelOne(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.goToResource()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(30, "PickUp Resource") {
             override fun constraint(): Boolean {
                 return agent!!.isTouchingResource && agent.resourceType != ResourceType.Mine
@@ -52,7 +52,7 @@ class LevelOne(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.pickupResource()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(40, "Save Resource") {
             override fun constraint(): Boolean {
                 return agent!!.isCarryingResource
@@ -62,7 +62,7 @@ class LevelOne(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.goToMothership()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(50, "Pass Resource") {
             override fun constraint(): Boolean {
                 return agent!!.isCarryingResource && agent.isAtMothership
@@ -72,7 +72,7 @@ class LevelOne(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.deliverResourceToMothership()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(200, "GoBackToMothership") {
             override fun constraint(): Boolean {
                 return agent!!.fuel < 300
@@ -82,7 +82,7 @@ class LevelOne(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.goToMothership()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(400, "OrderFuel") {
             override fun constraint(): Boolean {
                 return (agent!!.fuel < 300) && (agent.isAtMothership)
@@ -92,7 +92,7 @@ class LevelOne(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.orderFuel(100)
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
         createRule(object : Rule(1000, "AvoidWall") {
             override fun constraint(): Boolean {
                 return agent!!.isCollisionDetected
@@ -102,6 +102,6 @@ class LevelOne(agent: AgentInterface) : AbstractStrategy(agent) {
                 agent!!.turnRandom()
             }
         })
-        //-------------------------------------------->
+        // -------------------------------------------->
     }
 }

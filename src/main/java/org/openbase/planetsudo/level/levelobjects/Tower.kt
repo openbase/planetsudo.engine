@@ -22,16 +22,18 @@ import kotlin.math.max
  *
  * @author [Divine Threepwood](mailto:divine@openbase.org)
  */
-class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership) : AbstractLevelObject(
-    id,
-    Tower::class.java.simpleName + "[" + id + "]",
-    AbstractResourcePanel.ObjectType.Static,
-    level,
-    mothership.position,
-    SIZE.toDouble(),
-    SIZE.toDouble(),
-    ObjectShape.Rec
-), ActionListener {
+class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership) :
+    AbstractLevelObject(
+        id,
+        Tower::class.java.simpleName + "[" + id + "]",
+        AbstractResourcePanel.ObjectType.Static,
+        level,
+        mothership.position,
+        SIZE.toDouble(),
+        SIZE.toDouble(),
+        ObjectShape.Rec
+    ),
+    ActionListener {
     enum class TowerType {
         DefenceTower, ObservationTower
     }
