@@ -34,7 +34,7 @@ class ResourceRandomRectangle(
         val resources = ArrayList<Resource>()
         for (i in 0 until resourceCount) {
             GUIController.setEvent(PropertyChangeEvent(this, GUIController.LOADING_STEP, null, -1))
-            //Point2D resourcePosition = new Point2D(RandomGenerator.getRandom((int) getX(), (int) getWidth()), RandomGenerator.getRandom((int) getY(), (int) getHeight()));
+            //Point2D resourcePosition = new Point2D(RandomGenerator.getRandom((int) getX(), (int) getWidth()), RandomGenerator.getRandom((int) getY(), (int) height));
             resources.add(Resource(level.generateNewResourceID(), type, level, this))
         }
         return resources
@@ -42,7 +42,7 @@ class ResourceRandomRectangle(
 
     override fun calcRandomLevelPosition(level: AbstractLevel): Point2D {
 //		double widthCast = (int) level.getLevelBorderPolygon().getBounds().getWidth()/LevelView.RASTER_SIZE;
-//		double heightCast = (int) level.getLevelBorderPolygon().getBounds().getHeight()/LevelView.RASTER_SIZE;
+//		double heightCast = (int) level.getLevelBorderPolygon().getBounds().height/LevelView.RASTER_SIZE;
 //		double width, height;
 //
 //
@@ -51,7 +51,7 @@ class ResourceRandomRectangle(
 //		} else {
 //			width = (int) widthCast;
 //		}
-//		if(heightCast < level.getLevelBorderPolygon().getBounds().getHeight()/LevelView.RASTER_SIZE) {
+//		if(heightCast < level.getLevelBorderPolygon().getBounds().height/LevelView.RASTER_SIZE) {
 //			height = ((int) heightCast)+1;
 //		} else {
 //			height = (int) heightCast;

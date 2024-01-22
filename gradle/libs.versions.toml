@@ -5,11 +5,11 @@
 commons-io-commons-io = "2.4"
 junit-junit = "4.12"
 org-jdesktop-beansbinding = "1.2.1"
-org-openbase-jul-audio = "3.4.0"
-org-openbase-jul-interface = "3.4.0"
-org-openbase-jul-processing-json = "3.4.0"
-org-openbase-jul-schedule = "3.4.0"
-org-openbase-jul-visual-swing = "3.4.0"
+org-openbase-jul-audio = "3.3-SNAPSHOT"
+org-openbase-jul-interface = "3.3-SNAPSHOT"
+org-openbase-jul-processing-json = "3.3-SNAPSHOT"
+org-openbase-jul-schedule = "3.3-SNAPSHOT"
+org-openbase-jul-visual-swing = "3.3-SNAPSHOT"
 tomcat-tomcat-util = "3.2.1"
 
 [libraries]

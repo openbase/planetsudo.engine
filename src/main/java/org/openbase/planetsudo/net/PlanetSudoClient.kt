@@ -80,7 +80,7 @@ class PlanetSudoClient private constructor() {
             }
         }
 
-        MainGUI.getInstance().configurationPanel.updateTeamList()
+        MainGUI.instance?.configurationPanel?.updateTeamList()
     }
 
     private fun connecting() {
