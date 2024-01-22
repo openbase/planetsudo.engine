@@ -26,9 +26,9 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
 
     override fun loadRules() {
 
-        "Just Go" all inCase { true } then { go() }
-        "Just Go" commander inCase { true } then { go() }
-        "Just Go" swat { SwatTeam.SWATS + SwatTeam.MIKE } inCase { true } then { go() }
+//        "Just Go" all inCase { true } then { go() }
+//        "Just Go" commander inCase { true } then { go() }
+//        "Just Go" swat { SwatTeam.SWATS + SwatTeam.MIKE } inCase { true } then { go() }
 
         //-------------------------------------------->
         createRule(object : Rule("Just Go", SwatTeam.ALL) {

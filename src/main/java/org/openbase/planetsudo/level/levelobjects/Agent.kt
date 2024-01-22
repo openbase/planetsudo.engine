@@ -89,7 +89,7 @@ class Agent(
         get() {
             val point = direction.translate(
                 Point2D(
-                    position!!
+                    position
                 ), AGENT_VIEW_DISTANCE
             )
             return Rectangle2D.Double(
@@ -211,7 +211,7 @@ class Agent(
 
     val futureBounds: Rectangle2D
         get() {
-            val futurePosition = direction.translate(position!!.clone(), calcSpeed())
+            val futurePosition = direction.translate(position.clone(), calcSpeed())
             return Rectangle2D.Double(
                 futurePosition.x.toInt() - (width / 2),
                 futurePosition.y.toInt() - (height / 2),
@@ -254,7 +254,7 @@ class Agent(
             return
         }
 
-        position!!.translate(direction, calcSpeed())
+        position.translate(direction, calcSpeed())
         if (level.collisionDetected(bounds)) { // Is collied with wall?
             kill()
         }
@@ -354,7 +354,7 @@ class Agent(
             val resourceToGo = level.getCloseResource(this)
             if (resourceToGo != null) {
                 go()
-                direction.turnTo(position!!, resourceToGo.position!!)
+                direction.turnTo(position, resourceToGo.position)
             }
         }
     }
@@ -365,7 +365,7 @@ class Agent(
             val resourceToGo = level.getCloseResource(this, resourceType)
             if (resourceToGo != null) {
                 go()
-                direction.turnTo(position!!, resourceToGo.position!!)
+                direction.turnTo(position, resourceToGo.position)
             }
         }
     }
@@ -418,7 +418,7 @@ class Agent(
                     releaseResource()
                 }
                 if (resourceToCollect != null && resourceToCollect.setBusy(team)) {
-                    direction.turnTo(position!!, resourceToCollect.position!!)
+                    direction.turnTo(position, resourceToCollect.position)
                     ap.getActionPoint(resourceToCollect.capturingActionPoints)
                     carryResource(resourceToCollect)
                 }
@@ -465,7 +465,7 @@ class Agent(
             if (adversaryAgent != null) {
                 adversaryAgent.attacked = true
                 ap.getActionPoint(20)
-                direction.turnTo(position!!, adversaryAgent.position!!)
+                direction.turnTo(position, adversaryAgent.position)
                 if (adversaryAgent.hasFuel()) {
                     catchedfuel = (adversaryAgent.useFuel((Mothership.Companion.AGENT_FUEL_VOLUME / 500) * 2) / 3)
                     fuel = min(fuelVolume.toDouble(), (fuel + catchedfuel).toDouble()).toInt()
@@ -482,7 +482,7 @@ class Agent(
             adversaryObject = adversaryMothership
             if (adversaryMothership != null) {
                 ap.getActionPoint(30)
-                direction.turnTo(position!!, adversaryMothership.position!!)
+                direction.turnTo(position, adversaryMothership.position)
                 adversaryMothership.attack()
                 GameSound.Laser.play()
             }
@@ -512,7 +512,7 @@ class Agent(
             if (teamAgent != null) {
                 helpLevelObject = teamAgent
                 isHelping = true
-                direction.turnTo(position!!, teamAgent.position!!)
+                direction.turnTo(position, teamAgent.position)
                 ap.getActionPoint(value * 2)
                 teamAgent.fuel += useFuel(value)
             }
@@ -597,7 +597,7 @@ class Agent(
     override fun deployMarker() {
         ap.getActionPoint(5)
         if (useFuel()) {
-            mothership.placeMarker(position!!.clone())
+            mothership.placeMarker(position.clone())
         }
     }
 

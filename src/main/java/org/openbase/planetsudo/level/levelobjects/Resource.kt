@@ -138,7 +138,7 @@ class Resource(id: Int, @JvmField val type: ResourceType, level: AbstractLevel, 
     fun release() {
         synchronized(RESOURCE_LOCK) {
             owner = null
-            position = position!!.clone()
+            position = position.clone()
         }
     }
 
@@ -152,7 +152,7 @@ class Resource(id: Int, @JvmField val type: ResourceType, level: AbstractLevel, 
             if (!isUsed) {
                 level!!.removeResource(this)
                 isUsed = true
-                position = Point2D(position!!)
+                position = Point2D(position)
                 changes.firePropertyChange(KILL_EVENT, null, null)
 
                 when (type) {

@@ -29,7 +29,7 @@ enum class GameSound(uri: String) {
     EarnNormalResource("sound/button-124476.wav"),
     EarnDoubleResource("sound/deliver_resource.wav"),
     EarnExtremResource("sound/interface-124464.wav"),
-    EarnAgentFuel("sound/cartoon-jump-6462.wav.wav"),
+    EarnAgentFuel("sound/cartoon-jump-6462.wav"),
     EarnMothershipFuel("sound/sci-fi-charge-up-37395.wav"),
     ErectTower("sound/sci-fi-charge-up-37395.wav"),
     Laser("sound/lasershot.wav"),

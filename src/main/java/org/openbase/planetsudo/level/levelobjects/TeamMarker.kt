@@ -31,7 +31,7 @@ class TeamMarker(@JvmField val team: Team, level: AbstractLevel) : AbstractLevel
 
     fun place(position: Point2D) {
         synchronized(MARKER_LOCK) {
-            if (isPlaced && this.position!!.equals(position)) {
+            if (isPlaced && this.position.equals(position)) {
                 return
             }
             this.position = position

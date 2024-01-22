@@ -247,7 +247,7 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) : AbstractLevelObjec
     }
 
     val agentHomePosition: Point2D
-        get() = position!!.clone()
+        get() = position.clone()
 
     @Throws(InvalidStateException::class)
     fun passResource(agent: Agent) {

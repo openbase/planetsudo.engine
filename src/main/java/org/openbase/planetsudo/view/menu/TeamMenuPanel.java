@@ -91,19 +91,32 @@ public class TeamMenuPanel extends javax.swing.JPanel implements PropertyChangeL
         teamMemberBLabel.setText("");
         teamMemberA.setVisible(false);
         teamMemberB.setVisible(false);
+        var imageUri = IMAGE_DIRECTORY + "/teams/team_" + team.name + "_A.jpg";
         try {
             teamMemberA.setImage(IMAGE_DIRECTORY + "/teams/team_" + team.name + "_A.jpg");
             teamMemberA.setVisible(true);
         } catch (Exception ex) {
-            logger.warn("Could not load member image!", ex);
+            logger.warn("Could not load member image [${imageUri}] and use fallback instead.");
+            try {
+                teamMemberA.setImage(IMAGE_DIRECTORY + "/teams/fallback.jpg");
+                teamMemberA.setVisible(true);
+            } catch (CouldNotPerformException e) {
+                ExceptionPrinter.printHistory("Could not load fallback image!", e, logger);
+            }
         }
+
         if (members.size() > 1) {
             teamMemberBLabel.setText(members.get(1));
             try {
                 teamMemberB.setImage(IMAGE_DIRECTORY + "/teams/team_" + team.name + "_B.jpg");
                 teamMemberB.setVisible(true);
             } catch (Exception ex) {
-                ExceptionPrinter.printHistory(new CouldNotPerformException("Could not display all team images!", ex), logger);
+                try {
+                    teamMemberB.setImage(IMAGE_DIRECTORY + "/teams/fallback.jpg");
+                    teamMemberB.setVisible(true);
+                } catch (CouldNotPerformException e) {
+                    ExceptionPrinter.printHistory("Could not load fallback image!", e, logger);
+                }
             }
         }
     }

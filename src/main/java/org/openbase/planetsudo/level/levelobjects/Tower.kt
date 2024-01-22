@@ -86,7 +86,7 @@ class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership)
         if (isErected) {
             throw CouldNotPerformException("Tower is already erected!")
         }
-        position!!.setLocation(commander.position)
+        position.setLocation(commander.position)
         this.type = type
         isErected = true
         changes.firePropertyChange(TOWER_ERECT, null, this)
