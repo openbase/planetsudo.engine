@@ -92,7 +92,7 @@ public class ConfigurationPanel extends javax.swing.JPanel {
                 if (evt.getPropertyName().equals(PlanetSudoClient.CONNECTION_STATE_UPDATE)) {
                     final ConnectionState state = (ConnectionState) evt.getNewValue();
 
-                    connectionStateLabel.setText(state.getDescription());
+                    connectionStateLabel.setText(state.description);
 
                     switch (state) {
                         case Connecting:

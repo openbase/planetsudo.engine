@@ -1,6 +1,6 @@
-package org.openbase.planetsudo.util;
+package org.openbase.planetsudo.util
 
-/*-
+import org.openbase.jul.exception.InvalidStateException /*-
  * #%L
  * PlanetSudo GameEngine
  * %%
@@ -21,25 +21,24 @@ package org.openbase.planetsudo.util;
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-
-import java.util.Random;
-import org.openbase.jul.exception.InvalidStateException;
+import java.util.*
 
 /**
  *
- * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a>
+ * @author [Divine Threepwood](mailto:divine@openbase.org)
  */
-public class RandomGenerator {
+object RandomGenerator {
+    private val RANDOM = Random(System.currentTimeMillis())
 
-    private static final Random RANDOM = new Random(System.currentTimeMillis());
-
-    public static int getRandom(int min, int max) throws InvalidStateException {
+    @JvmStatic
+    @Throws(InvalidStateException::class)
+    fun getRandom(min: Int, max: Int): Int {
         if (min > max) {
-            throw new InvalidStateException("Could not generate random value, because min value is greater than max value!");
+            throw InvalidStateException("Could not generate random value, because min value is greater than max value!")
         }
         //TODO 
         // http://stackoverflow.com/questions/738629/math-random-versus-random-nextintint
-        return (int) (Math.random() * (max - min)) + min;
+        return (Math.random() * (max - min)).toInt() + min
         // return RANDOM.nextInt(min)ints(min, max+1).;
     }
 }
