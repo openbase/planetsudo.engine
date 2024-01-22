@@ -51,7 +51,7 @@ public class TowerPanel extends AbstractLevelObjectPanel<Tower, LevelPanel> impl
         LOGGER.info("Create " + this);
         tower.addPropertyChangeListener(this);
         this.towerDirection2D = new Direction2D(0);
-        this.teamColor = tower.getMothership().getTeam().getTeamColor();
+        this.teamColor = tower.mothership.team.teamColor;
     }
 
     private static String getImageURI(TowerType type) {
@@ -68,7 +68,7 @@ public class TowerPanel extends AbstractLevelObjectPanel<Tower, LevelPanel> impl
         }
 
         boundingBox = resource.getBounds();
-        direction = resource.getDirection();
+        direction = resource.direction;
 
         gg2 = (Graphics2D) g2.create();
         gg2.setColor(teamColor);

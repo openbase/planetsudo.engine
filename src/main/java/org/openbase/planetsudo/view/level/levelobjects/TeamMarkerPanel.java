@@ -68,19 +68,19 @@ public class TeamMarkerPanel extends AbstractLevelObjectPanel<TeamMarker, LevelP
 			g2.setStroke(new BasicStroke(5));
 			switch (animationCounter) {
 				case 0:
-					g2.setColor(resource.getTeam().getTeamColor());
+					g2.setColor(resource.team.teamColor);
 					g2.fillOval((int) boundingBox.getCenterX() - 4, (int) boundingBox.getCenterY() - 4, (int) 8, (int) 8);
 					g2.setColor(Color.WHITE);
 					break;
 				case 1:
-					g2.setColor(resource.getTeam().getTeamColor());
+					g2.setColor(resource.team.teamColor);
 					g2.drawOval((int) boundingBox.getCenterX() - 8, (int) boundingBox.getCenterY() - 8, 16, 16);
 					g2.setColor(Color.WHITE);
 					g2.fillOval((int) boundingBox.getCenterX() - 4, (int) boundingBox.getCenterY() - 4, (int) 8, (int) 8);
 					//g2.fillOval((int) boundingBox.getCenterX() - 16, (int) boundingBox.getCenterY() - 16, 32, 32);
 					break;
 				case 2:
-					g2.setColor(resource.getTeam().getTeamColor());
+					g2.setColor(resource.team.teamColor);
 					g2.drawOval((int) boundingBox.getCenterX() - 16, (int) boundingBox.getCenterY() - 16, 32, 32);
 					g2.fillOval((int) boundingBox.getCenterX() - 4, (int) boundingBox.getCenterY() - 4, (int) 8, (int) 8);
 					g2.setColor(Color.WHITE);

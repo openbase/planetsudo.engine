@@ -56,14 +56,14 @@ public class LevelView {
 	}
 
 	public LevelView(AbstractLevelObject levelObject) {
-		this(levelObject.getLevel(), levelObject);
+		this(levelObject.level, levelObject);
 	}
 
 	public LevelView(AbstractLevel level, AbstractLevelObject levelObject) {
 		logger.debug("Create new levelview.");
 		this.levelObject = levelObject;
 		this.rasterSize = RASTER_SIZE;
-		final Rectangle2D bounds = level.getLevelBorderPolygon().getBounds2D();
+		final Rectangle2D bounds = level.levelBorderPolygon.getBounds2D();
 
 		double widthCast = (int) (bounds.getWidth() / rasterSize);
 		double heightCast = (int) bounds.getHeight() / rasterSize;
@@ -126,7 +126,7 @@ public class LevelView {
 
 	private LevelRasterElement calcLevelRasterElement(final AbstractLevelObject levelObject) {
 		logger.debug("CalcLevelRasterElement");
-		return get(((int) levelObject.getPosition().getX() - levelObject.getLevel().getX()) / rasterSize, ((int) levelObject.getPosition().getY() - levelObject.getLevel().getY()) / rasterSize);
+		return get(((int) levelObject.position.getX() - levelObject.level.x) / rasterSize, ((int) levelObject.position.getY() - levelObject.level.y) / rasterSize);
 	}
 
 	public int getAbsolutAngle(final AbstractLevelObject levelObject) {
@@ -215,7 +215,7 @@ public class LevelView {
 	}
 
 	private boolean stablePosition() {
-		return levelObject.getPosition().equals(lastPosition);
+		return levelObject.position.equals(lastPosition);
 	}
 
 	private void dijkstra(LevelRasterElement position, LevelRasterElement destination) {
@@ -227,7 +227,7 @@ public class LevelView {
 			logger.debug("Skip dijkstra.");
 			return;
 		}
-		this.lastPosition = levelObject.getPosition();
+		this.lastPosition = levelObject.position;
 //		logger.debug("BEGINN: dijkstra new calc.");
 //		long startTime = System.currentTimeMillis();
 		// Initialisation

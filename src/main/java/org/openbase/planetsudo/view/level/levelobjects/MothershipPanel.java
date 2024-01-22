@@ -43,7 +43,7 @@ public class MothershipPanel extends AbstractLevelObjectPanel<Mothership, LevelP
 
 	public MothershipPanel(Mothership resource, LevelPanel parentResourcePanel) {
 		super(resource, resource.getPolygon(), GameObjectImages.Mothership.imagesURL, parentResourcePanel, DrawLayer.BACKGROUND);
-		new TeamMarkerPanel(resource.getTeamMarker(), parentResourcePanel);
+		new TeamMarkerPanel(resource.teamMarker, parentResourcePanel);
 		loadAgentPanels();
 	}
 
@@ -57,7 +57,7 @@ public class MothershipPanel extends AbstractLevelObjectPanel<Mothership, LevelP
 	protected void paintComponent(Graphics2D g2, Graphics2D gl) {
 		boundingBox = resource.getBounds();
 		//paintShape(g2);
-		g2.setColor(resource.getTeam().getTeamColor());
+		g2.setColor(resource.team.teamColor);
 		g2.fillRect((int)boundingBox.getCenterX()-45, (int)boundingBox.getCenterY()-45, 90,90);
 		paintImage(g2);
 		if(resource.isBurning()) {

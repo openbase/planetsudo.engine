@@ -14,12 +14,12 @@ package org.openbase.planetsudo.net;
  * it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
@@ -36,6 +36,7 @@ import org.openbase.planetsudo.jp.JPServerPort;
 import org.openbase.planetsudo.jp.JPStrategySourceDirectory;
 import org.openbase.planetsudo.view.MainGUI;
 import org.slf4j.Logger;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
@@ -45,6 +46,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import javax.swing.SwingWorker;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.openbase.jps.exception.JPNotAvailableException;
@@ -53,7 +55,6 @@ import org.openbase.jul.exception.printer.ExceptionPrinter;
 import org.slf4j.LoggerFactory;
 
 /**
- *
  * @author Divine Threepwood
  */
 public class PlanetSudoClient {
@@ -80,6 +81,7 @@ public class PlanetSudoClient {
             return description;
         }
     }
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private static PlanetSudoClient instance;
@@ -164,7 +166,7 @@ public class PlanetSudoClient {
         TeamData teamData;
         for (int i = 0; i < teamCounter; i++) {
             teamData = (TeamData) in.readObject();
-            Team.save(teamData);
+            Team.Companion.save(teamData);
         }
     }
 
@@ -172,7 +174,7 @@ public class PlanetSudoClient {
         try {
             setConnectionState(ConnectionState.UploadDefaultStrategy);
             final TeamData defaultTeamData = Team.loadDefaultTeam();
-            final File sourceFile = new File(JPService.getProperty(JPStrategySourceDirectory.class).getValue(), defaultTeamData.getStrategy() + ".java");
+            final File sourceFile = new File(JPService.getProperty(JPStrategySourceDirectory.class).getValue(), defaultTeamData.strategy + ".java");
             if (!sourceFile.exists()) {
                 throw new CouldNotPerformException("File[" + sourceFile.getAbsolutePath() + "] does not exist!");
             }

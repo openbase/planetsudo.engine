@@ -52,12 +52,12 @@ public class ResourcePanel extends AbstractLevelObjectPanel<Resource, LevelPanel
 	private final Color mineColor;
 
 	public ResourcePanel(final Resource resource, final LevelPanel parentResourcePanel) {
-		super(resource, resource.getPolygon(), getImageURI(resource.getType()), parentResourcePanel, DrawLayer.BACKGROUND);
+		super(resource, resource.getPolygon(), getImageURI(resource.type), parentResourcePanel, DrawLayer.BACKGROUND);
 		logger.info("Create " + this);
 		resource.addPropertyChangeListener(this);
-		this.mine = resource.getType() == ResourceType.Mine;
+		this.mine = resource.type == ResourceType.Mine;
 		if(mine && resource.wasPlacedByTeam() != null) {
-			this.mineColor = resource.wasPlacedByTeam().getTeamColor();
+			this.mineColor = resource.wasPlacedByTeam().teamColor;
 		} else {
 			this.mineColor = Color.BLACK;
 		}
@@ -88,7 +88,7 @@ public class ResourcePanel extends AbstractLevelObjectPanel<Resource, LevelPanel
 		} else {
 			direction = owner.getDirection();
 			gg2 = (Graphics2D) g2.create();
-			gg2.translate(-direction.getVector().getX() * owner.getWidth() * 0.35, -direction.getVector().getY() * owner.getHeight() * 0.35);
+			gg2.translate(-direction.getVector().getX() * owner.width * 0.35, -direction.getVector().getY() * owner.height * 0.35);
 			paintImageRotated(direction, gg2);
 			gg2.dispose();
 		}

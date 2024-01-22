@@ -1,3 +1,4 @@
+import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 import java.util.*
 
 /*
@@ -9,6 +10,7 @@ plugins {
     `maven-publish`
     signing
     kotlin("jvm")
+    id("org.jlleitschuh.gradle.ktlint") version "11.6.1"
 }
 
 repositories {
@@ -34,7 +36,8 @@ dependencies {
 
 group = "org.openbase"
 version = "3.0.4-SNAPSHOT"
-description = "PlanetSudo is a reactive multi-agent simulation game. This package contains the game engine of PlanetSudo."
+description =
+    "PlanetSudo is a reactive multi-agent simulation game. This package contains the game engine of PlanetSudo."
 
 publishing {
     publications.create<MavenPublication>("maven") {
@@ -47,7 +50,7 @@ tasks.withType<JavaCompile>() {
 }
 
 tasks.withType<Javadoc>() {
-    options.encoding     = "UTF-8"
+    options.encoding = "UTF-8"
 }
 
 tasks.withType<Test> {
@@ -104,7 +107,6 @@ publishing {
 }
 
 signing {
-
     val privateKey = findProperty("OPENBASE_GPG_PRIVATE_KEY")
         ?.let { it as String? }
         ?.let { Base64.getDecoder().decode(it) }
@@ -134,4 +136,16 @@ tasks.javadoc {
 }
 kotlin {
     jvmToolchain(17)
+}
+
+ktlint {
+    disabledRules.set(setOf("no-wildcard-imports"))
+    filter {
+        exclude { entry -> entry.file.toString().contains("generated") }
+    }
+    reporters {
+        reporter(ReporterType.PLAIN)
+        reporter(ReporterType.HTML)
+        reporter(ReporterType.CHECKSTYLE)
+    }
 }

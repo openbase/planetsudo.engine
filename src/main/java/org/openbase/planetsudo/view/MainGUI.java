@@ -10,12 +10,12 @@ package org.openbase.planetsudo.view;
  * it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
@@ -24,6 +24,7 @@ package org.openbase.planetsudo.view;
 
 import org.openbase.planetsudo.view.configuration.ConfigurationPanel;
 import org.openbase.planetsudo.view.game.GamePanel;
+
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
@@ -32,6 +33,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
+
 import org.slf4j.Logger;
 import org.openbase.planetsudo.main.GUIController;
 import org.openbase.planetsudo.game.GameManager;
@@ -46,236 +48,238 @@ import org.openbase.planetsudo.view.loading.LevelLoadingPanel;
 import org.openbase.planetsudo.view.menu.GameContext;
 import org.openbase.planetsudo.view.menu.HelpFrame;
 import org.openbase.planetsudo.view.menu.SpeedControlFrame;
+
 import javax.swing.JFrame;
+
 import org.slf4j.LoggerFactory;
 
 /**
- *
  * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a>
  */
 public class MainGUI extends javax.swing.JFrame implements PropertyChangeListener {
 
-	public final static String GAME_PANEL="GamePanel";
-	public final static String LOADING_PANEL="LoadingPanel";
-	public final static String CONFIGURATION_PANEL="ConfigurationPanel";
+    public final static String GAME_PANEL = "GamePanel";
+    public final static String LOADING_PANEL = "LoadingPanel";
+    public final static String CONFIGURATION_PANEL = "ConfigurationPanel";
 
-private static final Logger LOGGER = LoggerFactory.getLogger(MainGUI.class);
-    
-	private ConfigurationPanel configurationPanel;
-	private LevelLoadingPanel levelLoadingPanel;
-	private GamePanel gamePanel;
+    private static final Logger LOGGER = LoggerFactory.getLogger(MainGUI.class);
+
+    private ConfigurationPanel configurationPanel;
+    private LevelLoadingPanel levelLoadingPanel;
+    private GamePanel gamePanel;
 
 
-    /** Creates new form MainGui */
+    /**
+     * Creates new form MainGui
+     */
     public MainGUI() {
         initComponents();
     }
 
-	/**
-	 * Create the frame
-	 */
-	public MainGUI(GUIController guiController) {
-		super("PlanetSudo");
-		instance = this;
-		this.screenDim = new Dimension(X_DIM, Y_DIM);
-		this.guiController = guiController;
-		this.setIconImage(new ImageIcon("img/PlanetSudoLogoIcon.png").getImage());
-	}
-
-	public static MainGUI instance;
-	public final static int X_LOCATION = 0;
-	public final static int Y_LOCATION = 0;
-	public final static int X_DIM = 800;
-	public final static int Y_DIM = 600;
-	public final static boolean DEFAULT_FULLSCREENMODE = false;
-
-	private Dimension screenDim;
-	private GUIController guiController;
-	private CardLayout cardLayout;
-	private boolean fullscreenMode;
-
-	public void initialize() {
-		SwingUtilities.invokeLater(new Runnable() {
-
-			@Override
-			public void run() {
-				initComponents();
-				configurationPanel = new ConfigurationPanel();
-				levelLoadingPanel = new LevelLoadingPanel();
-				gamePanel = new GamePanel();
-				mainPanel.add(configurationPanel, CONFIGURATION_PANEL);
-				mainPanel.add(levelLoadingPanel, LOADING_PANEL);
-				mainPanel.add(gamePanel, GAME_PANEL);
-				((CardLayout) mainPanel.getLayout()).show(mainPanel, CONFIGURATION_PANEL);
-				setFullScreenMode(DEFAULT_FULLSCREENMODE);
-				guiController.addPropertyChangeListener(instance);
-				displayTeamPanelCheckBoxMenuItem.setSelected(gamePanel.isTeamPanelDisplayed());
-				updateButtons(GameManager.getInstance().getGameState());
-			}
-		});
-	}
-
-	/**
-	 * @return the iPadController
-	 */
-	public GUIController getGuiController() {
-		return guiController;
-	}
-
-	public void setFullScreenMode(boolean enabled) {
-		fullscreenMode = enabled;
-		LOGGER.info("setFullscreenMode "+fullscreenMode);
-		setVisible(false);
-		if(fullscreenMode) {
-			//setSize(guiController.getVisualFeedbackConfig().getFrameDimension());
-			//setSize(screenDim);
-			setLocation(0,0);
-			if(isDisplayable()) dispose();
-			setUndecorated(true);
-
-			GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			GraphicsDevice device = env.getDefaultScreenDevice();
-
-			try {
-				device.setFullScreenWindow(this); // Setzen des FullScreenmodus.
-				this.validate();
-				//fullscreenModeMenuItem.setText("Leave FullScreen Mode");
-			}
-			catch(Exception ex) {
-				LOGGER.error("no Fullscreen.", ex);
-				device.setFullScreenWindow(null);
-			}
-		} else {
-			//pack();
-			setLocation(X_LOCATION, Y_LOCATION);
-			setSize(screenDim);
-			setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
-
-			if(isDisplayable()) dispose();
-			setUndecorated(false);
-
-			GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			GraphicsDevice device = env.getDefaultScreenDevice();
-
-			try {
-					device.setFullScreenWindow(null); // Setzen des FullScreenmodus.
-					//fullscreenModeMenuItem.setText("Enter FullScreen Mode");
-			}
-			catch(Exception ex) {
-				LOGGER.error("no Fullscreen.", ex);
-				device.setFullScreenWindow(null);
-			}
-		}
-		validate();
-		setVisible(true);
+    /**
+     * Create the frame
+     */
+    public MainGUI(GUIController guiController) {
+        super("PlanetSudo");
+        instance = this;
+        this.screenDim = new Dimension(X_DIM, Y_DIM);
+        this.guiController = guiController;
+        this.setIconImage(new ImageIcon("img/PlanetSudoLogoIcon.png").getImage());
     }
 
-	public boolean fullscreenModeEnabled() {
-		return fullscreenMode;
-	}
+    public static MainGUI instance;
+    public final static int X_LOCATION = 0;
+    public final static int Y_LOCATION = 0;
+    public final static int X_DIM = 800;
+    public final static int Y_DIM = 600;
+    public final static boolean DEFAULT_FULLSCREENMODE = false;
 
-	/**
-	 * Analyse des propertyChangeEvents und setzen der neuen Werte.
-	 */
-	@Override
-	public void propertyChange(PropertyChangeEvent changeEvent) {
-		LOGGER.info("PropertyChange input: "+changeEvent.getPropertyName());
-		try {
-			if(changeEvent.getPropertyName().equals(GUIController.GAME_STATE_CHANGE)) {
-				updateButtons((GameState) changeEvent.getNewValue());
-				if(changeEvent.getNewValue() == GameState.Configuration) {
-					gamePanel.setVideoThreadCommand(VideoThreadCommand.Stop);
-					((CardLayout) mainPanel.getLayout()).show(mainPanel, CONFIGURATION_PANEL);
-				} else if(changeEvent.getNewValue() == GameState.Initialisation) {
-					levelLoadingPanel.updateDynamicComponents();
-					gamePanel.setVideoThreadCommand(VideoThreadCommand.Stop);
-					((CardLayout) mainPanel.getLayout()).show(mainPanel, LOADING_PANEL);
-				} else if(changeEvent.getNewValue() == GameState.Running) {
-					if(changeEvent.getOldValue() != GameState.Break) {
-						gamePanel.updateDynamicComponents();
-						((CardLayout) mainPanel.getLayout()).show(mainPanel, GAME_PANEL);
-					}
-					gamePanel.setVideoThreadCommand(VideoThreadCommand.Start);
-				} else if(changeEvent.getNewValue() == GameState.Break) {
-					((CardLayout) mainPanel.getLayout()).show(mainPanel, GAME_PANEL);
-					gamePanel.setVideoThreadCommand(VideoThreadCommand.Pause);
-				}
-			} else if(changeEvent.getPropertyName().equals(GUIController.LOADING_STATE_CHANGE)) {
-				levelLoadingPanel.setLoadingStateChange((String) changeEvent.getNewValue(), (Integer) changeEvent.getOldValue());
-			} else if(changeEvent.getPropertyName().equals(GUIController.LOADING_STEP)) {
-				levelLoadingPanel.setLoadingStep((Integer) changeEvent.getNewValue());
-			} else {
-				LOGGER.warn("Event ["+changeEvent.getPropertyName()+"] is an bad property change event!");
-			}
-		}
-		catch (Exception ex) {
-			LOGGER.debug("Exception from PropertyChange");
-		}
-	}
+    private Dimension screenDim;
+    private GUIController guiController;
+    private CardLayout cardLayout;
+    private boolean fullscreenMode;
 
-	public void updateButtons(GameState state) {
-		switch(state) {
-			case Configuration:
-				startPauseMenuItem.setText("Starte Spiel");
-				startPauseMenuItem.setEnabled(true);
-				stopMenuItem.setEnabled(false);
-				finalCalculationMenuItem.setEnabled(false);
-				break;
-			case Initialisation:
-				startPauseMenuItem.setText("Starte Spiel");
-				startPauseMenuItem.setEnabled(false);
-				stopMenuItem.setEnabled(false);
-				finalCalculationMenuItem.setEnabled(false);
-				break;
-			case Running:
-				startPauseMenuItem.setText("Pause");
-				startPauseMenuItem.setEnabled(true);
-				stopMenuItem.setEnabled(true);
-				finalCalculationMenuItem.setEnabled(true);
-				break;
-			case Break:
-				startPauseMenuItem.setText("Weiter");
-				startPauseMenuItem.setEnabled(true);
-				stopMenuItem.setEnabled(true);
-				finalCalculationMenuItem.setEnabled(false);
-				break;
-		}
-		if(finished) {
-			startPauseMenuItem.setEnabled(false);
-			stopMenuItem.setEnabled(true);
-			finalCalculationMenuItem.setEnabled(false);
-			stopMenuItem.setText("Zurück zum Hauptmenü");
+    public void initialize() {
+        SwingUtilities.invokeLater(new Runnable() {
 
-		} else {
-			stopMenuItem.setText("Stop");
-		}
-		finished = false;
-	}
+            @Override
+            public void run() {
+                initComponents();
+                configurationPanel = new ConfigurationPanel();
+                levelLoadingPanel = new LevelLoadingPanel();
+                gamePanel = new GamePanel();
+                mainPanel.add(configurationPanel, CONFIGURATION_PANEL);
+                mainPanel.add(levelLoadingPanel, LOADING_PANEL);
+                mainPanel.add(gamePanel, GAME_PANEL);
+                ((CardLayout) mainPanel.getLayout()).show(mainPanel, CONFIGURATION_PANEL);
+                setFullScreenMode(DEFAULT_FULLSCREENMODE);
+                guiController.addPropertyChangeListener(instance);
+                displayTeamPanelCheckBoxMenuItem.setSelected(gamePanel.isTeamPanelDisplayed());
+                updateButtons(GameManager.getGameManager().getGameState());
+            }
+        });
+    }
 
-	private boolean finished;
-	private void finalizeGame() {
-		finished = true;
+    /**
+     * @return the iPadController
+     */
+    public GUIController getGuiController() {
+        return guiController;
+    }
 
-		GameManager.getInstance().switchGameState(GameState.Break);
-		GameSound.End.play();
-		gamePanel.displayEndCalculation();
+    public void setFullScreenMode(boolean enabled) {
+        fullscreenMode = enabled;
+        LOGGER.info("setFullscreenMode " + fullscreenMode);
+        setVisible(false);
+        if (fullscreenMode) {
+            //setSize(guiController.getVisualFeedbackConfig().getFrameDimension());
+            //setSize(screenDim);
+            setLocation(0, 0);
+            if (isDisplayable()) dispose();
+            setUndecorated(true);
 
-	}
+            GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            GraphicsDevice device = env.getDefaultScreenDevice();
 
-	public void showLoadingPanel() {
-		LOGGER.info("ShowLoadingPanel");
-		((CardLayout) mainPanel.getLayout()).show(mainPanel, LOADING_PANEL);
-	}
+            try {
+                device.setFullScreenWindow(this); // Setzen des FullScreenmodus.
+                this.validate();
+                //fullscreenModeMenuItem.setText("Leave FullScreen Mode");
+            } catch (Exception ex) {
+                LOGGER.error("no Fullscreen.", ex);
+                device.setFullScreenWindow(null);
+            }
+        } else {
+            //pack();
+            setLocation(X_LOCATION, Y_LOCATION);
+            setSize(screenDim);
+            setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 
-	public static MainGUI getInstance() {
-		return instance;
-	}
+            if (isDisplayable()) dispose();
+            setUndecorated(false);
 
-	public ConfigurationPanel getConfigurationPanel() {
-		return configurationPanel;
-	}
+            GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            GraphicsDevice device = env.getDefaultScreenDevice();
 
-    /** This method is called from within the constructor to
+            try {
+                device.setFullScreenWindow(null); // Setzen des FullScreenmodus.
+                //fullscreenModeMenuItem.setText("Enter FullScreen Mode");
+            } catch (Exception ex) {
+                LOGGER.error("no Fullscreen.", ex);
+                device.setFullScreenWindow(null);
+            }
+        }
+        validate();
+        setVisible(true);
+    }
+
+    public boolean fullscreenModeEnabled() {
+        return fullscreenMode;
+    }
+
+    /**
+     * Analyse des propertyChangeEvents und setzen der neuen Werte.
+     */
+    @Override
+    public void propertyChange(PropertyChangeEvent changeEvent) {
+        LOGGER.info("PropertyChange input: " + changeEvent.getPropertyName());
+        try {
+            if (changeEvent.getPropertyName().equals(GUIController.GAME_STATE_CHANGE)) {
+                updateButtons((GameState) changeEvent.getNewValue());
+                if (changeEvent.getNewValue() == GameState.Configuration) {
+                    gamePanel.setVideoThreadCommand(VideoThreadCommand.Stop);
+                    ((CardLayout) mainPanel.getLayout()).show(mainPanel, CONFIGURATION_PANEL);
+                } else if (changeEvent.getNewValue() == GameState.Initialisation) {
+                    levelLoadingPanel.updateDynamicComponents();
+                    gamePanel.setVideoThreadCommand(VideoThreadCommand.Stop);
+                    ((CardLayout) mainPanel.getLayout()).show(mainPanel, LOADING_PANEL);
+                } else if (changeEvent.getNewValue() == GameState.Running) {
+                    if (changeEvent.getOldValue() != GameState.Break) {
+                        gamePanel.updateDynamicComponents();
+                        ((CardLayout) mainPanel.getLayout()).show(mainPanel, GAME_PANEL);
+                    }
+                    gamePanel.setVideoThreadCommand(VideoThreadCommand.Start);
+                } else if (changeEvent.getNewValue() == GameState.Break) {
+                    ((CardLayout) mainPanel.getLayout()).show(mainPanel, GAME_PANEL);
+                    gamePanel.setVideoThreadCommand(VideoThreadCommand.Pause);
+                }
+            } else if (changeEvent.getPropertyName().equals(GUIController.LOADING_STATE_CHANGE)) {
+                levelLoadingPanel.setLoadingStateChange((String) changeEvent.getNewValue(), (Integer) changeEvent.getOldValue());
+            } else if (changeEvent.getPropertyName().equals(GUIController.LOADING_STEP)) {
+                levelLoadingPanel.setLoadingStep((Integer) changeEvent.getNewValue());
+            } else {
+                LOGGER.warn("Event [" + changeEvent.getPropertyName() + "] is an bad property change event!");
+            }
+        } catch (Exception ex) {
+            LOGGER.debug("Exception from PropertyChange");
+        }
+    }
+
+    public void updateButtons(GameState state) {
+        switch (state) {
+            case Configuration:
+                startPauseMenuItem.setText("Starte Spiel");
+                startPauseMenuItem.setEnabled(true);
+                stopMenuItem.setEnabled(false);
+                finalCalculationMenuItem.setEnabled(false);
+                break;
+            case Initialisation:
+                startPauseMenuItem.setText("Starte Spiel");
+                startPauseMenuItem.setEnabled(false);
+                stopMenuItem.setEnabled(false);
+                finalCalculationMenuItem.setEnabled(false);
+                break;
+            case Running:
+                startPauseMenuItem.setText("Pause");
+                startPauseMenuItem.setEnabled(true);
+                stopMenuItem.setEnabled(true);
+                finalCalculationMenuItem.setEnabled(true);
+                break;
+            case Break:
+                startPauseMenuItem.setText("Weiter");
+                startPauseMenuItem.setEnabled(true);
+                stopMenuItem.setEnabled(true);
+                finalCalculationMenuItem.setEnabled(false);
+                break;
+        }
+        if (finished) {
+            startPauseMenuItem.setEnabled(false);
+            stopMenuItem.setEnabled(true);
+            finalCalculationMenuItem.setEnabled(false);
+            stopMenuItem.setText("Zurück zum Hauptmenü");
+
+        } else {
+            stopMenuItem.setText("Stop");
+        }
+        finished = false;
+    }
+
+    private boolean finished;
+
+    private void finalizeGame() {
+        finished = true;
+
+        GameManager.getGameManager().switchGameState(GameState.Break);
+        GameSound.End.play();
+        gamePanel.displayEndCalculation();
+
+    }
+
+    public void showLoadingPanel() {
+        LOGGER.info("ShowLoadingPanel");
+        ((CardLayout) mainPanel.getLayout()).show(mainPanel, LOADING_PANEL);
+    }
+
+    public static MainGUI getInstance() {
+        return instance;
+    }
+
+    public ConfigurationPanel getConfigurationPanel() {
+        return configurationPanel;
+    }
+
+    /**
+     * This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
      * always regenerated by the Form Editor.
@@ -313,12 +317,12 @@ private static final Logger LOGGER = LoggerFactory.getLogger(MainGUI.class);
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
         jFrame1Layout.setHorizontalGroup(
-            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+                jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 400, Short.MAX_VALUE)
         );
         jFrame1Layout.setVerticalGroup(
-            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+                jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 300, Short.MAX_VALUE)
         );
 
         jMenuItem1.setText("jMenuItem1");
@@ -475,12 +479,12 @@ private static final Logger LOGGER = LoggerFactory.getLogger(MainGUI.class);
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
         );
 
         pack();
@@ -490,47 +494,47 @@ private static final Logger LOGGER = LoggerFactory.getLogger(MainGUI.class);
         System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
-	private void jCheckBoxMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem1ActionPerformed
-		setFullScreenMode(jCheckBoxMenuItem1.isSelected());
-	}//GEN-LAST:event_jCheckBoxMenuItem1ActionPerformed
+    private void jCheckBoxMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem1ActionPerformed
+        setFullScreenMode(jCheckBoxMenuItem1.isSelected());
+    }//GEN-LAST:event_jCheckBoxMenuItem1ActionPerformed
 
-	private void startPauseMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startPauseMenuItemActionPerformed
-		switch(GameManager.getInstance().getGameState()) {
-			case Configuration:
-				GameManager.getInstance().startGame();
-				break;
-			case Running:
-				GameManager.getInstance().switchGameState(GameState.Break);
-				break;
-			case Break:
-				GameManager.getInstance().switchGameState(GameState.Running);
-				break;
-		}
-	}//GEN-LAST:event_startPauseMenuItemActionPerformed
+    private void startPauseMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startPauseMenuItemActionPerformed
+        switch (GameManager.getGameManager().getGameState()) {
+            case Configuration:
+                GameManager.getGameManager().startGame();
+                break;
+            case Running:
+                GameManager.getGameManager().switchGameState(GameState.Break);
+                break;
+            case Break:
+                GameManager.getGameManager().switchGameState(GameState.Running);
+                break;
+        }
+    }//GEN-LAST:event_startPauseMenuItemActionPerformed
 
-	private void displayTeamPanelCheckBoxMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_displayTeamPanelCheckBoxMenuItemActionPerformed
-		gamePanel.displayTeamPanel(displayTeamPanelCheckBoxMenuItem.isSelected());
-	}//GEN-LAST:event_displayTeamPanelCheckBoxMenuItemActionPerformed
+    private void displayTeamPanelCheckBoxMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_displayTeamPanelCheckBoxMenuItemActionPerformed
+        gamePanel.displayTeamPanel(displayTeamPanelCheckBoxMenuItem.isSelected());
+    }//GEN-LAST:event_displayTeamPanelCheckBoxMenuItemActionPerformed
 
-	private void jCheckBoxMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem3ActionPerformed
-		AgentPanel.showStateLabel = jCheckBoxMenuItem3.isSelected();
-	}//GEN-LAST:event_jCheckBoxMenuItem3ActionPerformed
+    private void jCheckBoxMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem3ActionPerformed
+        AgentPanel.showStateLabel = jCheckBoxMenuItem3.isSelected();
+    }//GEN-LAST:event_jCheckBoxMenuItem3ActionPerformed
 
-	private void stopMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopMenuItemActionPerformed
-		GameManager.getInstance().switchGameState(GameState.Configuration);
-	}//GEN-LAST:event_stopMenuItemActionPerformed
+    private void stopMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopMenuItemActionPerformed
+        GameManager.getGameManager().switchGameState(GameState.Configuration);
+    }//GEN-LAST:event_stopMenuItemActionPerformed
 
-	private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
-		HelpFrame.display();
-	}//GEN-LAST:event_aboutMenuItemActionPerformed
+    private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
+        HelpFrame.display();
+    }//GEN-LAST:event_aboutMenuItemActionPerformed
 
-	private void contentsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contentsMenuItemActionPerformed
-		GameContext.display();
-	}//GEN-LAST:event_contentsMenuItemActionPerformed
+    private void contentsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contentsMenuItemActionPerformed
+        GameContext.display();
+    }//GEN-LAST:event_contentsMenuItemActionPerformed
 
-	private void finalCalculationMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finalCalculationMenuItemActionPerformed
-		finalizeGame();
-	}//GEN-LAST:event_finalCalculationMenuItemActionPerformed
+    private void finalCalculationMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finalCalculationMenuItemActionPerformed
+        finalizeGame();
+    }//GEN-LAST:event_finalCalculationMenuItemActionPerformed
 
     private void createTeamMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createTeamMenuItemActionPerformed
         CreateTeamFrame.display();
@@ -541,25 +545,26 @@ private static final Logger LOGGER = LoggerFactory.getLogger(MainGUI.class);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        GameManager.getInstance().setGameOverSoon();
+        GameManager.getGameManager().setGameOverSoon();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         try {
-			Team.resetDefaultTeam();
-		} catch (Exception ex) {
-			LOGGER.warn("Could not reset default team!");
-		}
+            Team.resetDefaultTeam();
+        } catch (Exception ex) {
+            LOGGER.warn("Could not reset default team!");
+        }
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
-	public static LevelView levelView;
+    public static LevelView levelView;
+
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
-			@Override
+            @Override
             public void run() {
                 new MainGUI().setVisible(true);
             }

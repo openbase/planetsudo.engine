@@ -64,9 +64,9 @@ public class TowerTopPanel extends AbstractLevelObjectPanel<Tower, TowerPanel> i
         }
 
         boundingBox = resource.getBounds();
-        direction = resource.getDirection();
+        direction = resource.direction;
         gg2 = (Graphics2D) g2.create();
-        paintImageRotated(tower.getDirection(), gg2);
+        paintImageRotated(tower.direction, gg2);
         gg2.dispose();
     }
 

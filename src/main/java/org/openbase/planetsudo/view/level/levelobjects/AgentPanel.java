@@ -67,7 +67,7 @@ public class AgentPanel extends AbstractLevelObjectPanel<Agent, MothershipPanel>
     //public static boolean viewFlag = true;
     public AgentPanel(final Agent resource, final MothershipPanel parentResourcePanel) {
         super(resource, resource.getPolygon(), getAgentImage(resource).imagesURL, parentResourcePanel, DrawLayer.FORGROUND); //TODO Check Polygon
-        this.teamColor = resource.getTeam().getTeamColor();
+        this.teamColor = resource.getTeam().teamColor;
         logger.info("Create AgentPanel of " + resource);
 //		if(resource.getMothership().getTeam().getId() == 0) {
         MainGUI.levelView = resource.getLevelView();
@@ -104,7 +104,7 @@ public class AgentPanel extends AbstractLevelObjectPanel<Agent, MothershipPanel>
     @Override
     protected void paintComponent(Graphics2D g2, Graphics2D gl) {
         boundingBox = resource.getBounds();
-        position = resource.getPosition();
+        position = resource.position;
         x = (int) position.getX();
         y = (int) position.getY();
         int trans_x = x + 60;
@@ -137,27 +137,27 @@ public class AgentPanel extends AbstractLevelObjectPanel<Agent, MothershipPanel>
         levelObject = resource.isFightingWith();
         if (levelObject != null) {
             g2.setColor(teamColor);
-            side = new Direction2D(direction.getAngle() + 90);
-            g2.drawLine((int) (x + (side.getVector().getX() * resource.getWidth() / 2)),
-                    (int) (y + (side.getVector().getY() * resource.getHeight() / 3)),
-                    (int) (levelObject.getPosition().getX()),
-                    (int) (levelObject.getPosition().getY()));
-            side = new Direction2D(direction.getAngle() - 90);
-            g2.drawLine((int) (x + (side.getVector().getX() * resource.getWidth() / 2)),
-                    (int) (y + (side.getVector().getY() * resource.getHeight() / 3)),
-                    (int) (levelObject.getPosition().getX()),
-                    (int) (levelObject.getPosition().getY()));
+            side = new Direction2D(direction.angle + 90);
+            g2.drawLine((int) (x + (side.getVector().getX() * resource.width / 2)),
+                    (int) (y + (side.getVector().getY() * resource.height / 3)),
+                    (int) (levelObject.position.getX()),
+                    (int) (levelObject.position.getY()));
+            side = new Direction2D(direction.angle - 90);
+            g2.drawLine((int) (x + (side.getVector().getX() * resource.width / 2)),
+                    (int) (y + (side.getVector().getY() * resource.height / 3)),
+                    (int) (levelObject.position.getX()),
+                    (int) (levelObject.position.getY()));
         }
 
         levelObject = resource.wasHelping();
         if (levelObject != null) {
-            side = new Direction2D(direction.getAngle() + 90);
+            side = new Direction2D(direction.angle + 90);
             xPoses[0] = (int) (x + (side.getVector().getX() * 15));
             yPoses[0] = (int) (y + (side.getVector().getY() * 15));
             xPoses[1] = (int) (x - (side.getVector().getX() * 15));
             yPoses[1] = (int) (y - (side.getVector().getY() * 15));
-            xPoses[2] = (int) levelObject.getPosition().getX();
-            yPoses[2] = (int) levelObject.getPosition().getY();
+            xPoses[2] = (int) levelObject.position.getX();
+            yPoses[2] = (int) levelObject.position.getY();
             g2.setColor(teamColor);
             g2.fillPolygon(xPoses, yPoses, 3);
 //			g2.drawPolygon((int) (resource.getPosition().getX()resource.getWidth()/2)),
