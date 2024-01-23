@@ -1,7 +1,5 @@
 package org.openbase.planetsudo.game
 
-import java.util.*
-
 /*-
 * #%L
 * PlanetSudo GameEngine

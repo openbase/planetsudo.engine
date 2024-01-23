@@ -34,7 +34,6 @@ package org.openbase.planetsudo.view.loading;
  */
 
 import org.openbase.planetsudo.game.GameManager;
-import org.openbase.planetsudo.level.AbstractLevel;
 
 
 /**

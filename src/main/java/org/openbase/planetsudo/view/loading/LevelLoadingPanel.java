@@ -27,16 +27,13 @@ package org.openbase.planetsudo.view.loading;
  * #L%
  */
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
-
 import org.openbase.jul.visual.swing.animation.LoadingAnimation;
-import org.slf4j.Logger;
 import org.openbase.planetsudo.game.GameManager;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a>

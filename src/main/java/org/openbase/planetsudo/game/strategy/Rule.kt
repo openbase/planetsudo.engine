@@ -5,7 +5,6 @@
 package org.openbase.planetsudo.game.strategy
 
 import org.openbase.planetsudo.game.SwatTeam
-import java.util.*
 
 /*-
  * #%L

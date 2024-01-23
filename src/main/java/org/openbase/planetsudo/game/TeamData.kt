@@ -6,7 +6,6 @@ package org.openbase.planetsudo.game
 
 import java.awt.Color
 import java.io.Serializable
-import java.util.*
 
 /**
  *
