@@ -35,7 +35,7 @@ dependencies {
 }
 
 group = "org.openbase"
-version = "3.0.4-SNAPSHOT"
+version = "4.0.0-SNAPSHOT"
 description =
     "PlanetSudo is a reactive multi-agent simulation game. This package contains the game engine of PlanetSudo."
 
