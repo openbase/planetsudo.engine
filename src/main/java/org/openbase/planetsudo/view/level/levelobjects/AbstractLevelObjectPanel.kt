@@ -32,14 +32,14 @@ abstract class AbstractLevelObjectPanel<R : AbstractLevelObject, PRP : ResourceP
         placementPolygon: Polygon,
         imageURI: String?,
         parentResourcePanel: PRP,
-        drawLayer: DrawLayer,
+        drawLayer: DrawLayer
     ) : super(resource, placementPolygon, ObjectType.Static, imageURI, parentResourcePanel, drawLayer)
 
     constructor(
         resource: R,
         placementPolygon: Polygon,
         imageURI: String,
-        parentPanel: ResourceDisplayPanel<ResourcePanel>,
+        parentPanel: ResourceDisplayPanel<ResourcePanel>
     ) : super(resource, placementPolygon, ObjectType.Dynamic, imageURI, parentPanel)
 
     protected fun paintShape(g2: Graphics2D) {
@@ -76,7 +76,7 @@ abstract class AbstractLevelObjectPanel<R : AbstractLevelObject, PRP : ResourceP
         direction: Direction2D,
         width: Double,
         height: Double,
-        affineTransform: AffineTransform,
+        affineTransform: AffineTransform
     ): AffineTransform {
         dimension2D.setSize(width, height)
         return getRotationTransformation(direction, dimension2D, affineTransform)
@@ -85,7 +85,7 @@ abstract class AbstractLevelObjectPanel<R : AbstractLevelObject, PRP : ResourceP
     fun getRotationTransformation(
         direction: Direction2D,
         dimension: Dimension2D,
-        affineTransform: AffineTransform,
+        affineTransform: AffineTransform
     ): AffineTransform {
         affineTransform.rotate(
             Math.toRadians(direction.angle + 90.0),

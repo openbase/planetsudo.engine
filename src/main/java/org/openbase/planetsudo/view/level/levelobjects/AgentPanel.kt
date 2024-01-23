@@ -70,7 +70,7 @@ class AgentPanel(resource: Agent, parentResourcePanel: MothershipPanel) :
                 parentResourcePanel.boundingBox.x.toInt(),
                 parentResourcePanel.boundingBox.y.toInt(),
                 g2
-            );
+            )
         }
 
         // Paint Team Color

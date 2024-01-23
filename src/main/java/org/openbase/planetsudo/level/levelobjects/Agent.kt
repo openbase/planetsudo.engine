@@ -30,7 +30,7 @@ class Agent(
     name: String,
     commanderFlag: Boolean,
     fuelVolume: Int,
-    mothership: Mothership,
+    mothership: Mothership
 ) : AbstractLevelObject(
     mothership.computeNextAgentId(),
     name,
