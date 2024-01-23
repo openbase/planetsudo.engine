@@ -47,29 +47,34 @@ class AgentPanel(resource: Agent, parentResourcePanel: MothershipPanel) :
     init {
         logger.info("Create AgentPanel of $resource")
         // 		if(resource.getMothership().getTeam().getId() == 0) {
-        MainGUI.levelView = resource.levelView
+        //          MainGUI.levelView = resource.levelView
         // 		}
     }
 
-    override fun paintComponent(g2: Graphics2D?, gl: Graphics2D?) {
-        boundingBox = resource!!.bounds
-        position = resource!!.position
+    override fun paintComponent(g2: Graphics2D, gl: Graphics2D) {
+        boundingBox = resource.bounds
+        position = resource.position
         x = position!!.x.toInt()
         y = position!!.y.toInt()
         val trans_x = x + 60
         val trans_y = y + 60
-        direction = resource!!.direction
+        direction = resource.direction
 
         if (showStateLabel) {
-            gl!!.color = Color.WHITE
+            gl.color = Color.WHITE
             gl.drawLine(boundingBox.maxX.toInt(), boundingBox.maxY.toInt(), trans_x, trans_y)
         }
 
-        // 		if(MainGUI.levelView == resource.getLevelView()) {
-// 			resource.getLevelView().drawLevelView((int)parentResourcePanel.getBoundingBox().getX(), (int)parentResourcePanel.getBoundingBox().getY(), g2);
-// 		}
+        if (DEBUG && MainGUI.levelView == resource.levelView) {
+            resource.levelView?.drawLevelView(
+                parentResourcePanel.boundingBox.x.toInt(),
+                parentResourcePanel.boundingBox.y.toInt(),
+                g2
+            );
+        }
+
         // Paint Team Color
-        g22 = g2!!.create() as Graphics2D
+        g22 = g2.create() as Graphics2D
         g22!!.color = teamColor
         g22!!.transform(getBoundsTransformation(direction!!))
         // g22.fillRect(3, 10, 19, 9);
@@ -83,26 +88,26 @@ class AgentPanel(resource: Agent, parentResourcePanel: MothershipPanel) :
         g22!!.dispose()
 
         // Paint Laser
-        levelObject = resource!!.isFightingWith
+        levelObject = resource.isFightingWith
         if (levelObject != null) {
             g2.color = teamColor
             side = Direction2D(direction!!.angle + 90)
             g2.drawLine(
-                (x + (side!!.vector.x * resource!!.width / 2)).toInt(),
-                (y + (side!!.vector.y * resource!!.height / 3)).toInt(),
+                (x + (side!!.vector.x * resource.width / 2)).toInt(),
+                (y + (side!!.vector.y * resource.height / 3)).toInt(),
                 levelObject!!.position.x.toInt(),
                 levelObject!!.position.y.toInt()
             )
             side = Direction2D(direction!!.angle - 90)
             g2.drawLine(
-                (x + (side!!.vector.x * resource!!.width / 2)).toInt(),
-                (y + (side!!.vector.y * resource!!.height / 3)).toInt(),
+                (x + (side!!.vector.x * resource.width / 2)).toInt(),
+                (y + (side!!.vector.y * resource.height / 3)).toInt(),
                 levelObject!!.position.x.toInt(),
                 levelObject!!.position.y.toInt()
             )
         }
 
-        levelObject = resource!!.wasHelping()
+        levelObject = resource.wasHelping()
         if (levelObject != null) {
             side = Direction2D(direction!!.angle + 90)
             xPoses[0] = (x + (side!!.vector.x * 15)).toInt()
@@ -113,22 +118,22 @@ class AgentPanel(resource: Agent, parentResourcePanel: MothershipPanel) :
             yPoses[2] = levelObject!!.position.y.toInt()
             g2.color = teamColor
             g2.fillPolygon(xPoses, yPoses, 3)
-            // 			g2.drawPolygon((int) (resource.getPosition().getX()resource.getWidth()/2)),
-// 						(int) (resource.getPosition().getY()height/3)),
-// 						(int) (levelObject.getPosition().getX()),
-// 						(int) (levelObject.getPosition().getY()));
+            // 			g2.drawPolygon((int) (resource.getPosition().xresource.getWidth()/2)),
+// 						(int) (resource.getPosition().yheight/3)),
+// 						(int) (levelObject.getPosition().x),
+// 						(int) (levelObject.getPosition().y));
         }
 
         // paintShape(g2);
         paintImageRotated(direction!!, g2)
 
         // Explositon
-        if (!resource!!.isAlive) {
+        if (!resource.isAlive) {
             paintExplosion(g2)
         }
 
         // Paint FuelBarBackground
-        gl!!.color = FUEL_BACKGROUND
+        gl.color = FUEL_BACKGROUND
         gl.fillRect(
             (x - FUEL_BAR_STATIC_WIDTH / 2).toInt(),
             (y - FUEL_BAR_STATIC_POSITION_Y).toInt(),
@@ -141,13 +146,13 @@ class AgentPanel(resource: Agent, parentResourcePanel: MothershipPanel) :
         gl.fillRect(
             (x - FUEL_BAR_STATIC_WIDTH / 2).toInt(),
             (y - FUEL_BAR_STATIC_POSITION_Y).toInt(),
-            (FUEL_BAR_STATIC_WIDTH / resource!!.fuelVolume * resource!!.fuel).toInt(),
+            (FUEL_BAR_STATIC_WIDTH / resource.fuelVolume * resource.fuel).toInt(),
             FUEL_BAR_STATIC_HEIGHT
         )
 
         // Paint StateLable
         if (showStateLabel) {
-            val description = resource!!.description
+            val description = resource.description
             gl.font = Font(Font.SERIF, Font.BOLD, 25)
             gl.color = teamColor
             gl.fillRoundRect(trans_x - 10, trans_y - 30, 20 + gl.fontMetrics.stringWidth(description), 40, 50, 50)

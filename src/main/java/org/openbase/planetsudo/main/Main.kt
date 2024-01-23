@@ -7,6 +7,7 @@ package org.openbase.planetsudo.main
 import org.openbase.jps.core.JPService
 import org.openbase.jps.preset.JPDebugMode
 import org.openbase.jps.preset.JPPrefix
+import org.openbase.jps.preset.JPVisualDebugMode
 import org.openbase.planetsudo.jp.*
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -36,6 +37,7 @@ class Main {
             JPService.registerProperty(JPTeamPath::class.java)
             JPService.registerProperty(JPStrategyPath::class.java)
             JPService.registerProperty(JPDebugMode::class.java)
+            JPService.registerProperty(JPVisualDebugMode::class.java)
             JPService.registerProperty(JPLevelPath::class.java)
             JPService.registerProperty(JPServerHostname::class.java)
             JPService.registerProperty(JPServerPort::class.java)

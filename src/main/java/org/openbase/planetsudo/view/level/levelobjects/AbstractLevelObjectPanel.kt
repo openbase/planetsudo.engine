@@ -32,30 +32,30 @@ abstract class AbstractLevelObjectPanel<R : AbstractLevelObject, PRP : ResourceP
         placementPolygon: Polygon,
         imageURI: String?,
         parentResourcePanel: PRP,
-        drawLayer: DrawLayer
+        drawLayer: DrawLayer,
     ) : super(resource, placementPolygon, ObjectType.Static, imageURI, parentResourcePanel, drawLayer)
 
     constructor(
         resource: R,
         placementPolygon: Polygon,
         imageURI: String,
-        parentPanel: ResourceDisplayPanel<ResourcePanel>
+        parentPanel: ResourceDisplayPanel<ResourcePanel>,
     ) : super(resource, placementPolygon, ObjectType.Dynamic, imageURI, parentPanel)
 
     protected fun paintShape(g2: Graphics2D) {
         when (resource.shape) {
             AbstractLevelObject.ObjectShape.Oval -> g2.fillOval(
-                resource.position.getX() as Int - (resource.width as Int / 2),
-                resource.position.getY() as Int - (resource.height as Int / 2),
-                resource.width as Int,
-                resource.height as Int
+                resource.position.x.toInt() - (resource.width.toInt() / 2),
+                resource.position.y.toInt() - (resource.height.toInt() / 2),
+                resource.width.toInt(),
+                resource.height.toInt()
             )
 
             AbstractLevelObject.ObjectShape.Rec -> g2.fillRect(
-                resource.position.getX() as Int - (resource.width as Int / 2),
-                resource.position.getY() as Int - (resource.height as Int / 2),
-                resource.width as Int,
-                resource.height as Int
+                resource.position.x.toInt() - (resource.width.toInt() / 2),
+                resource.position.y.toInt() - (resource.height.toInt() / 2),
+                resource.width.toInt(),
+                resource.height.toInt()
             )
 
             else -> {
@@ -76,7 +76,7 @@ abstract class AbstractLevelObjectPanel<R : AbstractLevelObject, PRP : ResourceP
         direction: Direction2D,
         width: Double,
         height: Double,
-        affineTransform: AffineTransform
+        affineTransform: AffineTransform,
     ): AffineTransform {
         dimension2D.setSize(width, height)
         return getRotationTransformation(direction, dimension2D, affineTransform)
@@ -85,7 +85,7 @@ abstract class AbstractLevelObjectPanel<R : AbstractLevelObject, PRP : ResourceP
     fun getRotationTransformation(
         direction: Direction2D,
         dimension: Dimension2D,
-        affineTransform: AffineTransform
+        affineTransform: AffineTransform,
     ): AffineTransform {
         affineTransform.rotate(
             Math.toRadians(direction.angle + 90.0),
@@ -123,21 +123,21 @@ abstract class AbstractLevelObjectPanel<R : AbstractLevelObject, PRP : ResourceP
         }
 
     override fun toString(): String {
-        return javaClass.simpleName + "[" + resource!!.id + "]"
+        return javaClass.simpleName + "[" + resource.id + "]"
     }
 
-    private var xa1 = resource.position.getX() as Int
-    private var xa2 = resource.position.getX() as Int
-    private var xa3 = resource.position.getX() as Int
-    private var ya1 = resource.position.getY() as Int
-    private var ya2 = resource.position.getY() as Int
-    private var ya3 = resource.position.getY() as Int
-    private var xb1 = resource.position.getX() as Int
-    private var xb2 = resource.position.getX() as Int
-    private var xb3 = resource.position.getX() as Int
-    private var yb1 = resource.position.getY() as Int
-    private var yb2 = resource.position.getY() as Int
-    private var yb3 = resource.position.getY() as Int
+    private var xa1 = resource.position.x.toInt()
+    private var xa2 = resource.position.x.toInt()
+    private var xa3 = resource.position.x.toInt()
+    private var ya1 = resource.position.y.toInt()
+    private var ya2 = resource.position.y.toInt()
+    private var ya3 = resource.position.y.toInt()
+    private var xb1 = resource.position.x.toInt()
+    private var xb2 = resource.position.x.toInt()
+    private var xb3 = resource.position.x.toInt()
+    private var yb1 = resource.position.y.toInt()
+    private var yb2 = resource.position.y.toInt()
+    private var yb3 = resource.position.y.toInt()
 
     protected fun paintExplosion(g22: Graphics2D) {
         try {

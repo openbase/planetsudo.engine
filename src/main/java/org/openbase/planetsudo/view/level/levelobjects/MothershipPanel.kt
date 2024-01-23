@@ -22,23 +22,31 @@ class MothershipPanel(resource: Mothership, parentResourcePanel: LevelPanel) :
         DrawLayer.BACKGROUND
     ) {
     init {
-        TeamMarkerPanel(resource.teamMarker, parentResourcePanel)
+        loadMarkerPanel()
         loadAgentPanels()
     }
 
+    private fun loadMarkerPanel() {
+        try {
+            TeamMarkerPanel(resource.teamMarker, parentResourcePanel)
+        } catch (ex: Throwable) {
+            ex.printStackTrace()
+        }
+    }
+
     private fun loadAgentPanels() {
-        for (agent in resource!!.getAgents()) {
+        for (agent in resource.getAgents()) {
             AgentPanel(agent, this)
         }
     }
 
-    override fun paintComponent(g2: Graphics2D?, gl: Graphics2D?) {
-        boundingBox = resource!!.bounds
+    override fun paintComponent(g2: Graphics2D, gl: Graphics2D) {
+        boundingBox = resource.bounds
         // paintShape(g2);
-        g2!!.color = resource!!.team.teamColor
+        g2.color = resource.team.teamColor
         g2.fillRect(boundingBox.centerX.toInt() - 45, boundingBox.centerY.toInt() - 45, 90, 90)
         paintImage(g2)
-        if (resource!!.isBurning) {
+        if (resource.isBurning) {
             paintExplosion(g2)
         }
     }

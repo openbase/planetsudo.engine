@@ -25,10 +25,6 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
     }
 
     override fun loadRules() {
-//        "Just Go" all inCase { true } then { go() }
-//        "Just Go" commander inCase { true } then { go() }
-//        "Just Go" swat { SwatTeam.SWATS + SwatTeam.MIKE } inCase { true } then { go() }
-
         // -------------------------------------------->
         createRule(object : Rule("Just Go", SwatTeam.ALL) {
             override fun constraint(): Boolean {
@@ -104,10 +100,10 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(object : Rule("PickUp") {
             override fun constraint(): Boolean {
                 return !agent.isCommander && (
-                    agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(
-                        ResourceType.ExtraMothershipFuel
-                    )
-                    )
+                        agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(
+                            ResourceType.ExtraMothershipFuel
+                        )
+                        )
             }
 
             override fun action() {
@@ -131,10 +127,10 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(object : Rule("PickUp and Place") {
             override fun constraint(): Boolean {
                 return agent.isCommander && (
-                    agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(
-                        ResourceType.ExtraMothershipFuel
-                    )
-                    ) && !mothership!!.isMarkerDeployed && !agent.seeMarker()
+                        agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(
+                            ResourceType.ExtraMothershipFuel
+                        )
+                        ) && !mothership!!.isMarkerDeployed && !agent.seeMarker()
             }
 
             override fun action() {

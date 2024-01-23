@@ -35,15 +35,15 @@ class TowerTopPanel(tower: Tower, parentPanel: TowerPanel) :
         tower.addPropertyChangeListener(this)
     }
 
-    override fun paintComponent(g2: Graphics2D?, gl: Graphics2D?) {
+    override fun paintComponent(g2: Graphics2D, gl: Graphics2D) {
         // only paint if erected
-        if (!resource!!.isErected) {
+        if (!resource.isErected) {
             return
         }
 
-        boundingBox = resource!!.bounds
-        direction = resource!!.direction
-        gg2 = g2!!.create() as Graphics2D
+        boundingBox = resource.bounds
+        direction = resource.direction
+        gg2 = g2.create() as Graphics2D
         paintImageRotated(tower.direction, gg2!!)
         gg2!!.dispose()
     }

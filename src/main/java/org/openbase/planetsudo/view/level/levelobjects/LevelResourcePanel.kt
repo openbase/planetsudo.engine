@@ -48,23 +48,23 @@ class LevelResourcePanel(resource: Resource, parentResourcePanel: LevelPanel) :
         }
     }
 
-    override fun paintComponent(g2: Graphics2D?, gl: Graphics2D?) {
-        boundingBox = resource!!.bounds
-        owner = resource!!.owner
+    override fun paintComponent(g2: Graphics2D, gl: Graphics2D) {
+        boundingBox = resource.bounds
+        owner = resource.owner
 
         if (owner == null) {
             if (mine) {
                 if (AbstractLevelObjectPanel.Companion.animationFlag) {
-                    g2!!.color = mineColor
+                    g2.color = mineColor
                 } else {
-                    g2!!.color = Color.BLACK
+                    g2.color = Color.BLACK
                 }
                 g2.fillRect(boundingBox.centerX.toInt() - 5, boundingBox.centerY.toInt() - 5, 10, 10)
             }
-            paintImage(g2!!)
+            paintImage(g2)
         } else {
             direction = owner!!.direction
-            gg2 = g2!!.create() as Graphics2D
+            gg2 = g2.create() as Graphics2D
             gg2!!.translate(-direction!!.vector.x * owner!!.width * 0.35, -direction!!.vector.y * owner!!.height * 0.35)
             paintImageRotated(direction!!, gg2!!)
             gg2!!.dispose()

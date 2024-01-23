@@ -18,14 +18,14 @@ import java.beans.PropertyChangeSupport
  * @author [Divine Threepwood](mailto:divine@openbase.org)
  */
 abstract class AbstractLevelObject @JvmOverloads constructor(
-    private val id: Int = 0,
+    private val id: Int,
     private val name: String = "Level",
     objectType: AbstractResourcePanel.ObjectType = AbstractResourcePanel.ObjectType.Static,
     @JvmField val level: AbstractLevel,
     @JvmField var position: Point2D = Point2D(),
     @JvmField var width: Double = 100.0,
     @JvmField var height: Double = 100.0,
-    @JvmField val shape: ObjectShape? = null
+    @JvmField val shape: ObjectShape? = null,
 ) : AbstractGameObject, Identifiable<Int> {
     enum class ObjectShape {
         Oval, Rec

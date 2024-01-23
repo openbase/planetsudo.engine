@@ -30,9 +30,9 @@ class Agent(
     name: String,
     commanderFlag: Boolean,
     fuelVolume: Int,
-    mothership: Mothership
+    mothership: Mothership,
 ) : AbstractLevelObject(
-    mothership.registerAgent(),
+    mothership.computeNextAgentId(),
     name,
     AbstractResourcePanel.ObjectType.Dynamic,
     mothership.level,
@@ -191,7 +191,7 @@ class Agent(
 
     override fun releaseResource() {
         if (isCarryingResource || resource != null) {
-            resource!!.release()
+            resource?.release()
             resource = null
         }
     }

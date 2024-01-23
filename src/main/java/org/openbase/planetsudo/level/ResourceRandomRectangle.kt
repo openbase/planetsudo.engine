@@ -26,7 +26,7 @@ class ResourceRandomRectangle(
     width: Int,
     height: Int,
     override val resourceCount: Int,
-    private val type: ResourceType
+    private val type: ResourceType,
 ) : Rectangle2D.Double(
     x.toDouble(),
     y.toDouble(),
@@ -38,7 +38,7 @@ class ResourceRandomRectangle(
         val resources = ArrayList<Resource>()
         for (i in 0 until resourceCount) {
             GUIController.setEvent(PropertyChangeEvent(this, GUIController.LOADING_STEP, null, -1))
-            // Point2D resourcePosition = new Point2D(RandomGenerator.getRandom((int) getX(), (int) getWidth()), RandomGenerator.getRandom((int) getY(), (int) height));
+            // Point2D resourcePosition = new Point2D(RandomGenerator.getRandom((int) x, (int) getWidth()), RandomGenerator.getRandom((int) y, (int) height));
             resources.add(Resource(level.generateNewResourceID(), type, level, this))
         }
         return resources
@@ -73,8 +73,8 @@ class ResourceRandomRectangle(
 // 			int x = index % width;
 // 			int y = index / width;
 //
-// 			int xLevelPosition = (int) level.getX()+(x*LevelView.RASTER_SIZE+LevelView.RASTER_SIZE/2);
-// 			int yLevelPosition = (int) level.getY()+(y*LevelView.RASTER_SIZE+LevelView.RASTER_SIZE/2);
+// 			int xLevelPosition = (int) level.x+(x*LevelView.RASTER_SIZE+LevelView.RASTER_SIZE/2);
+// 			int yLevelPosition = (int) level.y+(y*LevelView.RASTER_SIZE+LevelView.RASTER_SIZE/2);
 //
 // 			Rectangle2D rasterLevelRectangle = new Rectangle2D.Double(xLevelPosition-LevelView.RASTER_SIZE/2, yLevelPosition-LevelView.RASTER_SIZE/2, LevelView.RASTER_SIZE, LevelView.RASTER_SIZE);
 // 			Rectangle2D agentBoundsRectangle = new Rectangle2D.Double(xLevelPosition-Agent.AGENT_SIZE, yLevelPosition-Agent.AGENT_SIZE, Agent.AGENT_SIZE*2, Agent.AGENT_SIZE*2);
@@ -100,11 +100,11 @@ class ResourceRandomRectangle(
             }
             if (!level.containsWall(
                     Rectangle(
-                            resourceXPos - Resource.RESOURCE_SIZE,
-                            resourceYPos - Resource.RESOURCE_SIZE,
-                            Resource.RESOURCE_SIZE * 2,
-                            Resource.RESOURCE_SIZE * 2
-                        )
+                        resourceXPos - Resource.RESOURCE_SIZE,
+                        resourceYPos - Resource.RESOURCE_SIZE,
+                        Resource.RESOURCE_SIZE * 2,
+                        Resource.RESOURCE_SIZE * 2
+                    )
                 )
             ) {
                 break

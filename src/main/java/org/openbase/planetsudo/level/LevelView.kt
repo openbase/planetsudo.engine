@@ -18,7 +18,7 @@ import kotlin.math.min
  *
  * @author [Divine Threepwood](mailto:divine@openbase.org)
  */
-class LevelView constructor(level: AbstractLevel, levelObject: AbstractLevelObject) {
+class LevelView(level: AbstractLevel, levelObject: AbstractLevelObject) {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     val levelObject: AbstractLevelObject
@@ -33,7 +33,7 @@ class LevelView constructor(level: AbstractLevel, levelObject: AbstractLevelObje
     constructor(levelObject: AbstractLevelObject) : this(levelObject.level, levelObject)
 
     init {
-        logger.debug("Create new levelview.")
+        logger.debug("Create new level view.")
         this.levelObject = levelObject
         this.rasterSize = RASTER_SIZE
         val bounds = level.levelBorderPolygon.bounds2D
@@ -80,7 +80,7 @@ class LevelView constructor(level: AbstractLevel, levelObject: AbstractLevelObje
     }
 
     fun drawLevelView(x: Int, y: Int, g2: Graphics2D) {
-        logger.info("Draw LevelView")
+//        logger.info("Draw LevelView")
         var greyValue: Int
         for (element in levelRepresentation) {
             if (element!!.isPartOfWall) {
@@ -98,42 +98,42 @@ class LevelView constructor(level: AbstractLevel, levelObject: AbstractLevelObje
         }
     }
 
-    private fun calcLevelRasterElement(levelObject: AbstractLevelObject?): LevelRasterElement? {
+    private fun calcLevelRasterElement(levelObject: AbstractLevelObject): LevelRasterElement {
         logger.debug("CalcLevelRasterElement")
         return get(
-            (levelObject!!.position.x.toInt() - levelObject.level.x) / rasterSize,
+            (levelObject.position.x.toInt() - levelObject.level.x) / rasterSize,
             (levelObject.position.y.toInt() - levelObject.level.y) / rasterSize
         )
     }
 
-    fun getAbsolutAngle(levelObject: AbstractLevelObject?): Int {
+    fun getAbsolutAngle(levelObject: AbstractLevelObject): Int {
 // 		logger.info("BEGIN: GetAbsoluteAngle");
         val angle = getAngle(calcLevelRasterElement(levelObject), calcLevelRasterElement(this.levelObject))
         assert(angle != -1)
         return angle
     }
 
-    fun getDistance(levelObject: AbstractLevelObject?): Int {
+    fun getDistance(levelObject: AbstractLevelObject): Int {
 // 		logger.debug("GetDistance");
         return getDistance(calcLevelRasterElement(levelObject), calcLevelRasterElement(this.levelObject))
     }
 
     fun dijkstraTest() {
 // 		logger.debug("dijkstraTest");
-        dijkstra(levelRepresentation[0], levelRepresentation[width * height - 1])
+        dijkstra(levelRepresentation[0]!!, levelRepresentation[width * height - 1]!!)
     }
 
-    private fun getDistance(position: LevelRasterElement?, destination: LevelRasterElement?): Int {
+    private fun getDistance(position: LevelRasterElement, destination: LevelRasterElement): Int {
 // 		logger.debug("getDistance");
         dijkstra(position, destination)
         return position!!.distance
     }
 
-    private fun getAngle(position: LevelRasterElement?, destination: LevelRasterElement?): Int {
+    private fun getAngle(position: LevelRasterElement, destination: LevelRasterElement): Int {
 // 		logger.debug("getAngle");
         dijkstra(position, destination)
         var neigbourNextToDestination: LevelRasterElementNeigbour? = null
-        for (neigbour in position!!.neigbours) {
+        for (neigbour in position.neigbours) {
             if (neigbourNextToDestination == null || neigbourNextToDestination.element.distance > neigbour.element.distance) {
                 neigbourNextToDestination = neigbour
             }
@@ -188,15 +188,15 @@ class LevelView constructor(level: AbstractLevel, levelObject: AbstractLevelObje
     }
 
     private fun stablePosition(): Boolean {
-        return levelObject!!.position.equals(lastPosition)
+        return levelObject.position.equals(lastPosition)
     }
 
-    private fun dijkstra(position: LevelRasterElement?, destination: LevelRasterElement?) {
+    private fun dijkstra(position: LevelRasterElement, destination: LevelRasterElement) {
         dijkstra(position, destination, false)
     }
 
     @Synchronized
-    private fun dijkstra(position: LevelRasterElement?, destination: LevelRasterElement?, force: Boolean) {
+    private fun dijkstra(position: LevelRasterElement?, destination: LevelRasterElement, force: Boolean) {
         if (!force && stablePosition()) {
             logger.debug("Skip dijkstra.")
             return
@@ -209,8 +209,8 @@ class LevelView constructor(level: AbstractLevel, levelObject: AbstractLevelObje
         for (element in levelRepresentation) {
             element!!.reset(destination)
         }
-        // find shortest distance
-        var element = destination
+        // find next element with closed distance
+        var element: LevelRasterElement? = destination
         do {
             element?.isVisited = true
             for (neigbour in element!!.neigbours) {

@@ -5,20 +5,16 @@
 commons-io-commons-io = "2.4"
 junit-junit = "4.12"
 org-jdesktop-beansbinding = "1.2.1"
-org-openbase-jul-audio = "3.3-SNAPSHOT"
-org-openbase-jul-interface = "3.3-SNAPSHOT"
-org-openbase-jul-processing-json = "3.3-SNAPSHOT"
-org-openbase-jul-schedule = "3.3-SNAPSHOT"
-org-openbase-jul-visual-swing = "3.3-SNAPSHOT"
+org-openbase-jul = "3.5.0"
 tomcat-tomcat-util = "3.2.1"
 
 [libraries]
 commons-io-commons-io = { module = "commons-io:commons-io", version.ref = "commons-io-commons-io" }
 junit-junit = { module = "junit:junit", version.ref = "junit-junit" }
 org-jdesktop-beansbinding = { module = "org.jdesktop:beansbinding", version.ref = "org-jdesktop-beansbinding" }
-org-openbase-jul-audio = { module = "org.openbase:jul.audio", version.ref = "org-openbase-jul-audio" }
-org-openbase-jul-interface = { module = "org.openbase:jul.interface", version.ref = "org-openbase-jul-interface" }
-org-openbase-jul-processing-json = { module = "org.openbase:jul.processing.json", version.ref = "org-openbase-jul-processing-json" }
-org-openbase-jul-schedule = { module = "org.openbase:jul.schedule", version.ref = "org-openbase-jul-schedule" }
-org-openbase-jul-visual-swing = { module = "org.openbase:jul.visual.swing", version.ref = "org-openbase-jul-visual-swing" }
+org-openbase-jul-audio = { module = "org.openbase:jul.audio", version.ref = "org-openbase-jul" }
+org-openbase-jul-interface = { module = "org.openbase:jul.interface", version.ref = "org-openbase-jul" }
+org-openbase-jul-processing-json = { module = "org.openbase:jul.processing.json", version.ref = "org-openbase-jul" }
+org-openbase-jul-schedule = { module = "org.openbase:jul.schedule", version.ref = "org-openbase-jul" }
+org-openbase-jul-visual-swing = { module = "org.openbase:jul.visual.swing", version.ref = "org-openbase-jul" }
 tomcat-tomcat-util = { module = "tomcat:tomcat-util", version.ref = "tomcat-tomcat-util" }

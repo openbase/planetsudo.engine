@@ -61,8 +61,11 @@ abstract class AbstractStrategy(val agent: AgentInterface) : Runnable {
                 } else {
                     logger.debug("ignore rule because game is paused!")
                 }
-            } catch (ex: Exception) {
-                logger.error("Could not execute rule[" + strategyOwner.lastAction + "]!", ex)
+            } catch (ex: Throwable) {
+                logger.error(
+                    "Could not execute rule[" + strategyOwner.lastAction + "] of strategy [${javaClass.simpleName}]!",
+                    ex
+                )
                 strategyOwner.kill()
             }
             try {
@@ -94,7 +97,7 @@ abstract class AbstractStrategy(val agent: AgentInterface) : Runnable {
     protected fun executeRule() {
         for (rule in rules.values) {
             if (rule.constraint() && agent.isMemberOfSwatTeam(rule.swatTeam)) {
-                logger.debug("Select $rule")
+//                logger.debug("Select $rule")
                 strategyOwner.lastAction = rule.name
                 rule.action()
                 break
@@ -155,6 +158,9 @@ abstract class AbstractStrategy(val agent: AgentInterface) : Runnable {
 
     protected infix fun String.swat(swats: () -> Collection<SwatTeam>): RuleBuilder =
         RuleBuilder(this@swat).swat(swats())
+
+    protected infix fun String.swat(swat: SwatTeam): RuleBuilder =
+        RuleBuilder(this@swat).swat(swat)
 
     protected infix fun RuleBuilder.and(swat: SwatTeam) = this.swat(swat)
 

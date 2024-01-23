@@ -39,16 +39,16 @@ class TowerPanel(tower: Tower, parentPanel: LevelPanel) :
         this.teamColor = tower.mothership.team.teamColor
     }
 
-    override fun paintComponent(g2: Graphics2D?, gl: Graphics2D?) {
+    override fun paintComponent(g2: Graphics2D, gl: Graphics2D) {
         // only paint if erected
-        if (!resource!!.isErected) {
+        if (!resource.isErected) {
             return
         }
 
-        boundingBox = resource!!.bounds
-        direction = resource!!.direction
+        boundingBox = resource.bounds
+        direction = resource.direction
 
-        gg2 = g2!!.create() as Graphics2D
+        gg2 = g2.create() as Graphics2D
         gg2!!.color = teamColor
         gg2!!.fillOval(
             boundingBox.x.toInt(),
@@ -64,7 +64,7 @@ class TowerPanel(tower: Tower, parentPanel: LevelPanel) :
         if (evt.propertyName == Tower.TOWER_ERECT) {
             if ((evt.newValue as Tower) == resource) {
                 if (towerTopPanel == null) {
-                    towerTopPanel = TowerTopPanel(resource!!, this)
+                    towerTopPanel = TowerTopPanel(resource, this)
                 }
             }
         } else if (evt.propertyName == Tower.TOWER_DISMANTLE) {

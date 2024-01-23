@@ -166,7 +166,7 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
     }
 
     fun containsWall(bounds: Rectangle2D?): Boolean {
-        logger.debug("CalcWallContain")
+//        logger.debug("CalcWallContain")
         if (levelWallPolygons != null) {
             for (wall in levelWallPolygons) {
                 if (wall.intersects(bounds) or wall.contains(bounds)) {

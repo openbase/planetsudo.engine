@@ -51,35 +51,35 @@ class LevelPanel(resource: AbstractLevel, parentPanel: LevelDisplayPanel) :
             loadTowerPanels()
             loadMothershipPanels()
             updateBounds()
-        } catch (ex: Exception) {
+        } catch (ex: Throwable) {
             ExceptionPrinter.printHistory(ex, logger)
         }
     }
 
     private fun loadResourcePanels() {
-        for (res in resource!!.getResources()) {
+        for (res in resource.getResources()) {
             LevelResourcePanel(res, this)
         }
     }
 
     private fun loadMothershipPanels() {
-        for (mothership in resource!!.motherships) {
+        for (mothership in resource.motherships) {
             MothershipPanel(mothership!!, this)
         }
     }
 
     private fun loadTowerPanels() {
-        for (mothership in resource!!.motherships) {
+        for (mothership in resource.motherships) {
             TowerPanel(mothership!!.tower, this)
         }
     }
 
-    override fun paintComponent(g2: Graphics2D?, gl: Graphics2D?) {
-        g2!!.fill(resource!!.levelBorderPolygon)
+    override fun paintComponent(g2: Graphics2D, gl: Graphics2D) {
+        g2.fill(resource.levelBorderPolygon)
         // 		g2.fill(tranformedPlacement);
         if (hasInternalWalls) {
-            g2.color = resource!!.color
-            for (wall in resource!!.levelWallPolygons!!) {
+            g2.color = resource.color
+            for (wall in resource.levelWallPolygons!!) {
                 g2.fill(wall)
             }
         }

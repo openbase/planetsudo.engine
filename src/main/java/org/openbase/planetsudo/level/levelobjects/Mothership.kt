@@ -51,7 +51,7 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
     override var shieldForce: Int = 0
         private set
     private val timer: Timer
-    private val agents: MutableMap<Int, Agent>
+    private var agents: List<Agent>
     private val supportChannel: MutableList<Agent>
 
     @JvmField
@@ -77,11 +77,7 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
         )
         fuel = MOTHERSHIP_FUEL_VOLUME
         mineCounter = level.mineCounter
-
-        synchronized(AGENTLOCK) {
-            agents.values.toList()
-        }.forEach { it.kill() }
-
+        agents.forEach { it.kill() }
         strategyAgentCount = team.agentCount
         loadAgents()
         this.shieldForce = 100
@@ -114,14 +110,7 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
             currentFuelVolume = if (commanderFlag) agentFuelVolume + COMMANDER_BONUS_FUEL_VOLUME else agentFuelVolume
             agent = Agent(team.name + "Agent", commanderFlag, currentFuelVolume, this)
             commanderFlag = false
-            var replacedAgent: Agent?
-            synchronized(AGENTLOCK) {
-                replacedAgent = agents.put(agent.id, agent)
-            }
-            if (replacedAgent != null) {
-                logger.error("Agent with id $id already defined! Kill old instance.")
-                replacedAgent!!.kill()
-            }
+            agents = agents.plus(agent)
         }
     }
 
@@ -183,11 +172,7 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
     }
 
     fun startGame() {
-        synchronized(AGENTLOCK) {
-            for (agent in ArrayList(agents.values)) {
-                agent.startGame()
-            }
-        }
+        agents.forEach { it.startGame() }
     }
 
     private var agentIndex = 0
@@ -199,7 +184,7 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
         logger.info("Create $this")
         this.team = team
         this.team.mothership = this
-        this.agents = HashMap()
+        this.agents = emptyList()
         this.supportChannel = ArrayList()
         this.teamMarker = TeamMarker(team, level)
         this.timer = Timer(50, this)
@@ -219,33 +204,16 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
         }
     }
 
-    fun registerAgent(): Int {
-        synchronized(AGENTLOCK) {
-            var i = 0
-            while (i <= agents.size) {
-                if (!agents.containsKey(getId() * 10000 + i)) {
-                    break
-                }
-                i++
-            }
-            if (i >= strategyAgentCount || i > 1000) {
-                logger.error("Already to many agents alive.")
-                return -1
-            }
-            return getId() * 10000 + i
-        }
-    }
+    fun computeNextAgentId(): Int = id * 10000 + agents.size
 
     override val agentCount: Int
         get() = synchronized(AGENTLOCK) {
             return agents.size
         }
 
-    fun removeAgent(agent: Agent) {
-        synchronized(AGENTLOCK) {
-            agents.remove(agent.getId())
-        }
-    }
+    fun removeAgent(agent: Agent) = agents
+        .firstOrNull { it.id == agent.id }
+        ?.also { agents = agents.minus(it) }
 
     val agentHomePosition: Point2D
         get() = position.clone()
@@ -262,11 +230,7 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
         }
     }
 
-    fun getAgents(): Collection<Agent> {
-        synchronized(AGENTLOCK) {
-            return agents.values
-        }
-    }
+    fun getAgents(): Collection<Agent> = agents
 
     @Synchronized
     fun attack() {
@@ -325,11 +289,9 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
     val agentsAtHomePosition: Int
         get() {
             var counter = 0
-            synchronized(AGENTLOCK) {
-                for (agent in agents.values) {
-                    if (bounds.contains(agent.bounds) || bounds.intersects(agent.bounds)) {
-                        counter++
-                    }
+            agents.forEach { agent ->
+                if (bounds.contains(agent.bounds) || bounds.intersects(agent.bounds)) {
+                    counter++
                 }
             }
             return counter
@@ -394,11 +356,7 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
     val marker: TeamMarker?
         get() = teamMarker.marker
 
-    fun setGameOverSoon() {
-        for (agent in agents.values) {
-            agent.setGameOverSoon()
-        }
-    }
+    fun setGameOverSoon() = agents.forEach { it.setGameOverSoon() }
 
     companion object {
         const val MOTHERSHIP_FUEL_STATE_CHANGE: String = "FuelStateChange"

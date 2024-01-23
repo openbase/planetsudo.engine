@@ -157,7 +157,10 @@ class MainGUI : JFrame, PropertyChangeListener {
                     gamePanel!!.setVideoThreadCommand(VideoThreadCommand.Pause)
                 }
             } else if (changeEvent.propertyName == GUIController.LOADING_STATE_CHANGE) {
-                levelLoadingPanel!!.setLoadingStateChange(changeEvent.newValue as String, (changeEvent.oldValue as Int))
+                levelLoadingPanel!!.setLoadingStateChange(
+                    changeEvent.newValue as String,
+                    (changeEvent.oldValue as Int)
+                )
             } else if (changeEvent.propertyName == GUIController.LOADING_STEP) {
                 levelLoadingPanel!!.setLoadingStep((changeEvent.newValue as Int))
             } else {
