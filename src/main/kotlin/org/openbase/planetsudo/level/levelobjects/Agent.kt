@@ -610,7 +610,7 @@ class Agent(
     override fun goToMarker() {
         try {
             go()
-            mothership.marker?.levelView?.getAbsolutAngle(this)?.also {
+            mothership.marker.levelView?.getAbsolutAngle(this)?.also {
                 direction.angle = it
             }
         } catch (ex: CouldNotPerformException) {

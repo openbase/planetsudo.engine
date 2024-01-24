@@ -49,7 +49,7 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
         // 		}
         // 		memberList += "</html>";
         val members = team!!.getMembers()
-        teamMemberALabel!!.text = members!![0]
+        teamMemberALabel!!.text = members[0]
         teamMemberBLabel!!.text = ""
         teamMemberA!!.isVisible = false
         teamMemberB!!.isVisible = false
