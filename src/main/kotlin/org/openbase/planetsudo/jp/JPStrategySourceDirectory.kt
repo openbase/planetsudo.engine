@@ -23,7 +23,7 @@ class JPStrategySourceDirectory :
 
     @Throws(JPNotAvailableException::class)
     override fun getPropertyDefaultValue(): File {
-        return File(JPService.getProperty(JPPrefix::class.java).value.absolutePath + "/src/main/java/org/openbase/planetsudo/game/strategy")
+        return File(JPService.getProperty(JPPrefix::class.java).value.absolutePath + "/src/main/kotlin/org/openbase/planetsudo/game/strategy")
     }
 
     companion object {

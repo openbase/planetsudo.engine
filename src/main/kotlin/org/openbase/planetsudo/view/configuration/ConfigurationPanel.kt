@@ -95,11 +95,21 @@ class ConfigurationPanel : JPanel() {
 
             // restore selection
             if (teamAComboBox!!.itemCount > 0) {
-                teamAComboBox!!.selectedIndex = stateProperties.getProperty(PROPERTY_SELECTED_TEAM_A, "0").toInt()
+                if (teamAComboBox!!.model.size > stateProperties.getProperty(PROPERTY_SELECTED_TEAM_A, "0").toInt()) {
+                    teamAComboBox!!.selectedIndex = stateProperties.getProperty(PROPERTY_SELECTED_TEAM_A, "0").toInt()
+                } else {
+                    teamAComboBox!!.selectedIndex = 0
+                    stateProperties.setProperty(PROPERTY_SELECTED_TEAM_A, "0")
+                }
             }
 
             if (teamBComboBox!!.itemCount > 0) {
-                teamBComboBox!!.selectedIndex = stateProperties.getProperty(PROPERTY_SELECTED_TEAM_B, "0").toInt()
+                if (teamBComboBox!!.model.size > stateProperties.getProperty(PROPERTY_SELECTED_TEAM_B, "0").toInt()) {
+                    teamBComboBox!!.selectedIndex = stateProperties.getProperty(PROPERTY_SELECTED_TEAM_B, "0").toInt()
+                } else {
+                    teamBComboBox!!.selectedIndex = 0
+                    stateProperties.setProperty(PROPERTY_SELECTED_TEAM_B, "0")
+                }
             }
 
             teamAComboBox!!.isEnabled = true
