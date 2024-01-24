@@ -25,126 +25,126 @@ class Robot(agent: AgentInterface) : AbstractStrategy(agent) {
         // -------------------------------------------->
         createRule(object : Rule(1000, "Drehe bei Wand") {
             override fun constraint(): Boolean {
-                return agent!!.isCollisionDetected
+                return agent.isCollisionDetected
             }
 
             override fun action() {
-                agent!!.turnRandom()
+                agent.turnRandom()
             }
         })
 
         createRule(object : Rule(970, "Verteidigung") {
             override fun constraint(): Boolean {
-                return agent!!.isUnderAttack
+                return agent.isUnderAttack
             }
 
             override fun action() {
-                agent!!.fightWithAdversaryAgent()
+                agent.fightWithAdversaryAgent()
             }
         })
         createRule(object : Rule(965, "Verteidigung MS") {
             override fun constraint(): Boolean {
-                return mothership!!.isBurning || mothership.isDamaged
+                return mothership.isBurning || mothership.isDamaged
             }
 
             override fun action() {
-                agent!!.goToMothership()
+                agent.goToMothership()
             }
         })
         createRule(object : Rule(960, "Tanken") {
             override fun constraint(): Boolean {
-                return agent!!.isAtMothership && agent.fuelInPercent < 75
+                return agent.isAtMothership && agent.fuelInPercent < 75
             }
 
             override fun action() {
-                agent!!.orderFuel(100)
+                agent.orderFuel(100)
             }
         })
         createRule(object : Rule(955, "Agent helfen") {
             override fun constraint(): Boolean {
-                return agent!!.seeLostTeamAgent()
+                return agent.seeLostTeamAgent()
             }
 
             override fun action() {
-                agent!!.spendTeamAgentFuel(200)
+                agent.spendTeamAgentFuel(200)
             }
         })
         createRule(object : Rule(950, "Mine setzten") {
             override fun constraint(): Boolean {
-                return agent!!.hasMine() && agent.seeAdversaryAgent()
+                return agent.hasMine() && agent.seeAdversaryAgent()
             }
 
             override fun action() {
-                agent!!.deployMine()
+                agent.deployMine()
             }
         })
         createRule(object : Rule(940, "Angriff Mothership") {
             override fun constraint(): Boolean {
-                return agent!!.seeAdversaryMothership()
+                return agent.seeAdversaryMothership()
             }
 
             override fun action() {
-                agent!!.fightWithAdversaryMothership()
+                agent.fightWithAdversaryMothership()
             }
         })
         createRule(object : Rule(930, "Angriff Agent") {
             override fun constraint(): Boolean {
-                return agent!!.seeAdversaryAgent()
+                return agent.seeAdversaryAgent()
             }
 
             override fun action() {
-                agent!!.fightWithAdversaryAgent()
+                agent.fightWithAdversaryAgent()
             }
         })
         // -------------------------------------------->
         createRule(object : Rule(820, "Resource ins Mutterschiff") {
             override fun constraint(): Boolean {
-                return agent!!.isAtMothership && agent.isCarryingResource
+                return agent.isAtMothership && agent.isCarryingResource
             }
 
             override fun action() {
-                agent!!.deliverResourceToMothership()
+                agent.deliverResourceToMothership()
             }
         })
         // -------------------------------------------->
         createRule(object : Rule(800, "Bewege zum Mutterschiff") {
             override fun constraint(): Boolean {
-                return agent!!.isCarryingResource
+                return agent.isCarryingResource
             }
 
             override fun action() {
-                agent!!.goToMothership()
+                agent.goToMothership()
             }
         })
         // -------------------------------------------->
         createRule(object : Rule(595, "Bomben Vermeiden") {
             override fun constraint(): Boolean {
-                return agent!!.isTouchingResource && agent.resourceType == ResourceType.Mine
+                return agent.isTouchingResource && agent.resourceType == ResourceType.Mine
             }
 
             override fun action() {
-                agent!!.turnLeft(42)
+                agent.turnLeft(42)
             }
         })
         // -------------------------------------------->
         createRule(object : Rule(590, "sammle resource") {
             override fun constraint(): Boolean {
-                return agent!!.isTouchingResource && agent.resourceType != ResourceType.Mine
+                return agent.isTouchingResource && agent.resourceType != ResourceType.Mine
             }
 
             override fun action() {
-                agent!!.pickupResource()
+                agent.pickupResource()
             }
         })
 
         // -------------------------------------------->
         createRule(object : Rule(500, "gehe zu resource") {
             override fun constraint(): Boolean {
-                return agent!!.seeResource()
+                return agent.seeResource()
             }
 
             override fun action() {
-                agent!!.goToResource()
+                agent.goToResource()
             }
         })
         // -------------------------------------------->
@@ -154,7 +154,7 @@ class Robot(agent: AgentInterface) : AbstractStrategy(agent) {
             }
 
             override fun action() {
-                agent!!.go()
+                agent.go()
             }
         })
     }

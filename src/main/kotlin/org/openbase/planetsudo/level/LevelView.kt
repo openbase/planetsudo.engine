@@ -126,7 +126,7 @@ class LevelView(level: AbstractLevel, levelObject: AbstractLevelObject) {
     private fun getDistance(position: LevelRasterElement, destination: LevelRasterElement): Int {
 // 		logger.debug("getDistance");
         dijkstra(position, destination)
-        return position!!.distance
+        return position.distance
     }
 
     private fun getAngle(position: LevelRasterElement, destination: LevelRasterElement): Int {

@@ -78,7 +78,7 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         // -------------------------------------------->
         createRule(object : Rule("Go to Marker") {
             override fun constraint(): Boolean {
-                return !agent.isCommander && mothership!!.isMarkerDeployed
+                return !agent.isCommander && mothership.isMarkerDeployed
             }
 
             override fun action() {
@@ -92,7 +92,7 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
             }
 
             override fun action() {
-                mothership!!.clearMarker()
+                mothership.clearMarker()
                 agent.searchResources()
             }
         })
@@ -117,7 +117,7 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
             }
 
             override fun action() {
-                if (!mothership!!.isMarkerDeployed) {
+                if (!mothership.isMarkerDeployed) {
                     agent.deployMarker()
                 }
                 agent.pickupResource()
@@ -130,7 +130,7 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                     agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(
                         ResourceType.ExtraMothershipFuel
                     )
-                    ) && !mothership!!.isMarkerDeployed && !agent.seeMarker()
+                    ) && !mothership.isMarkerDeployed && !agent.seeMarker()
             }
 
             override fun action() {
@@ -191,7 +191,7 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         // -------------------------------------------->
         createRule(object : Rule("Mark Resource") {
             override fun constraint(): Boolean {
-                return agent.isCarryingResource && !mothership!!.isMarkerDeployed && agent.seeResource()
+                return agent.isCarryingResource && !mothership.isMarkerDeployed && agent.seeResource()
             }
 
             override fun action() {
@@ -210,7 +210,7 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         // -------------------------------------------->
         createRule(object : Rule("Order Fuel") {
             override fun constraint(): Boolean {
-                return agent.isAtMothership && agent.isGameOverSoon && mothership!!.hasFuel() && agent.fuelInPercent < 100
+                return agent.isAtMothership && agent.isGameOverSoon && mothership.hasFuel() && agent.fuelInPercent < 100
             }
 
             override fun action() {
@@ -220,7 +220,7 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         // -------------------------------------------->
         createRule(object : Rule("Support Agent") {
             override fun constraint(): Boolean {
-                return mothership!!.needSomeoneSupport() && !agent.isSupportOrdered
+                return mothership.needSomeoneSupport() && !agent.isSupportOrdered
             }
 
             override fun action() {
@@ -281,7 +281,7 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         // -------------------------------------------->
         createRule(object : Rule("SaveMothership") {
             override fun constraint(): Boolean {
-                return mothership!!.isDamaged && !agent.isAtMothership
+                return mothership.isDamaged && !agent.isAtMothership
             }
 
             override fun action() {
@@ -291,7 +291,7 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         // -------------------------------------------->
         createRule(object : Rule("RepaireMothership") {
             override fun constraint(): Boolean {
-                return mothership!!.isDamaged && agent.isAtMothership
+                return mothership.isDamaged && agent.isAtMothership
             }
 
             override fun action() {
@@ -332,7 +332,7 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         // -------------------------------------------->
         createRule(object : Rule("OrderFuel") {
             override fun constraint(): Boolean {
-                return mothership!!.hasFuel() && (agent.fuelInPercent < 90) && (agent.isAtMothership)
+                return mothership.hasFuel() && (agent.fuelInPercent < 90) && (agent.isAtMothership)
             }
 
             override fun action() {
@@ -342,7 +342,7 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         // -------------------------------------------->
         createRule(object : Rule("OrderFuelDuringFight") {
             override fun constraint(): Boolean {
-                return mothership!!.hasFuel() && (agent.fuel < 100) && agent.isUnderAttack && agent.isAtMothership
+                return mothership.hasFuel() && (agent.fuel < 100) && agent.isUnderAttack && agent.isAtMothership
             }
 
             override fun action() {
@@ -353,7 +353,7 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         // -------------------------------------------->
         createRule(object : Rule("OrderFuelDuringFight") {
             override fun constraint(): Boolean {
-                return mothership!!.hasFuel() && (agent.fuel < 100) && agent.seeAdversaryAgent() && agent.isAtMothership
+                return mothership.hasFuel() && (agent.fuel < 100) && agent.seeAdversaryAgent() && agent.isAtMothership
             }
 
             override fun action() {

@@ -46,7 +46,6 @@ class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership)
 
     var shieldForce: Int = 0
         private set
-        get() = field
     var fuel: Int = 0
         private set
 

@@ -32,64 +32,64 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
             }
 
             override fun action() {
-                agent!!.go()
+                agent.go()
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("Discover") {
             override fun constraint(): Boolean {
-                return agent!!.isCommander
+                return agent.isCommander
             }
 
             override fun action() {
-                agent!!.goRight(4)
+                agent.goRight(4)
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("See Resources") {
             override fun constraint(): Boolean {
-                return !agent!!.isCommander && agent.seeResource()
+                return !agent.isCommander && agent.seeResource()
             }
 
             override fun action() {
-                agent!!.goToResource()
+                agent.goToResource()
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("PickUp 1P Resource") {
             override fun constraint(): Boolean {
-                return !agent!!.isCommander && agent.isTouchingResource(ResourceType.Normal)
+                return !agent.isCommander && agent.isTouchingResource(ResourceType.Normal)
             }
 
             override fun action() {
-                agent!!.pickupResource()
+                agent.pickupResource()
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("Go to Marker") {
             override fun constraint(): Boolean {
-                return !agent!!.isCommander && mothership!!.isMarkerDeployed
+                return !agent.isCommander && mothership.isMarkerDeployed
             }
 
             override fun action() {
-                agent!!.goToMarker()
+                agent.goToMarker()
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("Search") {
             override fun constraint(): Boolean {
-                return !agent!!.isCommander && agent.seeMarker()
+                return !agent.isCommander && agent.seeMarker()
             }
 
             override fun action() {
-                mothership!!.clearMarker()
-                agent!!.searchResources()
+                mothership.clearMarker()
+                agent.searchResources()
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("PickUp") {
             override fun constraint(): Boolean {
-                return !agent!!.isCommander && (
+                return !agent.isCommander && (
                     agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(
                         ResourceType.ExtraMothershipFuel
                     )
@@ -97,101 +97,101 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
             }
 
             override fun action() {
-                agent!!.pickupResource()
+                agent.pickupResource()
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("PickUp and Place") {
             override fun constraint(): Boolean {
-                return !agent!!.isCommander && agent.isTouchingResource(ResourceType.ExtremPoint)
+                return !agent.isCommander && agent.isTouchingResource(ResourceType.ExtremPoint)
             }
 
             override fun action() {
-                if (!mothership!!.isMarkerDeployed) {
-                    agent!!.deployMarker()
+                if (!mothership.isMarkerDeployed) {
+                    agent.deployMarker()
                 }
-                agent!!.pickupResource()
+                agent.pickupResource()
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("PickUp and Place") {
             override fun constraint(): Boolean {
-                return agent!!.isCommander && (
+                return agent.isCommander && (
                     agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(
                         ResourceType.ExtraMothershipFuel
                     )
-                    ) && !mothership!!.isMarkerDeployed && !agent.seeMarker()
+                    ) && !mothership.isMarkerDeployed && !agent.seeMarker()
             }
 
             override fun action() {
-                agent!!.deployMarker()
+                agent.deployMarker()
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("PickUp 5P and Place") {
             override fun constraint(): Boolean {
-                return !agent!!.isCommander && agent.isTouchingResource(ResourceType.ExtremPoint)
+                return !agent.isCommander && agent.isTouchingResource(ResourceType.ExtremPoint)
             }
 
             override fun action() {
-                agent!!.deployMarker()
+                agent.deployMarker()
                 agent.pickupResource()
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("PickUp 5P and Place", SwatTeam.COMMANDER) {
             override fun constraint(): Boolean {
-                return agent!!.isTouchingResource(ResourceType.ExtremPoint) && !agent.seeMarker()
+                return agent.isTouchingResource(ResourceType.ExtremPoint) && !agent.seeMarker()
             }
 
             override fun action() {
-                agent!!.deployMarker()
+                agent.deployMarker()
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("Follow Wall", SwatTeam.COMMANDER) {
             override fun constraint(): Boolean {
-                return agent!!.isTouchingResource(ResourceType.ExtremPoint) && agent.hasTower()
+                return agent.isTouchingResource(ResourceType.ExtremPoint) && agent.hasTower()
             }
 
             override fun action() {
-                agent!!.erectTower(Tower.TowerType.ObservationTower)
+                agent.erectTower(Tower.TowerType.ObservationTower)
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("Ignore") {
             override fun constraint(): Boolean {
-                return agent!!.isTouchingResource(ResourceType.Mine) || agent.isTouchingResource(ResourceType.ExtraAgentFuel)
+                return agent.isTouchingResource(ResourceType.Mine) || agent.isTouchingResource(ResourceType.ExtraAgentFuel)
             }
 
             override fun action() {
-                agent!!.go()
+                agent.go()
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("Secure") {
             override fun constraint(): Boolean {
-                return agent!!.isGameOverSoon && !agent.isAtMothership
+                return agent.isGameOverSoon && !agent.isAtMothership
             }
 
             override fun action() {
-                agent!!.goToMothership()
+                agent.goToMothership()
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("Mark Resource") {
             override fun constraint(): Boolean {
-                return agent!!.isCarryingResource && !mothership!!.isMarkerDeployed && agent.seeResource()
+                return agent.isCarryingResource && !mothership.isMarkerDeployed && agent.seeResource()
             }
 
             override fun action() {
-                agent!!.deployMarker()
+                agent.deployMarker()
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("Saved") {
             override fun constraint(): Boolean {
-                return agent!!.isGameOverSoon && agent.isAtMothership
+                return agent.isGameOverSoon && agent.isAtMothership
             }
 
             override fun action() {
@@ -200,226 +200,226 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
         // -------------------------------------------->
         createRule(object : Rule("Order Fuel") {
             override fun constraint(): Boolean {
-                return agent!!.isAtMothership && agent.isGameOverSoon && mothership!!.hasFuel() && agent.fuelInPercent < 100
+                return agent.isAtMothership && agent.isGameOverSoon && mothership.hasFuel() && agent.fuelInPercent < 100
             }
 
             override fun action() {
-                agent!!.orderFuel(100)
+                agent.orderFuel(100)
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("Support Agent") {
             override fun constraint(): Boolean {
-                return mothership!!.needSomeoneSupport() && !agent!!.isSupportOrdered
+                return mothership.needSomeoneSupport() && !agent.isSupportOrdered
             }
 
             override fun action() {
-                agent!!.goToSupportAgent()
+                agent.goToSupportAgent()
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("Save Resource") {
             override fun constraint(): Boolean {
-                return agent!!.isCarryingResource && !agent.isAtMothership
+                return agent.isCarryingResource && !agent.isAtMothership
             }
 
             override fun action() {
-                agent!!.goToMothership()
+                agent.goToMothership()
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("HelpLostAgent") {
             override fun constraint(): Boolean {
-                return agent!!.seeLostTeamAgent()
+                return agent.seeLostTeamAgent()
             }
 
             override fun action() {
-                agent!!.spendTeamAgentFuel(300)
+                agent.spendTeamAgentFuel(300)
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("FightAgainstMothership") {
             override fun constraint(): Boolean {
-                return agent!!.seeAdversaryMothership()
+                return agent.seeAdversaryMothership()
             }
 
             override fun action() {
-                agent!!.fightWithAdversaryMothership()
+                agent.fightWithAdversaryMothership()
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("FightAgainstMothership & Order Support") {
             override fun constraint(): Boolean {
-                return !agent!!.isSupportOrdered && agent.seeAdversaryMothership()
+                return !agent.isSupportOrdered && agent.seeAdversaryMothership()
             }
 
             override fun action() {
-                agent!!.fightWithAdversaryMothership()
+                agent.fightWithAdversaryMothership()
                 agent.orderSupport()
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("TurnToAdversaryAgent") {
             override fun constraint(): Boolean {
-                return agent!!.isUnderAttack
+                return agent.isUnderAttack
             }
 
             override fun action() {
-                agent!!.turnLeft(60)
+                agent.turnLeft(60)
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("SaveMothership") {
             override fun constraint(): Boolean {
-                return mothership!!.isDamaged && !agent!!.isAtMothership
+                return mothership.isDamaged && !agent.isAtMothership
             }
 
             override fun action() {
-                agent!!.goToMothership()
+                agent.goToMothership()
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("RepaireMothership") {
             override fun constraint(): Boolean {
-                return mothership!!.isDamaged && agent!!.isAtMothership
+                return mothership.isDamaged && agent.isAtMothership
             }
 
             override fun action() {
-                agent!!.repairMothership()
+                agent.repairMothership()
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("FightAgainstAgent") {
             override fun constraint(): Boolean {
-                return agent!!.seeAdversaryAgent()
+                return agent.seeAdversaryAgent()
             }
 
             override fun action() {
-                agent!!.fightWithAdversaryAgent()
+                agent.fightWithAdversaryAgent()
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("PlaceMine") {
             override fun constraint(): Boolean {
-                return agent!!.hasMine() && agent.isUnderAttack
+                return agent.hasMine() && agent.isUnderAttack
             }
 
             override fun action() {
-                agent!!.deployMine()
+                agent.deployMine()
                 agent.goLeft(180)
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("GoBackToMothership") {
             override fun constraint(): Boolean {
-                return agent!!.fuel < 300 && !agent.isAtMothership
+                return agent.fuel < 300 && !agent.isAtMothership
             }
 
             override fun action() {
-                agent!!.goToMothership()
+                agent.goToMothership()
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("OrderFuel") {
             override fun constraint(): Boolean {
-                return mothership!!.hasFuel() && (agent!!.fuelInPercent < 90) && (agent.isAtMothership)
+                return mothership.hasFuel() && (agent.fuelInPercent < 90) && (agent.isAtMothership)
             }
 
             override fun action() {
-                agent!!.orderFuel(100)
+                agent.orderFuel(100)
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("OrderFuelDuringFight") {
             override fun constraint(): Boolean {
-                return mothership!!.hasFuel() && (agent!!.fuel < 100) && agent.isUnderAttack && agent.isAtMothership
+                return mothership.hasFuel() && (agent.fuel < 100) && agent.isUnderAttack && agent.isAtMothership
             }
 
             override fun action() {
-                agent!!.orderFuel(5)
+                agent.orderFuel(5)
                 agent.goLeft(10)
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("OrderFuelDuringFight") {
             override fun constraint(): Boolean {
-                return mothership!!.hasFuel() && (agent!!.fuel < 100) && agent.seeAdversaryAgent() && agent.isAtMothership
+                return mothership.hasFuel() && (agent.fuel < 100) && agent.seeAdversaryAgent() && agent.isAtMothership
             }
 
             override fun action() {
-                agent!!.orderFuel(5)
+                agent.orderFuel(5)
                 agent.fightWithAdversaryAgent()
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("Pass Resource") {
             override fun constraint(): Boolean {
-                return agent!!.isCarryingResource && agent.isAtMothership
+                return agent.isCarryingResource && agent.isAtMothership
             }
 
             override fun action() {
-                agent!!.deliverResourceToMothership()
+                agent.deliverResourceToMothership()
                 agent.turnAround()
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("CallForHelp") {
             override fun constraint(): Boolean {
-                return (!agent!!.isSupportOrdered) && ((agent.fuel < 5) || agent.isUnderAttack)
+                return (!agent.isSupportOrdered) && ((agent.fuel < 5) || agent.isUnderAttack)
             }
 
             override fun action() {
-                agent!!.orderSupport()
+                agent.orderSupport()
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("PickUp Fuel") {
             override fun constraint(): Boolean {
-                return agent!!.fuelInPercent < 50 && agent.isTouchingResource(ResourceType.ExtraAgentFuel)
+                return agent.fuelInPercent < 50 && agent.isTouchingResource(ResourceType.ExtraAgentFuel)
             }
 
             override fun action() {
-                agent!!.pickupResource()
+                agent.pickupResource()
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("Follow Wall", SwatTeam.COMMANDER) {
             override fun constraint(): Boolean {
-                return agent!!.isCollisionDetected
+                return agent.isCollisionDetected
             }
 
             override fun action() {
-                agent!!.turnLeft(4)
+                agent.turnLeft(4)
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("Follow Wall", SwatTeam.ALPHA) {
             override fun constraint(): Boolean {
-                return agent!!.isCollisionDetected
+                return agent.isCollisionDetected
             }
 
             override fun action() {
-                agent!!.turnRight(4)
+                agent.turnRight(4)
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("AvoidWall", SwatTeam.NOT_ALPHA, SwatTeam.NOT_COMMANDER) {
             override fun constraint(): Boolean {
-                return agent!!.isCollisionDetected
+                return agent.isCollisionDetected
             }
 
             override fun action() {
-                agent!!.turnRandom(150)
+                agent.turnRandom(150)
             }
         })
         // -------------------------------------------->
         createRule(object : Rule("Cancel Support") {
             override fun constraint(): Boolean {
-                return agent!!.isSupportOrdered && !agent.seeAdversaryMothership() && agent.fuel > 10 && !agent.isUnderAttack && !agent.seeAdversaryAgent()
+                return agent.isSupportOrdered && !agent.seeAdversaryMothership() && agent.fuel > 10 && !agent.isUnderAttack && !agent.seeAdversaryAgent()
             }
 
             override fun action() {
-                agent!!.cancelSupport()
+                agent.cancelSupport()
             }
         })
         // -------------------------------------------->

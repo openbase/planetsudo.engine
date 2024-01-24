@@ -353,7 +353,7 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
     }
 
     @get:Throws(CouldNotPerformException::class)
-    val marker: TeamMarker?
+    val marker: TeamMarker
         get() = teamMarker.marker
 
     fun setGameOverSoon() = agents.forEach { it.setGameOverSoon() }

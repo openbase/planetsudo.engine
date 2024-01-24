@@ -117,7 +117,7 @@ abstract class AbstractStrategy(val agent: AgentInterface) : Runnable {
      */
     protected fun createSwat(swatTeam: SwatTeam, vararg agentNumber: Int) {
         when (swatTeam) {
-            SwatTeam.ALL, SwatTeam.COMMANDER -> {
+            ALL, COMMANDER -> {
                 logger.error("SwatTeam[" + swatTeam.name + "] is not modifiable!")
                 agent.kill()
                 return

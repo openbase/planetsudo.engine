@@ -149,7 +149,7 @@ class Resource(id: Int, @JvmField val type: ResourceType, level: AbstractLevel, 
                 throw InvalidStateException("Resource not owned by user!")
             }
             if (!isUsed) {
-                level!!.removeResource(this)
+                level.removeResource(this)
                 isUsed = true
                 position = Point2D(position)
                 changes.firePropertyChange(KILL_EVENT, null, null)

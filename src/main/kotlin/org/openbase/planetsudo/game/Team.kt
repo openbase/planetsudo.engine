@@ -94,7 +94,7 @@ class Team(data: TeamData) {
         return name!!
     }
 
-    fun getMembers(): List<String?>? {
+    fun getMembers(): List<String?> {
         return members
     }
 

@@ -29,134 +29,134 @@ class NoNameStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
             }
 
             override fun action() {
-                agent!!.go()
+                agent.go()
             }
         })
         // -------------------------------------------->
         createRule(object : Rule(1000, "NO_COLLISION") {
             override fun constraint(): Boolean {
-                return agent!!.isCollisionDetected
+                return agent.isCollisionDetected
             }
 
             override fun action() {
-                agent!!.turnRandom()
+                agent.turnRandom()
             }
         }) // -------------------------------------------->
         createRule(object : Rule(600, "Find_Resource") {
             override fun constraint(): Boolean {
-                return agent!!.seeResource()
+                return agent.seeResource()
             }
 
             override fun action() {
-                agent!!.goToResource()
+                agent.goToResource()
             }
         }) // -------------------------------------------->
         createRule(object : Rule(700, "Pick_up_Resource") {
             override fun constraint(): Boolean {
-                return agent!!.isTouchingResource && agent.resourceType != ResourceType.Mine
+                return agent.isTouchingResource && agent.resourceType != ResourceType.Mine
             }
 
             override fun action() {
-                agent!!.pickupResource()
+                agent.pickupResource()
             }
         }) // -------------------------------------------->
         createRule(object : Rule(800, "Resource_to_Mothership") {
             override fun constraint(): Boolean {
-                return agent!!.isCarryingResource
+                return agent.isCarryingResource
             }
 
             override fun action() {
-                agent!!.goToMothership()
+                agent.goToMothership()
             }
         }) // -------------------------------------------->
         createRule(object : Rule(900, "Resource_to_Mothership_2") {
             override fun constraint(): Boolean {
-                return agent!!.isCarryingResource && agent.isAtMothership
+                return agent.isCarryingResource && agent.isAtMothership
             }
 
             override fun action() {
-                agent!!.deliverResourceToMothership()
+                agent.deliverResourceToMothership()
             }
         }) // -------------------------------------------->
         createRule(object : Rule(850, "Get_Fuel") {
             override fun constraint(): Boolean {
-                return agent!!.fuelInPercent < 20
+                return agent.fuelInPercent < 20
             }
 
             override fun action() {
-                agent!!.goToMothership()
+                agent.goToMothership()
             }
         })
         // -------------------------------------------->
         createRule(object : Rule(950, "Get_Fuel_2") {
             override fun constraint(): Boolean {
-                return agent!!.fuelInPercent < 50 && agent.isAtMothership
+                return agent.fuelInPercent < 50 && agent.isAtMothership
             }
 
             override fun action() {
-                agent!!.orderFuel(100)
+                agent.orderFuel(100)
             }
         })
         // -------------------------------------------->
         createRule(object : Rule(975, "Help") {
             override fun constraint(): Boolean {
-                return agent!!.seeLostTeamAgent() && agent.fuel >= 60
+                return agent.seeLostTeamAgent() && agent.fuel >= 60
             }
 
             override fun action() {
-                agent!!.spendTeamAgentFuel(30)
+                agent.spendTeamAgentFuel(30)
             }
         })
 
         // -------------------------------------------->
         createRule(object : Rule(650, "attack") {
             override fun constraint(): Boolean {
-                return agent!!.seeAdversaryAgent()
+                return agent.seeAdversaryAgent()
             }
 
             override fun action() {
-                agent!!.fightWithAdversaryAgent()
+                agent.fightWithAdversaryAgent()
             }
         })
 
         // -------------------------------------------->
         createRule(object : Rule(650, "mine") {
             override fun constraint(): Boolean {
-                return agent!!.seeAdversaryMothership() && agent.hasMine()
+                return agent.seeAdversaryMothership() && agent.hasMine()
             }
 
             override fun action() {
-                agent!!.deployMine()
+                agent.deployMine()
             }
         })
         // -------------------------------------------->
         createRule(object : Rule(1010, "defend") {
             override fun constraint(): Boolean {
-                return agent!!.isUnderAttack && agent.seeAdversaryAgent()
+                return agent.isUnderAttack && agent.seeAdversaryAgent()
             }
 
             override fun action() {
-                agent!!.fightWithAdversaryAgent()
+                agent.fightWithAdversaryAgent()
             }
         })
         // -------------------------------------------->
         createRule(object : Rule(890, "attack mother") {
             override fun constraint(): Boolean {
-                return agent!!.seeAdversaryMothership()
+                return agent.seeAdversaryMothership()
             }
 
             override fun action() {
-                agent!!.fightWithAdversaryMothership()
+                agent.fightWithAdversaryMothership()
             }
         })
         // -------------------------------------------->
         createRule(object : Rule(890, "basis1") {
             override fun constraint(): Boolean {
-                return mothership!!.isDamaged
+                return mothership.isDamaged
             }
 
             override fun action() {
-                mothership!!.shieldForce
+                mothership.shieldForce
             }
         })
     }

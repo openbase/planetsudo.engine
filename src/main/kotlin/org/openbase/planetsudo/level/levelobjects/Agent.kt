@@ -53,7 +53,6 @@ class Agent(
         private set
     private var attacked: Boolean
     private var resource: Resource? = null
-        private set
     private var hasMine = false
     private var hasTower = false
     override var isSupportOrdered: Boolean = false
@@ -114,7 +113,7 @@ class Agent(
     override val fuelInPercent: Int
         get() = (fuel * 100) / fuelVolume
 
-    val team: Team?
+    val team: Team
         get() = mothership.team
 
     override fun hasFuel(): Boolean {
@@ -403,7 +402,7 @@ class Agent(
         }
     }
 
-    override val resourceType: ResourceType?
+    override val resourceType: ResourceType
         get() {
             val tmpResource = level.getTouchableResource(this) ?: return ResourceType.Unknown
 

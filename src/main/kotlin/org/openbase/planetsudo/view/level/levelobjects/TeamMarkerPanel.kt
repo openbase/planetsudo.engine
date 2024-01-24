@@ -75,7 +75,7 @@ class TeamMarkerPanel(resource: TeamMarker, parentResourcePanel: LevelPanel) :
 
     override fun propertyChange(evt: PropertyChangeEvent) {
         if (evt.propertyName == Resource.KILL_EVENT) {
-            parentResourcePanel!!.removeChild(this)
+            parentResourcePanel.removeChild(this)
         }
     }
 
