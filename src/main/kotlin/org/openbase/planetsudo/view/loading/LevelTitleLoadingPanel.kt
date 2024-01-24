@@ -25,7 +25,6 @@ class LevelTitleLoadingPanel : JPanel() {
         background = gameManager.level!!.color
     }
 
-
     /**
      * This method is called from within the constructor to
      * initialize the form.
@@ -46,7 +45,8 @@ class LevelTitleLoadingPanel : JPanel() {
         layout.setHorizontalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(
-                    GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    GroupLayout.Alignment.TRAILING,
+                    layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(titleLabel, GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE.toInt())
                         .addContainerGap()
@@ -62,7 +62,6 @@ class LevelTitleLoadingPanel : JPanel() {
                 )
         )
     } // </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private var titleLabel: JLabel? = null // End of variables declaration//GEN-END:variables

@@ -28,7 +28,7 @@ class LevelLoadingPanel : JPanel() {
     private var rightBorder: JPanel? = null
     private var menuPanel: MenuLoadingPanel? = null
 
-    //private LoadingAnimation completeLoadingProgress;
+    // private LoadingAnimation completeLoadingProgress;
     private var nextLoadingProgress: LoadingAnimation? = null
 
     private fun initComponents() {
@@ -38,7 +38,7 @@ class LevelLoadingPanel : JPanel() {
         leftBorder = JPanel()
         rightBorder = JPanel()
         menuPanel = MenuLoadingPanel()
-        //completeLoadingProgress = new LoadingAnimation();
+        // completeLoadingProgress = new LoadingAnimation();
         nextLoadingProgress = LoadingAnimation()
         val layout = BoxLayout(mainPanel, BoxLayout.LINE_AXIS)
         mainPanel!!.layout = layout
@@ -56,8 +56,7 @@ class LevelLoadingPanel : JPanel() {
         leftBorder!!.preferredSize = Dimension(100, 0)
         rightBorder!!.preferredSize = Dimension(100, 0)
 
-
-        //mainPanel.add(completeLoadingProgress);
+        // mainPanel.add(completeLoadingProgress);
         mainPanel!!.add(nextLoadingProgress)
 
         add(titlePanel, BorderLayout.PAGE_START)
