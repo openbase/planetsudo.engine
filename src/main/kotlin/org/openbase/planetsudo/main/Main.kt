@@ -6,6 +6,7 @@ package org.openbase.planetsudo.main
 
 import org.openbase.jps.core.JPService
 import org.openbase.jps.preset.JPDebugMode
+import org.openbase.jps.preset.JPLogLevel
 import org.openbase.jps.preset.JPPrefix
 import org.openbase.jps.preset.JPVisualDebugMode
 import org.openbase.planetsudo.jp.*
@@ -34,6 +35,7 @@ class Main {
         fun main(args: Array<String>) {
             JPService.setApplicationName("PlanetSudo")
             JPService.registerProperty(JPPrefix::class.java, File("."))
+            JPService.registerProperty(JPLogLevel::class.java, JPLogLevel.LogLevel.INFO)
             JPService.registerProperty(JPTeamPath::class.java)
             JPService.registerProperty(JPStrategyPath::class.java)
             JPService.registerProperty(JPDebugMode::class.java)
@@ -44,8 +46,6 @@ class Main {
             JPService.registerProperty(JPStrategySourceDirectory::class.java)
             JPService.registerProperty(JPExternalStrategyJar::class.java)
             JPService.parseAndExitOnError(args)
-
-            //        System.setProperty("-Dsun.java2d.opengl", "true");
             Main()
         }
     }
