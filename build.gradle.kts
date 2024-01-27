@@ -7,11 +7,14 @@ import java.util.*
 
 plugins {
     `java-library`
-    `maven-publish`
-    signing
     kotlin("jvm")
     id("org.jlleitschuh.gradle.ktlint") version "11.6.1"
+    `maven-publish`
+    signing
+    id("io.github.gradle-nexus.publish-plugin") version "1.3.0"
 }
+
+
 
 repositories {
     mavenLocal()
@@ -38,6 +41,17 @@ group = "org.openbase"
 version = "4.0.0-SNAPSHOT"
 description =
     "PlanetSudo is a reactive multi-agent simulation game. This package contains the game engine of PlanetSudo."
+
+val releaseVersion = !version.toString().endsWith("-SNAPSHOT")
+
+nexusPublishing {
+    repositories {
+        sonatype {
+            username.set(findProperty("MAVEN_CENTRAL_USERNAME")?.let { it as String? })
+            password.set(findProperty("MAVEN_CENTRAL_TOKEN")?.let { it as String? })
+        }
+    }
+}
 
 publishing {
     publications.create<MavenPublication>("maven") {
