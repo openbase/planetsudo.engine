@@ -7,19 +7,14 @@ ORANGE='\033[0;33m'
 BLUE='\033[0;34m'
 WHITE='\033[0;37m'
 
-APP_NAME='planetsudo'
+APP_NAME='planetsudo engine'
 APP_NAME=${BLUE}${APP_NAME}${NC}
 echo -e "=== ${APP_NAME} project ${WHITE}cleanup${NC}" &&
-mvn clean --quiet $@ &&
+./gradlew clean --quiet $@ &&
 echo -e "=== ${APP_NAME} project ${WHITE}installation${NC}" &&
-./mvnw install \
-        -DassembleDirectory=${prefix} \
-        -DskipTests=true \
-        -Dmaven.test.skip=true \
-        -Dlicense.skipAddThirdParty=true \
-        -Dlicense.skipUpdateProjectLicense=true \
-        -Dlicense.skipDownloadLicenses \
-        -Dlicense.skipCheckLicense=true \
-        -Dmaven.license.skip=true \
-        --quiet $@ &&
-echo -e "=== ${APP_NAME} was ${GREEN}successfully${NC} installed to ${WHITE}${prefix}${NC}"
+./gradlew \
+    publishToMavenLocal \
+    --parallel \
+    --quiet \
+    $@ &&
+echo -e "=== ${APP_NAME} was ${GREEN}successfully${NC} installed."
