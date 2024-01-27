@@ -14,7 +14,22 @@ plugins {
     id("io.github.gradle-nexus.publish-plugin") version "1.3.0"
 }
 
+group = "org.openbase"
+description =
+    "PlanetSudo is a reactive multi-agent simulation game. This package contains the game engine of PlanetSudo."
 
+val releaseVersion = !version.toString().endsWith("-SNAPSHOT")
+
+kotlin {
+    jvmToolchain(17)
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = sourceCompatibility
+    withSourcesJar()
+    withJavadocJar()
+}
 
 repositories {
     mavenLocal()
@@ -37,12 +52,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
 }
 
-group = "org.openbase"
-version = "4.0.0-SNAPSHOT"
-description =
-    "PlanetSudo is a reactive multi-agent simulation game. This package contains the game engine of PlanetSudo."
 
-val releaseVersion = !version.toString().endsWith("-SNAPSHOT")
 
 nexusPublishing {
     repositories {
@@ -50,12 +60,6 @@ nexusPublishing {
             username.set(findProperty("MAVEN_CENTRAL_USERNAME")?.let { it as String? })
             password.set(findProperty("MAVEN_CENTRAL_TOKEN")?.let { it as String? })
         }
-    }
-}
-
-publishing {
-    publications.create<MavenPublication>("maven") {
-        from(components["java"])
     }
 }
 
@@ -87,7 +91,7 @@ publishing {
                 name.set(rootProject.name)
                 description.set(rootProject.description)
                 url.set("https://github.com/openbase/planetsudo")
-                inceptionYear.set("2015")
+                inceptionYear.set("2009")
                 organization {
                     name.set("openbase.org")
                     url.set("https://openbase.org")
@@ -148,9 +152,7 @@ tasks.javadoc {
         (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
     }
 }
-kotlin {
-    jvmToolchain(17)
-}
+
 
 ktlint {
     disabledRules.set(setOf("no-wildcard-imports"))
