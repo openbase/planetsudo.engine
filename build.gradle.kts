@@ -71,8 +71,8 @@ publishing {
             }
             pom {
                 name.set(rootProject.name)
-                description.set("Java Utility Lib")
-                url.set("https://github.com/openbase/jul/wiki")
+                description.set(rootProject.description)
+                url.set("https://github.com/openbase/planetsudo")
                 inceptionYear.set("2015")
                 organization {
                     name.set("openbase.org")
@@ -80,8 +80,8 @@ publishing {
                 }
                 licenses {
                     license {
-                        name.set("LGPLv3")
-                        url.set("https://www.gnu.org/licenses/lgpl.html")
+                        name.set("GPLv3")
+                        url.set("https://www.gnu.org/licenses/gpl.html")
                     }
                 }
                 developers {
@@ -97,9 +97,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection.set("scm:git:https://github.com/openbase/planetsudo.git")
-                    developerConnection.set("scm:git:https://github.com/openbase/planetsudo.git")
-                    url.set("https://github.com/openbase/planetsudo.git")
+                    connection.set("scm:git:https://github.com/openbase/planetsudo.engine.git")
+                    developerConnection.set("scm:git:https://github.com/openbase/planetsudo.engine.git")
+                    url.set("https://github.com/openbase/planetsudo.engine.git")
                 }
             }
         }
