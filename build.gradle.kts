@@ -52,8 +52,6 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
 }
 
-
-
 nexusPublishing {
     repositories {
         sonatype {
@@ -152,7 +150,6 @@ tasks.javadoc {
         (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
     }
 }
-
 
 ktlint {
     disabledRules.set(setOf("no-wildcard-imports"))

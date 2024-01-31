@@ -22,6 +22,7 @@ import org.openbase.planetsudo.game.TeamData
 import org.openbase.planetsudo.level.LevelLoader.Companion.getInstance
 import org.openbase.planetsudo.net.PlanetSudoClient
 import org.openbase.planetsudo.net.PlanetSudoClient.Companion.instance
+import org.openbase.planetsudo.util.RandomGenerator
 import org.openbase.planetsudo.view.MainGUI
 import org.openbase.planetsudo.view.level.LevelDisplayPanel
 import org.slf4j.Logger
@@ -46,22 +47,22 @@ class ConfigurationPanel : JPanel() {
 
     private fun initDynamicComponents() {
         // load level
-        LevelChooserComboBox!!.isEnabled = false
-        LevelChooserComboBox!!.removeAllItems()
+        levelChooserComboBox!!.isEnabled = false
+        levelChooserComboBox!!.removeAllItems()
         for (levelName in getInstance()!!.levelNameSet) {
-            LevelChooserComboBox!!.addItem(levelName)
+            levelChooserComboBox!!.addItem(levelName)
         }
-        if (LevelChooserComboBox!!.itemCount >= 0) {
-            LevelChooserComboBox!!.selectedIndex = stateProperties.getProperty(PROPERTY_SELECTED_LEVEL, "0").toInt()
+        if (levelChooserComboBox!!.itemCount >= 0) {
+            levelChooserComboBox!!.selectedIndex = stateProperties.getProperty(PROPERTY_SELECTED_LEVEL, "0").toInt()
         }
-        LevelChooserComboBox!!.isEnabled = true
+        levelChooserComboBox!!.isEnabled = true
 
         // load teams
         updateTeamList()
 
         // setup default team
-        setdefaultTeamButton!!.foreground = Color.BLACK
-        setdefaultTeamButton!!.isEnabled = true
+        setDefaultTeamButton!!.foreground = Color.BLACK
+        setDefaultTeamButton!!.isEnabled = true
         defaultTeamComboBox!!.isEnabled = true
         syncButton!!.isEnabled = false
         try {
@@ -126,30 +127,31 @@ class ConfigurationPanel : JPanel() {
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private fun initComponents() {
-        jPanel3 = JPanel()
+        levelPreviewPanel = JPanel()
         levelPreviewDisplayPanel = LevelDisplayPanel()
         logoLabel = JLabel()
-        jPanel4 = JPanel()
-        jPanel1 = JPanel()
-        jLabel3 = JLabel()
-        jPanel8 = JPanel()
+        gameSettingsPanel = JPanel()
+        teamsPanel = JPanel()
+        versusLabel = JLabel()
+        teamAPanel = JPanel()
         teamAComboBox = JComboBox<TeamData>()
-        jLabel1 = JLabel()
-        jPanel9 = JPanel()
+        teamALabel = JLabel()
+        teamBPanel = JPanel()
         teamBComboBox = JComboBox<TeamData>()
-        jLabel2 = JLabel()
-        jPanel2 = JPanel()
-        LevelChooserComboBox = JComboBox<String>()
-        jButton1 = JButton()
-        jPanel6 = JPanel()
-        jPanel5 = JPanel()
+        teamBLabel = JLabel()
+        levelChooserPanel = JPanel()
+        levelChooserComboBox = JComboBox<String>()
+        startGameButton = JButton()
+        networkPanel = JPanel()
+        networkTeamPanel = JPanel()
         defaultTeamComboBox = JComboBox()
-        setdefaultTeamButton = JButton()
-        jPanel7 = JPanel()
+        setDefaultTeamButton = JButton()
+        serverPanel = JPanel()
         connectionStateLabel = JLabel()
         syncButton = JButton()
+        randomLevelButton = JButton()
 
-        jPanel3!!.border = BorderFactory.createTitledBorder("Vorschau")
+        levelPreviewPanel!!.border = BorderFactory.createTitledBorder("Vorschau")
 
         val levelPreviewDisplayPanelLayout = GroupLayout(levelPreviewDisplayPanel)
         levelPreviewDisplayPanel!!.layout = levelPreviewDisplayPanelLayout
@@ -162,13 +164,13 @@ class ConfigurationPanel : JPanel() {
                 .addGap(0, 0, Short.MAX_VALUE.toInt())
         )
 
-        val jPanel3Layout = GroupLayout(jPanel3)
-        jPanel3!!.layout = jPanel3Layout
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        val levelPreviewPanelLayout = GroupLayout(levelPreviewPanel)
+        levelPreviewPanel!!.layout = levelPreviewPanelLayout
+        levelPreviewPanelLayout.setHorizontalGroup(
+            levelPreviewPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(
                     GroupLayout.Alignment.TRAILING,
-                    jPanel3Layout.createSequentialGroup()
+                    levelPreviewPanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(
                             levelPreviewDisplayPanel,
@@ -179,10 +181,10 @@ class ConfigurationPanel : JPanel() {
                         .addContainerGap()
                 )
         )
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        levelPreviewPanelLayout.setVerticalGroup(
+            levelPreviewPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(
-                    jPanel3Layout.createSequentialGroup()
+                    levelPreviewPanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(
                             levelPreviewDisplayPanel,
@@ -199,32 +201,32 @@ class ConfigurationPanel : JPanel() {
         logoLabel!!.horizontalTextPosition = SwingConstants.CENTER
         logoLabel!!.verticalTextPosition = SwingConstants.BOTTOM
 
-        jPanel4!!.border = BorderFactory.createTitledBorder("Spiel Einstellungen")
+        gameSettingsPanel!!.border = BorderFactory.createTitledBorder("Spiel Einstellungen")
 
-        jPanel1!!.border = BorderFactory.createTitledBorder("Teams")
+        teamsPanel!!.border = BorderFactory.createTitledBorder("Teams")
 
-        jLabel3!!.horizontalAlignment = SwingConstants.CENTER
-        jLabel3!!.text = "VS"
+        versusLabel!!.horizontalAlignment = SwingConstants.CENTER
+        versusLabel!!.text = "VS"
 
         teamAComboBox!!.setModel(DefaultComboBoxModel(emptyArray()))
         teamAComboBox!!.addActionListener(ActionListener { evt -> teamAComboBoxActionPerformed(evt) })
 
-        jLabel1!!.horizontalAlignment = SwingConstants.CENTER
-        jLabel1!!.text = "Team A"
+        teamALabel!!.horizontalAlignment = SwingConstants.CENTER
+        teamALabel!!.text = "Team A"
 
-        val jPanel8Layout = GroupLayout(jPanel8)
-        jPanel8!!.layout = jPanel8Layout
-        jPanel8Layout.setHorizontalGroup(
-            jPanel8Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        val teamAPanelLayout = GroupLayout(teamAPanel)
+        teamAPanel!!.layout = teamAPanelLayout
+        teamAPanelLayout.setHorizontalGroup(
+            teamAPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addComponent(teamAComboBox, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt())
-                .addComponent(jLabel1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt())
+                .addComponent(teamALabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt())
         )
-        jPanel8Layout.setVerticalGroup(
-            jPanel8Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        teamAPanelLayout.setVerticalGroup(
+            teamAPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(
                     GroupLayout.Alignment.TRAILING,
-                    jPanel8Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                    teamAPanelLayout.createSequentialGroup()
+                        .addComponent(teamALabel)
                         .addPreferredGap(
                             LayoutStyle.ComponentPlacement.RELATED,
                             GroupLayout.DEFAULT_SIZE,
@@ -242,27 +244,27 @@ class ConfigurationPanel : JPanel() {
         teamBComboBox!!.setModel(DefaultComboBoxModel())
         teamBComboBox!!.addActionListener({ evt -> teamBComboBoxActionPerformed(evt) })
 
-        jLabel2!!.horizontalAlignment = SwingConstants.CENTER
-        jLabel2!!.text = "Team B"
+        teamBLabel!!.horizontalAlignment = SwingConstants.CENTER
+        teamBLabel!!.text = "Team B"
 
-        val jPanel9Layout = GroupLayout(jPanel9)
-        jPanel9!!.layout = jPanel9Layout
-        jPanel9Layout.setHorizontalGroup(
-            jPanel9Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        val teamBPanelLayout = GroupLayout(teamBPanel)
+        teamBPanel!!.layout = teamBPanelLayout
+        teamBPanelLayout.setHorizontalGroup(
+            teamBPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addComponent(teamBComboBox, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt())
                 .addComponent(
-                    jLabel2,
+                    teamBLabel,
                     GroupLayout.Alignment.TRAILING,
                     GroupLayout.DEFAULT_SIZE,
                     GroupLayout.DEFAULT_SIZE,
                     Short.MAX_VALUE.toInt()
                 )
         )
-        jPanel9Layout.setVerticalGroup(
-            jPanel9Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        teamBPanelLayout.setVerticalGroup(
+            teamBPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(
-                    jPanel9Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
+                    teamBPanelLayout.createSequentialGroup()
+                        .addComponent(teamBLabel)
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(
                             teamBComboBox,
@@ -273,24 +275,24 @@ class ConfigurationPanel : JPanel() {
                 )
         )
 
-        val jPanel1Layout = GroupLayout(jPanel1)
-        jPanel1!!.layout = jPanel1Layout
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        val teamsPanelLayout = GroupLayout(teamsPanel)
+        teamsPanel!!.layout = teamsPanelLayout
+        teamsPanelLayout.setHorizontalGroup(
+            teamsPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(
-                    jPanel1Layout.createSequentialGroup()
+                    teamsPanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(
-                            jPanel8,
+                            teamAPanel,
                             GroupLayout.DEFAULT_SIZE,
                             GroupLayout.DEFAULT_SIZE,
                             Short.MAX_VALUE.toInt()
                         )
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel3, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(versusLabel, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(
-                            jPanel9,
+                            teamBPanel,
                             GroupLayout.DEFAULT_SIZE,
                             GroupLayout.DEFAULT_SIZE,
                             Short.MAX_VALUE.toInt()
@@ -298,29 +300,29 @@ class ConfigurationPanel : JPanel() {
                         .addContainerGap()
                 )
         )
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        teamsPanelLayout.setVerticalGroup(
+            teamsPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(
-                    jPanel1Layout.createSequentialGroup()
+                    teamsPanelLayout.createSequentialGroup()
                         .addGroup(
-                            jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                            teamsPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                 .addGroup(
-                                    jPanel1Layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
+                                    teamsPanelLayout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
                                         .addComponent(
-                                            jLabel3,
+                                            versusLabel,
                                             GroupLayout.DEFAULT_SIZE,
                                             GroupLayout.DEFAULT_SIZE,
                                             Short.MAX_VALUE.toInt()
                                         )
                                         .addComponent(
-                                            jPanel8,
+                                            teamAPanel,
                                             GroupLayout.DEFAULT_SIZE,
                                             GroupLayout.DEFAULT_SIZE,
                                             Short.MAX_VALUE.toInt()
                                         )
                                 )
                                 .addComponent(
-                                    jPanel9,
+                                    teamBPanel,
                                     GroupLayout.PREFERRED_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.PREFERRED_SIZE
@@ -330,63 +332,73 @@ class ConfigurationPanel : JPanel() {
                 )
         )
 
-        jPanel2!!.border = BorderFactory.createTitledBorder("Level")
+        levelChooserPanel!!.border = BorderFactory.createTitledBorder("Level")
 
-        LevelChooserComboBox!!.setMaximumRowCount(20)
-        LevelChooserComboBox!!.setModel(DefaultComboBoxModel())
-        LevelChooserComboBox!!.addActionListener(ActionListener { evt -> LevelChooserComboBoxActionPerformed(evt) })
+        levelChooserComboBox!!.setMaximumRowCount(20)
+        levelChooserComboBox!!.setModel(DefaultComboBoxModel())
+        levelChooserComboBox!!.addActionListener(ActionListener { evt -> levelChooserComboBoxActionPerformed(evt) })
 
-        val jPanel2Layout = GroupLayout(jPanel2)
-        jPanel2!!.layout = jPanel2Layout
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        randomLevelButton!!.text = "Zufällig"
+        randomLevelButton!!.addActionListener { evt -> randomLevelButtonActionPerformed(evt) }
+
+        val levelChooserPanelLayout = GroupLayout(levelChooserPanel)
+        levelChooserPanel!!.layout = levelChooserPanelLayout
+        levelChooserPanelLayout.setHorizontalGroup(
+            levelChooserPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(
-                    jPanel2Layout.createSequentialGroup()
+                    levelChooserPanelLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(LevelChooserComboBox, 0, 336, Short.MAX_VALUE.toInt())
+                        .addComponent(levelChooserComboBox, 0, 324, Short.MAX_VALUE.toInt())
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(randomLevelButton)
                         .addContainerGap()
                 )
         )
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+
+        levelChooserPanelLayout.setVerticalGroup(
+            levelChooserPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(
-                    jPanel2Layout.createSequentialGroup()
-                        .addComponent(
-                            LevelChooserComboBox,
-                            GroupLayout.PREFERRED_SIZE,
-                            GroupLayout.DEFAULT_SIZE,
-                            GroupLayout.PREFERRED_SIZE
+                    levelChooserPanelLayout.createSequentialGroup()
+                        .addGroup(
+                            levelChooserPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addComponent(
+                                    levelChooserComboBox,
+                                    GroupLayout.PREFERRED_SIZE,
+                                    GroupLayout.DEFAULT_SIZE,
+                                    GroupLayout.PREFERRED_SIZE
+                                )
+                                .addComponent(randomLevelButton)
                         )
                         .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt())
                 )
         )
 
-        jButton1!!.text = "Spiel Starten"
-        jButton1!!.addActionListener { evt -> jButton1ActionPerformed(evt) }
+        startGameButton!!.text = "Spiel Starten"
+        startGameButton!!.addActionListener { evt -> startGameButtonActionPerformed(evt) }
 
-        val jPanel4Layout = GroupLayout(jPanel4)
-        jPanel4!!.layout = jPanel4Layout
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        val gameSettingsPanelLayout = GroupLayout(gameSettingsPanel)
+        gameSettingsPanel!!.layout = gameSettingsPanelLayout
+        gameSettingsPanelLayout.setHorizontalGroup(
+            gameSettingsPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(
-                    jPanel4Layout.createSequentialGroup()
+                    gameSettingsPanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(
-                            jPanel4Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                            gameSettingsPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                 .addComponent(
-                                    jPanel1,
+                                    teamsPanel,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
                                     Short.MAX_VALUE.toInt()
                                 )
                                 .addComponent(
-                                    jPanel2,
+                                    levelChooserPanel,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
                                     Short.MAX_VALUE.toInt()
                                 )
                                 .addComponent(
-                                    jButton1,
+                                    startGameButton,
                                     GroupLayout.Alignment.TRAILING,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
@@ -396,65 +408,65 @@ class ConfigurationPanel : JPanel() {
                         .addContainerGap()
                 )
         )
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        gameSettingsPanelLayout.setVerticalGroup(
+            gameSettingsPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(
-                    jPanel4Layout.createSequentialGroup()
+                    gameSettingsPanelLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(teamsPanel, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel2, GroupLayout.PREFERRED_SIZE, 62, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(levelChooserPanel, GroupLayout.PREFERRED_SIZE, 62, GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)
+                        .addComponent(startGameButton)
                         .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt())
                 )
         )
 
-        jPanel6!!.border = BorderFactory.createTitledBorder("Netzwerk")
+        networkPanel!!.border = BorderFactory.createTitledBorder("Netzwerk")
 
-        jPanel5!!.border = BorderFactory.createTitledBorder("Dein Team")
+        networkTeamPanel!!.border = BorderFactory.createTitledBorder("Dein Team")
 
         defaultTeamComboBox!!.setModel(
             DefaultComboBoxModel<TeamData>()
         )
         defaultTeamComboBox!!.addActionListener(ActionListener { evt -> defaultTeamComboBoxActionPerformed(evt) })
 
-        setdefaultTeamButton!!.text = "Setzen"
-        setdefaultTeamButton!!.addActionListener { evt -> setdefaultTeamButtonActionPerformed(evt) }
+        setDefaultTeamButton!!.text = "Setzen"
+        setDefaultTeamButton!!.addActionListener { evt -> setDefaultTeamButtonActionPerformed(evt) }
 
-        val jPanel5Layout = GroupLayout(jPanel5)
-        jPanel5!!.layout = jPanel5Layout
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        val networkTeamPanelLayout = GroupLayout(networkTeamPanel)
+        networkTeamPanel!!.layout = networkTeamPanelLayout
+        networkTeamPanelLayout.setHorizontalGroup(
+            networkTeamPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(
                     GroupLayout.Alignment.TRAILING,
-                    jPanel5Layout.createSequentialGroup()
+                    networkTeamPanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(defaultTeamComboBox, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt())
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(setdefaultTeamButton)
+                        .addComponent(setDefaultTeamButton)
                         .addContainerGap()
                 )
         )
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        networkTeamPanelLayout.setVerticalGroup(
+            networkTeamPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(
-                    jPanel5Layout.createSequentialGroup()
+                    networkTeamPanelLayout.createSequentialGroup()
                         .addGroup(
-                            jPanel5Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                            networkTeamPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(
                                     defaultTeamComboBox,
                                     GroupLayout.PREFERRED_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.PREFERRED_SIZE
                                 )
-                                .addComponent(setdefaultTeamButton)
+                                .addComponent(setDefaultTeamButton)
                         )
                         .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt())
                 )
         )
 
-        jPanel7!!.border = BorderFactory.createTitledBorder("Server")
+        serverPanel!!.border = BorderFactory.createTitledBorder("Server")
 
         connectionStateLabel!!.horizontalAlignment = SwingConstants.CENTER
         connectionStateLabel!!.text = "Verbindungsstatus"
@@ -464,15 +476,15 @@ class ConfigurationPanel : JPanel() {
         syncButton!!.text = "Synchronisation"
         syncButton!!.addActionListener { evt -> syncButtonActionPerformed(evt) }
 
-        val jPanel7Layout = GroupLayout(jPanel7)
-        jPanel7!!.layout = jPanel7Layout
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        val serverPanelLayout = GroupLayout(serverPanel)
+        serverPanel!!.layout = serverPanelLayout
+        serverPanelLayout.setHorizontalGroup(
+            serverPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(
-                    jPanel7Layout.createSequentialGroup()
+                    serverPanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(
-                            jPanel7Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                            serverPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                 .addComponent(
                                     connectionStateLabel,
                                     GroupLayout.DEFAULT_SIZE,
@@ -489,10 +501,10 @@ class ConfigurationPanel : JPanel() {
                         .addContainerGap()
                 )
         )
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        serverPanelLayout.setVerticalGroup(
+            serverPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(
-                    jPanel7Layout.createSequentialGroup()
+                    serverPanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(connectionStateLabel, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
@@ -501,24 +513,24 @@ class ConfigurationPanel : JPanel() {
                 )
         )
 
-        val jPanel6Layout = GroupLayout(jPanel6)
-        jPanel6!!.layout = jPanel6Layout
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        val networkPanelLayout = GroupLayout(networkPanel)
+        networkPanel!!.layout = networkPanelLayout
+        networkPanelLayout.setHorizontalGroup(
+            networkPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(
-                    jPanel6Layout.createSequentialGroup()
+                    networkPanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(
-                            jPanel6Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                            networkPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                 .addComponent(
-                                    jPanel5,
+                                    networkTeamPanel,
                                     GroupLayout.Alignment.TRAILING,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
                                     Short.MAX_VALUE.toInt()
                                 )
                                 .addComponent(
-                                    jPanel7,
+                                    serverPanel,
                                     GroupLayout.Alignment.TRAILING,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
@@ -528,14 +540,14 @@ class ConfigurationPanel : JPanel() {
                         .addContainerGap()
                 )
         )
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        networkPanelLayout.setVerticalGroup(
+            networkPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(
-                    jPanel6Layout.createSequentialGroup()
+                    networkPanelLayout.createSequentialGroup()
                         .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt())
-                        .addComponent(jPanel5, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(networkTeamPanel, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel7, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(serverPanel, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
                 )
         )
 
@@ -549,14 +561,14 @@ class ConfigurationPanel : JPanel() {
                         .addGroup(
                             layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
                                 .addComponent(
-                                    jPanel4,
+                                    gameSettingsPanel,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
                                     Short.MAX_VALUE.toInt()
                                 )
                                 .addComponent(logoLabel, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE)
                                 .addComponent(
-                                    jPanel6,
+                                    networkPanel,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
                                     Short.MAX_VALUE.toInt()
@@ -564,7 +576,7 @@ class ConfigurationPanel : JPanel() {
                         )
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(
-                            jPanel3,
+                            levelPreviewPanel,
                             GroupLayout.DEFAULT_SIZE,
                             GroupLayout.DEFAULT_SIZE,
                             Short.MAX_VALUE.toInt()
@@ -580,7 +592,7 @@ class ConfigurationPanel : JPanel() {
                         .addGroup(
                             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                 .addComponent(
-                                    jPanel3,
+                                    levelPreviewPanel,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
                                     Short.MAX_VALUE.toInt()
@@ -588,14 +600,14 @@ class ConfigurationPanel : JPanel() {
                                 .addGroup(
                                     layout.createSequentialGroup()
                                         .addComponent(
-                                            jPanel4,
+                                            gameSettingsPanel,
                                             GroupLayout.PREFERRED_SIZE,
                                             GroupLayout.DEFAULT_SIZE,
                                             GroupLayout.PREFERRED_SIZE
                                         )
                                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(
-                                            jPanel6,
+                                            networkPanel,
                                             GroupLayout.PREFERRED_SIZE,
                                             GroupLayout.DEFAULT_SIZE,
                                             GroupLayout.PREFERRED_SIZE
@@ -614,21 +626,21 @@ class ConfigurationPanel : JPanel() {
         )
     } // </editor-fold>//GEN-END:initComponents
 
-    private fun LevelChooserComboBoxActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_LevelChooserComboBoxActionPerformed
+    private fun levelChooserComboBoxActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_levelChooserComboBoxActionPerformed
         object : SwingWorker<Any?, Any?>() {
             @Throws(Exception::class)
             override fun doInBackground(): Any? {
-                synchronized(LevelChooserComboBox!!) {
-                    if (LevelChooserComboBox!!.selectedItem != null) {
+                synchronized(levelChooserComboBox!!) {
+                    if (levelChooserComboBox!!.selectedItem != null) {
                         try {
-                            if (LevelChooserComboBox!!.isEnabled) {
+                            if (levelChooserComboBox!!.isEnabled) {
                                 stateProperties.setProperty(
                                     PROPERTY_SELECTED_LEVEL,
-                                    LevelChooserComboBox!!.selectedIndex.toString()
+                                    levelChooserComboBox!!.selectedIndex.toString()
                                 )
                             }
                             val level = getInstance()!!
-                                .loadLevel(LevelChooserComboBox!!.selectedItem.toString())
+                                .loadLevel(levelChooserComboBox!!.selectedItem.toString())
                             gameManager.setLevel(level!!)
                             levelPreviewDisplayPanel!!.setLevel(level)
                             levelPreviewDisplayPanel!!.isOpaque = true
@@ -641,12 +653,16 @@ class ConfigurationPanel : JPanel() {
                 return null
             }
         }.execute()
-    } // GEN-LAST:event_LevelChooserComboBoxActionPerformed
+    } // GEN-LAST:event_levelChooserComboBoxActionPerformed
 
-    private fun jButton1ActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_jButton1ActionPerformed
+    private fun randomLevelButtonActionPerformed(evt: ActionEvent) {
+        levelChooserComboBox!!.selectedIndex = RandomGenerator.getRandom(0, levelChooserComboBox!!.itemCount)
+    }
+
+    private fun startGameButtonActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_startGameButtonActionPerformed
         MainGUI.instance!!.showLoadingPanel()
         gameManager.startGame()
-    } // GEN-LAST:event_jButton1ActionPerformed
+    } // GEN-LAST:event_startGameButtonActionPerformed
 
     private fun teamAComboBoxActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_teamAComboBoxActionPerformed
         gameManager.addTeam(teamAComboBox!!.selectedItem as TeamData, GameManager.TeamType.A)
@@ -666,8 +682,8 @@ class ConfigurationPanel : JPanel() {
     } // GEN-LAST:event_defaultTeamComboBoxActionPerformed
 
     private fun setDefaultTeam(defaultTeamData: TeamData?) {
-        setdefaultTeamButton!!.foreground = Color.BLACK
-        setdefaultTeamButton!!.isEnabled = false
+        setDefaultTeamButton!!.foreground = Color.BLACK
+        setDefaultTeamButton!!.isEnabled = false
         defaultTeamComboBox!!.isEnabled = false
         syncButton!!.isEnabled = true
         try {
@@ -682,46 +698,47 @@ class ConfigurationPanel : JPanel() {
         }
     }
 
-    private fun setdefaultTeamButtonActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_setdefaultTeamButtonActionPerformed
+    private fun setDefaultTeamButtonActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_setDefaultTeamButtonActionPerformed
         try {
             val defaultTeamData = defaultTeamComboBox!!.selectedItem as TeamData
-            setdefaultTeamButton!!.foreground = Color.BLACK
+            setDefaultTeamButton!!.foreground = Color.BLACK
             saveDefaultTeam(defaultTeamData)
             setDefaultTeam(defaultTeamData)
         } catch (exx: Exception) {
             logger.error("Could not define default team!", exx)
-            setdefaultTeamButton!!.foreground = Color.RED
+            setDefaultTeamButton!!.foreground = Color.RED
             return
         }
-    } // GEN-LAST:event_setdefaultTeamButtonActionPerformed
+    } // GEN-LAST:event_setDefaultTeamButtonActionPerformed
 
     private fun syncButtonActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_syncButtonActionPerformed
         instance!!.runSync()
     } // GEN-LAST:event_syncButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private var LevelChooserComboBox: JComboBox<String>? = null
+    private var levelChooserComboBox: JComboBox<String>? = null
     private var connectionStateLabel: JLabel? = null
     private var defaultTeamComboBox: JComboBox<TeamData>? = null
-    private var jButton1: JButton? = null
-    private var jLabel1: JLabel? = null
-    private var jLabel2: JLabel? = null
-    private var jLabel3: JLabel? = null
-    private var jPanel1: JPanel? = null
-    private var jPanel2: JPanel? = null
-    private var jPanel3: JPanel? = null
-    private var jPanel4: JPanel? = null
-    private var jPanel5: JPanel? = null
-    private var jPanel6: JPanel? = null
-    private var jPanel7: JPanel? = null
-    private var jPanel8: JPanel? = null
-    private var jPanel9: JPanel? = null
+    private var startGameButton: JButton? = null
+    private var teamALabel: JLabel? = null
+    private var teamBLabel: JLabel? = null
+    private var versusLabel: JLabel? = null
+    private var teamsPanel: JPanel? = null
+    private var levelChooserPanel: JPanel? = null
+    private var levelPreviewPanel: JPanel? = null
+    private var gameSettingsPanel: JPanel? = null
+    private var networkTeamPanel: JPanel? = null
+    private var networkPanel: JPanel? = null
+    private var serverPanel: JPanel? = null
+    private var teamAPanel: JPanel? = null
+    private var teamBPanel: JPanel? = null
     private var levelPreviewDisplayPanel: LevelDisplayPanel? = null
     private var logoLabel: JLabel? = null
-    private var setdefaultTeamButton: JButton? = null
+    private var setDefaultTeamButton: JButton? = null
     private var syncButton: JButton? = null
     private var teamAComboBox: JComboBox<TeamData>? = null
-    private var teamBComboBox: JComboBox<TeamData>? = null // End of variables declaration//GEN-END:variables
+    private var teamBComboBox: JComboBox<TeamData>? = null
+    private var randomLevelButton: JButton? = null // End of variables declaration//GEN-END:variables
 
     /**
      * Creates new form ConfigurationPanel
