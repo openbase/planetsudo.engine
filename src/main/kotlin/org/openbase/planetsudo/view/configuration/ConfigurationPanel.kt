@@ -28,8 +28,6 @@ import org.openbase.planetsudo.view.level.LevelDisplayPanel
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.awt.Color
-import java.awt.event.ActionEvent
-import java.awt.event.ActionListener
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -212,7 +210,7 @@ class ConfigurationPanel : JPanel() {
         versusLabel!!.text = "VS"
 
         teamAComboBox!!.setModel(DefaultComboBoxModel(emptyArray()))
-        teamAComboBox!!.addActionListener(ActionListener { evt -> teamAComboBoxActionPerformed(evt) })
+        teamAComboBox!!.addActionListener { _ -> teamAComboBoxActionPerformed() }
 
         teamALabel!!.horizontalAlignment = SwingConstants.CENTER
         teamALabel!!.text = "Team A"
@@ -245,7 +243,7 @@ class ConfigurationPanel : JPanel() {
         )
 
         teamBComboBox!!.setModel(DefaultComboBoxModel())
-        teamBComboBox!!.addActionListener({ evt -> teamBComboBoxActionPerformed(evt) })
+        teamBComboBox!!.addActionListener { _ -> teamBComboBoxActionPerformed() }
 
         teamBLabel!!.horizontalAlignment = SwingConstants.CENTER
         teamBLabel!!.text = "Team B"
@@ -339,10 +337,10 @@ class ConfigurationPanel : JPanel() {
 
         levelChooserComboBox!!.setMaximumRowCount(20)
         levelChooserComboBox!!.setModel(DefaultComboBoxModel())
-        levelChooserComboBox!!.addActionListener(ActionListener { evt -> levelChooserComboBoxActionPerformed(evt) })
+        levelChooserComboBox!!.addActionListener { _ -> levelChooserComboBoxActionPerformed() }
 
         randomLevelButton!!.text = "Zufällig"
-        randomLevelButton!!.addActionListener { evt -> randomLevelButtonActionPerformed(evt) }
+        randomLevelButton!!.addActionListener { _ -> randomLevelButtonActionPerformed() }
 
         val levelChooserPanelLayout = GroupLayout(levelChooserPanel)
         levelChooserPanel!!.layout = levelChooserPanelLayout
@@ -377,7 +375,7 @@ class ConfigurationPanel : JPanel() {
         )
 
         startGameButton!!.text = "Spiel Starten"
-        startGameButton!!.addActionListener { evt -> startGameButtonActionPerformed(evt) }
+        startGameButton!!.addActionListener { _ -> startGameButtonActionPerformed() }
 
         val gameSettingsPanelLayout = GroupLayout(gameSettingsPanel)
         gameSettingsPanel!!.layout = gameSettingsPanelLayout
@@ -432,10 +430,10 @@ class ConfigurationPanel : JPanel() {
         defaultTeamComboBox!!.setModel(
             DefaultComboBoxModel<TeamData>()
         )
-        defaultTeamComboBox!!.addActionListener(ActionListener { evt -> defaultTeamComboBoxActionPerformed(evt) })
+        defaultTeamComboBox!!.addActionListener { _ -> defaultTeamComboBoxActionPerformed() }
 
         setDefaultTeamButton!!.text = "Setzen"
-        setDefaultTeamButton!!.addActionListener { evt -> setDefaultTeamButtonActionPerformed(evt) }
+        setDefaultTeamButton!!.addActionListener { _ -> setDefaultTeamButtonActionPerformed() }
 
         val networkTeamPanelLayout = GroupLayout(networkTeamPanel)
         networkTeamPanel!!.layout = networkTeamPanelLayout
@@ -477,7 +475,7 @@ class ConfigurationPanel : JPanel() {
         connectionStateLabel!!.isOpaque = true
 
         syncButton!!.text = "Synchronisation"
-        syncButton!!.addActionListener { evt -> syncButtonActionPerformed(evt) }
+        syncButton!!.addActionListener { _ -> syncButtonActionPerformed() }
 
         val serverPanelLayout = GroupLayout(serverPanel)
         serverPanel!!.layout = serverPanelLayout
@@ -629,7 +627,7 @@ class ConfigurationPanel : JPanel() {
         )
     } // </editor-fold>//GEN-END:initComponents
 
-    private fun levelChooserComboBoxActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_levelChooserComboBoxActionPerformed
+    private fun levelChooserComboBoxActionPerformed() { // GEN-FIRST:event_levelChooserComboBoxActionPerformed
         object : SwingWorker<Any?, Any?>() {
             @Throws(Exception::class)
             override fun doInBackground(): Any? {
@@ -658,7 +656,7 @@ class ConfigurationPanel : JPanel() {
         }.execute()
     } // GEN-LAST:event_levelChooserComboBoxActionPerformed
 
-    private fun randomLevelButtonActionPerformed(evt: ActionEvent) {
+    private fun randomLevelButtonActionPerformed() {
         val maxIndex = levelChooserComboBox!!.itemCount - 1
         if (maxIndex < 1) {
             return
@@ -671,26 +669,26 @@ class ConfigurationPanel : JPanel() {
         levelChooserComboBox!!.selectedIndex = nextLevelIndex
     }
 
-    private fun startGameButtonActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_startGameButtonActionPerformed
+    private fun startGameButtonActionPerformed() { // GEN-FIRST:event_startGameButtonActionPerformed
         MainGUI.instance!!.showLoadingPanel()
         gameManager.startGame()
     } // GEN-LAST:event_startGameButtonActionPerformed
 
-    private fun teamAComboBoxActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_teamAComboBoxActionPerformed
+    private fun teamAComboBoxActionPerformed() { // GEN-FIRST:event_teamAComboBoxActionPerformed
         gameManager.addTeam(teamAComboBox!!.selectedItem as TeamData, GameManager.TeamType.A)
         if (teamAComboBox!!.isEnabled) {
             stateProperties.setProperty(PROPERTY_SELECTED_TEAM_A, teamAComboBox!!.selectedIndex.toString())
         }
     } // GEN-LAST:event_teamAComboBoxActionPerformed
 
-    private fun teamBComboBoxActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_teamBComboBoxActionPerformed
+    private fun teamBComboBoxActionPerformed() { // GEN-FIRST:event_teamBComboBoxActionPerformed
         gameManager.addTeam(teamBComboBox!!.selectedItem as TeamData, GameManager.TeamType.B)
         if (teamBComboBox!!.isEnabled) {
             stateProperties.setProperty(PROPERTY_SELECTED_TEAM_B, teamBComboBox!!.selectedIndex.toString())
         }
     } // GEN-LAST:event_teamBComboBoxActionPerformed
 
-    private fun defaultTeamComboBoxActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_defaultTeamComboBoxActionPerformed
+    private fun defaultTeamComboBoxActionPerformed() { // GEN-FIRST:event_defaultTeamComboBoxActionPerformed
     } // GEN-LAST:event_defaultTeamComboBoxActionPerformed
 
     private fun setDefaultTeam(defaultTeamData: TeamData?) {
@@ -710,7 +708,7 @@ class ConfigurationPanel : JPanel() {
         }
     }
 
-    private fun setDefaultTeamButtonActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_setDefaultTeamButtonActionPerformed
+    private fun setDefaultTeamButtonActionPerformed() { // GEN-FIRST:event_setDefaultTeamButtonActionPerformed
         try {
             val defaultTeamData = defaultTeamComboBox!!.selectedItem as TeamData
             setDefaultTeamButton!!.foreground = Color.BLACK
@@ -723,7 +721,7 @@ class ConfigurationPanel : JPanel() {
         }
     } // GEN-LAST:event_setDefaultTeamButtonActionPerformed
 
-    private fun syncButtonActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_syncButtonActionPerformed
+    private fun syncButtonActionPerformed() { // GEN-FIRST:event_syncButtonActionPerformed
         instance!!.runSync()
     } // GEN-LAST:event_syncButtonActionPerformed
 
@@ -784,8 +782,6 @@ class ConfigurationPanel : JPanel() {
                         connectionStateLabel!!.background = Color(200, 100, 100)
                         syncButton!!.isEnabled = true
                     }
-
-                    else -> assert(false)
                 }
             }
         }
