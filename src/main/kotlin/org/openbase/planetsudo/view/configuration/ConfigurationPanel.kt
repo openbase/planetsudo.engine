@@ -48,14 +48,17 @@ class ConfigurationPanel : JPanel() {
     private fun initDynamicComponents() {
         // load level
         levelChooserComboBox!!.isEnabled = false
+        randomLevelButton!!.isEnabled = false
         levelChooserComboBox!!.removeAllItems()
         for (levelName in getInstance()!!.levelNameSet) {
             levelChooserComboBox!!.addItem(levelName)
         }
         if (levelChooserComboBox!!.itemCount >= 0) {
-            levelChooserComboBox!!.selectedIndex = stateProperties.getProperty(PROPERTY_SELECTED_LEVEL, "0").toInt()
+            val index = stateProperties.getProperty(PROPERTY_SELECTED_LEVEL, "0").toInt()
+            levelChooserComboBox!!.selectedIndex = if (index < levelChooserComboBox!!.itemCount) index else 0
         }
         levelChooserComboBox!!.isEnabled = true
+        randomLevelButton!!.isEnabled = true
 
         // load teams
         updateTeamList()
@@ -656,7 +659,16 @@ class ConfigurationPanel : JPanel() {
     } // GEN-LAST:event_levelChooserComboBoxActionPerformed
 
     private fun randomLevelButtonActionPerformed(evt: ActionEvent) {
-        levelChooserComboBox!!.selectedIndex = RandomGenerator.getRandom(0, levelChooserComboBox!!.itemCount)
+        val maxIndex = levelChooserComboBox!!.itemCount - 1
+        if (maxIndex < 1) {
+            return
+        }
+
+        var nextLevelIndex = RandomGenerator.getRandom(0, maxIndex)
+        if (nextLevelIndex >= levelChooserComboBox!!.selectedIndex) { // avoid the same index
+            nextLevelIndex += 1
+        }
+        levelChooserComboBox!!.selectedIndex = nextLevelIndex
     }
 
     private fun startGameButtonActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_startGameButtonActionPerformed
