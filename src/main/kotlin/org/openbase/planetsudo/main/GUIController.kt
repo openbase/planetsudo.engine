@@ -40,8 +40,8 @@ class GUIController {
                 this,
                 GAME_STATE_CHANGE,
                 null,
-                gameManager.gameState
-            )
+                gameManager.gameState,
+            ),
         )
     }
 

@@ -25,7 +25,7 @@ class SimpleFight : AbstractLevel() {
 
     override fun loadHomePositions() = listOf(
         Base2D(200.0, 500.0, Direction2D.DOWN),
-        Base2D(800.0, 500.0, Direction2D.DOWN)
+        Base2D(800.0, 500.0, Direction2D.DOWN),
     )
 
     override fun loadResourcePlacement() = listOf<ResourcePlacement>()

@@ -35,13 +35,13 @@ class LevelRasterElement(val index: Int, private val levelView: LevelView) : Com
             (xLevelPosition - size / 2).toDouble(),
             (yLevelPosition - size / 2).toDouble(),
             size.toDouble(),
-            size.toDouble()
+            size.toDouble(),
         )
         val agentBoundsRectangle: Rectangle2D = Rectangle2D.Double(
             (xLevelPosition - Agent.AGENT_SIZE).toDouble(),
             (yLevelPosition - Agent.AGENT_SIZE).toDouble(),
             (Agent.AGENT_SIZE * 2).toDouble(),
-            (Agent.AGENT_SIZE * 2).toDouble()
+            (Agent.AGENT_SIZE * 2).toDouble(),
         )
         this.isPartOfWall = levelView.levelObject.level.containsWall(rasterLevelRectangle)
         this.isNextToWall = levelView.levelObject.level.containsWall(agentBoundsRectangle)

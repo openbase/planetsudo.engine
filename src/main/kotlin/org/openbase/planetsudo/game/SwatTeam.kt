@@ -76,7 +76,8 @@ enum class SwatTeam(@JvmField val negative: Boolean = false, @JvmField val oppos
     NOT_UNIFORM(true, UNIFORM),
     NOT_VIKTOR(true, VIKTOR),
     NOT_WHISKEY(true, WHISKEY),
-    NOT_X_RAY(true, X_RAY);
+    NOT_X_RAY(true, X_RAY),
+    ;
 
     operator fun plus(swat: SwatTeam): Set<SwatTeam> {
         return setOf(this, swat)
@@ -112,7 +113,7 @@ enum class SwatTeam(@JvmField val negative: Boolean = false, @JvmField val oppos
             UNIFORM,
             VIKTOR,
             WHISKEY,
-            X_RAY
+            X_RAY,
         )
 
         var NEGATED_SWATS: Set<SwatTeam> = setOf(
@@ -140,7 +141,7 @@ enum class SwatTeam(@JvmField val negative: Boolean = false, @JvmField val oppos
             NOT_UNIFORM,
             NOT_VIKTOR,
             NOT_WHISKEY,
-            NOT_X_RAY
+            NOT_X_RAY,
         )
 
         fun toString(swatTeams: Collection<SwatTeam>): String {

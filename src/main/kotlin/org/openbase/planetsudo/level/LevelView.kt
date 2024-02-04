@@ -4,6 +4,7 @@
  */
 package org.openbase.planetsudo.level
 
+import org.openbase.jul.exception.CouldNotPerformException
 import org.openbase.planetsudo.geometry.Point2D
 import org.openbase.planetsudo.level.levelobjects.AbstractLevelObject
 import org.slf4j.Logger
@@ -73,7 +74,7 @@ class LevelView(level: AbstractLevel, levelObject: AbstractLevelObject) {
     operator fun get(x: Int, y: Int): LevelRasterElement {
         try {
             return levelRepresentation[x + y * width]!!
-        } catch (ex: Exception) {
+        } catch (ex: CouldNotPerformException) {
             logger.error("x_base[" + x_base + "] y_base[" + y_base + "] x[" + x + "] y[" + y + "] width[" + width + "] bounds[" + levelRepresentation.size + "]")
             throw RuntimeException(ex)
         }
@@ -102,7 +103,7 @@ class LevelView(level: AbstractLevel, levelObject: AbstractLevelObject) {
         logger.debug("CalcLevelRasterElement")
         return get(
             (levelObject.position.x.toInt() - levelObject.level.x) / rasterSize,
-            (levelObject.position.y.toInt() - levelObject.level.y) / rasterSize
+            (levelObject.position.y.toInt() - levelObject.level.y) / rasterSize,
         )
     }
 

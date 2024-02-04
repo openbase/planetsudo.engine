@@ -158,11 +158,11 @@ class ConfigurationPanel : JPanel() {
         levelPreviewDisplayPanel!!.layout = levelPreviewDisplayPanelLayout
         levelPreviewDisplayPanelLayout.setHorizontalGroup(
             levelPreviewDisplayPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGap(0, 801, Short.MAX_VALUE.toInt())
+                .addGap(0, 801, Short.MAX_VALUE.toInt()),
         )
         levelPreviewDisplayPanelLayout.setVerticalGroup(
             levelPreviewDisplayPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGap(0, 0, Short.MAX_VALUE.toInt())
+                .addGap(0, 0, Short.MAX_VALUE.toInt()),
         )
 
         val levelPreviewPanelLayout = GroupLayout(levelPreviewPanel)
@@ -177,10 +177,10 @@ class ConfigurationPanel : JPanel() {
                             levelPreviewDisplayPanel,
                             GroupLayout.DEFAULT_SIZE,
                             GroupLayout.DEFAULT_SIZE,
-                            Short.MAX_VALUE.toInt()
+                            Short.MAX_VALUE.toInt(),
                         )
-                        .addContainerGap()
-                )
+                        .addContainerGap(),
+                ),
         )
         levelPreviewPanelLayout.setVerticalGroup(
             levelPreviewPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -191,10 +191,10 @@ class ConfigurationPanel : JPanel() {
                             levelPreviewDisplayPanel,
                             GroupLayout.DEFAULT_SIZE,
                             GroupLayout.DEFAULT_SIZE,
-                            Short.MAX_VALUE.toInt()
+                            Short.MAX_VALUE.toInt(),
                         )
-                        .addContainerGap()
-                )
+                        .addContainerGap(),
+                ),
         )
 
         logoLabel!!.horizontalAlignment = SwingConstants.CENTER
@@ -231,15 +231,15 @@ class ConfigurationPanel : JPanel() {
                         .addPreferredGap(
                             LayoutStyle.ComponentPlacement.RELATED,
                             GroupLayout.DEFAULT_SIZE,
-                            Int.MAX_VALUE
+                            Int.MAX_VALUE,
                         )
                         .addComponent(
                             teamAComboBox,
                             GroupLayout.PREFERRED_SIZE,
                             GroupLayout.DEFAULT_SIZE,
-                            GroupLayout.PREFERRED_SIZE
-                        )
-                )
+                            GroupLayout.PREFERRED_SIZE,
+                        ),
+                ),
         )
 
         teamBComboBox!!.setModel(DefaultComboBoxModel())
@@ -258,8 +258,8 @@ class ConfigurationPanel : JPanel() {
                     GroupLayout.Alignment.TRAILING,
                     GroupLayout.DEFAULT_SIZE,
                     GroupLayout.DEFAULT_SIZE,
-                    Short.MAX_VALUE.toInt()
-                )
+                    Short.MAX_VALUE.toInt(),
+                ),
         )
         teamBPanelLayout.setVerticalGroup(
             teamBPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -271,9 +271,9 @@ class ConfigurationPanel : JPanel() {
                             teamBComboBox,
                             GroupLayout.PREFERRED_SIZE,
                             GroupLayout.DEFAULT_SIZE,
-                            GroupLayout.PREFERRED_SIZE
-                        )
-                )
+                            GroupLayout.PREFERRED_SIZE,
+                        ),
+                ),
         )
 
         val teamsPanelLayout = GroupLayout(teamsPanel)
@@ -287,7 +287,7 @@ class ConfigurationPanel : JPanel() {
                             teamAPanel,
                             GroupLayout.DEFAULT_SIZE,
                             GroupLayout.DEFAULT_SIZE,
-                            Short.MAX_VALUE.toInt()
+                            Short.MAX_VALUE.toInt(),
                         )
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(versusLabel, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)
@@ -296,10 +296,10 @@ class ConfigurationPanel : JPanel() {
                             teamBPanel,
                             GroupLayout.DEFAULT_SIZE,
                             GroupLayout.DEFAULT_SIZE,
-                            Short.MAX_VALUE.toInt()
+                            Short.MAX_VALUE.toInt(),
                         )
-                        .addContainerGap()
-                )
+                        .addContainerGap(),
+                ),
         )
         teamsPanelLayout.setVerticalGroup(
             teamsPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -313,24 +313,24 @@ class ConfigurationPanel : JPanel() {
                                             versusLabel,
                                             GroupLayout.DEFAULT_SIZE,
                                             GroupLayout.DEFAULT_SIZE,
-                                            Short.MAX_VALUE.toInt()
+                                            Short.MAX_VALUE.toInt(),
                                         )
                                         .addComponent(
                                             teamAPanel,
                                             GroupLayout.DEFAULT_SIZE,
                                             GroupLayout.DEFAULT_SIZE,
-                                            Short.MAX_VALUE.toInt()
-                                        )
+                                            Short.MAX_VALUE.toInt(),
+                                        ),
                                 )
                                 .addComponent(
                                     teamBPanel,
                                     GroupLayout.PREFERRED_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    GroupLayout.PREFERRED_SIZE
-                                )
+                                    GroupLayout.PREFERRED_SIZE,
+                                ),
                         )
-                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt())
-                )
+                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt()),
+                ),
         )
 
         levelChooserPanel!!.border = BorderFactory.createTitledBorder("Level")
@@ -370,8 +370,8 @@ class ConfigurationPanel : JPanel() {
                                 )
                                 .addComponent(randomLevelButton)
                         )
-                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt())
-                )
+                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt()),
+                ),
         )
 
         startGameButton!!.text = "Spiel Starten"
@@ -390,24 +390,24 @@ class ConfigurationPanel : JPanel() {
                                     teamsPanel,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    Short.MAX_VALUE.toInt()
+                                    Short.MAX_VALUE.toInt(),
                                 )
                                 .addComponent(
                                     levelChooserPanel,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    Short.MAX_VALUE.toInt()
+                                    Short.MAX_VALUE.toInt(),
                                 )
                                 .addComponent(
                                     startGameButton,
                                     GroupLayout.Alignment.TRAILING,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    Short.MAX_VALUE.toInt()
-                                )
+                                    Short.MAX_VALUE.toInt(),
+                                ),
                         )
-                        .addContainerGap()
-                )
+                        .addContainerGap(),
+                ),
         )
         gameSettingsPanelLayout.setVerticalGroup(
             gameSettingsPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -428,7 +428,7 @@ class ConfigurationPanel : JPanel() {
         networkTeamPanel!!.border = BorderFactory.createTitledBorder("Dein Team")
 
         defaultTeamComboBox!!.setModel(
-            DefaultComboBoxModel<TeamData>()
+            DefaultComboBoxModel<TeamData>(),
         )
         defaultTeamComboBox!!.addActionListener { _ -> defaultTeamComboBoxActionPerformed() }
 
@@ -459,12 +459,12 @@ class ConfigurationPanel : JPanel() {
                                     defaultTeamComboBox,
                                     GroupLayout.PREFERRED_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    GroupLayout.PREFERRED_SIZE
+                                    GroupLayout.PREFERRED_SIZE,
                                 )
                                 .addComponent(setDefaultTeamButton)
                         )
-                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt())
-                )
+                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt()),
+                ),
         )
 
         serverPanel!!.border = BorderFactory.createTitledBorder("Server")
@@ -490,17 +490,17 @@ class ConfigurationPanel : JPanel() {
                                     connectionStateLabel,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    Short.MAX_VALUE.toInt()
+                                    Short.MAX_VALUE.toInt(),
                                 )
                                 .addComponent(
                                     syncButton,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    Short.MAX_VALUE.toInt()
-                                )
+                                    Short.MAX_VALUE.toInt(),
+                                ),
                         )
-                        .addContainerGap()
-                )
+                        .addContainerGap(),
+                ),
         )
         serverPanelLayout.setVerticalGroup(
             serverPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -510,8 +510,8 @@ class ConfigurationPanel : JPanel() {
                         .addComponent(connectionStateLabel, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(syncButton)
-                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt())
-                )
+                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt()),
+                ),
         )
 
         val networkPanelLayout = GroupLayout(networkPanel)
@@ -528,18 +528,18 @@ class ConfigurationPanel : JPanel() {
                                     GroupLayout.Alignment.TRAILING,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    Short.MAX_VALUE.toInt()
+                                    Short.MAX_VALUE.toInt(),
                                 )
                                 .addComponent(
                                     serverPanel,
                                     GroupLayout.Alignment.TRAILING,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    Short.MAX_VALUE.toInt()
-                                )
+                                    Short.MAX_VALUE.toInt(),
+                                ),
                         )
-                        .addContainerGap()
-                )
+                        .addContainerGap(),
+                ),
         )
         networkPanelLayout.setVerticalGroup(
             networkPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -565,25 +565,25 @@ class ConfigurationPanel : JPanel() {
                                     gameSettingsPanel,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    Short.MAX_VALUE.toInt()
+                                    Short.MAX_VALUE.toInt(),
                                 )
                                 .addComponent(logoLabel, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE)
                                 .addComponent(
                                     networkPanel,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    Short.MAX_VALUE.toInt()
-                                )
+                                    Short.MAX_VALUE.toInt(),
+                                ),
                         )
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(
                             levelPreviewPanel,
                             GroupLayout.DEFAULT_SIZE,
                             GroupLayout.DEFAULT_SIZE,
-                            Short.MAX_VALUE.toInt()
+                            Short.MAX_VALUE.toInt(),
                         )
-                        .addContainerGap()
-                )
+                        .addContainerGap(),
+                ),
         )
         layout.setVerticalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -596,7 +596,7 @@ class ConfigurationPanel : JPanel() {
                                     levelPreviewPanel,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    Short.MAX_VALUE.toInt()
+                                    Short.MAX_VALUE.toInt(),
                                 )
                                 .addGroup(
                                     layout.createSequentialGroup()
@@ -604,26 +604,26 @@ class ConfigurationPanel : JPanel() {
                                             gameSettingsPanel,
                                             GroupLayout.PREFERRED_SIZE,
                                             GroupLayout.DEFAULT_SIZE,
-                                            GroupLayout.PREFERRED_SIZE
+                                            GroupLayout.PREFERRED_SIZE,
                                         )
                                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(
                                             networkPanel,
                                             GroupLayout.PREFERRED_SIZE,
                                             GroupLayout.DEFAULT_SIZE,
-                                            GroupLayout.PREFERRED_SIZE
+                                            GroupLayout.PREFERRED_SIZE,
                                         )
                                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 219, Int.MAX_VALUE)
                                         .addComponent(
                                             logoLabel,
                                             GroupLayout.PREFERRED_SIZE,
                                             192,
-                                            GroupLayout.PREFERRED_SIZE
-                                        )
-                                )
+                                            GroupLayout.PREFERRED_SIZE,
+                                        ),
+                                ),
                         )
-                        .addContainerGap()
-                )
+                        .addContainerGap(),
+                ),
         )
     } // </editor-fold>//GEN-END:initComponents
 
@@ -637,7 +637,7 @@ class ConfigurationPanel : JPanel() {
                             if (levelChooserComboBox!!.isEnabled) {
                                 stateProperties.setProperty(
                                     PROPERTY_SELECTED_LEVEL,
-                                    levelChooserComboBox!!.selectedIndex.toString()
+                                    levelChooserComboBox!!.selectedIndex.toString(),
                                 )
                             }
                             val level = getInstance()!!
@@ -646,7 +646,7 @@ class ConfigurationPanel : JPanel() {
                             levelPreviewDisplayPanel!!.setLevel(level)
                             levelPreviewDisplayPanel!!.isOpaque = true
                             levelPreviewDisplayPanel!!.background = level.color
-                        } catch (ex: Exception) {
+                        } catch (ex: CouldNotPerformException) {
                             logger.error("Could not update level preview!", ex)
                         }
                     }
@@ -703,7 +703,7 @@ class ConfigurationPanel : JPanel() {
                     break
                 }
             }
-        } catch (ex: Exception) {
+        } catch (ex: CouldNotPerformException) {
             ExceptionPrinter.printHistory(CouldNotPerformException("Could not resolve default Team!", ex), logger)
         }
     }
@@ -714,7 +714,7 @@ class ConfigurationPanel : JPanel() {
             setDefaultTeamButton!!.foreground = Color.BLACK
             saveDefaultTeam(defaultTeamData)
             setDefaultTeam(defaultTeamData)
-        } catch (exx: Exception) {
+        } catch (exx: CouldNotPerformException) {
             logger.error("Could not define default team!", exx)
             setDefaultTeamButton!!.foreground = Color.RED
             return
@@ -794,26 +794,28 @@ class ConfigurationPanel : JPanel() {
                 stateProperties.load(FileInputStream(propertiesFile))
                 logger.info("Load GUI Properties from " + propertiesFile.absolutePath)
             }
-        } catch (ex: Exception) {
+        } catch (ex: CouldNotPerformException) {
             ExceptionPrinter.printHistory("Could not load gui properties!", ex, logger)
         }
 
         initDynamicComponents()
 
-        Runtime.getRuntime().addShutdownHook(object : Thread() {
-            override fun run() {
-                try {
-                    val propertiesFile = File(FileUtils.getTempDirectory(), "planetsudo.properties")
-                    logger.info("Store GUI Properties to " + propertiesFile.absolutePath)
-                    if (!propertiesFile.exists()) {
-                        logger.info("Create: " + propertiesFile.createNewFile())
+        Runtime.getRuntime().addShutdownHook(
+            object : Thread() {
+                override fun run() {
+                    try {
+                        val propertiesFile = File(FileUtils.getTempDirectory(), "planetsudo.properties")
+                        logger.info("Store GUI Properties to " + propertiesFile.absolutePath)
+                        if (!propertiesFile.exists()) {
+                            logger.info("Create: " + propertiesFile.createNewFile())
+                        }
+                        stateProperties.store(FileOutputStream(propertiesFile), "PlanetSudo GUI Properties")
+                    } catch (ex: CouldNotPerformException) {
+                        ExceptionPrinter.printHistory("Could not store gui properties!", ex, logger)
                     }
-                    stateProperties.store(FileOutputStream(propertiesFile), "PlanetSudo GUI Properties")
-                } catch (ex: Exception) {
-                    ExceptionPrinter.printHistory("Could not store gui properties!", ex, logger)
                 }
-            }
-        })
+            },
+        )
     }
 
     companion object {

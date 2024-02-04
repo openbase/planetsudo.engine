@@ -18,7 +18,7 @@ class ResourceGausOval(x: Int, y: Int, width: Int, height: Int, override val res
         x.toDouble(),
         y.toDouble(),
         width.toDouble(),
-        height.toDouble()
+        height.toDouble(),
     ),
     ResourcePlacement {
     override fun getResources(level: AbstractLevel): ArrayList<Resource> {
@@ -31,9 +31,9 @@ class ResourceGausOval(x: Int, y: Int, width: Int, height: Int, override val res
                     level,
                     Point2D(
                         centerX,
-                        centerY
-                    )
-                )
+                        centerY,
+                    ),
+                ),
             )
         }
         return resources

@@ -42,7 +42,7 @@ class Broken : AbstractLevel() {
 
     override fun loadHomePositions(): List<Base2D> = listOf(
         Base2D(200.0, 1800.0, Direction2D.DOWN),
-        Base2D(1800.0, 200.0, Direction2D.DOWN)
+        Base2D(1800.0, 200.0, Direction2D.DOWN),
     )
 
     override fun loadResourcePlacement() = listOf(
@@ -50,7 +50,7 @@ class Broken : AbstractLevel() {
         ResourceRandomRectangle(1400, 700, 300, 500, 35, ResourceType.ExtremPoint),
         ResourceRandomRectangle(300, 800, 300, 500, 35, ResourceType.ExtremPoint),
         ResourceRandomRectangle(700, 0, 600, 2000, 30, ResourceType.ExtraMothershipFuel),
-        ResourceRandomRectangle(700, 0, 600, 2000, 50, ResourceType.ExtraAgentFuel)
+        ResourceRandomRectangle(700, 0, 600, 2000, 50, ResourceType.ExtraAgentFuel),
     )
 
     override fun loadLevelColor() = Color(74, 164, 94)

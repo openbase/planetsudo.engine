@@ -28,7 +28,7 @@ class LevelPanel(resource: AbstractLevel, parentPanel: LevelDisplayPanel) :
         resource.levelBorderPolygon,
         ObjectType.Dynamic,
         GameObjectImages.Default.imagesURL,
-        parentPanel
+        parentPanel,
     ),
     PropertyChangeListener {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)

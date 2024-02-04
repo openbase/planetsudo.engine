@@ -42,7 +42,7 @@ class Maze : AbstractLevel() {
 
     override fun loadHomePositions() = listOf(
         Base2D(1900.0, 100.0, Direction2D.DOWN),
-        Base2D(100.0, 1900.0, Direction2D.DOWN)
+        Base2D(100.0, 1900.0, Direction2D.DOWN),
     )
 
     override fun loadResourcePlacement() = listOf(
@@ -53,7 +53,7 @@ class Maze : AbstractLevel() {
         ResourceRandomRectangle(1100, 900, 600, 200, 50, ResourceType.ExtremPoint),
         ResourceRandomRectangle(0, 300, 2000, 1400, 40, ResourceType.ExtraAgentFuel),
         ResourceRandomRectangle(0, 300, 2000, 1400, 30, ResourceType.ExtraMothershipFuel),
-        ResourceRandomRectangle(0, 1200, 2000, 200, 7, ResourceType.DoublePoints)
+        ResourceRandomRectangle(0, 1200, 2000, 200, 7, ResourceType.DoublePoints),
     )
 
     override fun loadLevelColor() = Color(255, 211, 155)
@@ -78,6 +78,6 @@ class Maze : AbstractLevel() {
             addPoint(1700, 1100)
             addPoint(1700, 900)
             addPoint(1100, 900)
-        }
+        },
     )
 }

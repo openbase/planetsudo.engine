@@ -59,18 +59,18 @@ class GameContext : JFrame() {
                                 .addGroup(
                                     layout.createSequentialGroup()
                                         .addComponent(titleLabel)
-                                        .addGap(0, 790, Short.MAX_VALUE.toInt())
+                                        .addGap(0, 790, Short.MAX_VALUE.toInt()),
                                 )
                                 .addComponent(
                                     jLabel2,
                                     GroupLayout.Alignment.TRAILING,
                                     GroupLayout.PREFERRED_SIZE,
                                     0,
-                                    Short.MAX_VALUE.toInt()
-                                )
+                                    Short.MAX_VALUE.toInt(),
+                                ),
                         )
-                        .addContainerGap()
-                )
+                        .addContainerGap(),
+                ),
         )
         layout.setVerticalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -83,10 +83,10 @@ class GameContext : JFrame() {
                             jLabel2,
                             GroupLayout.PREFERRED_SIZE,
                             GroupLayout.DEFAULT_SIZE,
-                            GroupLayout.PREFERRED_SIZE
+                            GroupLayout.PREFERRED_SIZE,
                         )
-                        .addContainerGap(428, Short.MAX_VALUE.toInt())
-                )
+                        .addContainerGap(428, Short.MAX_VALUE.toInt()),
+                ),
         )
 
         pack()
@@ -117,11 +117,7 @@ class GameContext : JFrame() {
         fun display() {
             if (instance == null) {
                 EventQueue.invokeLater { GameContext().isVisible = true }
-                try {
-                    Thread.sleep(500)
-                } catch (ex: InterruptedException) {
-                    Thread.currentThread().interrupt()
-                }
+                Thread.sleep(500)
             } else {
                 instance!!.isVisible = true
             }

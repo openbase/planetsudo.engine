@@ -31,7 +31,7 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
         level.getMothershipBase(id).point,
         100.0,
         100.0,
-        ObjectShape.Rec
+        ObjectShape.Rec,
     ),
     ActionListener,
     MothershipInterface {
@@ -72,8 +72,8 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
                 this,
                 GUIController.LOADING_STATE_CHANGE,
                 1,
-                "Lade " + team.name + " Mutterschiff"
-            )
+                "Lade " + team.name + " Mutterschiff",
+            ),
         )
         fuel = MOTHERSHIP_FUEL_VOLUME
         mineCounter = level.mineCounter
@@ -98,8 +98,8 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
                 this,
                 GUIController.LOADING_STATE_CHANGE,
                 strategyAgentCount,
-                "Lade " + team.name + " Agent"
-            )
+                "Lade " + team.name + " Agent",
+            ),
         )
         var agent: Agent
         val agentFuelVolume = (AGENT_FUEL_VOLUME / strategyAgentCount)
@@ -131,7 +131,7 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
                     this.fuel -= fuel
                 }
                 changes.firePropertyChange(MOTHERSHIP_FUEL_STATE_CHANGE, oldFuel, this.fuel)
-            } catch (ex: Exception) {
+            } catch (ex: CouldNotPerformException) {
                 logger.error("Could not order fuel!", ex)
             }
         } else {
@@ -161,12 +161,8 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
             if (fuel == 0) {
                 return
             }
-            try {
-                synchronized(TILL_END_WAITER) {
-                    (TILL_END_WAITER as Object).wait()
-                }
-            } catch (ex: InterruptedException) {
-                logger.error("", ex)
+            synchronized(TILL_END_WAITER) {
+                (TILL_END_WAITER as Object).wait()
             }
         }
     }
@@ -278,7 +274,7 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
         if (!GameManager.gameManager.isPause) {
             orderFuel(
                 max(0.0, (BURNING_MOTHERSHIP - shieldForce).toDouble()).toInt(),
-                null
+                null,
             )
         }
     }

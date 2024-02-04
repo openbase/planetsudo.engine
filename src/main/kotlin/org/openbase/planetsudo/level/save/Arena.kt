@@ -38,7 +38,7 @@ class Arena : AbstractLevel() {
 
     override fun loadHomePositions() = listOf(
         Base2D(500.0, 100.0, Direction2D.UP),
-        Base2D(500.0, 900.0, Direction2D.UP)
+        Base2D(500.0, 900.0, Direction2D.UP),
     )
 
     override fun loadResourcePlacement() = listOf(
@@ -47,7 +47,7 @@ class Arena : AbstractLevel() {
         ResourceRandomRectangle(300, 675, 400, 50, 10, ResourceType.DoublePoints),
         ResourceRandomRectangle(400, 480, 200, 40, 10, ResourceType.ExtremPoint),
         ResourceRandomRectangle(0, 0, 1000, 1000, 5, ResourceType.ExtraAgentFuel),
-        ResourceRandomRectangle(0, 0, 1000, 1000, 5, ResourceType.ExtraMothershipFuel)
+        ResourceRandomRectangle(0, 0, 1000, 1000, 5, ResourceType.ExtraMothershipFuel),
     )
 
     override fun loadLevelColor() = Color(67, 167, 197)

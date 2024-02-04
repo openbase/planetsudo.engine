@@ -46,7 +46,7 @@ class OffensiveBackdoor : AbstractLevel() {
 
     override fun loadHomePositions() = listOf(
         Base2D(500.0, 700.0, Direction2D.DOWN),
-        Base2D(2100.0, 700.0, Direction2D.DOWN)
+        Base2D(2100.0, 700.0, Direction2D.DOWN),
     )
 
     override fun loadResourcePlacement() = listOf(
@@ -64,7 +64,7 @@ class OffensiveBackdoor : AbstractLevel() {
         ResourceRandomRectangle(1150, 800, 300, 200, 2, ResourceType.ExtraMothershipFuel),
         ResourceRandomRectangle(900, 1650, 800, 100, 7, ResourceType.ExtraAgentFuel),
         ResourceRandomRectangle(50, 1650, 200, 150, 3, ResourceType.ExtremPoint),
-        ResourceRandomRectangle(2350, 1650, 200, 150, 3, ResourceType.ExtremPoint)
+        ResourceRandomRectangle(2350, 1650, 200, 150, 3, ResourceType.ExtremPoint),
     )
 
     override fun loadLevelColor() = Color(255, 153, 0)
@@ -92,6 +92,6 @@ class OffensiveBackdoor : AbstractLevel() {
             addPoint(250, 1650)
             addPoint(250, 800)
             addPoint(350, 800)
-        }
+        },
     )
 }

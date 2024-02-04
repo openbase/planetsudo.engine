@@ -139,7 +139,7 @@ class WakaWaka : AbstractLevel() {
 
     override fun loadHomePositions() = listOf(
         Base2D(100.0, 100.0, Direction2D.DOWN),
-        Base2D(1450.0, 1450.0, Direction2D.DOWN)
+        Base2D(1450.0, 1450.0, Direction2D.DOWN),
     )
 
     override fun loadResourcePlacement() = listOf(
@@ -147,7 +147,7 @@ class WakaWaka : AbstractLevel() {
         ResourceRandomRectangle(450, 50, 1500, 1100, 25, ResourceType.DoublePoints),
         ResourceRandomRectangle(1000, 50, 1500, 550, 10, ResourceType.ExtremPoint),
         ResourceRandomRectangle(50, 50, 1500, 1100, 20, ResourceType.ExtraAgentFuel),
-        ResourceRandomRectangle(50, 50, 1500, 1100, 10, ResourceType.ExtraMothershipFuel)
+        ResourceRandomRectangle(50, 50, 1500, 1100, 10, ResourceType.ExtraMothershipFuel),
     )
 
     override fun loadLevelColor(): Color = Color(10, 125, 0)

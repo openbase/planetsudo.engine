@@ -4,11 +4,14 @@
  */
 package org.openbase.planetsudo.game
 
+import org.openbase.jul.exception.CouldNotPerformException
 import org.openbase.planetsudo.level.AbstractLevel
 import org.openbase.planetsudo.main.GUIController
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.beans.PropertyChangeEvent
+import java.util.concurrent.locks.ReentrantLock
+import kotlin.concurrent.withLock
 import kotlin.math.max
 import kotlin.math.min
 
@@ -24,6 +27,9 @@ class GameManager : Runnable {
     enum class TeamType {
         A, B
     }
+
+    private val lock = ReentrantLock()
+    private val condition = lock.newCondition()
 
     @JvmField
     var teamA: Team? = null
@@ -56,16 +62,12 @@ class GameManager : Runnable {
     }
 
     override fun run() {
-        while (true) {
+        while (!Thread.currentThread().isInterrupted) {
             if (gameState == GameState.Running) {
                 level?.waitTillGameOver()
             }
-            synchronized(this) {
-                try {
-                    (this as Object).wait()
-                } catch (ex: InterruptedException) {
-                    LOGGER.error("", ex)
-                }
+            lock.withLock {
+                condition.await()
             }
         }
     }
@@ -97,7 +99,7 @@ class GameManager : Runnable {
                     return false
                 }
             }
-        } catch (ex: Exception) {
+        } catch (ex: CouldNotPerformException) {
             LOGGER.warn("Could not add team!", ex)
             return false
         }
@@ -142,13 +144,14 @@ class GameManager : Runnable {
                 level?.reset()
                 setGameState(GameState.Running)
                 Thread(level, "Levelrunner").start()
-                synchronized(this) {
-                    (this as Object).notify()
+                lock.withLock {
+                    condition.signalAll()
                 }
                 LOGGER.info("Game is Running.")
             }
         }
         gameStartThread.priority = 4
+        gameStartThread.isDaemon = true
         gameStartThread.start()
     }
 
@@ -156,7 +159,7 @@ class GameManager : Runnable {
         try {
             level?.setGameOverSoon()
             GameSound.EndSoon.play()
-        } catch (ex: Exception) {
+        } catch (ex: CouldNotPerformException) {
             LOGGER.warn("Could not init game over.")
         }
     }

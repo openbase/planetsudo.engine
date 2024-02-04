@@ -22,14 +22,14 @@ abstract class AbstractGameObjectPanel<R : AbstractGameObject, PRP : ResourcePan
         placementPolygon: Polygon,
         objectType: ObjectType,
         imageURI: String?,
-        parentPanel: ResourceDisplayPanel<out ResourcePanel>
+        parentPanel: ResourceDisplayPanel<out ResourcePanel>,
     ) : super(resource, placementPolygon, objectType, imageURI, parentPanel)
 
     constructor(
         resource: R,
         placementPolygon: Polygon,
         objectType: ObjectType,
-        parentPanel: ResourceDisplayPanel<out ResourcePanel>
+        parentPanel: ResourceDisplayPanel<out ResourcePanel>,
     ) : super(resource, placementPolygon, objectType, parentPanel)
 
     constructor(
@@ -38,7 +38,7 @@ abstract class AbstractGameObjectPanel<R : AbstractGameObject, PRP : ResourcePan
         objectType: ObjectType,
         imageURI: String?,
         parentResourcePanel: PRP,
-        drawLayer: DrawLayer?
+        drawLayer: DrawLayer?,
     ) : super(resource, placementPolygon, objectType, imageURI, parentResourcePanel, drawLayer)
 
     constructor(
@@ -46,7 +46,7 @@ abstract class AbstractGameObjectPanel<R : AbstractGameObject, PRP : ResourcePan
         placementPolygon: Polygon,
         objectType: ObjectType,
         parentResourcePanel: PRP,
-        drawLayer: DrawLayer?
+        drawLayer: DrawLayer?,
     ) : super(resource, placementPolygon, objectType, parentResourcePanel, drawLayer)
 
     override fun notifyMouseClicked(evt: MouseEvent) {}

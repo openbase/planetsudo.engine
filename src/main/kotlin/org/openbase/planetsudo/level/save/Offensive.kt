@@ -54,7 +54,7 @@ class Offensive : AbstractLevel() {
 
     override fun loadHomePositions() = listOf(
         Base2D(500.0, 700.0, Direction2D.DOWN),
-        Base2D(2100.0, 700.0, Direction2D.DOWN)
+        Base2D(2100.0, 700.0, Direction2D.DOWN),
     )
 
     override fun loadResourcePlacement() = listOf(
@@ -69,7 +69,7 @@ class Offensive : AbstractLevel() {
         ResourceRandomRectangle(1150, 300, 300, 150, 8, ResourceType.ExtremPoint),
         ResourceRandomRectangle(1150, 1350, 300, 150, 8, ResourceType.ExtremPoint),
         ResourceRandomRectangle(1150, 800, 300, 200, 3, ResourceType.ExtraAgentFuel),
-        ResourceRandomRectangle(1150, 800, 300, 200, 2, ResourceType.ExtraMothershipFuel)
+        ResourceRandomRectangle(1150, 800, 300, 200, 2, ResourceType.ExtraMothershipFuel),
     )
 
     override fun loadLevelColor() = Color(255, 153, 0)

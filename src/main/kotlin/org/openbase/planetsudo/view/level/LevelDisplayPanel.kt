@@ -83,11 +83,11 @@ class LevelDisplayPanel : ResourceDisplayPanel<LevelPanel>(), Runnable {
         this.layout = layout
         layout.setHorizontalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGap(0, 400, Short.MAX_VALUE.toInt())
+                .addGap(0, 400, Short.MAX_VALUE.toInt()),
         )
         layout.setVerticalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGap(0, 300, Short.MAX_VALUE.toInt())
+                .addGap(0, 300, Short.MAX_VALUE.toInt()),
         )
     } // </editor-fold>//GEN-END:initComponents
 
@@ -97,12 +97,7 @@ class LevelDisplayPanel : ResourceDisplayPanel<LevelPanel>(), Runnable {
             if (visibleResourcePanel != null) {
                 repaint()
             }
-            try {
-                Thread.sleep(50)
-            } catch (ex: InterruptedException) {
-                logger.warn("VideoThread interruped!", ex)
-                break
-            }
+            Thread.sleep(50)
         }
         isRunning = false
         logger.info("VideoThread stopped.")

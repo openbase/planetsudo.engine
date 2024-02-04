@@ -25,7 +25,7 @@ class TeamMarkerPanel(resource: TeamMarker, parentResourcePanel: LevelPanel) :
         resource.polygon,
         null,
         parentResourcePanel,
-        DrawLayer.BACKGROUND
+        DrawLayer.BACKGROUND,
     ),
     PropertyChangeListener {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
