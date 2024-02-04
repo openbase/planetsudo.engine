@@ -220,7 +220,7 @@ class ConfigurationPanel : JPanel() {
         teamAPanelLayout.setHorizontalGroup(
             teamAPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addComponent(teamAComboBox, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt())
-                .addComponent(teamALabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt())
+                .addComponent(teamALabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt()),
         )
         teamAPanelLayout.setVerticalGroup(
             teamAPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -352,8 +352,8 @@ class ConfigurationPanel : JPanel() {
                         .addComponent(levelChooserComboBox, 0, 324, Short.MAX_VALUE.toInt())
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(randomLevelButton)
-                        .addContainerGap()
-                )
+                        .addContainerGap(),
+                ),
         )
 
         levelChooserPanelLayout.setVerticalGroup(
@@ -366,9 +366,9 @@ class ConfigurationPanel : JPanel() {
                                     levelChooserComboBox,
                                     GroupLayout.PREFERRED_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    GroupLayout.PREFERRED_SIZE
+                                    GroupLayout.PREFERRED_SIZE,
                                 )
-                                .addComponent(randomLevelButton)
+                                .addComponent(randomLevelButton),
                         )
                         .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt()),
                 ),
@@ -419,8 +419,8 @@ class ConfigurationPanel : JPanel() {
                         .addComponent(levelChooserPanel, GroupLayout.PREFERRED_SIZE, 62, GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(startGameButton)
-                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt())
-                )
+                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt()),
+                ),
         )
 
         networkPanel!!.border = BorderFactory.createTitledBorder("Netzwerk")
@@ -446,8 +446,8 @@ class ConfigurationPanel : JPanel() {
                         .addComponent(defaultTeamComboBox, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt())
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(setDefaultTeamButton)
-                        .addContainerGap()
-                )
+                        .addContainerGap(),
+                ),
         )
         networkTeamPanelLayout.setVerticalGroup(
             networkTeamPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -461,7 +461,7 @@ class ConfigurationPanel : JPanel() {
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.PREFERRED_SIZE,
                                 )
-                                .addComponent(setDefaultTeamButton)
+                                .addComponent(setDefaultTeamButton),
                         )
                         .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt()),
                 ),
@@ -548,8 +548,8 @@ class ConfigurationPanel : JPanel() {
                         .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt())
                         .addComponent(networkTeamPanel, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(serverPanel, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
-                )
+                        .addComponent(serverPanel, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE),
+                ),
         )
 
         val layout = GroupLayout(this)
