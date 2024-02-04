@@ -2,11 +2,11 @@
 
 echo "Running git pre-commit hook"
 
-./gradlew ktlintCheck
-ktlintCheckStatus=$?
+./gradlew ktlintFormat
+ktlintFormatStatus=$?
 
 # return 1 if check fails
-if [[ $ktlintCheckStatus -ne 0 ]]; then
+if [[ $ktlintFormatStatus -ne 0 ]]; then
      exit 1
 else
      exit 0
