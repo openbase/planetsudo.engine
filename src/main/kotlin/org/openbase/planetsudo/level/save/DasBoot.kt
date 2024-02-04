@@ -36,7 +36,7 @@ class DasBoot : AbstractLevel() {
 
     override fun loadHomePositions() = listOf(
         Base2D(600.0, 1350.0, Direction2D.DOWN),
-        Base2D(1575.0, 1350.0, Direction2D.DOWN)
+        Base2D(1575.0, 1350.0, Direction2D.DOWN),
     )
 
     override fun loadResourcePlacement() = listOf(
@@ -45,7 +45,7 @@ class DasBoot : AbstractLevel() {
         ResourceRandomRectangle(825, 750, 600, 450, 15, ResourceType.ExtraMothershipFuel),
         ResourceRandomRectangle(350, 750, 375, 300, 10, ResourceType.Normal),
         ResourceRandomRectangle(1500, 750, 375, 300, 10, ResourceType.Normal),
-        ResourceRandomRectangle(750, 375, 675, 375, 15, ResourceType.DoublePoints)
+        ResourceRandomRectangle(750, 375, 675, 375, 15, ResourceType.DoublePoints),
     )
 
     override fun loadLevelColor() = Color(0, 191, 255)
@@ -68,6 +68,6 @@ class DasBoot : AbstractLevel() {
             addPoint(1163, 1200)
             addPoint(1163, 1500)
             addPoint(1012, 1500)
-        }
+        },
     )
 }

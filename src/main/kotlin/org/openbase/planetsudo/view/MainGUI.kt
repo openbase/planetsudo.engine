@@ -1,5 +1,6 @@
 package org.openbase.planetsudo.view
 
+import org.openbase.jul.exception.CouldNotPerformException
 import org.openbase.planetsudo.game.GameManager.Companion.gameManager
 import org.openbase.planetsudo.game.GameManager.GameState
 import org.openbase.planetsudo.game.GameSound
@@ -27,6 +28,7 @@ import java.awt.event.KeyEvent
 import java.beans.PropertyChangeEvent
 import java.beans.PropertyChangeListener
 import javax.swing.*
+import kotlin.system.exitProcess
 
 /**
  * @author [Divine Threepwood](mailto:divine@openbase.org)
@@ -99,7 +101,7 @@ class MainGUI : JFrame, PropertyChangeListener {
                 device.fullScreenWindow = this // Setzen des FullScreenmodus.
                 this.validate()
                 // fullscreenModeMenuItem.setText("Leave FullScreen Mode");
-            } catch (ex: Exception) {
+            } catch (ex: CouldNotPerformException) {
                 LOGGER.error("no Fullscreen.", ex)
                 device.fullScreenWindow = null
             }
@@ -118,7 +120,7 @@ class MainGUI : JFrame, PropertyChangeListener {
             try {
                 device.fullScreenWindow = null // Setzen des FullScreenmodus.
                 // fullscreenModeMenuItem.setText("Enter FullScreen Mode");
-            } catch (ex: Exception) {
+            } catch (ex: CouldNotPerformException) {
                 LOGGER.error("no Fullscreen.", ex)
                 device.fullScreenWindow = null
             }
@@ -159,14 +161,14 @@ class MainGUI : JFrame, PropertyChangeListener {
             } else if (changeEvent.propertyName == GUIController.LOADING_STATE_CHANGE) {
                 levelLoadingPanel!!.setLoadingStateChange(
                     changeEvent.newValue as String,
-                    (changeEvent.oldValue as Int)
+                    (changeEvent.oldValue as Int),
                 )
             } else if (changeEvent.propertyName == GUIController.LOADING_STEP) {
                 levelLoadingPanel!!.setLoadingStep((changeEvent.newValue as Int))
             } else {
                 LOGGER.warn("Event [" + changeEvent.propertyName + "] is an bad property change event!")
             }
-        } catch (ex: Exception) {
+        } catch (ex: CouldNotPerformException) {
             LOGGER.debug("Exception from PropertyChange")
         }
     }
@@ -229,6 +231,11 @@ class MainGUI : JFrame, PropertyChangeListener {
         (mainPanel!!.layout as CardLayout).show(mainPanel, LOADING_PANEL)
     }
 
+    fun exitApp() {
+        isVisible = false
+        exitProcess(0)
+    }
+
     /**
      * This method is called from within the constructor to
      * initialize the form.
@@ -237,6 +244,14 @@ class MainGUI : JFrame, PropertyChangeListener {
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private fun initComponents() {
+        addWindowListener(
+            object : java.awt.event.WindowAdapter() {
+                override fun windowClosing(evt: java.awt.event.WindowEvent) {
+                    exitApp()
+                }
+            },
+        )
+
         jFrame1 = JFrame()
         jMenuItem1 = JMenuItem()
         mainPanel = JPanel()
@@ -267,11 +282,11 @@ class MainGUI : JFrame, PropertyChangeListener {
         jFrame1!!.contentPane.layout = jFrame1Layout
         jFrame1Layout.setHorizontalGroup(
             jFrame1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGap(0, 400, Short.MAX_VALUE.toInt())
+                .addGap(0, 400, Short.MAX_VALUE.toInt()),
         )
         jFrame1Layout.setVerticalGroup(
             jFrame1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGap(0, 300, Short.MAX_VALUE.toInt())
+                .addGap(0, 300, Short.MAX_VALUE.toInt()),
         )
 
         jMenuItem1!!.text = "jMenuItem1"
@@ -323,7 +338,7 @@ class MainGUI : JFrame, PropertyChangeListener {
         displayTeamPanelCheckBoxMenuItem!!.text = "Teamanzeige"
         displayTeamPanelCheckBoxMenuItem!!.addActionListener { evt ->
             displayTeamPanelCheckBoxMenuItemActionPerformed(
-                evt
+                evt,
             )
         }
         jMenu2!!.add(displayTeamPanelCheckBoxMenuItem)
@@ -381,18 +396,18 @@ class MainGUI : JFrame, PropertyChangeListener {
         contentPane.layout = layout
         layout.setHorizontalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE.toInt())
+                .addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE.toInt()),
         )
         layout.setVerticalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE.toInt())
+                .addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE.toInt()),
         )
 
         pack()
     } // </editor-fold>//GEN-END:initComponents
 
     private fun exitMenuItemActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_exitMenuItemActionPerformed
-        System.exit(0)
+        exitApp()
     } // GEN-LAST:event_exitMenuItemActionPerformed
 
     private fun jCheckBoxMenuItem1ActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_jCheckBoxMenuItem1ActionPerformed
@@ -447,7 +462,7 @@ class MainGUI : JFrame, PropertyChangeListener {
     private fun jMenuItem4ActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_jMenuItem4ActionPerformed
         try {
             resetDefaultTeam()
-        } catch (ex: Exception) {
+        } catch (ex: CouldNotPerformException) {
             LOGGER.warn("Could not reset default team!")
         }
     } // GEN-LAST:event_jMenuItem4ActionPerformed

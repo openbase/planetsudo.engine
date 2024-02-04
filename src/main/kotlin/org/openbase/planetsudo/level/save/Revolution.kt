@@ -45,7 +45,7 @@ class Revolution : AbstractLevel() {
 
     override fun loadHomePositions() = listOf(
         Base2D(450.0, 100.0, Direction2D.DOWN),
-        Base2D(550.0, 900.0, Direction2D.DOWN)
+        Base2D(550.0, 900.0, Direction2D.DOWN),
     )
 
     override fun loadResourcePlacement() = listOf(
@@ -53,7 +53,7 @@ class Revolution : AbstractLevel() {
         ResourceRandomRectangle(0, 800, 200, 200, 20, ResourceType.DoublePoints),
         ResourceRandomRectangle(350, 450, 300, 100, 20, ResourceType.ExtremPoint),
         ResourceRandomRectangle(350, 450, 300, 100, 10, ResourceType.ExtraAgentFuel),
-        ResourceRandomRectangle(350, 450, 300, 100, 10, ResourceType.ExtraMothershipFuel)
+        ResourceRandomRectangle(350, 450, 300, 100, 10, ResourceType.ExtraMothershipFuel),
     )
 
     override fun loadLevelColor() = Color(255, 153, 0)

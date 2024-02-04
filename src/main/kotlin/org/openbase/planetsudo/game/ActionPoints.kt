@@ -5,14 +5,18 @@
 package org.openbase.planetsudo.game
 
 import org.openbase.planetsudo.level.levelobjects.Agent
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import java.util.concurrent.locks.Condition
+import java.util.concurrent.locks.ReentrantLock
+import kotlin.concurrent.withLock
 
 /**
  *
  * @author [Divine Threepwood](mailto:divine@openbase.org)
  */
 class ActionPoints(private val agent: Agent) {
+
+    private val lock = ReentrantLock()
+    private val lockCondition: Condition = lock.newCondition()
     var actionPoints: Int = 0
         private set
 
@@ -20,9 +24,9 @@ class ActionPoints(private val agent: Agent) {
         if (agent.isDisabled && !agent.isAtMothership) {
             return
         }
-        synchronized(this) {
+        lock.withLock {
             actionPoints++
-            (this as Object).notify()
+            lockCondition.signalAll()
         }
     }
 
@@ -32,22 +36,14 @@ class ActionPoints(private val agent: Agent) {
         }
 
     fun getActionPoint(orderedPoints: Int) {
-        while (true) {
-            synchronized(this) {
+        while (!Thread.currentThread().isInterrupted) {
+            lock.withLock {
                 if (actionPoints >= orderedPoints) {
                     actionPoints -= orderedPoints
                     return
                 }
-                try {
-                    (this as Object).wait()
-                } catch (ex: InterruptedException) {
-                    logger.warn("", ex)
-                }
+                lockCondition.await()
             }
         }
-    }
-
-    companion object {
-        private val logger: Logger = LoggerFactory.getLogger(ActionPoints::class.java)
     }
 }

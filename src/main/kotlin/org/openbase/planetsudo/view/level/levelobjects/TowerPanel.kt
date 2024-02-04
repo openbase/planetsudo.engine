@@ -22,7 +22,7 @@ class TowerPanel(tower: Tower, parentPanel: LevelPanel) :
         tower.polygon,
         getImageURI(tower.type),
         parentPanel,
-        DrawLayer.BACKGROUND
+        DrawLayer.BACKGROUND,
     ),
     PropertyChangeListener {
     private var towerTopPanel: TowerTopPanel? = null
@@ -54,7 +54,7 @@ class TowerPanel(tower: Tower, parentPanel: LevelPanel) :
             boundingBox.x.toInt(),
             boundingBox.y.toInt(),
             boundingBox.width.toInt(),
-            boundingBox.height.toInt()
+            boundingBox.height.toInt(),
         )
         paintImageRotated(towerDirection2D, gg2!!)
         gg2!!.dispose()

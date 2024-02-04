@@ -27,7 +27,7 @@ class Resource(id: Int, @JvmField val type: ResourceType, level: AbstractLevel, 
         position,
         RESOURCE_SIZE.toDouble(),
         RESOURCE_SIZE.toDouble(),
-        ObjectShape.Rec
+        ObjectShape.Rec,
     ) {
     enum class ResourceType {
         Unknown, Normal, DoublePoints, ExtremPoint, ExtraAgentFuel, ExtraMothershipFuel, Mine
@@ -47,7 +47,7 @@ class Resource(id: Int, @JvmField val type: ResourceType, level: AbstractLevel, 
         id,
         ResourceType.Mine,
         level,
-        Point2D(placer.position)
+        Point2D(placer.position),
     ) {
         this.placedBy = placer.team
     }
@@ -56,7 +56,7 @@ class Resource(id: Int, @JvmField val type: ResourceType, level: AbstractLevel, 
         id,
         type,
         level,
-        placement.calcRandomLevelPosition(level)
+        placement.calcRandomLevelPosition(level),
     ) {
         this.placement = placement
     }

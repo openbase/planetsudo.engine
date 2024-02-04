@@ -27,7 +27,7 @@ class Pentagon : AbstractLevel() {
 
     override fun loadHomePositions() = listOf(
         Base2D(1200.0, 2700.0, Direction2D.DOWN),
-        Base2D(1800.0, 2700.0, Direction2D.DOWN)
+        Base2D(1800.0, 2700.0, Direction2D.DOWN),
     )
 
     override fun loadResourcePlacement() = listOf(
@@ -35,7 +35,7 @@ class Pentagon : AbstractLevel() {
         ResourceRandomRectangle(0, 500, 3000, 900, 50, ResourceType.DoublePoints),
         ResourceRandomRectangle(0, 0, 3000, 500, 50, ResourceType.ExtremPoint),
         ResourceRandomRectangle(0, 0, 3000, 2000, 70, ResourceType.ExtraMothershipFuel),
-        ResourceRandomRectangle(0, 0, 3000, 2900, 150, ResourceType.ExtraAgentFuel)
+        ResourceRandomRectangle(0, 0, 3000, 2900, 150, ResourceType.ExtraAgentFuel),
     )
 
     override fun loadLevelColor() = Color(0, 0, 210)
@@ -95,6 +95,6 @@ class Pentagon : AbstractLevel() {
             addPoint(1700, 550)
             addPoint(1700, 600)
             addPoint(2500, 1170)
-        }
+        },
     )
 }

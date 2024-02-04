@@ -4,6 +4,7 @@
  */
 package org.openbase.planetsudo.level
 
+import org.openbase.jul.exception.CouldNotPerformException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.util.*
@@ -55,7 +56,7 @@ class LevelLoader {
     fun loadLevel(name: String): AbstractLevel? {
         try {
             return levelMap[name]!!.newInstance()
-        } catch (ex: Exception) {
+        } catch (ex: CouldNotPerformException) {
             logger.error("Could not load Level!", ex)
         }
         return null
@@ -95,7 +96,7 @@ class LevelLoader {
             "Broken",
             "Pentagon",
             "UnbekannterWeg",
-            "Maze"
+            "Maze",
         )
 
         @JvmStatic

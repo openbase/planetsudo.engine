@@ -32,7 +32,7 @@ class UTurn : AbstractLevel() {
 
     override fun loadHomePositions() = listOf(
         Base2D(200.0, 200.0, Direction2D.DOWN),
-        Base2D(800.0, 200.0, Direction2D.DOWN)
+        Base2D(800.0, 200.0, Direction2D.DOWN),
     )
 
     override fun loadResourcePlacement() = listOf(
@@ -40,7 +40,7 @@ class UTurn : AbstractLevel() {
         ResourceRandomRectangle(0, 0, 1000, 1000, 5, ResourceType.DoublePoints),
         ResourceRandomRectangle(0, 0, 1000, 1000, 10, ResourceType.ExtremPoint),
         ResourceRandomRectangle(0, 0, 1000, 1000, 10, ResourceType.ExtraAgentFuel),
-        ResourceRandomRectangle(0, 0, 1000, 1000, 10, ResourceType.ExtraMothershipFuel)
+        ResourceRandomRectangle(0, 0, 1000, 1000, 10, ResourceType.ExtraMothershipFuel),
     )
 
     override fun loadLevelColor(): Color {

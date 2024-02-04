@@ -59,7 +59,7 @@ class LuckyLoop : AbstractLevel() {
 
     override fun loadHomePositions() = listOf(
         Base2D(150.0, 150.0, Direction2D.DOWN),
-        Base2D(1650.0, 1300.0, Direction2D.DOWN)
+        Base2D(1650.0, 1300.0, Direction2D.DOWN),
     )
 
     override fun loadResourcePlacement() = listOf(
@@ -74,7 +74,7 @@ class LuckyLoop : AbstractLevel() {
         ResourceRandomRectangle(925, 0, 925, 725, 30, ResourceType.ExtraAgentFuel),
         ResourceRandomRectangle(925, 725, 925, 725, 30, ResourceType.ExtraAgentFuel),
         ResourceRandomRectangle(950, 350, 300, 300, 20, ResourceType.ExtraMothershipFuel),
-        ResourceRandomRectangle(550, 800, 300, 300, 20, ResourceType.ExtraMothershipFuel)
+        ResourceRandomRectangle(550, 800, 300, 300, 20, ResourceType.ExtraMothershipFuel),
     )
 
     override fun loadLevelColor(): Color {
@@ -133,6 +133,6 @@ class LuckyLoop : AbstractLevel() {
             addPoint(700, 650)
             addPoint(700, 550)
             addPoint(750, 500)
-        }
+        },
     )
 }

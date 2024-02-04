@@ -49,8 +49,8 @@ class LevelTitleLoadingPanel : JPanel() {
                     layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(titleLabel, GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE.toInt())
-                        .addContainerGap()
-                )
+                        .addContainerGap(),
+                ),
         )
         layout.setVerticalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -58,8 +58,8 @@ class LevelTitleLoadingPanel : JPanel() {
                     layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(titleLabel)
-                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt())
-                )
+                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt()),
+                ),
         )
     } // </editor-fold>//GEN-END:initComponents
 

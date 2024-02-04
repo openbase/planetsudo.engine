@@ -11,7 +11,7 @@ import kotlin.math.sin
  */
 class Direction2D(
     // Logger.info(this, "setAngle: "+alpha+" => "+this.alpha);
-    angle: Int = 0
+    angle: Int = 0,
 ) {
     val vector: Point2D = Point2D()
 
@@ -38,7 +38,7 @@ class Direction2D(
     }
 
     fun invert() {
-        alpha = alpha + 180
+        alpha += 180
     }
 
     fun turnTo(source: Point2D, destination: Point2D) {

@@ -19,7 +19,7 @@ class MothershipPanel(resource: Mothership, parentResourcePanel: LevelPanel) :
         resource.polygon,
         GameObjectImages.Mothership.imagesURL,
         parentResourcePanel,
-        DrawLayer.BACKGROUND
+        DrawLayer.BACKGROUND,
     ) {
     init {
         loadMarkerPanel()

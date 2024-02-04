@@ -53,12 +53,12 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
         teamMemberBLabel!!.text = ""
         teamMemberA!!.isVisible = false
         teamMemberB!!.isVisible = false
-        val imageUri = GameObjectImages.IMAGE_DIRECTORY + "/teams/team_" + team!!.name + "_A.jpg"
+        val imageUriA = GameObjectImages.IMAGE_DIRECTORY + "/teams/team_" + team!!.name + "_A.jpg"
         try {
-            teamMemberA!!.setImage(GameObjectImages.IMAGE_DIRECTORY + "/teams/team_" + team!!.name + "_A.jpg")
+            teamMemberA!!.setImage(imageUriA)
             teamMemberA!!.isVisible = true
-        } catch (ex: Exception) {
-            logger.warn("Could not load member image [\${imageUri}] and use fallback instead.")
+        } catch (ex: CouldNotPerformException) {
+            logger.warn("Could not load member image [$imageUriA] and use fallback instead.")
             try {
                 teamMemberA!!.setImage(GameObjectImages.IMAGE_DIRECTORY + "/teams/fallback.jpg")
                 teamMemberA!!.isVisible = true
@@ -69,10 +69,12 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
 
         if (members.size > 1) {
             teamMemberBLabel!!.text = members[1]
+            val imageUriB = GameObjectImages.IMAGE_DIRECTORY + "/teams/team_" + team!!.name + "_A.jpg"
             try {
-                teamMemberB!!.setImage(GameObjectImages.IMAGE_DIRECTORY + "/teams/team_" + team!!.name + "_B.jpg")
+                teamMemberB!!.setImage(imageUriB)
                 teamMemberB!!.isVisible = true
-            } catch (ex: Exception) {
+            } catch (ex: CouldNotPerformException) {
+                logger.warn("Could not load member image [$imageUriB] and use fallback instead.")
                 try {
                     teamMemberB!!.setImage(GameObjectImages.IMAGE_DIRECTORY + "/teams/fallback.jpg")
                     teamMemberB!!.isVisible = true
@@ -144,17 +146,17 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
                                     GroupLayout.Alignment.TRAILING,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    Short.MAX_VALUE.toInt()
+                                    Short.MAX_VALUE.toInt(),
                                 )
                                 .addComponent(
                                     mothershipShieldProgressBar,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    Short.MAX_VALUE.toInt()
-                                )
+                                    Short.MAX_VALUE.toInt(),
+                                ),
                         )
-                        .addContainerGap()
-                )
+                        .addContainerGap(),
+                ),
         )
         teamMothershipPanelLayout.setVerticalGroup(
             teamMothershipPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -164,17 +166,17 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
                             mothershipFuelProgressBar,
                             GroupLayout.PREFERRED_SIZE,
                             GroupLayout.DEFAULT_SIZE,
-                            GroupLayout.PREFERRED_SIZE
+                            GroupLayout.PREFERRED_SIZE,
                         )
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(
                             mothershipShieldProgressBar,
                             GroupLayout.DEFAULT_SIZE,
                             GroupLayout.DEFAULT_SIZE,
-                            Short.MAX_VALUE.toInt()
+                            Short.MAX_VALUE.toInt(),
                         )
-                        .addContainerGap()
-                )
+                        .addContainerGap(),
+                ),
         )
 
         jPanel1!!.border = BorderFactory.createTitledBorder("Punkte")
@@ -222,29 +224,29 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
                                     GroupLayout.Alignment.LEADING,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    Short.MAX_VALUE.toInt()
+                                    Short.MAX_VALUE.toInt(),
                                 )
                                 .addComponent(
                                     saveAgentsPointsNameLabel,
                                     GroupLayout.Alignment.LEADING,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    Short.MAX_VALUE.toInt()
+                                    Short.MAX_VALUE.toInt(),
                                 )
                                 .addComponent(
                                     mothershipShieldPointsNameLabel,
                                     GroupLayout.Alignment.LEADING,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    Short.MAX_VALUE.toInt()
+                                    Short.MAX_VALUE.toInt(),
                                 )
                                 .addComponent(
                                     resourcePointsNameLabel,
                                     GroupLayout.Alignment.LEADING,
                                     GroupLayout.DEFAULT_SIZE,
                                     155,
-                                    Short.MAX_VALUE.toInt()
-                                )
+                                    Short.MAX_VALUE.toInt(),
+                                ),
                         )
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(
@@ -253,28 +255,28 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
                                     teamPointsLabel,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    Short.MAX_VALUE.toInt()
+                                    Short.MAX_VALUE.toInt(),
                                 )
                                 .addComponent(
                                     mothershipShieldPointsLabel,
                                     GroupLayout.DEFAULT_SIZE,
                                     88,
-                                    Short.MAX_VALUE.toInt()
+                                    Short.MAX_VALUE.toInt(),
                                 )
                                 .addComponent(
                                     resourcePointsLabel,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    Short.MAX_VALUE.toInt()
+                                    Short.MAX_VALUE.toInt(),
                                 )
                                 .addComponent(
                                     saveAgentsPointsLabel,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    Short.MAX_VALUE.toInt()
-                                )
-                        )
-                )
+                                    Short.MAX_VALUE.toInt(),
+                                ),
+                        ),
+                ),
         )
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -284,28 +286,28 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
                         .addGroup(
                             jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(resourcePointsNameLabel)
-                                .addComponent(resourcePointsLabel)
+                                .addComponent(resourcePointsLabel),
                         )
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(
                             jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(mothershipShieldPointsNameLabel)
-                                .addComponent(mothershipShieldPointsLabel)
+                                .addComponent(mothershipShieldPointsLabel),
                         )
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(
                             jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(saveAgentsPointsNameLabel)
-                                .addComponent(saveAgentsPointsLabel)
+                                .addComponent(saveAgentsPointsLabel),
                         )
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(
                             jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(teamPointsNameLabel)
-                                .addComponent(teamPointsLabel)
+                                .addComponent(teamPointsLabel),
                         )
-                        .addContainerGap(30, Short.MAX_VALUE.toInt())
-                )
+                        .addContainerGap(30, Short.MAX_VALUE.toInt()),
+                ),
         )
 
         jPanel2!!.isOpaque = false
@@ -334,11 +336,11 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
         teamMemberA!!.layout = teamMemberALayout
         teamMemberALayout.setHorizontalGroup(
             teamMemberALayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGap(0, 180, Short.MAX_VALUE.toInt())
+                .addGap(0, 180, Short.MAX_VALUE.toInt()),
         )
         teamMemberALayout.setVerticalGroup(
             teamMemberALayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGap(0, 133, Short.MAX_VALUE.toInt())
+                .addGap(0, 133, Short.MAX_VALUE.toInt()),
         )
 
         teamMemberBLabel!!.font = Font("Dialog", 1, 14) // NOI18N
@@ -351,11 +353,11 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
         teamMemberB!!.layout = teamMemberBLayout
         teamMemberBLayout.setHorizontalGroup(
             teamMemberBLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGap(0, 180, Short.MAX_VALUE.toInt())
+                .addGap(0, 180, Short.MAX_VALUE.toInt()),
         )
         teamMemberBLayout.setVerticalGroup(
             teamMemberBLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGap(0, 133, Short.MAX_VALUE.toInt())
+                .addGap(0, 133, Short.MAX_VALUE.toInt()),
         )
 
         val jPanel4Layout = GroupLayout(jPanel4)
@@ -370,9 +372,9 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
                                     teamAgentLabel2,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    Short.MAX_VALUE.toInt()
+                                    Short.MAX_VALUE.toInt(),
                                 )
-                                .addComponent(teamMemberLabel2)
+                                .addComponent(teamMemberLabel2),
                         )
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(
@@ -381,35 +383,35 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
                                     teamAgentLabel,
                                     GroupLayout.PREFERRED_SIZE,
                                     120,
-                                    GroupLayout.PREFERRED_SIZE
+                                    GroupLayout.PREFERRED_SIZE,
                                 )
                                 .addComponent(
                                     teamMemberBLabel,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    Short.MAX_VALUE.toInt()
+                                    Short.MAX_VALUE.toInt(),
                                 )
                                 .addComponent(
                                     teamMemberALabel,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    Short.MAX_VALUE.toInt()
+                                    Short.MAX_VALUE.toInt(),
                                 )
                                 .addComponent(
                                     teamMemberB,
                                     GroupLayout.PREFERRED_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    GroupLayout.PREFERRED_SIZE
+                                    GroupLayout.PREFERRED_SIZE,
                                 )
                                 .addComponent(
                                     teamMemberA,
                                     GroupLayout.PREFERRED_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    GroupLayout.PREFERRED_SIZE
-                                )
+                                    GroupLayout.PREFERRED_SIZE,
+                                ),
                         )
-                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt())
-                )
+                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt()),
+                ),
         )
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -419,7 +421,7 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
                         .addGroup(
                             jPanel4Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(teamAgentLabel2)
-                                .addComponent(teamAgentLabel)
+                                .addComponent(teamAgentLabel),
                         )
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(
@@ -429,8 +431,8 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
                                     teamMemberA,
                                     GroupLayout.PREFERRED_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    GroupLayout.PREFERRED_SIZE
-                                )
+                                    GroupLayout.PREFERRED_SIZE,
+                                ),
                         )
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(teamMemberALabel)
@@ -439,12 +441,12 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
                             teamMemberB,
                             GroupLayout.PREFERRED_SIZE,
                             GroupLayout.DEFAULT_SIZE,
-                            GroupLayout.PREFERRED_SIZE
+                            GroupLayout.PREFERRED_SIZE,
                         )
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(teamMemberBLabel)
-                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt())
-                )
+                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt()),
+                ),
         )
 
         val jPanel2Layout = GroupLayout(jPanel2)
@@ -458,10 +460,10 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
                             jPanel4,
                             GroupLayout.DEFAULT_SIZE,
                             GroupLayout.DEFAULT_SIZE,
-                            Short.MAX_VALUE.toInt()
+                            Short.MAX_VALUE.toInt(),
                         )
-                        .addContainerGap()
-                )
+                        .addContainerGap(),
+                ),
         )
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -473,10 +475,10 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
                             jPanel4,
                             GroupLayout.PREFERRED_SIZE,
                             GroupLayout.DEFAULT_SIZE,
-                            GroupLayout.PREFERRED_SIZE
+                            GroupLayout.PREFERRED_SIZE,
                         )
-                        .addContainerGap()
-                )
+                        .addContainerGap(),
+                ),
         )
 
         jPanel3!!.isOpaque = false
@@ -489,11 +491,11 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
         teamColorPanel!!.layout = teamColorPanelLayout
         teamColorPanelLayout.setHorizontalGroup(
             teamColorPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGap(0, 12, Short.MAX_VALUE.toInt())
+                .addGap(0, 12, Short.MAX_VALUE.toInt()),
         )
         teamColorPanelLayout.setVerticalGroup(
             teamColorPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGap(0, 12, Short.MAX_VALUE.toInt())
+                .addGap(0, 12, Short.MAX_VALUE.toInt()),
         )
 
         teamNameLabel!!.text = "Team"
@@ -508,17 +510,17 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
                             teamColorPanel,
                             GroupLayout.PREFERRED_SIZE,
                             GroupLayout.DEFAULT_SIZE,
-                            GroupLayout.PREFERRED_SIZE
+                            GroupLayout.PREFERRED_SIZE,
                         )
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(
                             teamNameLabel,
                             GroupLayout.DEFAULT_SIZE,
                             GroupLayout.DEFAULT_SIZE,
-                            Short.MAX_VALUE.toInt()
+                            Short.MAX_VALUE.toInt(),
                         )
-                        .addContainerGap()
-                )
+                        .addContainerGap(),
+                ),
         )
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -530,12 +532,12 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
                                     teamColorPanel,
                                     GroupLayout.PREFERRED_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    GroupLayout.PREFERRED_SIZE
+                                    GroupLayout.PREFERRED_SIZE,
                                 )
-                                .addComponent(teamNameLabel, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE.toInt())
+                                .addComponent(teamNameLabel, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE.toInt()),
                         )
-                        .addContainerGap()
-                )
+                        .addContainerGap(),
+                ),
         )
 
         teamTowerPanel!!.border = BorderFactory.createTitledBorder("Turm")
@@ -561,17 +563,17 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
                                     GroupLayout.Alignment.TRAILING,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    Short.MAX_VALUE.toInt()
+                                    Short.MAX_VALUE.toInt(),
                                 )
                                 .addComponent(
                                     towerShieldProgressBar,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    Short.MAX_VALUE.toInt()
-                                )
+                                    Short.MAX_VALUE.toInt(),
+                                ),
                         )
-                        .addContainerGap()
-                )
+                        .addContainerGap(),
+                ),
         )
         teamTowerPanelLayout.setVerticalGroup(
             teamTowerPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -581,17 +583,17 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
                             towerFuelProgressBar,
                             GroupLayout.PREFERRED_SIZE,
                             GroupLayout.DEFAULT_SIZE,
-                            GroupLayout.PREFERRED_SIZE
+                            GroupLayout.PREFERRED_SIZE,
                         )
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(
                             towerShieldProgressBar,
                             GroupLayout.DEFAULT_SIZE,
                             GroupLayout.DEFAULT_SIZE,
-                            Short.MAX_VALUE.toInt()
+                            Short.MAX_VALUE.toInt(),
                         )
-                        .addContainerGap()
-                )
+                        .addContainerGap(),
+                ),
         )
 
         teamFinalStateLabel!!.font = Font("Dialog", 1, 30) // NOI18N
@@ -611,19 +613,19 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
                                     jPanel3,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    Short.MAX_VALUE.toInt()
+                                    Short.MAX_VALUE.toInt(),
                                 )
                                 .addComponent(
                                     jPanel1,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    Short.MAX_VALUE.toInt()
+                                    Short.MAX_VALUE.toInt(),
                                 )
                                 .addComponent(
                                     teamTowerPanel,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    Short.MAX_VALUE.toInt()
+                                    Short.MAX_VALUE.toInt(),
                                 )
                                 .addGroup(
                                     layout.createSequentialGroup()
@@ -633,25 +635,25 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
                                                     teamFinalStateLabel,
                                                     GroupLayout.DEFAULT_SIZE,
                                                     GroupLayout.DEFAULT_SIZE,
-                                                    Short.MAX_VALUE.toInt()
+                                                    Short.MAX_VALUE.toInt(),
                                                 )
                                                 .addComponent(
                                                     teamMothershipPanel,
                                                     GroupLayout.DEFAULT_SIZE,
                                                     GroupLayout.DEFAULT_SIZE,
-                                                    Short.MAX_VALUE.toInt()
-                                                )
+                                                    Short.MAX_VALUE.toInt(),
+                                                ),
                                         )
-                                        .addContainerGap()
+                                        .addContainerGap(),
                                 )
                                 .addComponent(
                                     jPanel2,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    Short.MAX_VALUE.toInt()
-                                )
-                        )
-                )
+                                    Short.MAX_VALUE.toInt(),
+                                ),
+                        ),
+                ),
         )
         layout.setVerticalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -664,21 +666,21 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
                             teamMothershipPanel,
                             GroupLayout.PREFERRED_SIZE,
                             GroupLayout.DEFAULT_SIZE,
-                            GroupLayout.PREFERRED_SIZE
+                            GroupLayout.PREFERRED_SIZE,
                         )
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(
                             teamTowerPanel,
                             GroupLayout.PREFERRED_SIZE,
                             GroupLayout.DEFAULT_SIZE,
-                            GroupLayout.PREFERRED_SIZE
+                            GroupLayout.PREFERRED_SIZE,
                         )
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(
                             jPanel1,
                             GroupLayout.PREFERRED_SIZE,
                             GroupLayout.DEFAULT_SIZE,
-                            GroupLayout.PREFERRED_SIZE
+                            GroupLayout.PREFERRED_SIZE,
                         )
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(teamFinalStateLabel, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
@@ -687,10 +689,10 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
                             jPanel2,
                             GroupLayout.PREFERRED_SIZE,
                             GroupLayout.DEFAULT_SIZE,
-                            GroupLayout.PREFERRED_SIZE
+                            GroupLayout.PREFERRED_SIZE,
                         )
-                        .addContainerGap(23, Short.MAX_VALUE.toInt())
-                )
+                        .addContainerGap(23, Short.MAX_VALUE.toInt()),
+                ),
         )
     } // </editor-fold>//GEN-END:initComponents
 
@@ -724,106 +726,102 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
 
     private fun animateEndCalculation() {
         var tmpValue: Int
-        try {
-            mothershipShieldPointsLabel!!.isEnabled = false
-            mothershipShieldPointsNameLabel!!.isEnabled = false
-            Thread.sleep(BLINK_ANIMATION.toLong())
-            mothershipShieldPointsLabel!!.isEnabled = true
-            mothershipShieldPointsNameLabel!!.isEnabled = true
-            tmpValue = team!!.mothership!!.shieldPoints
-            for (i in 0..tmpValue) {
-                mothershipShieldPointsLabel!!.text = i.toString() + "P"
-                Thread.sleep(COUNT_ANIMATION.toLong())
-            }
-            mothershipShieldPointsLabel!!.isEnabled = false
-            mothershipShieldPointsNameLabel!!.isEnabled = false
-            Thread.sleep(BLINK_ANIMATION.toLong())
-            mothershipShieldPointsLabel!!.isEnabled = true
-            mothershipShieldPointsNameLabel!!.isEnabled = true
-            Thread.sleep(BLINK_ANIMATION.toLong())
-            mothershipShieldPointsLabel!!.isEnabled = false
-            mothershipShieldPointsNameLabel!!.isEnabled = false
-            Thread.sleep(BLINK_ANIMATION.toLong())
-            mothershipShieldPointsLabel!!.isEnabled = true
-            mothershipShieldPointsNameLabel!!.isEnabled = true
-            Thread.sleep(BLINK_ANIMATION.toLong())
+        mothershipShieldPointsLabel!!.isEnabled = false
+        mothershipShieldPointsNameLabel!!.isEnabled = false
+        Thread.sleep(BLINK_ANIMATION.toLong())
+        mothershipShieldPointsLabel!!.isEnabled = true
+        mothershipShieldPointsNameLabel!!.isEnabled = true
+        tmpValue = team!!.mothership!!.shieldPoints
+        for (i in 0..tmpValue) {
+            mothershipShieldPointsLabel!!.text = i.toString() + "P"
+            Thread.sleep(COUNT_ANIMATION.toLong())
+        }
+        mothershipShieldPointsLabel!!.isEnabled = false
+        mothershipShieldPointsNameLabel!!.isEnabled = false
+        Thread.sleep(BLINK_ANIMATION.toLong())
+        mothershipShieldPointsLabel!!.isEnabled = true
+        mothershipShieldPointsNameLabel!!.isEnabled = true
+        Thread.sleep(BLINK_ANIMATION.toLong())
+        mothershipShieldPointsLabel!!.isEnabled = false
+        mothershipShieldPointsNameLabel!!.isEnabled = false
+        Thread.sleep(BLINK_ANIMATION.toLong())
+        mothershipShieldPointsLabel!!.isEnabled = true
+        mothershipShieldPointsNameLabel!!.isEnabled = true
+        Thread.sleep(BLINK_ANIMATION.toLong())
 
-            saveAgentsPointsLabel!!.isEnabled = false
-            saveAgentsPointsNameLabel!!.isEnabled = false
-            Thread.sleep(BLINK_ANIMATION.toLong())
-            saveAgentsPointsLabel!!.isEnabled = true
-            saveAgentsPointsNameLabel!!.isEnabled = true
-            tmpValue = team!!.mothership!!.agentsAtHomePoints
-            for (i in 0..tmpValue) {
-                saveAgentsPointsLabel!!.text = i.toString() + "P"
-                Thread.sleep(COUNT_ANIMATION.toLong())
-            }
-            saveAgentsPointsLabel!!.isEnabled = false
-            saveAgentsPointsNameLabel!!.isEnabled = false
-            Thread.sleep(BLINK_ANIMATION.toLong())
-            saveAgentsPointsLabel!!.isEnabled = true
-            saveAgentsPointsNameLabel!!.isEnabled = true
-            Thread.sleep(BLINK_ANIMATION.toLong())
-            saveAgentsPointsLabel!!.isEnabled = false
-            saveAgentsPointsNameLabel!!.isEnabled = false
-            Thread.sleep(BLINK_ANIMATION.toLong())
-            saveAgentsPointsLabel!!.isEnabled = true
-            saveAgentsPointsNameLabel!!.isEnabled = true
-            Thread.sleep(BLINK_ANIMATION.toLong())
+        saveAgentsPointsLabel!!.isEnabled = false
+        saveAgentsPointsNameLabel!!.isEnabled = false
+        Thread.sleep(BLINK_ANIMATION.toLong())
+        saveAgentsPointsLabel!!.isEnabled = true
+        saveAgentsPointsNameLabel!!.isEnabled = true
+        tmpValue = team!!.mothership!!.agentsAtHomePoints
+        for (i in 0..tmpValue) {
+            saveAgentsPointsLabel!!.text = i.toString() + "P"
+            Thread.sleep(COUNT_ANIMATION.toLong())
+        }
+        saveAgentsPointsLabel!!.isEnabled = false
+        saveAgentsPointsNameLabel!!.isEnabled = false
+        Thread.sleep(BLINK_ANIMATION.toLong())
+        saveAgentsPointsLabel!!.isEnabled = true
+        saveAgentsPointsNameLabel!!.isEnabled = true
+        Thread.sleep(BLINK_ANIMATION.toLong())
+        saveAgentsPointsLabel!!.isEnabled = false
+        saveAgentsPointsNameLabel!!.isEnabled = false
+        Thread.sleep(BLINK_ANIMATION.toLong())
+        saveAgentsPointsLabel!!.isEnabled = true
+        saveAgentsPointsNameLabel!!.isEnabled = true
+        Thread.sleep(BLINK_ANIMATION.toLong())
 
-            teamPointsLabel!!.isEnabled = false
-            teamPointsNameLabel!!.isEnabled = false
-            Thread.sleep(BLINK_ANIMATION.toLong())
-            teamPointsLabel!!.isEnabled = true
-            teamPointsNameLabel!!.isEnabled = true
-            tmpValue = team!!.finalPoints
-            for (i in 0..tmpValue) {
-                teamPointsLabel!!.text = i.toString() + "P"
-                Thread.sleep(COUNT_ANIMATION.toLong())
-            }
-            teamPointsLabel!!.isEnabled = false
-            teamPointsNameLabel!!.isEnabled = false
-            Thread.sleep(BLINK_ANIMATION.toLong())
-            teamPointsLabel!!.isEnabled = true
-            teamPointsNameLabel!!.isEnabled = true
-            Thread.sleep(BLINK_ANIMATION.toLong())
-            teamPointsLabel!!.isEnabled = false
-            teamPointsNameLabel!!.isEnabled = false
-            Thread.sleep(BLINK_ANIMATION.toLong())
-            teamPointsLabel!!.isEnabled = true
-            teamPointsNameLabel!!.isEnabled = true
-            Thread.sleep(BLINK_ANIMATION.toLong())
+        teamPointsLabel!!.isEnabled = false
+        teamPointsNameLabel!!.isEnabled = false
+        Thread.sleep(BLINK_ANIMATION.toLong())
+        teamPointsLabel!!.isEnabled = true
+        teamPointsNameLabel!!.isEnabled = true
+        tmpValue = team!!.finalPoints
+        for (i in 0..tmpValue) {
+            teamPointsLabel!!.text = i.toString() + "P"
+            Thread.sleep(COUNT_ANIMATION.toLong())
+        }
+        teamPointsLabel!!.isEnabled = false
+        teamPointsNameLabel!!.isEnabled = false
+        Thread.sleep(BLINK_ANIMATION.toLong())
+        teamPointsLabel!!.isEnabled = true
+        teamPointsNameLabel!!.isEnabled = true
+        Thread.sleep(BLINK_ANIMATION.toLong())
+        teamPointsLabel!!.isEnabled = false
+        teamPointsNameLabel!!.isEnabled = false
+        Thread.sleep(BLINK_ANIMATION.toLong())
+        teamPointsLabel!!.isEnabled = true
+        teamPointsNameLabel!!.isEnabled = true
+        Thread.sleep(BLINK_ANIMATION.toLong())
 
-            if (gameManager.isWinner(team!!)) {
-                Thread.sleep(BLINK_ANIMATION.toLong())
-                teamFinalStateLabel!!.text = "Gewinner"
-                teamFinalStateLabel!!.foreground = Color.GREEN
-                Thread.sleep(BLINK_ANIMATION.toLong())
-                teamFinalStateLabel!!.isEnabled = true
-                Thread.sleep(BLINK_ANIMATION.toLong())
-                teamFinalStateLabel!!.isEnabled = false
-                Thread.sleep(BLINK_ANIMATION.toLong())
-                teamFinalStateLabel!!.isEnabled = true
-                Thread.sleep(BLINK_ANIMATION.toLong())
-                teamFinalStateLabel!!.isEnabled = false
-                Thread.sleep(BLINK_ANIMATION.toLong())
-                teamFinalStateLabel!!.isEnabled = true
-                Thread.sleep(BLINK_ANIMATION.toLong())
-                teamFinalStateLabel!!.isEnabled = false
-                Thread.sleep(BLINK_ANIMATION.toLong())
-                teamFinalStateLabel!!.isEnabled = true
-                Thread.sleep(BLINK_ANIMATION.toLong())
-                teamFinalStateLabel!!.isEnabled = false
-                Thread.sleep(BLINK_ANIMATION.toLong())
-                teamFinalStateLabel!!.isEnabled = true
-            } else {
-                teamFinalStateLabel!!.text = "Verlierer"
-                Thread.sleep(BLINK_ANIMATION.toLong())
-                teamFinalStateLabel!!.foreground = Color.RED
-                teamFinalStateLabel!!.isEnabled = true
-            }
-        } catch (ex: InterruptedException) {
-            Thread.currentThread().interrupt()
+        if (gameManager.isWinner(team!!)) {
+            Thread.sleep(BLINK_ANIMATION.toLong())
+            teamFinalStateLabel!!.text = "Gewinner"
+            teamFinalStateLabel!!.foreground = Color.GREEN
+            Thread.sleep(BLINK_ANIMATION.toLong())
+            teamFinalStateLabel!!.isEnabled = true
+            Thread.sleep(BLINK_ANIMATION.toLong())
+            teamFinalStateLabel!!.isEnabled = false
+            Thread.sleep(BLINK_ANIMATION.toLong())
+            teamFinalStateLabel!!.isEnabled = true
+            Thread.sleep(BLINK_ANIMATION.toLong())
+            teamFinalStateLabel!!.isEnabled = false
+            Thread.sleep(BLINK_ANIMATION.toLong())
+            teamFinalStateLabel!!.isEnabled = true
+            Thread.sleep(BLINK_ANIMATION.toLong())
+            teamFinalStateLabel!!.isEnabled = false
+            Thread.sleep(BLINK_ANIMATION.toLong())
+            teamFinalStateLabel!!.isEnabled = true
+            Thread.sleep(BLINK_ANIMATION.toLong())
+            teamFinalStateLabel!!.isEnabled = false
+            Thread.sleep(BLINK_ANIMATION.toLong())
+            teamFinalStateLabel!!.isEnabled = true
+        } else {
+            teamFinalStateLabel!!.text = "Verlierer"
+            Thread.sleep(BLINK_ANIMATION.toLong())
+            teamFinalStateLabel!!.foreground = Color.RED
+            teamFinalStateLabel!!.isEnabled = true
         }
     }
 

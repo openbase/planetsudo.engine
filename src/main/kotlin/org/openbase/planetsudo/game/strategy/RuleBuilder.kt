@@ -6,7 +6,7 @@ data class RuleBuilder(
     var name: String? = null,
     private var swat: Set<SwatTeam> = emptySet(),
     var constraint: (() -> Boolean)? = null,
-    var action: (() -> Unit)? = null
+    var action: (() -> Unit)? = null,
 ) {
     fun swat(vararg additionalSwat: SwatTeam): RuleBuilder = apply { swat = swat.plus(additionalSwat.toSet()) }
     fun swat(additionalSwat: Collection<SwatTeam>): RuleBuilder = apply { swat = swat.plus(additionalSwat.toSet()) }

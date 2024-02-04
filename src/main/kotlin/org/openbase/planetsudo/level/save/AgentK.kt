@@ -34,7 +34,7 @@ class AgentK : AbstractLevel() {
 
     override fun loadHomePositions(): List<Base2D> = listOf(
         Base2D(1200.0, 100.0, Direction2D.DOWN),
-        Base2D(1200.0, 1900.0, Direction2D.DOWN)
+        Base2D(1200.0, 1900.0, Direction2D.DOWN),
     )
 
     override fun loadResourcePlacement(): List<ResourcePlacement> = listOf(
@@ -47,7 +47,7 @@ class AgentK : AbstractLevel() {
         ResourceRandomRectangle(0, 500, 500, 500, 5, ResourceType.Normal),
         ResourceRandomRectangle(0, 1000, 500, 500, 5, ResourceType.Normal),
         ResourceRandomRectangle(0, 0, 500, 500, 5, ResourceType.DoublePoints),
-        ResourceRandomRectangle(0, 1500, 500, 500, 5, ResourceType.DoublePoints)
+        ResourceRandomRectangle(0, 1500, 500, 500, 5, ResourceType.DoublePoints),
     )
 
     override fun loadLevelColor(): Color = Color(137, 67, 162)

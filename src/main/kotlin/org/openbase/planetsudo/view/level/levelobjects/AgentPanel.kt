@@ -27,7 +27,7 @@ class AgentPanel(resource: Agent, parentResourcePanel: MothershipPanel) :
         resource.polygon,
         getAgentImage(resource).imagesURL,
         parentResourcePanel,
-        DrawLayer.FORGROUND
+        DrawLayer.FORGROUND,
     ) {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
@@ -69,7 +69,7 @@ class AgentPanel(resource: Agent, parentResourcePanel: MothershipPanel) :
             resource.levelView?.drawLevelView(
                 parentResourcePanel.boundingBox.x.toInt(),
                 parentResourcePanel.boundingBox.y.toInt(),
-                g2
+                g2,
             )
         }
 
@@ -96,14 +96,14 @@ class AgentPanel(resource: Agent, parentResourcePanel: MothershipPanel) :
                 (x + (side!!.vector.x * resource.width / 2)).toInt(),
                 (y + (side!!.vector.y * resource.height / 3)).toInt(),
                 levelObject!!.position.x.toInt(),
-                levelObject!!.position.y.toInt()
+                levelObject!!.position.y.toInt(),
             )
             side = Direction2D(direction!!.angle - 90)
             g2.drawLine(
                 (x + (side!!.vector.x * resource.width / 2)).toInt(),
                 (y + (side!!.vector.y * resource.height / 3)).toInt(),
                 levelObject!!.position.x.toInt(),
-                levelObject!!.position.y.toInt()
+                levelObject!!.position.y.toInt(),
             )
         }
 
@@ -138,7 +138,7 @@ class AgentPanel(resource: Agent, parentResourcePanel: MothershipPanel) :
             (x - FUEL_BAR_STATIC_WIDTH / 2).toInt(),
             (y - FUEL_BAR_STATIC_POSITION_Y).toInt(),
             FUEL_BAR_STATIC_WIDTH.toInt(),
-            FUEL_BAR_STATIC_HEIGHT
+            FUEL_BAR_STATIC_HEIGHT,
         )
 
         // Paint FuelBar
@@ -147,7 +147,7 @@ class AgentPanel(resource: Agent, parentResourcePanel: MothershipPanel) :
             (x - FUEL_BAR_STATIC_WIDTH / 2).toInt(),
             (y - FUEL_BAR_STATIC_POSITION_Y).toInt(),
             (FUEL_BAR_STATIC_WIDTH / resource.fuelVolume * resource.fuel).toInt(),
-            FUEL_BAR_STATIC_HEIGHT
+            FUEL_BAR_STATIC_HEIGHT,
         )
 
         // Paint StateLable

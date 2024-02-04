@@ -38,7 +38,7 @@ class PlanetSudoClient private constructor() {
         DownloadStrategies("Empfange Strategien..."),
         Connecting("Verbindung wird hergestellt..."),
         SyncSuccessful("Erfolgreich Synchronisiert!"),
-        ConnectionError("Verbindungsfehler!")
+        ConnectionError("Verbindungsfehler!"),
     }
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
@@ -64,7 +64,7 @@ class PlanetSudoClient private constructor() {
         try {
             connecting()
             transferData()
-        } catch (ex: Exception) {
+        } catch (ex: CouldNotPerformException) {
             setConnectionState(ConnectionState.ConnectionError)
             logger.error("Could not sync!", ex)
         } finally {
@@ -88,13 +88,13 @@ class PlanetSudoClient private constructor() {
         try {
             val clientSocket = Socket(
                 JPService.getProperty(
-                    JPServerHostname::class.java
+                    JPServerHostname::class.java,
                 ).value,
-                JPService.getProperty(JPServerPort::class.java).value
+                JPService.getProperty(JPServerPort::class.java).value,
             )
             out = ObjectOutputStream(clientSocket.getOutputStream())
             `in` = ObjectInputStream(clientSocket.getInputStream())
-        } catch (ex: Exception) {
+        } catch (ex: CouldNotPerformException) {
             ExceptionPrinter.printHistory(CouldNotPerformException("Error during transfer occured!", ex), logger)
         }
     }
@@ -132,9 +132,9 @@ class PlanetSudoClient private constructor() {
             val defaultTeamData = loadDefaultTeam()
             val sourceFile = File(
                 JPService.getProperty(
-                    JPStrategySourceDirectory::class.java
+                    JPStrategySourceDirectory::class.java,
                 ).value,
-                defaultTeamData!!.strategy + ".java"
+                defaultTeamData!!.strategy + ".kt",
             )
             if (!sourceFile.exists()) {
                 throw CouldNotPerformException("File[" + sourceFile.absolutePath + "] does not exist!")

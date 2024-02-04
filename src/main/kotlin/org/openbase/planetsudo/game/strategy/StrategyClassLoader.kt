@@ -44,7 +44,7 @@ object StrategyClassLoader {
         } catch (ex: JPNotAvailableException) {
             ExceptionPrinter.printHistory(
                 CouldNotPerformException("Could not revalidate strategy classes!", ex),
-                LOGGER
+                LOGGER,
             )
         }
     }
@@ -57,7 +57,7 @@ object StrategyClassLoader {
                 ADAPTIVE_CLASS_LOADER.loadClass(AbstractStrategy::class.java.getPackage().name + "." + strategyName)
             LOGGER.info("Load successful " + AbstractStrategy::class.java.getPackage().name + "." + strategyName)
             return clazz as Class<AbstractStrategy>
-        } catch (ex: Exception) {
+        } catch (ex: ClassNotFoundException) {
             throw CouldNotPerformException("Could not load Class[$strategyName]external strategy!", ex)
         }
     }
