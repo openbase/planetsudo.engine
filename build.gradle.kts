@@ -155,6 +155,10 @@ tasks.javadoc {
     }
 }
 
+tasks.build {
+    dependsOn("ktlintFormat")
+}
+
 tasks.register<Copy>("copyPreCommitHook") {
     description = "Copy pre-commit git hook from utils to the .git/hooks folder."
     group = "git hooks"
