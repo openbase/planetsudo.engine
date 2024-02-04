@@ -155,6 +155,14 @@ tasks.javadoc {
     }
 }
 
+tasks.register<Copy>("copyPreCommitHook") {
+    description = "Copy pre-commit git hook from utils to the .git/hooks folder."
+    group = "git hooks"
+    outputs.upToDateWhen { false }
+    from("$rootDir/.git-utils/pre-commit")
+    into("$rootDir/.git/hooks/")
+}
+
 ktlint {
     disabledRules.set(setOf("no-wildcard-imports"))
     filter {
