@@ -167,23 +167,23 @@ class Team(data: TeamData) {
                 return TEAM_DATA_PROCESSOR.deserialize(
                     File(
                         JPService.getProperty(
-                            JPTeamPath::class.java
-                        ).value.absolutePath + "/" + teamName + ".team"
-                    )
+                            JPTeamPath::class.java,
+                        ).value.absolutePath + "/" + teamName + ".team",
+                    ),
                 )
             } catch (ex: CouldNotPerformException) {
                 ExceptionPrinter.printHistory(
                     CouldNotPerformException(
                         "Could not load team $teamName! Try again with outdated deserializer.",
-                        ex
+                        ex,
                     ),
-                    logger
+                    logger,
                 )
                 try {
                     val fileController = ObjectFileController<TeamData>(
                         JPService.getProperty(
-                            JPTeamPath::class.java
-                        ).value.absolutePath + "/" + teamName + ".team"
+                            JPTeamPath::class.java,
+                        ).value.absolutePath + "/" + teamName + ".team",
                     )
                     return fileController.readObject()
                 } catch (exx: IOException) {
@@ -197,15 +197,15 @@ class Team(data: TeamData) {
                 ExceptionPrinter.printHistory(
                     CouldNotPerformException(
                         "Could not load team $teamName! Try again with outdated deserializer.",
-                        ex
+                        ex,
                     ),
-                    logger
+                    logger,
                 )
                 try {
                     val fileController = ObjectFileController<TeamData>(
                         JPService.getProperty(
-                            JPTeamPath::class.java
-                        ).value.absolutePath + "/" + teamName + ".team"
+                            JPTeamPath::class.java,
+                        ).value.absolutePath + "/" + teamName + ".team",
                     )
                     return fileController.readObject()
                 } catch (exx: IOException) {
@@ -242,9 +242,9 @@ class Team(data: TeamData) {
                             ExceptionPrinter.printHistory(
                                 CouldNotPerformException(
                                     "Could not load team $teamClassName!",
-                                    ex
+                                    ex,
                                 ),
-                                logger
+                                logger,
                             )
                         }
                     }

@@ -38,7 +38,8 @@ enum class GameSound(uri: String) {
 
     End("sound/end.wav"),
     EndSoon("sound/end_soon.wav"),
-    AgentDisabled("sound/agent_empty_fuel.wav");
+    AgentDisabled("sound/agent_empty_fuel.wav"),
+    ;
 
     private val audioData: AudioDataImpl?
     private val disabled: Boolean
@@ -49,7 +50,7 @@ enum class GameSound(uri: String) {
         } catch (ex: IOException) {
             ExceptionPrinter.printHistory(
                 CouldNotPerformException("Could not load Soundfile[$uri] of $name", ex),
-                LoggerFactory.getLogger(GameSound::class.java)
+                LoggerFactory.getLogger(GameSound::class.java),
             )
             null
         }

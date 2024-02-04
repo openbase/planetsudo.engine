@@ -48,7 +48,7 @@ class LevelLoadingPanel : JPanel() {
             Color.white,
             Color(204, 204, 204),
             Color.gray,
-            Color(0, 0, 0)
+            Color(0, 0, 0),
         )
         leftBorder!!.isOpaque = false
         rightBorder!!.isOpaque = false

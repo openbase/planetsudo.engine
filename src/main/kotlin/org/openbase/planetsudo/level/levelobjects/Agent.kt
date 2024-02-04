@@ -30,7 +30,7 @@ class Agent(
     name: String,
     commanderFlag: Boolean,
     fuelVolume: Int,
-    mothership: Mothership
+    mothership: Mothership,
 ) : AbstractLevelObject(
     mothership.computeNextAgentId(),
     name,
@@ -39,7 +39,7 @@ class Agent(
     mothership.agentHomePosition,
     AGENT_SIZE.toDouble(),
     AGENT_SIZE.toDouble(),
-    ObjectShape.Oval
+    ObjectShape.Oval,
 ),
     AgentInterface {
     override val fuelVolume: Int
@@ -92,15 +92,15 @@ class Agent(
         get() {
             val point = direction.translate(
                 Point2D(
-                    position
+                    position,
                 ),
-                AGENT_VIEW_DISTANCE
+                AGENT_VIEW_DISTANCE,
             )
             return Rectangle2D.Double(
                 point.x - AGENT_VIEW_DISTANCE,
                 point.y - AGENT_VIEW_DISTANCE,
                 (AGENT_VIEW_DISTANCE * 2).toDouble(),
-                (AGENT_VIEW_DISTANCE * 2).toDouble()
+                (AGENT_VIEW_DISTANCE * 2).toDouble(),
             )
         }
 
@@ -135,7 +135,7 @@ class Agent(
             val newMine = Resource(
                 level.generateNewResourceID(),
                 level,
-                this
+                this,
             )
             level.addResource(newMine)
             hasMine = false
@@ -222,7 +222,7 @@ class Agent(
                 futurePosition.x.toInt() - (width / 2),
                 futurePosition.y.toInt() - (height / 2),
                 width,
-                height
+                height,
             )
         }
 

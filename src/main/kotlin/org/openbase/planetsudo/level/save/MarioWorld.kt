@@ -32,14 +32,14 @@ class MarioWorld : AbstractLevel() {
 
     override fun loadHomePositions() = listOf(
         Base2D(100.0, 950.0, Direction2D.DOWN),
-        Base2D(900.0, 950.0, Direction2D.DOWN)
+        Base2D(900.0, 950.0, Direction2D.DOWN),
     )
 
     override fun loadResourcePlacement() = listOf(
         ResourceRandomRectangle(0, 0, 200, 500, 10, ResourceType.Normal),
         ResourceRandomRectangle(250, 300, 550, 550, 15, ResourceType.DoublePoints),
         ResourceRandomRectangle(200, 900, 400, 100, 15, ResourceType.ExtremPoint),
-        ResourceRandomRectangle(800, 0, 200, 500, 10, ResourceType.Normal)
+        ResourceRandomRectangle(800, 0, 200, 500, 10, ResourceType.Normal),
     )
 
     override fun loadLevelColor() = Color(174, 94, 94)

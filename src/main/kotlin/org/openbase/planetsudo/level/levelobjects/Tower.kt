@@ -3,7 +3,6 @@ package org.openbase.planetsudo.level.levelobjects
 import org.openbase.jul.exception.CouldNotPerformException
 import org.openbase.jul.exception.InvalidStateException
 import org.openbase.jul.exception.printer.ExceptionPrinter
-import org.openbase.jul.schedule.GlobalCachedExecutorService
 import org.openbase.jul.visual.swing.engine.draw2d.AbstractResourcePanel
 import org.openbase.planetsudo.game.GameManager
 import org.openbase.planetsudo.game.GameSound
@@ -15,11 +14,9 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
-import java.util.concurrent.Executors
 import java.util.concurrent.locks.ReentrantLock
 import javax.swing.Timer
 import kotlin.concurrent.withLock
-import kotlin.coroutines.CoroutineContext
 import kotlin.math.max
 
 /**
@@ -35,7 +32,7 @@ class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership)
         mothership.position,
         SIZE.toDouble(),
         SIZE.toDouble(),
-        ObjectShape.Rec
+        ObjectShape.Rec,
     ),
     ActionListener {
     enum class TowerType {
@@ -65,7 +62,6 @@ class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership)
         this.timer = Timer(50, this)
         this.reset()
         logger.info("Create $this")
-
 
         Thread {
             try {

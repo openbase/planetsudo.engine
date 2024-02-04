@@ -35,11 +35,11 @@ class MenuLoadingPanel : JPanel() {
         this.layout = layout
         layout.setHorizontalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGap(0, 852, Short.MAX_VALUE.toInt())
+                .addGap(0, 852, Short.MAX_VALUE.toInt()),
         )
         layout.setVerticalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGap(0, 59, Short.MAX_VALUE.toInt())
+                .addGap(0, 59, Short.MAX_VALUE.toInt()),
         )
     } // </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables

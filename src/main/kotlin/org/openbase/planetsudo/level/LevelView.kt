@@ -103,7 +103,7 @@ class LevelView(level: AbstractLevel, levelObject: AbstractLevelObject) {
         logger.debug("CalcLevelRasterElement")
         return get(
             (levelObject.position.x.toInt() - levelObject.level.x) / rasterSize,
-            (levelObject.position.y.toInt() - levelObject.level.y) / rasterSize
+            (levelObject.position.y.toInt() - levelObject.level.y) / rasterSize,
         )
     }
 

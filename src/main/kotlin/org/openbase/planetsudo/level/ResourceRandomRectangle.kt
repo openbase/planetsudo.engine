@@ -26,12 +26,12 @@ class ResourceRandomRectangle(
     width: Int,
     height: Int,
     override val resourceCount: Int,
-    private val type: ResourceType
+    private val type: ResourceType,
 ) : Rectangle2D.Double(
     x.toDouble(),
     y.toDouble(),
     width.toDouble(),
-    height.toDouble()
+    height.toDouble(),
 ),
     ResourcePlacement {
     override fun getResources(level: AbstractLevel): ArrayList<Resource> {
@@ -103,8 +103,8 @@ class ResourceRandomRectangle(
                             resourceXPos - Resource.RESOURCE_SIZE,
                             resourceYPos - Resource.RESOURCE_SIZE,
                             Resource.RESOURCE_SIZE * 2,
-                            Resource.RESOURCE_SIZE * 2
-                        )
+                            Resource.RESOURCE_SIZE * 2,
+                        ),
                 )
             ) {
                 break

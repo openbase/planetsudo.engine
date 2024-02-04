@@ -44,7 +44,7 @@ object StrategyClassLoader {
         } catch (ex: JPNotAvailableException) {
             ExceptionPrinter.printHistory(
                 CouldNotPerformException("Could not revalidate strategy classes!", ex),
-                LOGGER
+                LOGGER,
             )
         }
     }

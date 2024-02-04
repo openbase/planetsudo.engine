@@ -96,7 +96,7 @@ class LevelLoader {
             "Broken",
             "Pentagon",
             "UnbekannterWeg",
-            "Maze"
+            "Maze",
         )
 
         @JvmStatic

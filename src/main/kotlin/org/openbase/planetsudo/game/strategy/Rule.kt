@@ -44,7 +44,7 @@ abstract class Rule(val priority: Int, val name: String, var swatTeam: Set<SwatT
     constructor(priority: Int, name: String, vararg swatTeams: SwatTeam) : this(
         priority = priority,
         name = name,
-        swatTeam = swatTeams.toSet()
+        swatTeam = swatTeams.toSet(),
     )
 
     constructor(name: String, vararg swatTeams: SwatTeam) : this(-1, name, *swatTeams)

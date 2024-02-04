@@ -47,17 +47,19 @@ class SpeedControlFrame : JFrame() {
         speedSlider!!.paintLabels = true
         speedSlider!!.paintTicks = true
         speedSlider!!.addChangeListener { evt -> speedSliderStateChanged(evt) }
-        speedSlider!!.addAncestorListener(object : AncestorListener {
-            override fun ancestorAdded(evt: AncestorEvent) {
-            }
+        speedSlider!!.addAncestorListener(
+            object : AncestorListener {
+                override fun ancestorAdded(evt: AncestorEvent) {
+                }
 
-            override fun ancestorRemoved(evt: AncestorEvent) {
-            }
+                override fun ancestorRemoved(evt: AncestorEvent) {
+                }
 
-            override fun ancestorMoved(evt: AncestorEvent) {
-                speedSliderAncestorMoved(evt)
-            }
-        })
+                override fun ancestorMoved(evt: AncestorEvent) {
+                    speedSliderAncestorMoved(evt)
+                }
+            },
+        )
 
         okButton!!.text = "Ok"
         okButton!!.addActionListener { evt -> okButtonActionPerformed(evt) }
@@ -85,12 +87,12 @@ class SpeedControlFrame : JFrame() {
                                             okButton,
                                             GroupLayout.PREFERRED_SIZE,
                                             77,
-                                            GroupLayout.PREFERRED_SIZE
-                                        )
-                                )
+                                            GroupLayout.PREFERRED_SIZE,
+                                        ),
+                                ),
                         )
-                        .addContainerGap()
-                )
+                        .addContainerGap(),
+                ),
         )
         layout.setVerticalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -101,16 +103,16 @@ class SpeedControlFrame : JFrame() {
                             speedSlider,
                             GroupLayout.PREFERRED_SIZE,
                             GroupLayout.DEFAULT_SIZE,
-                            GroupLayout.PREFERRED_SIZE
+                            GroupLayout.PREFERRED_SIZE,
                         )
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(
                             layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(okButton)
-                                .addComponent(defaultButton)
+                                .addComponent(defaultButton),
                         )
-                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt())
-                )
+                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt()),
+                ),
         )
 
         pack()

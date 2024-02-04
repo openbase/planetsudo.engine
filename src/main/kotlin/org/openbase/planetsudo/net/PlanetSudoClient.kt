@@ -38,7 +38,7 @@ class PlanetSudoClient private constructor() {
         DownloadStrategies("Empfange Strategien..."),
         Connecting("Verbindung wird hergestellt..."),
         SyncSuccessful("Erfolgreich Synchronisiert!"),
-        ConnectionError("Verbindungsfehler!")
+        ConnectionError("Verbindungsfehler!"),
     }
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
@@ -88,9 +88,9 @@ class PlanetSudoClient private constructor() {
         try {
             val clientSocket = Socket(
                 JPService.getProperty(
-                    JPServerHostname::class.java
+                    JPServerHostname::class.java,
                 ).value,
-                JPService.getProperty(JPServerPort::class.java).value
+                JPService.getProperty(JPServerPort::class.java).value,
             )
             out = ObjectOutputStream(clientSocket.getOutputStream())
             `in` = ObjectInputStream(clientSocket.getInputStream())
@@ -132,9 +132,9 @@ class PlanetSudoClient private constructor() {
             val defaultTeamData = loadDefaultTeam()
             val sourceFile = File(
                 JPService.getProperty(
-                    JPStrategySourceDirectory::class.java
+                    JPStrategySourceDirectory::class.java,
                 ).value,
-                defaultTeamData!!.strategy + ".kt"
+                defaultTeamData!!.strategy + ".kt",
             )
             if (!sourceFile.exists()) {
                 throw CouldNotPerformException("File[" + sourceFile.absolutePath + "] does not exist!")

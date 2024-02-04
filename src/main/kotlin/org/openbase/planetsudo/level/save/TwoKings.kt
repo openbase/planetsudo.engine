@@ -32,7 +32,7 @@ class TwoKings : AbstractLevel() {
 
     override fun loadHomePositions() = listOf(
         Base2D(750.0, 150.0, Direction2D.DOWN),
-        Base2D(750.0, 1350.0, Direction2D.DOWN)
+        Base2D(750.0, 1350.0, Direction2D.DOWN),
     )
 
     override fun loadResourcePlacement() = listOf(
@@ -45,7 +45,7 @@ class TwoKings : AbstractLevel() {
         ResourceRandomRectangle(0, 0, 1500, 650, 10, ResourceType.Normal),
         ResourceRandomRectangle(0, 850, 1500, 650, 10, ResourceType.Normal),
         ResourceRandomRectangle(0, 0, 1500, 650, 5, ResourceType.DoublePoints),
-        ResourceRandomRectangle(0, 850, 1500, 650, 5, ResourceType.DoublePoints)
+        ResourceRandomRectangle(0, 850, 1500, 650, 5, ResourceType.DoublePoints),
     )
 
     override fun loadLevelColor() = Color(37, 67, 162)
@@ -68,6 +68,6 @@ class TwoKings : AbstractLevel() {
             addPoint(1500, 650)
             addPoint(1500, 850)
             addPoint(1200, 850)
-        }
+        },
     )
 }

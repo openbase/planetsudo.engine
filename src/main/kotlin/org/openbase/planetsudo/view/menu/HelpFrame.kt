@@ -117,7 +117,7 @@ class HelpFrame : JFrame() {
                                     GroupLayout.Alignment.TRAILING,
                                     GroupLayout.DEFAULT_SIZE,
                                     901,
-                                    Short.MAX_VALUE.toInt()
+                                    Short.MAX_VALUE.toInt(),
                                 )
                                 .addGroup(
                                     layout.createSequentialGroup()
@@ -130,37 +130,37 @@ class HelpFrame : JFrame() {
                                                             GroupLayout.Alignment.TRAILING,
                                                             GroupLayout.DEFAULT_SIZE,
                                                             GroupLayout.DEFAULT_SIZE,
-                                                            Short.MAX_VALUE.toInt()
+                                                            Short.MAX_VALUE.toInt(),
                                                         )
                                                         .addComponent(
                                                             jLabel6,
                                                             GroupLayout.DEFAULT_SIZE,
                                                             GroupLayout.DEFAULT_SIZE,
-                                                            Short.MAX_VALUE.toInt()
+                                                            Short.MAX_VALUE.toInt(),
                                                         )
                                                         .addComponent(
                                                             jLabel3,
                                                             GroupLayout.DEFAULT_SIZE,
                                                             GroupLayout.DEFAULT_SIZE,
-                                                            Short.MAX_VALUE.toInt()
+                                                            Short.MAX_VALUE.toInt(),
                                                         )
                                                         .addComponent(
                                                             jLabel1,
                                                             GroupLayout.Alignment.TRAILING,
                                                             GroupLayout.DEFAULT_SIZE,
                                                             134,
-                                                            Short.MAX_VALUE.toInt()
+                                                            Short.MAX_VALUE.toInt(),
                                                         )
                                                         .addComponent(
                                                             jLabel11,
                                                             GroupLayout.Alignment.TRAILING,
                                                             GroupLayout.DEFAULT_SIZE,
                                                             GroupLayout.DEFAULT_SIZE,
-                                                            Short.MAX_VALUE.toInt()
-                                                        )
+                                                            Short.MAX_VALUE.toInt(),
+                                                        ),
                                                 )
                                                 .addComponent(jLabel12)
-                                                .addComponent(jLabel14)
+                                                .addComponent(jLabel14),
                                         )
                                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                         .addGroup(
@@ -168,7 +168,7 @@ class HelpFrame : JFrame() {
                                                 .addGroup(
                                                     layout.createSequentialGroup()
                                                         .addComponent(jLabel15)
-                                                        .addGap(220, 220, 220)
+                                                        .addGap(220, 220, 220),
                                                 )
                                                 .addGroup(
                                                     layout.createSequentialGroup()
@@ -178,47 +178,47 @@ class HelpFrame : JFrame() {
                                                                     jLabel5,
                                                                     GroupLayout.DEFAULT_SIZE,
                                                                     GroupLayout.DEFAULT_SIZE,
-                                                                    Short.MAX_VALUE.toInt()
+                                                                    Short.MAX_VALUE.toInt(),
                                                                 )
                                                                 .addComponent(
                                                                     jLabel9,
                                                                     GroupLayout.DEFAULT_SIZE,
                                                                     GroupLayout.DEFAULT_SIZE,
-                                                                    Short.MAX_VALUE.toInt()
+                                                                    Short.MAX_VALUE.toInt(),
                                                                 )
                                                                 .addComponent(
                                                                     jLabel13,
                                                                     GroupLayout.DEFAULT_SIZE,
                                                                     GroupLayout.DEFAULT_SIZE,
-                                                                    Short.MAX_VALUE.toInt()
+                                                                    Short.MAX_VALUE.toInt(),
                                                                 )
                                                                 .addComponent(jLabel7)
                                                                 .addComponent(
                                                                     jLabel4,
                                                                     GroupLayout.DEFAULT_SIZE,
                                                                     GroupLayout.DEFAULT_SIZE,
-                                                                    Short.MAX_VALUE.toInt()
+                                                                    Short.MAX_VALUE.toInt(),
                                                                 )
                                                                 .addComponent(
                                                                     jLabel2,
                                                                     GroupLayout.DEFAULT_SIZE,
                                                                     GroupLayout.DEFAULT_SIZE,
-                                                                    Short.MAX_VALUE.toInt()
-                                                                )
+                                                                    Short.MAX_VALUE.toInt(),
+                                                                ),
                                                         )
                                                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                                         .addComponent(
                                                             logoDisplayLabel,
                                                             GroupLayout.PREFERRED_SIZE,
                                                             208,
-                                                            GroupLayout.PREFERRED_SIZE
-                                                        )
-                                                )
-                                        )
-                                )
+                                                            GroupLayout.PREFERRED_SIZE,
+                                                        ),
+                                                ),
+                                        ),
+                                ),
                         )
-                        .addContainerGap()
-                )
+                        .addContainerGap(),
+                ),
         )
         layout.setVerticalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -232,19 +232,19 @@ class HelpFrame : JFrame() {
                                         .addGroup(
                                             layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                                 .addComponent(jLabel1)
-                                                .addComponent(jLabel2)
+                                                .addComponent(jLabel2),
                                         )
                                         .addGap(18, 18, 18)
                                         .addGroup(
                                             layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                                 .addComponent(jLabel3)
-                                                .addComponent(jLabel4)
+                                                .addComponent(jLabel4),
                                         )
                                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                         .addGroup(
                                             layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                                 .addComponent(jLabel5)
-                                                .addComponent(jLabel11)
+                                                .addComponent(jLabel11),
                                         )
                                         .addGap(18, 18, 18)
                                         .addGroup(
@@ -254,28 +254,28 @@ class HelpFrame : JFrame() {
                                                     jLabel7,
                                                     GroupLayout.PREFERRED_SIZE,
                                                     GroupLayout.DEFAULT_SIZE,
-                                                    GroupLayout.PREFERRED_SIZE
-                                                )
+                                                    GroupLayout.PREFERRED_SIZE,
+                                                ),
                                         )
                                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addGroup(
                                             layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                                 .addComponent(jLabel8)
-                                                .addComponent(jLabel9)
+                                                .addComponent(jLabel9),
                                         )
                                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addGroup(
                                             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                                 .addComponent(jLabel12)
-                                                .addComponent(jLabel13)
-                                        )
+                                                .addComponent(jLabel13),
+                                        ),
                                 )
                                 .addComponent(
                                     logoDisplayLabel,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    Short.MAX_VALUE.toInt()
-                                )
+                                    Short.MAX_VALUE.toInt(),
+                                ),
                         )
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(
@@ -285,13 +285,13 @@ class HelpFrame : JFrame() {
                                     jLabel15,
                                     GroupLayout.PREFERRED_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
-                                    GroupLayout.PREFERRED_SIZE
-                                )
+                                    GroupLayout.PREFERRED_SIZE,
+                                ),
                         )
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel10, GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE.toInt())
-                        .addContainerGap()
-                )
+                        .addContainerGap(),
+                ),
         )
 
         pack()

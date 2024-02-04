@@ -23,7 +23,7 @@ class TeamMarker(@JvmField val team: Team, level: AbstractLevel) : AbstractLevel
     Point2D(),
     MARKER_SIZE,
     MARKER_SIZE,
-    ObjectShape.Oval
+    ObjectShape.Oval,
 ) {
     private val MARKER_LOCK = Any()
     var isPlaced: Boolean = false

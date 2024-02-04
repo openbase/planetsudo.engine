@@ -66,7 +66,7 @@ abstract class AbstractStrategy(val agent: AgentInterface) : Runnable {
             } catch (ex: Throwable) {
                 logger.error(
                     "Could not execute rule[" + strategyOwner.lastAction + "] of strategy [${javaClass.simpleName}]!",
-                    ex
+                    ex,
                 )
                 strategyOwner.kill()
             }

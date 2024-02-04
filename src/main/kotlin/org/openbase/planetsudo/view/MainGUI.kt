@@ -161,7 +161,7 @@ class MainGUI : JFrame, PropertyChangeListener {
             } else if (changeEvent.propertyName == GUIController.LOADING_STATE_CHANGE) {
                 levelLoadingPanel!!.setLoadingStateChange(
                     changeEvent.newValue as String,
-                    (changeEvent.oldValue as Int)
+                    (changeEvent.oldValue as Int),
                 )
             } else if (changeEvent.propertyName == GUIController.LOADING_STEP) {
                 levelLoadingPanel!!.setLoadingStep((changeEvent.newValue as Int))
@@ -244,11 +244,13 @@ class MainGUI : JFrame, PropertyChangeListener {
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private fun initComponents() {
-        addWindowListener(object : java.awt.event.WindowAdapter() {
-            override fun windowClosing(evt: java.awt.event.WindowEvent) {
-                exitApp()
-            }
-        })
+        addWindowListener(
+            object : java.awt.event.WindowAdapter() {
+                override fun windowClosing(evt: java.awt.event.WindowEvent) {
+                    exitApp()
+                }
+            },
+        )
 
         jFrame1 = JFrame()
         jMenuItem1 = JMenuItem()
@@ -280,11 +282,11 @@ class MainGUI : JFrame, PropertyChangeListener {
         jFrame1!!.contentPane.layout = jFrame1Layout
         jFrame1Layout.setHorizontalGroup(
             jFrame1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGap(0, 400, Short.MAX_VALUE.toInt())
+                .addGap(0, 400, Short.MAX_VALUE.toInt()),
         )
         jFrame1Layout.setVerticalGroup(
             jFrame1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGap(0, 300, Short.MAX_VALUE.toInt())
+                .addGap(0, 300, Short.MAX_VALUE.toInt()),
         )
 
         jMenuItem1!!.text = "jMenuItem1"
@@ -336,7 +338,7 @@ class MainGUI : JFrame, PropertyChangeListener {
         displayTeamPanelCheckBoxMenuItem!!.text = "Teamanzeige"
         displayTeamPanelCheckBoxMenuItem!!.addActionListener { evt ->
             displayTeamPanelCheckBoxMenuItemActionPerformed(
-                evt
+                evt,
             )
         }
         jMenu2!!.add(displayTeamPanelCheckBoxMenuItem)
@@ -394,11 +396,11 @@ class MainGUI : JFrame, PropertyChangeListener {
         contentPane.layout = layout
         layout.setHorizontalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE.toInt())
+                .addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE.toInt()),
         )
         layout.setVerticalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE.toInt())
+                .addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE.toInt()),
         )
 
         pack()

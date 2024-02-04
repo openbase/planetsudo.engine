@@ -81,8 +81,8 @@ class LevelMenuPanel : JPanel(), ActionListener {
                     layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(nameAndTimeLabel, GroupLayout.DEFAULT_SIZE, 714, Short.MAX_VALUE.toInt())
-                        .addContainerGap()
-                )
+                        .addContainerGap(),
+                ),
         )
         layout.setVerticalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -90,8 +90,8 @@ class LevelMenuPanel : JPanel(), ActionListener {
                     GroupLayout.Alignment.TRAILING,
                     layout.createSequentialGroup()
                         .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt())
-                        .addComponent(nameAndTimeLabel)
-                )
+                        .addComponent(nameAndTimeLabel),
+                ),
         )
     } // </editor-fold>//GEN-END:initComponents
 

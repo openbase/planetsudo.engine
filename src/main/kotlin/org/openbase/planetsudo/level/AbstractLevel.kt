@@ -223,8 +223,8 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
                     this,
                     GUIController.LOADING_STATE_CHANGE,
                     resourceCounter,
-                    "Lade Resourcen"
-                )
+                    "Lade Resourcen",
+                ),
             )
             for (placement in resourcePlacements) {
                 resources.addAll(placement.getResources(this))

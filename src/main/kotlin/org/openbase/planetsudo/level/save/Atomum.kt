@@ -26,7 +26,7 @@ class Atomum : AbstractLevel() {
 
     override fun loadHomePositions() = listOf(
         Base2D(150.0, 1000.0, Direction2D.DOWN),
-        Base2D(1850.0, 1000.0, Direction2D.DOWN)
+        Base2D(1850.0, 1000.0, Direction2D.DOWN),
     )
 
     override fun loadResourcePlacement() = listOf(
@@ -48,7 +48,7 @@ class Atomum : AbstractLevel() {
         ResourceRandomRectangle(1600, 600, 100, 100, 3, ResourceType.DoublePoints),
         ResourceRandomRectangle(1600, 1300, 100, 100, 3, ResourceType.DoublePoints),
         ResourceRandomRectangle(1440, 1450, 100, 100, 3, ResourceType.DoublePoints),
-        ResourceRandomRectangle(1300, 1600, 100, 100, 3, ResourceType.DoublePoints)
+        ResourceRandomRectangle(1300, 1600, 100, 100, 3, ResourceType.DoublePoints),
     )
 
     override fun loadLevelColor() = Color(169, 249, 4)
@@ -103,6 +103,6 @@ class Atomum : AbstractLevel() {
             addPoint(1000, 900)
             addPoint(1100, 1000)
             addPoint(1000, 1100)
-        }
+        },
     )
 }

@@ -144,7 +144,7 @@ signing {
 
     useInMemoryPgpKeys(
         privateKey,
-        passphrase
+        passphrase,
     )
     sign(publishing.publications["mavenJava"])
 }

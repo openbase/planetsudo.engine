@@ -25,7 +25,7 @@ abstract class AbstractLevelObject @JvmOverloads constructor(
     @JvmField var position: Point2D = Point2D(),
     @JvmField var width: Double = 100.0,
     @JvmField var height: Double = 100.0,
-    @JvmField val shape: ObjectShape? = null
+    @JvmField val shape: ObjectShape? = null,
 ) : AbstractGameObject, Identifiable<Int> {
     enum class ObjectShape {
         Oval, Rec
@@ -47,7 +47,7 @@ abstract class AbstractLevelObject @JvmOverloads constructor(
             position.x.toInt() - (width / 2),
             position.y.toInt() - (height / 2),
             width,
-            height
+            height,
         )
 
     override fun getId(): Int = id

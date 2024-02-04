@@ -21,7 +21,7 @@ class TowerTopPanel(tower: Tower, parentPanel: TowerPanel) :
         tower.polygon,
         getImageURI(tower.type),
         parentPanel,
-        DrawLayer.BACKGROUND
+        DrawLayer.BACKGROUND,
     ),
     PropertyChangeListener {
     private val tower: Tower

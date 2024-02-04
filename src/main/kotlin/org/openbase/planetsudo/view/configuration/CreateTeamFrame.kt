@@ -164,10 +164,10 @@ class CreateTeamFrame : JFrame() {
                         .addGroup(
                             layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
                                 .addComponent(createButton)
-                                .addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, 473, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, 473, GroupLayout.PREFERRED_SIZE),
                         )
-                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt())
-                )
+                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt()),
+                ),
         )
         layout.setVerticalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -177,8 +177,8 @@ class CreateTeamFrame : JFrame() {
                         .addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, 231, GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(createButton)
-                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt())
-                )
+                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt()),
+                ),
         )
 
         pack()

@@ -32,14 +32,14 @@ abstract class AbstractLevelObjectPanel<R : AbstractLevelObject, PRP : ResourceP
         placementPolygon: Polygon,
         imageURI: String?,
         parentResourcePanel: PRP,
-        drawLayer: DrawLayer
+        drawLayer: DrawLayer,
     ) : super(resource, placementPolygon, ObjectType.Static, imageURI, parentResourcePanel, drawLayer)
 
     constructor(
         resource: R,
         placementPolygon: Polygon,
         imageURI: String,
-        parentPanel: ResourceDisplayPanel<ResourcePanel>
+        parentPanel: ResourceDisplayPanel<ResourcePanel>,
     ) : super(resource, placementPolygon, ObjectType.Dynamic, imageURI, parentPanel)
 
     protected fun paintShape(g2: Graphics2D) {
@@ -48,14 +48,14 @@ abstract class AbstractLevelObjectPanel<R : AbstractLevelObject, PRP : ResourceP
                 resource.position.x.toInt() - (resource.width.toInt() / 2),
                 resource.position.y.toInt() - (resource.height.toInt() / 2),
                 resource.width.toInt(),
-                resource.height.toInt()
+                resource.height.toInt(),
             )
 
             AbstractLevelObject.ObjectShape.Rec -> g2.fillRect(
                 resource.position.x.toInt() - (resource.width.toInt() / 2),
                 resource.position.y.toInt() - (resource.height.toInt() / 2),
                 resource.width.toInt(),
-                resource.height.toInt()
+                resource.height.toInt(),
             )
 
             else -> {
@@ -76,7 +76,7 @@ abstract class AbstractLevelObjectPanel<R : AbstractLevelObject, PRP : ResourceP
         direction: Direction2D,
         width: Double,
         height: Double,
-        affineTransform: AffineTransform
+        affineTransform: AffineTransform,
     ): AffineTransform {
         dimension2D.setSize(width, height)
         return getRotationTransformation(direction, dimension2D, affineTransform)
@@ -85,12 +85,12 @@ abstract class AbstractLevelObjectPanel<R : AbstractLevelObject, PRP : ResourceP
     fun getRotationTransformation(
         direction: Direction2D,
         dimension: Dimension2D,
-        affineTransform: AffineTransform
+        affineTransform: AffineTransform,
     ): AffineTransform {
         affineTransform.rotate(
             Math.toRadians(direction.angle + 90.0),
             dimension.width / 2.0,
-            dimension.height / 2.0
+            dimension.height / 2.0,
         )
         return affineTransform
     }
@@ -106,7 +106,7 @@ abstract class AbstractLevelObjectPanel<R : AbstractLevelObject, PRP : ResourceP
             0.0,
             1.0,
             boundingBox.x,
-            boundingBox.y
+            boundingBox.y,
         )
     override val skaleImageToBoundsTransformation: AffineTransform
         get() {
@@ -118,7 +118,7 @@ abstract class AbstractLevelObjectPanel<R : AbstractLevelObject, PRP : ResourceP
                 0.0,
                 boundingBox.height / image!!.height,
                 boundingBox.x,
-                boundingBox.y
+                boundingBox.y,
             )
         }
 

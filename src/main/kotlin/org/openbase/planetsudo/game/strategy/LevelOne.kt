@@ -23,85 +23,101 @@ class LevelOne(agent: AgentInterface) : AbstractStrategy(agent) {
 
     override fun loadRules() {
         // -------------------------------------------->
-        createRule(object : Rule(0, "Just Go") {
-            override fun constraint(): Boolean {
-                return true
-            }
+        createRule(
+            object : Rule(0, "Just Go") {
+                override fun constraint(): Boolean {
+                    return true
+                }
 
-            override fun action() {
-                agent.go()
-            }
-        })
+                override fun action() {
+                    agent.go()
+                }
+            },
+        )
         // -------------------------------------------->
-        createRule(object : Rule(20, "Search Resources") {
-            override fun constraint(): Boolean {
-                return agent.seeResource()
-            }
+        createRule(
+            object : Rule(20, "Search Resources") {
+                override fun constraint(): Boolean {
+                    return agent.seeResource()
+                }
 
-            override fun action() {
-                agent.goToResource()
-            }
-        })
+                override fun action() {
+                    agent.goToResource()
+                }
+            },
+        )
         // -------------------------------------------->
-        createRule(object : Rule(30, "PickUp Resource") {
-            override fun constraint(): Boolean {
-                return agent.isTouchingResource && agent.resourceType != ResourceType.Mine
-            }
+        createRule(
+            object : Rule(30, "PickUp Resource") {
+                override fun constraint(): Boolean {
+                    return agent.isTouchingResource && agent.resourceType != ResourceType.Mine
+                }
 
-            override fun action() {
-                agent.pickupResource()
-            }
-        })
+                override fun action() {
+                    agent.pickupResource()
+                }
+            },
+        )
         // -------------------------------------------->
-        createRule(object : Rule(40, "Save Resource") {
-            override fun constraint(): Boolean {
-                return agent.isCarryingResource
-            }
+        createRule(
+            object : Rule(40, "Save Resource") {
+                override fun constraint(): Boolean {
+                    return agent.isCarryingResource
+                }
 
-            override fun action() {
-                agent.goToMothership()
-            }
-        })
+                override fun action() {
+                    agent.goToMothership()
+                }
+            },
+        )
         // -------------------------------------------->
-        createRule(object : Rule(50, "Pass Resource") {
-            override fun constraint(): Boolean {
-                return agent.isCarryingResource && agent.isAtMothership
-            }
+        createRule(
+            object : Rule(50, "Pass Resource") {
+                override fun constraint(): Boolean {
+                    return agent.isCarryingResource && agent.isAtMothership
+                }
 
-            override fun action() {
-                agent.deliverResourceToMothership()
-            }
-        })
+                override fun action() {
+                    agent.deliverResourceToMothership()
+                }
+            },
+        )
         // -------------------------------------------->
-        createRule(object : Rule(200, "GoBackToMothership") {
-            override fun constraint(): Boolean {
-                return agent.fuel < 300
-            }
+        createRule(
+            object : Rule(200, "GoBackToMothership") {
+                override fun constraint(): Boolean {
+                    return agent.fuel < 300
+                }
 
-            override fun action() {
-                agent.goToMothership()
-            }
-        })
+                override fun action() {
+                    agent.goToMothership()
+                }
+            },
+        )
         // -------------------------------------------->
-        createRule(object : Rule(400, "OrderFuel") {
-            override fun constraint(): Boolean {
-                return (agent.fuel < 300) && (agent.isAtMothership)
-            }
+        createRule(
+            object : Rule(400, "OrderFuel") {
+                override fun constraint(): Boolean {
+                    return (agent.fuel < 300) && (agent.isAtMothership)
+                }
 
-            override fun action() {
-                agent.orderFuel(100)
-            }
-        })
+                override fun action() {
+                    agent.orderFuel(100)
+                }
+            },
+        )
         // -------------------------------------------->
-        createRule(object : Rule(1000, "AvoidWall") {
-            override fun constraint(): Boolean {
-                return agent.isCollisionDetected
-            }
+        createRule(
+            object : Rule(1000, "AvoidWall") {
+                override fun constraint(): Boolean {
+                    return agent.isCollisionDetected
+                }
 
-            override fun action() {
-                agent.turnRandom()
-            }
-        })
+                override fun action() {
+                    agent.turnRandom()
+                }
+            },
+        )
         // -------------------------------------------->
     }
 }
