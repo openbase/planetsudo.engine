@@ -97,12 +97,7 @@ class LevelDisplayPanel : ResourceDisplayPanel<LevelPanel>(), Runnable {
             if (visibleResourcePanel != null) {
                 repaint()
             }
-            try {
-                Thread.sleep(50)
-            } catch (ex: InterruptedException) {
-                logger.warn("VideoThread interruped!", ex)
-                break
-            }
+            Thread.sleep(50)
         }
         isRunning = false
         logger.info("VideoThread stopped.")

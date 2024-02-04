@@ -633,7 +633,7 @@ class ConfigurationPanel : JPanel() {
                             levelPreviewDisplayPanel!!.setLevel(level)
                             levelPreviewDisplayPanel!!.isOpaque = true
                             levelPreviewDisplayPanel!!.background = level.color
-                        } catch (ex: Exception) {
+                        } catch (ex: CouldNotPerformException) {
                             logger.error("Could not update level preview!", ex)
                         }
                     }
@@ -677,7 +677,7 @@ class ConfigurationPanel : JPanel() {
                     break
                 }
             }
-        } catch (ex: Exception) {
+        } catch (ex: CouldNotPerformException) {
             ExceptionPrinter.printHistory(CouldNotPerformException("Could not resolve default Team!", ex), logger)
         }
     }
@@ -688,7 +688,7 @@ class ConfigurationPanel : JPanel() {
             setdefaultTeamButton!!.foreground = Color.BLACK
             saveDefaultTeam(defaultTeamData)
             setDefaultTeam(defaultTeamData)
-        } catch (exx: Exception) {
+        } catch (exx: CouldNotPerformException) {
             logger.error("Could not define default team!", exx)
             setdefaultTeamButton!!.foreground = Color.RED
             return
@@ -769,7 +769,7 @@ class ConfigurationPanel : JPanel() {
                 stateProperties.load(FileInputStream(propertiesFile))
                 logger.info("Load GUI Properties from " + propertiesFile.absolutePath)
             }
-        } catch (ex: Exception) {
+        } catch (ex: CouldNotPerformException) {
             ExceptionPrinter.printHistory("Could not load gui properties!", ex, logger)
         }
 
@@ -784,7 +784,7 @@ class ConfigurationPanel : JPanel() {
                         logger.info("Create: " + propertiesFile.createNewFile())
                     }
                     stateProperties.store(FileOutputStream(propertiesFile), "PlanetSudo GUI Properties")
-                } catch (ex: Exception) {
+                } catch (ex: CouldNotPerformException) {
                     ExceptionPrinter.printHistory("Could not store gui properties!", ex, logger)
                 }
             }

@@ -13,7 +13,8 @@ class JPServerHostname : AbstractJPString(COMMAND_IDENTIFIERS) {
 
     override fun getPropertyDefaultValue(): String {
 // 		return "cpwe";
-        return "bone.no-ip.biz"
+//        return "bone.no-ip.biz"
+        return "localhost"
     }
 
     override fun getDescription(): String {

@@ -27,7 +27,7 @@ class ObjectFileController<O>(private val fileURI: String) {
             } finally {
                 try {
                     fileOutputStream?.close()
-                } catch (ex: Exception) {
+                } catch (ex: IOException) {
                     logger.warn("Could not close stream to $fileURI", ex)
                     return false
                 }
@@ -57,14 +57,10 @@ class ObjectFileController<O>(private val fileURI: String) {
             } catch (ex: InvalidClassException) {
                 deleteDataFile()
                 throw IOException("File[$fileURI] not compatible with progam version! Class struct changed!", ex)
-            } catch (ex: Exception) {
+            } catch (ex: IOException) {
                 throw IOException("Could not read File[$fileURI]", ex)
             } finally {
-                try {
-                    fileInputStream?.close()
-                } catch (ex: Exception) {
-                    throw IOException("Could not close fileStream " + fileURI + " :" + ex.message)
-                }
+                fileInputStream?.close()
             }
             return `object`
         }
@@ -74,7 +70,7 @@ class ObjectFileController<O>(private val fileURI: String) {
         logger.warn("Initiate delete of $fileURI")
         try {
             File(fileURI).delete()
-        } catch (ex: Exception) {
+        } catch (ex: SecurityException) {
             logger.warn("Could not delete $fileURI", ex)
         }
     }

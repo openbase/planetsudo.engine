@@ -61,6 +61,8 @@ abstract class AbstractStrategy(val agent: AgentInterface) : Runnable {
                 } else {
                     logger.debug("ignore rule because game is paused!")
                 }
+            } catch (ex: InterruptedException) {
+                throw ex
             } catch (ex: Throwable) {
                 logger.error(
                     "Could not execute rule[" + strategyOwner.lastAction + "] of strategy [${javaClass.simpleName}]!",
@@ -68,13 +70,9 @@ abstract class AbstractStrategy(val agent: AgentInterface) : Runnable {
                 )
                 strategyOwner.kill()
             }
-            try {
-                Thread.sleep((DEFAULT_GAME_CYCLE / gameSpeedFactor).toLong())
-            } catch (e: InterruptedException) {
-                return
-            }
+            Thread.sleep((DEFAULT_GAME_CYCLE / gameSpeedFactor).toLong())
         }
-        logger.info("AI dies from agent $agent!")
+        logger.info("AI of agent $agent is dead now!")
     }
 
     fun createRule(rule: Rule) {

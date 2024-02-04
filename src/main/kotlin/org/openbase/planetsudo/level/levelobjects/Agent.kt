@@ -232,7 +232,7 @@ class Agent(
         val constructor: Constructor<out AbstractStrategy>
         try {
             constructor = mothership.team.strategy.getConstructor(AgentInterface::class.java)
-        } catch (ex: Exception) {
+        } catch (ex: CouldNotPerformException) {
             LOGGER.error("Could not load strategy!", ex)
             kill()
             return
@@ -240,7 +240,7 @@ class Agent(
         val strategy: AbstractStrategy
         try {
             strategy = constructor.newInstance(this)
-        } catch (ex: Exception) {
+        } catch (ex: CouldNotPerformException) {
             LOGGER.error("Could not load strategy!", ex)
             kill()
             return
@@ -521,8 +521,8 @@ class Agent(
                 direction.turnTo(position, teamAgent.position)
                 ap.getActionPoint(value * 2)
                 teamAgent.fuel += useFuel(value)
+                GameSound.SpendFuel.play()
             }
-            GameSound.SpendFuel.play()
         }
         isHelping = false
     }

@@ -64,7 +64,7 @@ class PlanetSudoClient private constructor() {
         try {
             connecting()
             transferData()
-        } catch (ex: Exception) {
+        } catch (ex: CouldNotPerformException) {
             setConnectionState(ConnectionState.ConnectionError)
             logger.error("Could not sync!", ex)
         } finally {
@@ -94,7 +94,7 @@ class PlanetSudoClient private constructor() {
             )
             out = ObjectOutputStream(clientSocket.getOutputStream())
             `in` = ObjectInputStream(clientSocket.getInputStream())
-        } catch (ex: Exception) {
+        } catch (ex: CouldNotPerformException) {
             ExceptionPrinter.printHistory(CouldNotPerformException("Error during transfer occured!", ex), logger)
         }
     }
@@ -134,7 +134,7 @@ class PlanetSudoClient private constructor() {
                 JPService.getProperty(
                     JPStrategySourceDirectory::class.java
                 ).value,
-                defaultTeamData!!.strategy + ".java"
+                defaultTeamData!!.strategy + ".kt"
             )
             if (!sourceFile.exists()) {
                 throw CouldNotPerformException("File[" + sourceFile.absolutePath + "] does not exist!")

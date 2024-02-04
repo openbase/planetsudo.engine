@@ -15,7 +15,11 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
+import java.util.concurrent.Executors
+import java.util.concurrent.locks.ReentrantLock
 import javax.swing.Timer
+import kotlin.concurrent.withLock
+import kotlin.coroutines.CoroutineContext
 import kotlin.math.max
 
 /**
@@ -40,7 +44,8 @@ class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership)
 
     var type: TowerType? = null
         private set
-    private val TOWER_LOCK = Any()
+    private val lock = ReentrantLock()
+    private val condition = lock.newCondition()
     private val placement: ResourcePlacement? = null
     private val timer: Timer
 
@@ -60,7 +65,9 @@ class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership)
         this.timer = Timer(50, this)
         this.reset()
         logger.info("Create $this")
-        GlobalCachedExecutorService.execute {
+
+
+        Thread {
             try {
                 while (!Thread.interrupted()) {
                     if (!isErected) {
@@ -75,7 +82,7 @@ class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership)
             } catch (ex: Exception) {
                 ExceptionPrinter.printHistory(InvalidStateException("TowerRotationThread crashed.", ex), logger)
             }
-        }
+        }.start()
     }
 
     @Throws(CouldNotPerformException::class)
@@ -129,14 +136,14 @@ class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership)
                 } else if (this.fuel < fuel) { // use last fuel
                     fuel = this.fuel
                     this.fuel = 0
-                    synchronized(this) {
-                        (this as Object).notifyAll()
+                    lock.withLock {
+                        condition.signalAll()
                     }
                 } else {
                     this.fuel -= fuel
                 }
                 changes.firePropertyChange(TOWER_FUEL_STATE_CHANGE, oldFuel, this.fuel)
-            } catch (ex: Exception) {
+            } catch (ex: CouldNotPerformException) {
                 logger.error("Could not order fuel!", ex)
             }
         } else {
@@ -185,7 +192,7 @@ class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership)
     }
 
     val isBurning: Boolean
-        get() = shieldForce < Mothership.Companion.BURNING_TOWER && hasFuel()
+        get() = shieldForce < Mothership.BURNING_TOWER && hasFuel()
 
     val shieldPoints: Int
         get() = shieldForce / 2
@@ -198,7 +205,7 @@ class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership)
 
     override fun actionPerformed(ex: ActionEvent) {
         if (!GameManager.gameManager.isPause) {
-            orderFuel(max(0.0, (Mothership.Companion.BURNING_TOWER - shieldForce).toDouble()).toInt(), null)
+            orderFuel(max(0.0, (Mothership.BURNING_TOWER - shieldForce).toDouble()).toInt(), null)
         }
     }
 

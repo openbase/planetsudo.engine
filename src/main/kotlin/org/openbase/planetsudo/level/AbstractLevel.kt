@@ -1,5 +1,6 @@
 package org.openbase.planetsudo.level
 
+import org.openbase.jul.exception.CouldNotPerformException
 import org.openbase.jul.schedule.SyncObject
 import org.openbase.planetsudo.game.AbstractGameObject
 import org.openbase.planetsudo.game.GameManager
@@ -65,7 +66,7 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
             for (mothership in motherships) {
                 mothership!!.startGame()
             }
-        } catch (ex: Exception) {
+        } catch (ex: CouldNotPerformException) {
             logger.warn("Could not start Level!", ex)
             return
         }
@@ -78,11 +79,7 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
                     }
                 }
             }
-            try {
-                Thread.sleep((AbstractStrategy.DEFAULT_GAME_CYCLE / gameSpeedFactor).toLong())
-            } catch (ex: InterruptedException) {
-                return
-            }
+            Thread.sleep((AbstractStrategy.DEFAULT_GAME_CYCLE / gameSpeedFactor).toLong())
         }
         logger.info("Level Ends.")
     }

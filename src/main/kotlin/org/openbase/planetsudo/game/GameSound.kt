@@ -8,7 +8,9 @@ import org.openbase.jul.audio.AudioDataImpl
 import org.openbase.jul.audio.AudioPlayer
 import org.openbase.jul.exception.CouldNotPerformException
 import org.openbase.jul.exception.printer.ExceptionPrinter
+import org.slf4j.LoggerFactory
 import java.io.File
+import java.io.IOException
 import java.time.Duration
 import java.time.Instant
 import java.util.*
@@ -42,14 +44,14 @@ enum class GameSound(uri: String) {
     private val disabled: Boolean
 
     init {
-        var tmpData: AudioDataImpl? = null
-        try {
-            tmpData = AudioDataImpl(File(ClassLoader.getSystemResource(uri).file))
-        } catch (ex: Exception) {
+        val tmpData: AudioDataImpl? = try {
+            AudioDataImpl(File(ClassLoader.getSystemResource(uri).file))
+        } catch (ex: IOException) {
             ExceptionPrinter.printHistory(
                 CouldNotPerformException("Could not load Soundfile[$uri] of $name", ex),
-                System.err
+                LoggerFactory.getLogger(GameSound::class.java)
             )
+            null
         }
         this.audioData = tmpData
         this.disabled = (audioData == null)
@@ -57,7 +59,7 @@ enum class GameSound(uri: String) {
 
     @Synchronized
     fun play() {
-        if (disabled) {
+        if (disabled || audioData == null) {
             return
         }
 

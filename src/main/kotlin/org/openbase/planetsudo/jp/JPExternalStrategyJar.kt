@@ -27,6 +27,6 @@ class JPExternalStrategyJar :
     }
 
     companion object {
-        val COMMAND_IDENTIFIERS: Array<String> = arrayOf("--buildTarget")
+        val COMMAND_IDENTIFIERS: Array<String> = arrayOf("--build-directory")
     }
 }

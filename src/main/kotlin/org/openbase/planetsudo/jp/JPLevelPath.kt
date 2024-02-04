@@ -22,8 +22,8 @@ class JPLevelPath :
     }
 
     @Throws(JPNotAvailableException::class)
-    override fun getPropertyDefaultValue(): File {
-        return File(JPService.getProperty(JPPrefix::class.java).value.absolutePath + "/target/classes/org/openbase/planetsudo/level/save/")
+    override fun getPropertyDefaultValue(): File { // build/classes/kotlin/main/org/openbase/planetsudo/game/strategy
+        return File(JPService.getProperty(JPPrefix::class.java).value.absolutePath + "/build/classes/kotlin/main/org/openbase/planetsudo/level/save/")
     }
 
     companion object {

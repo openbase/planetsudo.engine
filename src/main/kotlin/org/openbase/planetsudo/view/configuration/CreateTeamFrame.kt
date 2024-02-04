@@ -9,6 +9,7 @@
  */
 package org.openbase.planetsudo.view.configuration
 
+import org.openbase.jul.exception.CouldNotPerformException
 import org.openbase.jul.visual.swing.component.ColorChooserFrame
 import org.openbase.planetsudo.game.Team.Companion.save
 import org.openbase.planetsudo.game.TeamData
@@ -54,7 +55,7 @@ class CreateTeamFrame : JFrame() {
 // 		}
         try {
             strategy = loadStrategy(strategyTextField!!.text)
-        } catch (ex: Exception) {
+        } catch (ex: CouldNotPerformException) {
             strategyTextField!!.foreground = Color.RED
             logger.warn("Could not load strategy!", ex)
             return
@@ -66,7 +67,7 @@ class CreateTeamFrame : JFrame() {
 
         try {
             save(teamData)
-        } catch (ex: Exception) {
+        } catch (ex: CouldNotPerformException) {
             logger.error("Could not find team folder!", ex)
             createButton!!.foreground = Color.RED
             return
@@ -235,11 +236,7 @@ class CreateTeamFrame : JFrame() {
         fun display() {
             if (instance == null) {
                 EventQueue.invokeLater { CreateTeamFrame().isVisible = true }
-                try {
-                    Thread.sleep(500)
-                } catch (ex: InterruptedException) {
-                    Thread.currentThread().interrupt()
-                }
+                Thread.sleep(500)
             } else {
                 instance!!.reset()
                 instance!!.isVisible = true

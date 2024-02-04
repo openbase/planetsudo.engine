@@ -238,7 +238,7 @@ class Team(data: TeamData) {
                         val teamStringID = teamClassName.replace(".team", "")
                         try {
                             teamList.add(load(teamStringID))
-                        } catch (ex: Exception) {
+                        } catch (ex: CouldNotPerformException) {
                             ExceptionPrinter.printHistory(
                                 CouldNotPerformException(
                                     "Could not load team $teamClassName!",

@@ -165,11 +165,7 @@ class SpeedControlFrame : JFrame() {
         fun display() {
             if (instance == null) {
                 EventQueue.invokeLater { SpeedControlFrame().isVisible = true }
-                try {
-                    Thread.sleep(500)
-                } catch (ex: InterruptedException) {
-                    Thread.currentThread().interrupt()
-                }
+                Thread.sleep(500)
             } else {
                 instance.isVisible = true
             }

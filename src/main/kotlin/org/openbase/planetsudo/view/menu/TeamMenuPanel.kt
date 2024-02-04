@@ -53,12 +53,12 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
         teamMemberBLabel!!.text = ""
         teamMemberA!!.isVisible = false
         teamMemberB!!.isVisible = false
-        val imageUri = GameObjectImages.IMAGE_DIRECTORY + "/teams/team_" + team!!.name + "_A.jpg"
+        val imageUriA = GameObjectImages.IMAGE_DIRECTORY + "/teams/team_" + team!!.name + "_A.jpg"
         try {
-            teamMemberA!!.setImage(GameObjectImages.IMAGE_DIRECTORY + "/teams/team_" + team!!.name + "_A.jpg")
+            teamMemberA!!.setImage(imageUriA)
             teamMemberA!!.isVisible = true
-        } catch (ex: Exception) {
-            logger.warn("Could not load member image [\${imageUri}] and use fallback instead.")
+        } catch (ex: CouldNotPerformException) {
+            logger.warn("Could not load member image [${imageUriA}] and use fallback instead.")
             try {
                 teamMemberA!!.setImage(GameObjectImages.IMAGE_DIRECTORY + "/teams/fallback.jpg")
                 teamMemberA!!.isVisible = true
@@ -69,10 +69,12 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
 
         if (members.size > 1) {
             teamMemberBLabel!!.text = members[1]
+            val imageUriB = GameObjectImages.IMAGE_DIRECTORY + "/teams/team_" + team!!.name + "_A.jpg"
             try {
-                teamMemberB!!.setImage(GameObjectImages.IMAGE_DIRECTORY + "/teams/team_" + team!!.name + "_B.jpg")
+                teamMemberB!!.setImage(imageUriB)
                 teamMemberB!!.isVisible = true
-            } catch (ex: Exception) {
+            } catch (ex: CouldNotPerformException) {
+                logger.warn("Could not load member image [${imageUriB}] and use fallback instead.")
                 try {
                     teamMemberB!!.setImage(GameObjectImages.IMAGE_DIRECTORY + "/teams/fallback.jpg")
                     teamMemberB!!.isVisible = true
@@ -724,106 +726,102 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
 
     private fun animateEndCalculation() {
         var tmpValue: Int
-        try {
-            mothershipShieldPointsLabel!!.isEnabled = false
-            mothershipShieldPointsNameLabel!!.isEnabled = false
-            Thread.sleep(BLINK_ANIMATION.toLong())
-            mothershipShieldPointsLabel!!.isEnabled = true
-            mothershipShieldPointsNameLabel!!.isEnabled = true
-            tmpValue = team!!.mothership!!.shieldPoints
-            for (i in 0..tmpValue) {
-                mothershipShieldPointsLabel!!.text = i.toString() + "P"
-                Thread.sleep(COUNT_ANIMATION.toLong())
-            }
-            mothershipShieldPointsLabel!!.isEnabled = false
-            mothershipShieldPointsNameLabel!!.isEnabled = false
-            Thread.sleep(BLINK_ANIMATION.toLong())
-            mothershipShieldPointsLabel!!.isEnabled = true
-            mothershipShieldPointsNameLabel!!.isEnabled = true
-            Thread.sleep(BLINK_ANIMATION.toLong())
-            mothershipShieldPointsLabel!!.isEnabled = false
-            mothershipShieldPointsNameLabel!!.isEnabled = false
-            Thread.sleep(BLINK_ANIMATION.toLong())
-            mothershipShieldPointsLabel!!.isEnabled = true
-            mothershipShieldPointsNameLabel!!.isEnabled = true
-            Thread.sleep(BLINK_ANIMATION.toLong())
+        mothershipShieldPointsLabel!!.isEnabled = false
+        mothershipShieldPointsNameLabel!!.isEnabled = false
+        Thread.sleep(BLINK_ANIMATION.toLong())
+        mothershipShieldPointsLabel!!.isEnabled = true
+        mothershipShieldPointsNameLabel!!.isEnabled = true
+        tmpValue = team!!.mothership!!.shieldPoints
+        for (i in 0..tmpValue) {
+            mothershipShieldPointsLabel!!.text = i.toString() + "P"
+            Thread.sleep(COUNT_ANIMATION.toLong())
+        }
+        mothershipShieldPointsLabel!!.isEnabled = false
+        mothershipShieldPointsNameLabel!!.isEnabled = false
+        Thread.sleep(BLINK_ANIMATION.toLong())
+        mothershipShieldPointsLabel!!.isEnabled = true
+        mothershipShieldPointsNameLabel!!.isEnabled = true
+        Thread.sleep(BLINK_ANIMATION.toLong())
+        mothershipShieldPointsLabel!!.isEnabled = false
+        mothershipShieldPointsNameLabel!!.isEnabled = false
+        Thread.sleep(BLINK_ANIMATION.toLong())
+        mothershipShieldPointsLabel!!.isEnabled = true
+        mothershipShieldPointsNameLabel!!.isEnabled = true
+        Thread.sleep(BLINK_ANIMATION.toLong())
 
-            saveAgentsPointsLabel!!.isEnabled = false
-            saveAgentsPointsNameLabel!!.isEnabled = false
-            Thread.sleep(BLINK_ANIMATION.toLong())
-            saveAgentsPointsLabel!!.isEnabled = true
-            saveAgentsPointsNameLabel!!.isEnabled = true
-            tmpValue = team!!.mothership!!.agentsAtHomePoints
-            for (i in 0..tmpValue) {
-                saveAgentsPointsLabel!!.text = i.toString() + "P"
-                Thread.sleep(COUNT_ANIMATION.toLong())
-            }
-            saveAgentsPointsLabel!!.isEnabled = false
-            saveAgentsPointsNameLabel!!.isEnabled = false
-            Thread.sleep(BLINK_ANIMATION.toLong())
-            saveAgentsPointsLabel!!.isEnabled = true
-            saveAgentsPointsNameLabel!!.isEnabled = true
-            Thread.sleep(BLINK_ANIMATION.toLong())
-            saveAgentsPointsLabel!!.isEnabled = false
-            saveAgentsPointsNameLabel!!.isEnabled = false
-            Thread.sleep(BLINK_ANIMATION.toLong())
-            saveAgentsPointsLabel!!.isEnabled = true
-            saveAgentsPointsNameLabel!!.isEnabled = true
-            Thread.sleep(BLINK_ANIMATION.toLong())
+        saveAgentsPointsLabel!!.isEnabled = false
+        saveAgentsPointsNameLabel!!.isEnabled = false
+        Thread.sleep(BLINK_ANIMATION.toLong())
+        saveAgentsPointsLabel!!.isEnabled = true
+        saveAgentsPointsNameLabel!!.isEnabled = true
+        tmpValue = team!!.mothership!!.agentsAtHomePoints
+        for (i in 0..tmpValue) {
+            saveAgentsPointsLabel!!.text = i.toString() + "P"
+            Thread.sleep(COUNT_ANIMATION.toLong())
+        }
+        saveAgentsPointsLabel!!.isEnabled = false
+        saveAgentsPointsNameLabel!!.isEnabled = false
+        Thread.sleep(BLINK_ANIMATION.toLong())
+        saveAgentsPointsLabel!!.isEnabled = true
+        saveAgentsPointsNameLabel!!.isEnabled = true
+        Thread.sleep(BLINK_ANIMATION.toLong())
+        saveAgentsPointsLabel!!.isEnabled = false
+        saveAgentsPointsNameLabel!!.isEnabled = false
+        Thread.sleep(BLINK_ANIMATION.toLong())
+        saveAgentsPointsLabel!!.isEnabled = true
+        saveAgentsPointsNameLabel!!.isEnabled = true
+        Thread.sleep(BLINK_ANIMATION.toLong())
 
-            teamPointsLabel!!.isEnabled = false
-            teamPointsNameLabel!!.isEnabled = false
-            Thread.sleep(BLINK_ANIMATION.toLong())
-            teamPointsLabel!!.isEnabled = true
-            teamPointsNameLabel!!.isEnabled = true
-            tmpValue = team!!.finalPoints
-            for (i in 0..tmpValue) {
-                teamPointsLabel!!.text = i.toString() + "P"
-                Thread.sleep(COUNT_ANIMATION.toLong())
-            }
-            teamPointsLabel!!.isEnabled = false
-            teamPointsNameLabel!!.isEnabled = false
-            Thread.sleep(BLINK_ANIMATION.toLong())
-            teamPointsLabel!!.isEnabled = true
-            teamPointsNameLabel!!.isEnabled = true
-            Thread.sleep(BLINK_ANIMATION.toLong())
-            teamPointsLabel!!.isEnabled = false
-            teamPointsNameLabel!!.isEnabled = false
-            Thread.sleep(BLINK_ANIMATION.toLong())
-            teamPointsLabel!!.isEnabled = true
-            teamPointsNameLabel!!.isEnabled = true
-            Thread.sleep(BLINK_ANIMATION.toLong())
+        teamPointsLabel!!.isEnabled = false
+        teamPointsNameLabel!!.isEnabled = false
+        Thread.sleep(BLINK_ANIMATION.toLong())
+        teamPointsLabel!!.isEnabled = true
+        teamPointsNameLabel!!.isEnabled = true
+        tmpValue = team!!.finalPoints
+        for (i in 0..tmpValue) {
+            teamPointsLabel!!.text = i.toString() + "P"
+            Thread.sleep(COUNT_ANIMATION.toLong())
+        }
+        teamPointsLabel!!.isEnabled = false
+        teamPointsNameLabel!!.isEnabled = false
+        Thread.sleep(BLINK_ANIMATION.toLong())
+        teamPointsLabel!!.isEnabled = true
+        teamPointsNameLabel!!.isEnabled = true
+        Thread.sleep(BLINK_ANIMATION.toLong())
+        teamPointsLabel!!.isEnabled = false
+        teamPointsNameLabel!!.isEnabled = false
+        Thread.sleep(BLINK_ANIMATION.toLong())
+        teamPointsLabel!!.isEnabled = true
+        teamPointsNameLabel!!.isEnabled = true
+        Thread.sleep(BLINK_ANIMATION.toLong())
 
-            if (gameManager.isWinner(team!!)) {
-                Thread.sleep(BLINK_ANIMATION.toLong())
-                teamFinalStateLabel!!.text = "Gewinner"
-                teamFinalStateLabel!!.foreground = Color.GREEN
-                Thread.sleep(BLINK_ANIMATION.toLong())
-                teamFinalStateLabel!!.isEnabled = true
-                Thread.sleep(BLINK_ANIMATION.toLong())
-                teamFinalStateLabel!!.isEnabled = false
-                Thread.sleep(BLINK_ANIMATION.toLong())
-                teamFinalStateLabel!!.isEnabled = true
-                Thread.sleep(BLINK_ANIMATION.toLong())
-                teamFinalStateLabel!!.isEnabled = false
-                Thread.sleep(BLINK_ANIMATION.toLong())
-                teamFinalStateLabel!!.isEnabled = true
-                Thread.sleep(BLINK_ANIMATION.toLong())
-                teamFinalStateLabel!!.isEnabled = false
-                Thread.sleep(BLINK_ANIMATION.toLong())
-                teamFinalStateLabel!!.isEnabled = true
-                Thread.sleep(BLINK_ANIMATION.toLong())
-                teamFinalStateLabel!!.isEnabled = false
-                Thread.sleep(BLINK_ANIMATION.toLong())
-                teamFinalStateLabel!!.isEnabled = true
-            } else {
-                teamFinalStateLabel!!.text = "Verlierer"
-                Thread.sleep(BLINK_ANIMATION.toLong())
-                teamFinalStateLabel!!.foreground = Color.RED
-                teamFinalStateLabel!!.isEnabled = true
-            }
-        } catch (ex: InterruptedException) {
-            Thread.currentThread().interrupt()
+        if (gameManager.isWinner(team!!)) {
+            Thread.sleep(BLINK_ANIMATION.toLong())
+            teamFinalStateLabel!!.text = "Gewinner"
+            teamFinalStateLabel!!.foreground = Color.GREEN
+            Thread.sleep(BLINK_ANIMATION.toLong())
+            teamFinalStateLabel!!.isEnabled = true
+            Thread.sleep(BLINK_ANIMATION.toLong())
+            teamFinalStateLabel!!.isEnabled = false
+            Thread.sleep(BLINK_ANIMATION.toLong())
+            teamFinalStateLabel!!.isEnabled = true
+            Thread.sleep(BLINK_ANIMATION.toLong())
+            teamFinalStateLabel!!.isEnabled = false
+            Thread.sleep(BLINK_ANIMATION.toLong())
+            teamFinalStateLabel!!.isEnabled = true
+            Thread.sleep(BLINK_ANIMATION.toLong())
+            teamFinalStateLabel!!.isEnabled = false
+            Thread.sleep(BLINK_ANIMATION.toLong())
+            teamFinalStateLabel!!.isEnabled = true
+            Thread.sleep(BLINK_ANIMATION.toLong())
+            teamFinalStateLabel!!.isEnabled = false
+            Thread.sleep(BLINK_ANIMATION.toLong())
+            teamFinalStateLabel!!.isEnabled = true
+        } else {
+            teamFinalStateLabel!!.text = "Verlierer"
+            Thread.sleep(BLINK_ANIMATION.toLong())
+            teamFinalStateLabel!!.foreground = Color.RED
+            teamFinalStateLabel!!.isEnabled = true
         }
     }
 

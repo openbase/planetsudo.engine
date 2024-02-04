@@ -131,7 +131,7 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
                     this.fuel -= fuel
                 }
                 changes.firePropertyChange(MOTHERSHIP_FUEL_STATE_CHANGE, oldFuel, this.fuel)
-            } catch (ex: Exception) {
+            } catch (ex: CouldNotPerformException) {
                 logger.error("Could not order fuel!", ex)
             }
         } else {
@@ -161,12 +161,8 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
             if (fuel == 0) {
                 return
             }
-            try {
-                synchronized(TILL_END_WAITER) {
-                    (TILL_END_WAITER as Object).wait()
-                }
-            } catch (ex: InterruptedException) {
-                logger.error("", ex)
+            synchronized(TILL_END_WAITER) {
+                (TILL_END_WAITER as Object).wait()
             }
         }
     }

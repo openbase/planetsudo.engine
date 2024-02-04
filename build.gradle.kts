@@ -7,7 +7,8 @@ import java.util.*
 
 plugins {
     `java-library`
-    kotlin("jvm")
+    application
+    kotlin("jvm") version "1.9.22"
     id("org.jlleitschuh.gradle.ktlint") version "11.6.1"
     `maven-publish`
     signing
@@ -48,11 +49,12 @@ dependencies {
     api(libs.org.jdesktop.beansbinding)
     api(libs.tomcat.tomcat.util)
     api(libs.commons.io.commons.io)
+    // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-core
+    api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+
     testImplementation(libs.junit.junit)
     implementation(kotlin("stdlib-jdk8"))
 }
-
-
 
 nexusPublishing {
     repositories {
@@ -153,7 +155,6 @@ tasks.javadoc {
     }
 }
 
-
 ktlint {
     disabledRules.set(setOf("no-wildcard-imports"))
     filter {
@@ -164,4 +165,8 @@ ktlint {
         reporter(ReporterType.HTML)
         reporter(ReporterType.CHECKSTYLE)
     }
+}
+
+application {
+    mainClass.set("org.openbase.planetsudo.main.Main")
 }
