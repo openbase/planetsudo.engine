@@ -22,7 +22,6 @@ import org.openbase.planetsudo.game.TeamData
 import org.openbase.planetsudo.level.LevelLoader.Companion.getInstance
 import org.openbase.planetsudo.net.PlanetSudoClient
 import org.openbase.planetsudo.net.PlanetSudoClient.Companion.instance
-import org.openbase.planetsudo.util.RandomGenerator
 import org.openbase.planetsudo.view.MainGUI
 import org.openbase.planetsudo.view.level.LevelDisplayPanel
 import org.slf4j.Logger
@@ -35,6 +34,7 @@ import java.util.*
 import javax.swing.*
 import javax.swing.border.BevelBorder
 import javax.swing.border.SoftBevelBorder
+import kotlin.random.Random
 
 /**
  * @author [Divine Threepwood](mailto:divine@openbase.org)
@@ -641,7 +641,7 @@ class ConfigurationPanel : JPanel() {
                                 )
                             }
                             val level = getInstance()!!
-                                .loadLevel(levelChooserComboBox!!.selectedItem.toString())
+                                .loadLevel(levelChooserComboBox!!.selectedItem!!.toString())
                             gameManager.setLevel(level!!)
                             levelPreviewDisplayPanel!!.setLevel(level)
                             levelPreviewDisplayPanel!!.isOpaque = true
@@ -656,18 +656,14 @@ class ConfigurationPanel : JPanel() {
         }.execute()
     } // GEN-LAST:event_levelChooserComboBoxActionPerformed
 
-    private fun randomLevelButtonActionPerformed() {
-        val maxIndex = levelChooserComboBox!!.itemCount - 1
-        if (maxIndex < 1) {
-            return
-        }
-
-        var nextLevelIndex = RandomGenerator.getRandom(0, maxIndex)
-        if (nextLevelIndex >= levelChooserComboBox!!.selectedIndex) { // avoid the same index
-            nextLevelIndex += 1
-        }
-        levelChooserComboBox!!.selectedIndex = nextLevelIndex
-    }
+    private fun randomLevelButtonActionPerformed() =
+        levelChooserComboBox
+            ?.takeIf { it.itemCount > 1 }
+            ?.selectedIndex?.also { selectedIndex ->
+                do {
+                    levelChooserComboBox!!.selectedIndex = Random.nextInt(levelChooserComboBox!!.itemCount)
+                } while (selectedIndex == levelChooserComboBox!!.selectedIndex)
+            }
 
     private fun startGameButtonActionPerformed() { // GEN-FIRST:event_startGameButtonActionPerformed
         MainGUI.instance!!.showLoadingPanel()
