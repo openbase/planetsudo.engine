@@ -31,6 +31,8 @@ class AgentMock : AgentInterface {
         get() = TODO("Not yet implemented")
     override val angle: Int
         get() = TODO("Not yet implemented")
+    override val carryingResourceType: Resource.ResourceType
+        get() = TODO("Not yet implemented")
     override val fuel: Int
         get() = TODO("Not yet implemented")
     override val fuelInPercent: Int
