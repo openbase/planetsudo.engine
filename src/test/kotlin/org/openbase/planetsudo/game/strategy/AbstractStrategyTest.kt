@@ -7,7 +7,6 @@ import org.openbase.planetsudo.game.SwatTeam
 import org.openbase.planetsudo.level.levelobjects.AgentMock
 import kotlin.test.Test
 
-
 class AbstractStrategyTest {
 
     @Test

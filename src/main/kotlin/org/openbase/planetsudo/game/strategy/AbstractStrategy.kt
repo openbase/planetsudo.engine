@@ -141,7 +141,6 @@ abstract class AbstractStrategy(val agent: AgentInterface) : Runnable {
         }
         val agentList = mothershipInternal.agents
         for (agentNumber in agentNumbers) {
-
             if (agentNumber < 0) {
                 logger.error("Could not create SwatTeam[" + swatTeam.name + "] because negative agent number is not allowed!")
                 agent.kill()
