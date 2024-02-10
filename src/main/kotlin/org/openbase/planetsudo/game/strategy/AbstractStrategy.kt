@@ -41,11 +41,21 @@ abstract class AbstractStrategy(val agent: AgentInterface) : Runnable {
         if (agent is Agent) {
             this.loadRules()
             this.loadSwatTeams()
-            strategyOwner.mothership.level.addPropertyChangeListener { evt: PropertyChangeEvent ->
-                if (evt.propertyName == AbstractLevel.GAME_SPEED_FACTOR_CHANGED) {
-                    gameSpeedFactor = evt.newValue as Double
-                }
+            connectToMothership()
+            bindGameSpeed()
+        }
+    }
+
+    private fun connectToMothership() {
+        strategyOwner.mothership.level.addPropertyChangeListener { evt: PropertyChangeEvent ->
+            if (evt.propertyName == AbstractLevel.GAME_SPEED_FACTOR_CHANGED) {
+                gameSpeedFactor = evt.newValue as Double
             }
+        }
+    }
+
+    private fun bindGameSpeed() {
+        if (agent is Agent) {
             gameSpeedFactor = agent.mothership.level.getGameSpeedFactor()
         }
     }
@@ -75,16 +85,17 @@ abstract class AbstractStrategy(val agent: AgentInterface) : Runnable {
         logger.info("AI of agent $agent is dead now!")
     }
 
-    fun createRule(rule: Rule) {
+    fun createRule(rule: Rule): Rule {
         logger.debug("Create rule $rule")
         if (rules.containsKey(getKey(rule))) {
             logger.error("There exist min two rules with the same priority!")
             agent.kill()
         }
         rules[getKey(rule)] = rule
+        return rule
     }
 
-    fun getKey(rule: Rule): Int {
+    private fun getKey(rule: Rule): Int {
         // Auto generate priority if rule does not contain any priority.
         if (rule.priority == -1) {
             return -rules.size
@@ -92,10 +103,9 @@ abstract class AbstractStrategy(val agent: AgentInterface) : Runnable {
         return -rule.priority // invert priority to swap list order.
     }
 
-    protected fun executeRule() {
+    private fun executeRule() {
         for (rule in rules.values) {
-            if (rule.constraint() && agent.isMemberOfSwatTeam(rule.swatTeam)) {
-//                logger.debug("Select $rule")
+            if (rule.constraint() && agent.isMemberOfSwatTeam(rule.swatTeams)) {
                 strategyOwner.lastAction = rule.name
                 rule.action()
                 break
@@ -113,7 +123,7 @@ abstract class AbstractStrategy(val agent: AgentInterface) : Runnable {
      * @param swatTeam Das SwatTeam welchem die Agenten zugeteilt werden sollen.
      * @param agents Die Ids der Agenten.
      */
-    protected fun createSwat(swatTeam: SwatTeam, vararg agentNumber: Int) {
+    protected fun createSwat(swatTeam: SwatTeam, vararg agentNumbers: Int) {
         when (swatTeam) {
             ALL, COMMANDER -> {
                 logger.error("SwatTeam[" + swatTeam.name + "] is not modifiable!")
@@ -121,17 +131,30 @@ abstract class AbstractStrategy(val agent: AgentInterface) : Runnable {
                 return
             }
 
-            else -> {}
+            else -> {
+                if (swatTeam.negative) {
+                    logger.error("SwatTeam[" + swatTeam.name + "] is not modifiable!")
+                    agent.kill()
+                    return
+                }
+            }
         }
-        val agentList = mothershipInternal.getAgents()
-        for (agentID in agentNumber) {
-            if (agentID >= agentCount || agentID >= agentList.size) {
+        val agentList = mothershipInternal.agents
+        for (agentNumber in agentNumbers) {
+
+            if (agentNumber < 0) {
+                logger.error("Could not create SwatTeam[" + swatTeam.name + "] because negative agent number is not allowed!")
+                agent.kill()
+                return
+            }
+
+            if (agentNumber >= agentCount || agentNumber >= agentList.size) {
                 logger.error("Could not create SwatTeam[" + swatTeam.name + "] because team has not enough members!")
                 agent.kill()
                 return
             }
 
-            agentList.firstOrNull { it.id == agentID }?.joinSwatTeam(swatTeam)
+            agentList[agentNumber].joinSwatTeam(swatTeam)
         }
     }
 
@@ -143,7 +166,7 @@ abstract class AbstractStrategy(val agent: AgentInterface) : Runnable {
 
     protected abstract fun loadAgentCount(): Int
 
-    protected infix fun RuleBuilder.then(action: AgentInterface.() -> Unit): Unit = this
+    protected infix fun RuleBuilder.then(action: AgentInterface.() -> Unit): Rule = this
         .apply { this.action = { agent.action() } }
         .build()
         .let { createRule(it) }
@@ -153,6 +176,9 @@ abstract class AbstractStrategy(val agent: AgentInterface) : Runnable {
 
     protected infix fun String.commander(builder: RuleBuilder): RuleBuilder =
         RuleBuilder(name = this@commander).merge(builder).swat(COMMANDER)
+
+    protected infix fun String.nonCommander(builder: RuleBuilder): RuleBuilder =
+        RuleBuilder(name = this@nonCommander).merge(builder).swat(NOT_COMMANDER)
 
     protected infix fun String.swat(swats: () -> Collection<SwatTeam>): RuleBuilder =
         RuleBuilder(this@swat).swat(swats())

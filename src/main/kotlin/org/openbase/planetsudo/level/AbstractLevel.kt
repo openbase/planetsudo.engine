@@ -329,7 +329,7 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
     fun getAdversaryAgent(agent: Agent): Agent? {
         for (mothership in motherships) {
             if (mothership!!.team != agent.team) {
-                for (adversaryAgent in mothership.getAgents()) {
+                for (adversaryAgent in mothership.agents) {
                     if (adversaryAgent.hasFuel() && adversaryAgent.bounds.intersects(agent.viewBounds)) {
                         return adversaryAgent
                     }
@@ -342,7 +342,7 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
     fun getTeamAgent(agent: Agent): Agent? {
         for (mothership in motherships) {
             if (mothership!!.team == agent.team) {
-                for (teamAgent in mothership.getAgents()) {
+                for (teamAgent in mothership.agents) {
                     if (teamAgent == agent) {
                         continue
                     }
@@ -358,7 +358,7 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
     fun getLostTeamAgent(agent: Agent): Agent? {
         for (mothership in motherships) {
             if (mothership!!.team == agent.team) {
-                for (teamAgent in mothership.getAgents()) {
+                for (teamAgent in mothership.agents) {
                     if (!teamAgent.hasFuel() && teamAgent.bounds.intersects(agent.viewBounds)) {
                         return teamAgent
                     }

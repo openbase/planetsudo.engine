@@ -51,9 +51,10 @@ dependencies {
     api(libs.commons.io.commons.io)
     // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-core
     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-
-    testImplementation(libs.junit.junit)
     implementation(kotlin("stdlib-jdk8"))
+    testImplementation(libs.org.jetbrains.kotlin.test.junit5)
+    testImplementation(libs.io.mockk)
+    testImplementation(libs.org.amshove.kluent)
 }
 
 nexusPublishing {

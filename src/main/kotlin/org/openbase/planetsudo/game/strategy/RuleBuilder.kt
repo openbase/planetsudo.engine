@@ -33,7 +33,11 @@ data class RuleBuilder(
             error("$this has no action!")
         }
 
-        return object : Rule(this@RuleBuilder.name!!) {
+        if (this@RuleBuilder.swat.isEmpty()) {
+            error("$this has no agent assignment!")
+        }
+
+        return object : Rule(name = this@RuleBuilder.name!!, swatTeams = this@RuleBuilder.swat) {
             override fun constraint(): Boolean = this@RuleBuilder.constraint?.let { it() }!!
             override fun action(): Unit = this@RuleBuilder.action?.let { it() }!!
         }
