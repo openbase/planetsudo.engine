@@ -19,6 +19,7 @@ enum class GameObjectImages(imagesURL: String) {
     ResourceExtraAgentFuel("resource5.png"),
     ResourceExtraMothershipFuel("resource7.png"),
     ResourceMine("mine.png"),
+    ResourceTonic("resource-tonic.png"),
     Tower("tower.png"),
     DefenceTowerTop("observation-tower-top.png"),
     ObservationTowerTop("defence-tower-top.png"),
