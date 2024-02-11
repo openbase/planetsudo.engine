@@ -17,7 +17,7 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
      * @return Anzahl der Agenten
      */
     override fun loadAgentCount(): Int {
-        return 7
+        return 2
     }
 
     override fun loadSwatTeams() {
@@ -115,10 +115,10 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
             object : Rule("PickUp") {
                 override fun constraint(): Boolean {
                     return !agent.isCommander && (
-                        agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(
-                            ResourceType.ExtraMothershipFuel,
-                        )
-                        )
+                            agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(
+                                ResourceType.ExtraMothershipFuel,
+                            )
+                            )
                 }
 
                 override fun action() {
@@ -146,10 +146,10 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
             object : Rule("PickUp and Place") {
                 override fun constraint(): Boolean {
                     return agent.isCommander && (
-                        agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(
-                            ResourceType.ExtraMothershipFuel,
-                        )
-                        ) && !mothership.isMarkerDeployed && !agent.seeMarker()
+                            agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(
+                                ResourceType.ExtraMothershipFuel,
+                            )
+                            ) && !mothership.isMarkerDeployed && !agent.seeMarker()
                 }
 
                 override fun action() {
@@ -170,6 +170,10 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 }
             },
         )
+        // -------------------------------------------->
+        "PickUp Tonic" all inCase { agent.isTouchingResource(ResourceType.Tonic) } then {
+            agent.pickupResource()
+        }
         // -------------------------------------------->
         createRule(
             object : Rule("Discover 5P and Place Marker", SwatTeam.COMMANDER) {

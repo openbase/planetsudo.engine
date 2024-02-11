@@ -113,6 +113,31 @@ interface AgentInterface {
     val fuel: Int
 
     /**
+     * Zeigt den aktuellen Tonic Bestand des Agenten an.
+     *
+     * 0 = Kein Tonic
+     * 1 = Reicht für einen Shift
+     * 2 = Reicht für zwei Shifts
+     * 3 = Reicht für drei Shifts oder ermöglicht es den Agenten unsichtbar zu machen.
+     *
+     * @return Die aktuelle Tonic Menge als ganz Zahl zwischen 0 - 3.
+     */
+    val tonic: Int
+
+    /**
+     * Zeigt den aktuellen Tonic Bestand des Agenten in Prozent.
+     *
+     *   0 % = Kein Tonic
+     *  33 % = Reicht für einen Shift
+     *  66 % = Reicht für zwei Shifts
+     * 100 % = Reicht für drei Shifts oder ermöglicht es den Agenten unsichtbar zu machen.
+     *
+     * @return Die aktuelle Tonic Menge als ganz Zahl zwischen 0 - 100.
+     */
+    val tonicInPercent: Int
+
+
+    /**
      * Gibt den verbliebenen Treibstoff in Prozent an.
      *
      * @return Treibstoffwert in Prozent als ganze Zahl. (z.B. 47 bei 47%

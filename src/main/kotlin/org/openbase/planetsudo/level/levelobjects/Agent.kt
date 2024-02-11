@@ -20,6 +20,7 @@ import java.awt.geom.Rectangle2D
 import java.lang.reflect.Constructor
 import java.util.*
 import java.util.logging.Level
+import kotlin.math.max
 import kotlin.math.min
 
 /**
@@ -49,6 +50,9 @@ class Agent(
         protected set
     override var fuel: Int = 0
         protected set
+    override var tonic: Int = 0
+        protected set
+
     override var isAlive: Boolean
         private set
     private var attacked: Boolean
@@ -110,8 +114,15 @@ class Agent(
         ap.addActionPoint()
     }
 
+    fun addTonic() {
+        tonic = min(tonic + 1, MAX_TONIC)
+    }
+
     override val fuelInPercent: Int
         get() = (fuel * 100) / fuelVolume
+
+    override val tonicInPercent: Int
+        get() = (tonic / MAX_TONIC) * 100
 
     val team: Team
         get() = mothership.team
@@ -713,6 +724,7 @@ class Agent(
     companion object {
         // 	public final static int DEFAULT_START_FUEL = 2000;
         // public final static int DEFAULT_START_FUEL = 1000;
+        const val MAX_TONIC: Int = 3
         const val AGENT_SIZE: Int = 50
         const val AGENT_VIEW_DISTANCE: Int = AGENT_SIZE
         const val DEFAULT_AGENT_SPEED: Int = 6
