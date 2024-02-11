@@ -136,7 +136,6 @@ interface AgentInterface {
      */
     val tonicInPercent: Int
 
-
     /**
      * Gibt den verbliebenen Treibstoff in Prozent an.
      *

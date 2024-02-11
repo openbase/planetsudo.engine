@@ -20,7 +20,6 @@ import java.awt.geom.Rectangle2D
 import java.lang.reflect.Constructor
 import java.util.*
 import java.util.logging.Level
-import kotlin.math.max
 import kotlin.math.min
 
 /**
