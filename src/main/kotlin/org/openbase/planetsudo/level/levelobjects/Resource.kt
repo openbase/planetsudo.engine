@@ -30,7 +30,7 @@ class Resource(id: Int, @JvmField val type: ResourceType, level: AbstractLevel, 
         ObjectShape.Rec,
     ) {
     enum class ResourceType {
-        Unknown, Normal, DoublePoints, ExtremPoint, ExtraAgentFuel, ExtraMothershipFuel, Mine
+        Unknown, Normal, DoublePoints, ExtremPoint, ExtraAgentFuel, ExtraMothershipFuel, Mine, Tonic
     }
 
     var owner: Agent? = null
@@ -105,6 +105,11 @@ class Resource(id: Int, @JvmField val type: ResourceType, level: AbstractLevel, 
                 return false
             }
 
+            ResourceType.Tonic -> {
+                use(agent)
+                return false
+            }
+
             else -> return true
         }
     }
@@ -115,6 +120,7 @@ class Resource(id: Int, @JvmField val type: ResourceType, level: AbstractLevel, 
                 ResourceType.Normal -> return 200
                 ResourceType.DoublePoints -> return 400
                 ResourceType.ExtremPoint -> return 700
+                ResourceType.Tonic -> return 1000
                 ResourceType.ExtraAgentFuel -> return 400
                 ResourceType.ExtraMothershipFuel -> return 400
                 ResourceType.Mine -> return 200
@@ -171,19 +177,24 @@ class Resource(id: Int, @JvmField val type: ResourceType, level: AbstractLevel, 
                     }
 
                     ResourceType.ExtraAgentFuel -> {
-                        agent.spendFuel(Mothership.Companion.AGENT_FUEL_VOLUME / 10)
+                        agent.spendFuel(Mothership.AGENT_FUEL_VOLUME / 10)
                         GameSound.EarnAgentFuel.play()
                         return 0
                     }
 
                     ResourceType.ExtraMothershipFuel -> {
-                        agent.mothership.spendFuel(Mothership.Companion.MOTHERSHIP_FUEL_VOLUME / 5)
+                        agent.mothership.spendFuel(Mothership.MOTHERSHIP_FUEL_VOLUME / 5)
                         GameSound.EarnMothershipFuel.play()
                         return 0
                     }
 
                     ResourceType.Mine -> {
                         agent.kill()
+                        return 0
+                    }
+
+                    ResourceType.Tonic -> {
+                        agent.addTonic()
                         return 0
                     }
 
