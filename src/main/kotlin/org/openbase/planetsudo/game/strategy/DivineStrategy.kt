@@ -17,7 +17,7 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
      * @return Anzahl der Agenten
      */
     override fun loadAgentCount(): Int {
-        return 2
+        return 7
     }
 
     override fun loadSwatTeams() {
