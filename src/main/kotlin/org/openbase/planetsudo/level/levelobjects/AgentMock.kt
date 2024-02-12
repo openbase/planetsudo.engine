@@ -203,7 +203,7 @@ class AgentMock : AgentInterface {
         TODO("Not yet implemented")
     }
 
-    override fun isMemberOfSwatTeam(swatTeams: Collection<SwatTeam>): Boolean {
+    override fun isMemberOfSwatTeam(swatTeams: Set<SwatTeam>): Boolean {
         TODO("Not yet implemented")
     }
 

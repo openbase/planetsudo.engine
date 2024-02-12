@@ -533,15 +533,7 @@ interface AgentInterface {
      * @param swatTeams
      * @return
      */
-    fun isMemberOfSwatTeam(vararg swatTeams: SwatTeam): Boolean = isMemberOfSwatTeam(swatTeams.asList())
-
-    /**
-     * Überprüft, ob dieser Agent in mindestens einer der übergebenen SwatTeams enthalten ist.
-     *
-     * @param swatTeams
-     * @return
-     */
-    fun isMemberOfSwatTeam(swatTeams: Collection<SwatTeam>): Boolean
+    fun isMemberOfSwatTeam(swatTeams: Set<SwatTeam>): Boolean
 
     /**
      * Errichtet den Turm an der Position des Commander.
