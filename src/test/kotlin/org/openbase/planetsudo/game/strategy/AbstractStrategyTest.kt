@@ -21,7 +21,7 @@ class AbstractStrategyTest {
 
             override fun loadAgentCount() = 1
             override fun loadRules() {
-                rule = "Rule for All" all inCase { condition } then { agent.turnRandom() }
+                rule = "Rule for all" all inCase { condition } then { agent.turnRandom() }
             }
         }
 
@@ -99,7 +99,7 @@ class AbstractStrategyTest {
 
             override fun loadAgentCount() = 1
             override fun loadRules() {
-                rule = "Rule for alpha" nonCommander inCase { condition } then { agent.orderSupport() }
+                rule = "Rule for non commander" nonCommander inCase { condition } then { agent.orderSupport() }
             }
         }
 
