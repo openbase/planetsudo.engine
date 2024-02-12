@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory
 import java.awt.*
 import java.awt.event.MouseEvent
 
-
 /**
  *
  * @author [Divine Threepwood](mailto:divine@openbase.org)
@@ -136,7 +135,6 @@ class AgentPanel(resource: Agent, parentResourcePanel: MothershipPanel) :
         } else {
             paintImageRotated(direction!!, g2)
         }
-
 
         // Explosion
         if (!resource.isAlive) {
