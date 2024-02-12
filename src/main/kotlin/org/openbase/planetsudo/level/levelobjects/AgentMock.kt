@@ -37,6 +37,10 @@ class AgentMock : AgentInterface {
         get() = TODO("Not yet implemented")
     override val fuelInPercent: Int
         get() = TODO("Not yet implemented")
+    override val tonic: Int
+        get() = TODO("Not yet implemented")
+    override val tonicInPercent: Int
+        get() = TODO("Not yet implemented")
     override val fuelVolume: Int
         get() = TODO("Not yet implemented")
     override val resourceType: Resource.ResourceType
