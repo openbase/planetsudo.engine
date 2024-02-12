@@ -10,7 +10,7 @@ import kotlin.test.Test
 class AbstractStrategyTest {
 
     @Test
-    fun `all rule dsl should assigned to all`() {
+    fun `rule dsl should assign rule to all`() {
         var rule: Rule? = null
         val agent = mockk<AgentMock>(relaxed = true)
         var condition = false
@@ -36,7 +36,7 @@ class AbstractStrategyTest {
     }
 
     @Test
-    fun `commander rule dsl should assigned to commander`() {
+    fun `rule dsl should assign rule to commander`() {
         var rule: Rule? = null
         val agent = mockk<AgentMock>(relaxed = true)
         var condition = false
@@ -62,7 +62,7 @@ class AbstractStrategyTest {
     }
 
     @Test
-    fun `swat rule dsl should assigned to commander`() {
+    fun `rule dsl should assign rule to swat alpha`() {
         var rule: Rule? = null
         val agent = mockk<AgentMock>(relaxed = true)
         var condition = false
@@ -88,7 +88,7 @@ class AbstractStrategyTest {
     }
 
     @Test
-    fun `non commander rule dsl should assigned to all except of commander`() {
+    fun `rule dsl should assign rule not to commander`() {
         var rule: Rule? = null
         val agent = mockk<AgentMock>(relaxed = true)
         var condition = false
@@ -99,7 +99,7 @@ class AbstractStrategyTest {
 
             override fun loadAgentCount() = 1
             override fun loadRules() {
-                rule = "Rule for alpha" swat SwatTeam.NOT_COMMANDER inCase { condition } then { agent.orderSupport() }
+                rule = "Rule for alpha" nonCommander inCase { condition } then { agent.orderSupport() }
             }
         }
 
