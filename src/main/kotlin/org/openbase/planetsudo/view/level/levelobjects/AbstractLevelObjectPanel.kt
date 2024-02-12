@@ -67,6 +67,7 @@ abstract class AbstractLevelObjectPanel<R : AbstractLevelObject, PRP : ResourceP
         var transformation = skaleImageToBoundsTransformation
         transformation =
             rotateTransformation(direction, image!!.width.toDouble(), image!!.height.toDouble(), transformation)
+
         g2.drawImage(image, transformation, parentPanel)
     }
 

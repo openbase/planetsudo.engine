@@ -51,7 +51,7 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
     override var shieldForce: Int = 0
         private set
     private val timer: Timer
-    private var agents: List<Agent>
+    var agents: List<Agent>
     private val supportChannel: MutableList<Agent>
 
     @JvmField
@@ -225,8 +225,6 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
             }
         }
     }
-
-    fun getAgents(): Collection<Agent> = agents
 
     @Synchronized
     fun attack() {

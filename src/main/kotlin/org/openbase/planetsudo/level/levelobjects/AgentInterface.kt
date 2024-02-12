@@ -137,6 +137,11 @@ interface AgentInterface {
     val tonicInPercent: Int
 
     /**
+     *  Gibt an, ob der Agent die maximale Anzahl an Tonic besitzt und somit genug Tonic hat um sich unsichtbar zu machen.
+     */
+    val tonicFull: Boolean get() = tonic == Agent.MAX_TONIC
+
+    /**
      * Gibt den verbliebenen Treibstoff in Prozent an.
      *
      * @return Treibstoffwert in Prozent als ganze Zahl. (z.B. 47 bei 47%
@@ -234,6 +239,13 @@ interface AgentInterface {
     fun goToSupportAgent()
 
     /**
+     * Gehe zu einem feindlichen Agenten in der Nähe.
+     * Aktionspunkte: 4 + (+ 4 wenn resource geladen)
+     * Treibstoff: 1
+     */
+    fun goToAdversaryAgent()
+
+    /**
      * Gibt zurück, ob der Agent Treibstoff hat.
      *
      * @return true oder false.
@@ -321,6 +333,16 @@ interface AgentInterface {
      * @return true oder false.
      */
     val isFighting: Boolean
+
+    /**
+     * Abfrage, ob der Agent aktuell unsichtbar ist.
+     */
+    val isInvisible: Boolean
+
+    /**
+     * Abfrage, ob der Agent aktuell sichtbar ist.
+     */
+    val isVisible: Boolean get() = !isInvisible
 
     /**
      * Abfrage, ob dieser agent Support angefordert hat!
@@ -570,4 +592,11 @@ interface AgentInterface {
      */
     @Deprecated("NOT YET SUPPORTED")
     fun hasTower(): Boolean
+
+    /**
+     * Sofern der Agent 3 Tonic besitzt, kann er sich hiermit unsichtbar machen.
+     * Unsichtbar heißt, dass kein feindlicher Agent (außer der feindliche Commander) diesen Agenten sehen oder angreifen kann.
+     * Ein Agent ist so lange unsichtbar, bis er eine feindliche Einheit angreift oder eine Mine setzt.
+     */
+    fun makeInvisible()
 }

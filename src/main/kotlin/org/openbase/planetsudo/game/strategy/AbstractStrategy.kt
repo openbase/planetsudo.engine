@@ -123,7 +123,7 @@ abstract class AbstractStrategy(val agent: AgentInterface) : Runnable {
 
             else -> {}
         }
-        val agentList = mothershipInternal.getAgents()
+        val agentList = mothershipInternal.agents
         for (agentID in agentNumber) {
             if (agentID >= agentCount || agentID >= agentList.size) {
                 logger.error("Could not create SwatTeam[" + swatTeam.name + "] because team has not enough members!")
