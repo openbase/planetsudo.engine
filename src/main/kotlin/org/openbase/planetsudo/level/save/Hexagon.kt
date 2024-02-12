@@ -18,39 +18,35 @@ import java.awt.Polygon
  */
 class Hexagon : AbstractLevel() {
     override fun loadLevelBorderPolygon() = Polygon().apply {
-        addPoint(300,0)
-        addPoint(700,0)
-        addPoint(850,100)
-        addPoint(1000,700)
-        addPoint(0,700)
-        addPoint(150,100)
+        addPoint(500,0)
+        addPoint(1500,0)
+        addPoint(2000,866)
+        addPoint(1500,1732)
+        addPoint(500,1732)
+        addPoint(0,866)
     }
 
     override fun loadHomePositions() = listOf(
-        Base2D(350.0, 500.0, Direction2D.LEFT),
-        Base2D(650.0, 500.0, Direction2D.RIGHT)
+        Base2D(500.0,866.0, Direction2D.RIGHT),
+        Base2D(1500.0, 866.0, Direction2D.LEFT)
     )
 
     override fun loadResourcePlacement() = listOf(
-        ResourceRandomRectangle(0, 0, 1000, 700, 4, ResourceType.Normal),
-        ResourceRandomRectangle(0, 0, 1000, 250, 6, ResourceType.DoublePoints),
-        ResourceRandomRectangle(400, 0, 200, 100, 4, ResourceType.ExtremPoint),
-        ResourceRandomRectangle(100, 0, 800, 250, 6, ResourceType.ExtraAgentFuel),
-        ResourceRandomRectangle(300, 0, 400, 250, 6, ResourceType.ExtraMothershipFuel)
+        ResourceRandomRectangle(0, 0, 1000, 700, 0, ResourceType.Normal),
+        ResourceRandomRectangle(0, 0, 1000, 250, 0, ResourceType.DoublePoints),
+        ResourceRandomRectangle(400, 0, 200, 100, 0, ResourceType.ExtremPoint),
+        ResourceRandomRectangle(100, 0, 800, 250, 0, ResourceType.ExtraAgentFuel),
+        ResourceRandomRectangle(300, 0, 400, 250, 0, ResourceType.ExtraMothershipFuel)
     )
 
     override fun loadLevelColor() = Color(255, 153, 0)
 
     override fun loadLevelWallPolygons() = listOf(
         Polygon().apply {
-            addPoint(350,250)
-            addPoint(650,250)
-            addPoint(650,300)
-            addPoint(550,300)
-            addPoint(550,700)
-            addPoint(450,700)
-            addPoint(450,300)
-            addPoint(350,300)
+            addPoint(950,433)
+            addPoint(1050,433)
+            addPoint(1050,1299)
+            addPoint(950,1299)
         }
     )
 }

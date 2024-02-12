@@ -97,6 +97,7 @@ class LevelLoader {
             "Pentagon",
             "UnbekannterWeg",
             "Maze",
+            "LordHelmchen",
             "Hexagon"
         )
 
