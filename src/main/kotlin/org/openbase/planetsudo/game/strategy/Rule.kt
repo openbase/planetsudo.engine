@@ -31,7 +31,7 @@ import org.openbase.planetsudo.game.SwatTeam
  *
  * @author [Divine Threepwood](mailto:divine@openbase.org)
  */
-abstract class Rule(val priority: Int, val name: String, var swatTeam: Set<SwatTeam>) {
+abstract class Rule(val priority: Int = -1, val name: String, var swatTeams: Set<SwatTeam>) {
 
     /**
      * Anlegen einer neuen Regel.
@@ -44,13 +44,13 @@ abstract class Rule(val priority: Int, val name: String, var swatTeam: Set<SwatT
     constructor(priority: Int, name: String, vararg swatTeams: SwatTeam) : this(
         priority = priority,
         name = name,
-        swatTeam = swatTeams.toSet(),
+        swatTeams = swatTeams.toSet(),
     )
 
     constructor(name: String, vararg swatTeams: SwatTeam) : this(-1, name, *swatTeams)
 
     init {
-        swatTeam = swatTeam.applyWildcard()
+        swatTeams = swatTeams.applyWildcard()
     }
 
     private fun Set<SwatTeam>.applyWildcard(): Set<SwatTeam> {
@@ -59,9 +59,12 @@ abstract class Rule(val priority: Int, val name: String, var swatTeam: Set<SwatT
             return setOf(SwatTeam.ALL)
         }
 
-        // Only negation means rule is valid for all non excluded agents.
-        return minus(SwatTeam.NEGATED_SWATS).takeIf { it.isNotEmpty() }
-            ?: setOf(SwatTeam.ALL)
+        // If only negations we the rule is valid for all other agents.
+        if (all { it.negative }) {
+            return plus(SwatTeam.ALL)
+        }
+
+        return this
     }
 
     override fun toString(): String {

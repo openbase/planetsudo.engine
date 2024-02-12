@@ -35,7 +35,7 @@ class MothershipPanel(resource: Mothership, parentResourcePanel: LevelPanel) :
     }
 
     private fun loadAgentPanels() {
-        for (agent in resource.getAgents()) {
+        for (agent in resource.agents) {
             AgentPanel(agent, this)
         }
     }
