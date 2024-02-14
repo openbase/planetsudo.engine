@@ -49,6 +49,8 @@ class Atomum : AbstractLevel() {
         ResourceRandomRectangle(1600, 1300, 100, 100, 3, ResourceType.DoublePoints),
         ResourceRandomRectangle(1440, 1450, 100, 100, 3, ResourceType.DoublePoints),
         ResourceRandomRectangle(1300, 1600, 100, 100, 3, ResourceType.DoublePoints),
+        ResourceRandomRectangle(0,950,100,100,10,ResourceType.Tonic),
+        ResourceRandomRectangle(1900,950,100,100,10,ResourceType.Tonic)
     )
 
     override fun loadLevelColor() = Color(169, 249, 4)

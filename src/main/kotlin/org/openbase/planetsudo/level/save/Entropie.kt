@@ -43,6 +43,7 @@ class Entropie : AbstractLevel() {
         ResourceRandomRectangle(150, 600, 300, 200, 50, ResourceType.ExtremPoint),
         ResourceRandomRectangle(800, 0, 100, 1400, 20, ResourceType.ExtraAgentFuel),
         ResourceRandomRectangle(150, 600, 300, 200, 10, ResourceType.ExtraMothershipFuel),
+        ResourceRandomRectangle(800,600,50,100,6,ResourceType.Tonic)
     )
 
     override fun loadLevelColor(): Color {

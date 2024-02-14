@@ -98,7 +98,8 @@ class LevelLoader {
             "UnbekannterWeg",
             "Maze",
             "LordHelmchen",
-            "Hexagon"
+            "Hexagon",
+            "KreuzungTonicAussen"
         )
 
         @JvmStatic

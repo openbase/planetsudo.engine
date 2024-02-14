@@ -36,6 +36,10 @@ class Engpass : AbstractLevel() {
         ResourceRandomRectangle(0, 0, 450, 450, 5, ResourceType.DoublePoints),
         ResourceRandomRectangle(550, 550, 1000, 1000, 5, ResourceType.DoublePoints),
         ResourceRandomRectangle(495, 300, 5, 400, 20, ResourceType.ExtremPoint),
+        ResourceRandomRectangle(0,0,50,50,2,ResourceType.Tonic),
+        ResourceRandomRectangle(0,950,50,50,2,ResourceType.Tonic),
+        ResourceRandomRectangle(950,0,50,50,2,ResourceType.Tonic),
+        ResourceRandomRectangle(950,950,50,50,2,ResourceType.Tonic)
     )
 
     override fun loadLevelColor() = Color(67, 167, 197)
