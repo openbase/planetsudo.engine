@@ -16,17 +16,17 @@ import java.awt.Polygon
  *
  * @author lena
  */
-class WakaWaka : AbstractLevel() {
+class WakaWasgehtjetztab : AbstractLevel() {
     public override fun loadLevelBorderPolygon() = Polygon().apply {
         addPoint(50, 50)
         addPoint(350, 50)
-        addPoint(350, 250) //
+        addPoint(350, 250)
         addPoint(450, 350)
         addPoint(700, 350)
         addPoint(700, 200)
         addPoint(600, 300)
         addPoint(550, 300)
-        addPoint(450, 200) //
+        addPoint(450, 200)
         addPoint(450, 50)
         addPoint(800, 50)
         addPoint(800, 100)
@@ -36,35 +36,35 @@ class WakaWaka : AbstractLevel() {
         addPoint(900, 100)
         addPoint(950, 100)
         addPoint(950, 50)
-// 		addPoint(1250, 50);
-// 		addPoint(1250, 250);
-// 		addPoint(1150, 300);
-// 		addPoint(1050, 250);
-// 		addPoint(950, 250);
-// 		addPoint(900, 350);
-// 		addPoint(900, 450);
-// 		addPoint(1000, 450);
-// 		addPoint(1000, 450);
-// 		addPoint(1000, 450);
-// 		addPoint(950, 400);
-// 		addPoint(950, 350);
-// 		addPoint(1000, 300);
-// 		addPoint(1050, 300);
-// 		addPoint(1150, 350);
-// 		addPoint(1150, 400);
-// 		addPoint(1250, 500);
-// 		addPoint(1250, 550);
-// 		addPoint(1200, 600);
-// 		addPoint(1150, 600);
-// 		addPoint(1150, 550);
-// 		addPoint(1100, 550);
-// 		addPoint(1100, 650);
-// 		addPoint(1200, 650);
-// 		addPoint(1300, 600);
-// 		addPoint(1300, 500);
-// 		addPoint(1250, 400);
-// 		addPoint(1350, 300);
-// 		addPoint(1500, 300);
+ 		addPoint(1250, 50);
+ 		addPoint(1250, 250);
+ 		addPoint(1150, 300);
+ 		addPoint(1050, 250);
+ 		addPoint(950, 250);
+ 		addPoint(900, 350);
+ 		addPoint(900, 450);
+ 		addPoint(1000, 450);
+ 		addPoint(1000, 450);
+ 		addPoint(1000, 450);
+ 		addPoint(950, 400);
+		addPoint(950, 350);
+ 		addPoint(1000, 300);
+ 		addPoint(1050, 300);
+ 		addPoint(1150, 350);
+ 		addPoint(1150, 400);
+ 		addPoint(1250, 500);
+ 		addPoint(1250, 550);
+ 		addPoint(1200, 600);
+ 		addPoint(1150, 600);
+ 		addPoint(1150, 550);
+ 		addPoint(1100, 550);
+ 		addPoint(1100, 650);
+ 		addPoint(1200, 650);
+ 		addPoint(1300, 600);
+ 		addPoint(1300, 500);
+ 		addPoint(1250, 400);
+ 		addPoint(1350, 300);
+ 		addPoint(1500, 300);
         addPoint(1500, 50)
         addPoint(1500, 600)
         addPoint(1450, 600)
@@ -75,23 +75,23 @@ class WakaWaka : AbstractLevel() {
         addPoint(1450, 750)
         addPoint(1500, 750)
         addPoint(1500, 1100)
-        addPoint(1350, 1100) //
+        addPoint(1350, 1100)
         addPoint(1250, 1000)
         addPoint(1250, 950)
         addPoint(1350, 850)
         addPoint(1200, 850)
         addPoint(1200, 1100)
-        addPoint(1300, 1200) //
+        addPoint(1300, 1200)
         addPoint(1500, 1200)
         addPoint(1500, 1500)
         addPoint(1200, 1500)
-        // 	addPoint(1200, 1300);
-        // 	addPoint(1100, 1200);
-        // 	addPoint(800, 1200);
-        // 	addPoint(800, 1300);
-        // 	addPoint(950, 1250);
-        // 	addPoint(1000, 1250);
-        // 	addPoint(1100, 1350);
+        addPoint(1200, 1300)
+        addPoint(1100, 1200)
+        addPoint(800, 1200)
+        addPoint(800, 1300)
+        addPoint(950, 1250)
+        addPoint(1000, 1250)
+        addPoint(1100, 1350)
         addPoint(1100, 1500)
         addPoint(750, 1500)
         addPoint(650, 1400)
@@ -126,13 +126,13 @@ class WakaWaka : AbstractLevel() {
         addPoint(150, 900)
         addPoint(50, 800)
         addPoint(50, 450)
-        // 	addPoint(200, 450);
-        // 	addPoint(300, 550);
-        // 	addPoint(300, 600);
-        // 	addPoint(200, 700);
-        // 	addPoint(350, 700);
-        // 	addPoint(350, 450);
-        // 	addPoint(250, 350);
+        addPoint(200, 450)
+        addPoint(300, 550)
+        addPoint(300, 600)
+        addPoint(200, 700)
+        addPoint(350, 700)
+        addPoint(350, 450)
+        addPoint(250, 350)
         addPoint(50, 350)
         addPoint(50, 50)
     }
@@ -148,8 +148,7 @@ class WakaWaka : AbstractLevel() {
         ResourceRandomRectangle(1000, 50, 1500, 550, 10, ResourceType.ExtremPoint),
         ResourceRandomRectangle(50, 50, 1500, 1100, 20, ResourceType.ExtraAgentFuel),
         ResourceRandomRectangle(50, 50, 1500, 1100, 10, ResourceType.ExtraMothershipFuel),
-        ResourceRandomRectangle(450,50,1050,300,20, ResourceType.Tonic),
-        ResourceRandomRectangle(1200,50,300,1050,20, ResourceType.Tonic)
+        ResourceRandomRectangle(450,450,650,650,60,ResourceType.Tonic)
     )
 
     override fun loadLevelColor(): Color = Color(10, 125, 0)

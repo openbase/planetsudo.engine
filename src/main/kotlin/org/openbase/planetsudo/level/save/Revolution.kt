@@ -54,6 +54,8 @@ class Revolution : AbstractLevel() {
         ResourceRandomRectangle(350, 450, 300, 100, 20, ResourceType.ExtremPoint),
         ResourceRandomRectangle(350, 450, 300, 100, 10, ResourceType.ExtraAgentFuel),
         ResourceRandomRectangle(350, 450, 300, 100, 10, ResourceType.ExtraMothershipFuel),
+        ResourceRandomRectangle(0, 350, 50, 650, 8, ResourceType.Tonic),
+        ResourceRandomRectangle(9500, 0, 50, 650, 8, ResourceType.Tonic)
     )
 
     override fun loadLevelColor() = Color(255, 153, 0)

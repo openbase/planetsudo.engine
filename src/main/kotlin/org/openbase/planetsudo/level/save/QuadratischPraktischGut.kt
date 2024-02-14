@@ -58,6 +58,8 @@ class QuadratischPraktischGut : AbstractLevel() {
         ResourceRandomRectangle(500, 500, 600, 600, 10, ResourceType.ExtraAgentFuel),
         ResourceRandomRectangle(500, 500, 600, 600, 10, ResourceType.ExtraMothershipFuel),
         ResourceRandomRectangle(500, 1400, 600, 200, 35, ResourceType.DoublePoints),
+        ResourceRandomRectangle(0, 700, 100, 200, 10, ResourceType.Tonic),
+        ResourceRandomRectangle(1000, 700, 100, 200, 10, ResourceType.Tonic)
     )
 
     override fun loadLevelColor() = Color(93, 0, 0)

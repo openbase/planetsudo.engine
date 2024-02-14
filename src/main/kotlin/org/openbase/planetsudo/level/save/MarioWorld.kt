@@ -40,6 +40,7 @@ class MarioWorld : AbstractLevel() {
         ResourceRandomRectangle(250, 300, 550, 550, 15, ResourceType.DoublePoints),
         ResourceRandomRectangle(200, 900, 400, 100, 15, ResourceType.ExtremPoint),
         ResourceRandomRectangle(800, 0, 200, 500, 10, ResourceType.Normal),
+        ResourceRandomRectangle(400,0,200,450,10,ResourceType.Tonic)
     )
 
     override fun loadLevelColor() = Color(174, 94, 94)

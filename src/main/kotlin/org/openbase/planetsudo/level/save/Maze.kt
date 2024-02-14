@@ -54,6 +54,8 @@ class Maze : AbstractLevel() {
         ResourceRandomRectangle(0, 300, 2000, 1400, 40, ResourceType.ExtraAgentFuel),
         ResourceRandomRectangle(0, 300, 2000, 1400, 30, ResourceType.ExtraMothershipFuel),
         ResourceRandomRectangle(0, 1200, 2000, 200, 7, ResourceType.DoublePoints),
+        ResourceRandomRectangle(0,300,2000,200,20,ResourceType.Tonic),
+        ResourceRandomRectangle(0,1500,2000,200,20,ResourceType.Tonic)
     )
 
     override fun loadLevelColor() = Color(255, 211, 155)
