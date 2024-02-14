@@ -18,19 +18,15 @@ import java.awt.Polygon
  */
 class Arena : AbstractLevel() {
     override fun loadLevelBorderPolygon() = Polygon().apply {
-        //addPoint(0, 0)
         addPoint(0, 200)
         addPoint(400, 200)
         addPoint(400, 0)
         addPoint(600, 0)
         addPoint(600, 200)
         addPoint(1000, 200)
-        //addPoint(1000, 0)
         addPoint(1000, 800)
         addPoint(600, 800)
         addPoint(600, 1000)
-        //addPoint(1000, 1000)
-        //addPoint(0, 1000)
         addPoint(400, 1000)
         addPoint(400, 800)
         addPoint(0, 800)
