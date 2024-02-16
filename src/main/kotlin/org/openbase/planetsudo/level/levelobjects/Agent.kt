@@ -682,16 +682,12 @@ class Agent(
         swatTeamSet.add(swatTeam)
     }
 
-    override fun isMemberOfSwatTeam(swatTeams: Collection<SwatTeam>): Boolean {
+    override fun isMemberOfSwatTeam(swatTeams: Set<SwatTeam>): Boolean {
         // Check if agent was excluded.
-
-        for (swat in swatTeams) {
-            if (swat.negative) {
-                if (swatTeamSet.contains(swat.opposition)) {
-                    return false
-                }
-            }
-        }
+        swatTeams
+            .filter { it.negative }
+            .firstOrNull { swatTeamSet.contains(it.opposition) }
+            ?.also { return false }
 
         // Check if wildcard was set
         if (swatTeams.contains(SwatTeam.ALL)) {
@@ -699,7 +695,7 @@ class Agent(
         }
 
         // Check if agent is included
-        return !Collections.disjoint(swatTeams, swatTeamSet)
+        return swatTeams.intersect(swatTeamSet).isNotEmpty()
     }
 
     fun setGameOverSoon() {

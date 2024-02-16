@@ -3,14 +3,18 @@
 
 [versions]
 commons-io-commons-io = "2.4"
-junit-junit = "4.12"
 org-jdesktop-beansbinding = "1.2.1"
 org-openbase-jul = "3.6.0"
 tomcat-tomcat-util = "3.2.1"
+junit = "1.9.22"
+mockk = "1.13.9"
+kluent = "1.73"
 
 [libraries]
+org-jetbrains-kotlin-test-junit5 = { module = "org.jetbrains.kotlin:kotlin-test-junit5", version.ref = "junit" }
+io-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+org-amshove-kluent = { module = "org.amshove.kluent:kluent", version.ref = "kluent" }
 commons-io-commons-io = { module = "commons-io:commons-io", version.ref = "commons-io-commons-io" }
-junit-junit = { module = "junit:junit", version.ref = "junit-junit" }
 org-jdesktop-beansbinding = { module = "org.jdesktop:beansbinding", version.ref = "org-jdesktop-beansbinding" }
 org-openbase-jul-audio = { module = "org.openbase:jul.audio", version.ref = "org-openbase-jul" }
 org-openbase-jul-interface = { module = "org.openbase:jul.interface", version.ref = "org-openbase-jul" }

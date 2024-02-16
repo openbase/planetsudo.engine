@@ -209,7 +209,7 @@ class AgentMock : AgentInterface {
         error("Mock does not offer any functionality.")
     }
 
-    override fun isMemberOfSwatTeam(swatTeams: Collection<SwatTeam>): Boolean {
+    override fun isMemberOfSwatTeam(swatTeams: Set<SwatTeam>): Boolean {
         error("Mock does not offer any functionality.")
     }
 
