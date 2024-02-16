@@ -11,10 +11,7 @@ import org.openbase.planetsudo.level.levelobjects.*
 import org.openbase.planetsudo.view.MainGUI
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.awt.Color
-import java.awt.Font
-import java.awt.Graphics2D
-import java.awt.Polygon
+import java.awt.*
 import java.awt.event.MouseEvent
 
 /**
@@ -124,10 +121,22 @@ class AgentPanel(resource: Agent, parentResourcePanel: MothershipPanel) :
 // 						(int) (levelObject.getPosition().y));
         }
 
-        // paintShape(g2);
-        paintImageRotated(direction!!, g2)
+        //  paintShape(g2);
 
-        // Explositon
+        if (resource.invisible) {
+            val gAlpha = g2.create() as Graphics2D
+            // Setze die Transparenz
+            val alpha =
+                0.5f // Hier kannst du den Alpha-Wert zwischen 0 (vollständig transparent) und 1 (vollständig undurchsichtig) einstellen
+            val alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha)
+            gAlpha.composite = alphaComposite
+            paintImageRotated(direction!!, gAlpha)
+            gAlpha.dispose()
+        } else {
+            paintImageRotated(direction!!, g2)
+        }
+
+        // Explosion
         if (!resource.isAlive) {
             paintExplosion(g2)
         }

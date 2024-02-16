@@ -4,218 +4,228 @@ import org.openbase.planetsudo.game.SwatTeam
 
 class AgentMock : AgentInterface {
     override fun cancelSupport() {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun deliverResourceToMothership() {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun deployMarker() {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun deployMine() {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun fightWithAdversaryAgent() {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun fightWithAdversaryMothership() {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override val actionPoints: Int
-        get() = TODO("Not yet implemented")
+        get() = error("Mock does not offer any functionality.")
     override val angle: Int
-        get() = TODO("Not yet implemented")
+        get() = error("Mock does not offer any functionality.")
     override val fuel: Int
-        get() = TODO("Not yet implemented")
+        get() = error("Mock does not offer any functionality.")
     override val fuelInPercent: Int
-        get() = TODO("Not yet implemented")
+        get() = error("Mock does not offer any functionality.")
     override val tonic: Int
-        get() = TODO("Not yet implemented")
+        get() = error("Mock does not offer any functionality.")
     override val tonicInPercent: Int
-        get() = TODO("Not yet implemented")
+        get() = error("Mock does not offer any functionality.")
     override val fuelVolume: Int
-        get() = TODO("Not yet implemented")
+        get() = error("Mock does not offer any functionality.")
     override val resourceType: Resource.ResourceType
-        get() = TODO("Not yet implemented")
+        get() = error("Mock does not offer any functionality.")
     override val teamPoints: Int
-        get() = TODO("Not yet implemented")
+        get() = error("Mock does not offer any functionality.")
 
     override fun go() {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun goLeft(beta: Int) {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun goRight(beta: Int) {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun goToMarker() {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun goToMothership() {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun goToResource() {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun goToResource(resourceType: Resource.ResourceType) {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun goToSupportAgent() {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
+    }
+
+    override fun goToAdversaryAgent() {
+        error("Mock does not offer any functionality.")
     }
 
     override fun hasFuel(): Boolean {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun hasMine(): Boolean {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override val isAlive: Boolean
-        get() = TODO("Not yet implemented")
+        get() = error("Mock does not offer any functionality.")
     override val isAtMothership: Boolean
-        get() = TODO("Not yet implemented")
+        get() = error("Mock does not offer any functionality.")
     override val isCarryingResource: Boolean
-        get() = TODO("Not yet implemented")
+        get() = error("Mock does not offer any functionality.")
 
     override fun isCarryingResource(type: Resource.ResourceType): Boolean {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
+    override val isInvisible: Boolean
+        get() = error("Mock does not offer any functionality.")
     override val isCollisionDetected: Boolean
-        get() = TODO("Not yet implemented")
+        get() = error("Mock does not offer any functionality.")
     override val isCommander: Boolean
-        get() = TODO("Not yet implemented")
+        get() = error("Mock does not offer any functionality.")
     override val isDisabled: Boolean
-        get() = TODO("Not yet implemented")
+        get() = error("Mock does not offer any functionality.")
     override val isFighting: Boolean
-        get() = TODO("Not yet implemented")
+        get() = error("Mock does not offer any functionality.")
     override val isSupportOrdered: Boolean
-        get() = TODO("Not yet implemented")
+        get() = error("Mock does not offer any functionality.")
     override val isGameOverSoon: Boolean
-        get() = TODO("Not yet implemented")
+        get() = error("Mock does not offer any functionality.")
     override val isTouchingResource: Boolean
-        get() = TODO("Not yet implemented")
+        get() = error("Mock does not offer any functionality.")
 
     override fun isTouchingResource(type: Resource.ResourceType): Boolean {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override val isUnderAttack: Boolean
-        get() = TODO("Not yet implemented")
+        get() = error("Mock does not offer any functionality.")
 
     override fun orderFuel(percent: Int) {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun orderSupport() {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun pickupResource() {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun releaseResource() {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun repairMothership() {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun searchResources() {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun seeAdversaryAgent(): Boolean {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun seeTeamAgent(): Boolean {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun seeAdversaryMothership(): Boolean {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun seeLostTeamAgent(): Boolean {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun seeMarker(): Boolean {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun seeTower(): Boolean {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun seeResource(): Boolean {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun seeResource(resourceType: Resource.ResourceType): Boolean {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun spendTeamAgentFuel(value: Int) {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun turnAround() {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun turnLeft(beta: Int) {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun turnRandom() {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun turnRandom(opening: Int) {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun turnRight(beta: Int) {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun kill() {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun isMemberOfSwatTeam(swatTeams: Set<SwatTeam>): Boolean {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun erectTower(type: Tower.TowerType) {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun dismantleTower() {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
     }
 
     override fun hasTower(): Boolean {
-        TODO("Not yet implemented")
+        error("Mock does not offer any functionality.")
+    }
+
+    override fun makeInvisible() {
+        error("Mock does not offer any functionality.")
     }
 }

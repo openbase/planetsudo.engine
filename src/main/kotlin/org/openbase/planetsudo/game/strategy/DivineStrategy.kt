@@ -17,7 +17,7 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
      * @return Anzahl der Agenten
      */
     override fun loadAgentCount(): Int {
-        return 2
+        return 7
     }
 
     override fun loadSwatTeams() {
@@ -62,17 +62,12 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
             },
         )
         // -------------------------------------------->
-        createRule(
-            object : Rule("See Resources") {
-                override fun constraint(): Boolean {
-                    return !agent.isCommander && agent.seeResource()
-                }
-
-                override fun action() {
-                    agent.goToResource()
-                }
-            },
-        )
+        "See Resources" swat SwatTeam.NOT_COMMANDER inCase {
+            agent.seeResource() &&
+                (agent.tonicFull && agent.seeResource(ResourceType.Tonic)).not()
+        } then {
+            agent.goToResource()
+        }
         // -------------------------------------------->
         createRule(
             object : Rule("PickUp 1P Resource") {
@@ -171,7 +166,7 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
             },
         )
         // -------------------------------------------->
-        "PickUp Tonic" all inCase { agent.isTouchingResource(ResourceType.Tonic) } then {
+        "PickUp Tonic" all inCase { agent.isTouchingResource(ResourceType.Tonic) && !agent.tonicFull } then {
             agent.pickupResource()
         }
         // -------------------------------------------->
@@ -514,6 +509,17 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 }
             },
         )
+        // -------------------------------------------->
+        "Spy" all inCase { agent.isInvisible && agent.seeAdversaryAgent() } then {
+            agent.goToAdversaryAgent()
+        }
+        "Spy Mothership" all inCase { agent.isInvisible && agent.seeAdversaryMothership() } then {
+            agent.fightWithAdversaryAgent()
+        }
+        // -------------------------------------------->
+        "Make invisible" all inCase { agent.tonicInPercent == 100 && agent.isVisible && agent.isFighting } then {
+            agent.makeInvisible()
+        }
         // -------------------------------------------->
         createRule(
             object : Rule("AvoidWall", SwatTeam.NOT_ALPHA, SwatTeam.NOT_COMMANDER) {
