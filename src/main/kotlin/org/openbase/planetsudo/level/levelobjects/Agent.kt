@@ -58,6 +58,11 @@ class Agent(
     private var resource: Resource? = null
     private var hasMine = false
     private var hasTower = false
+    var invisible = false
+        private set
+    override val isInvisible: Boolean
+        get() = invisible
+
     override var isSupportOrdered: Boolean = false
         private set
     override val isCommander: Boolean
@@ -140,6 +145,7 @@ class Agent(
 
     @Synchronized
     override fun deployMine() {
+        invisible = false
         ap.getActionPoint(50)
         if (useFuel(5) == 5 && hasMine) {
             val newMine = Resource(
@@ -347,6 +353,7 @@ class Agent(
         ap.getActionPoint(20)
         if (percent < 0 || percent > 100) {
             LOGGER.error("Could not refill fuel! Percent value[$percent] is not in bounds! Valuerange 0-100")
+            kill()
             return
         }
 
@@ -477,6 +484,7 @@ class Agent(
     private var catchedfuel = 0
 
     override fun fightWithAdversaryAgent() {
+        invisible = false
         ap.actionPoint
         if (useFuel()) {
             val adversaryAgent = level.getAdversaryAgent(this)
@@ -495,6 +503,7 @@ class Agent(
     }
 
     override fun fightWithAdversaryMothership() {
+        invisible = false
         ap.actionPoint
         if (useFuel()) {
             val adversaryMothership = level.getAdversaryMothership(this)
@@ -595,10 +604,25 @@ class Agent(
                     direction.angle = it
                 }
             } else {
-                throw CouldNotPerformException("Could not support himself!")
+                throw CouldNotPerformException("Could not support itself!")
             }
         } catch (ex: CouldNotPerformException) {
             ExceptionPrinter.printHistory(CouldNotPerformException("Could not goToSupportAgent!", ex), LOGGER)
+        }
+    }
+
+    override fun goToAdversaryAgent() {
+        try {
+            level.getAdversaryAgent(this)?.let { adversaryAgent ->
+
+                // do not come too close to the adversary agents
+                if (adversaryAgent.levelView!!.getDistance(this) >= (AGENT_SIZE / 2)) {
+                    go()
+                }
+                direction.turnTo(position, adversaryAgent.position)
+            }
+        } catch (ex: CouldNotPerformException) {
+            ExceptionPrinter.printHistory(CouldNotPerformException("Could not goToAdversaryAgent!", ex), LOGGER)
         }
     }
 
@@ -716,6 +740,14 @@ class Agent(
         } catch (ex: CouldNotPerformException) {
             kill()
             ExceptionPrinter.printHistory(CouldNotPerformException("Could not dismantle Tower!", ex), LOGGER)
+        }
+    }
+
+    override fun makeInvisible() {
+        ap.getActionPoint(100)
+        if (tonic == MAX_TONIC) {
+            tonic = 0
+            invisible = true
         }
     }
 
