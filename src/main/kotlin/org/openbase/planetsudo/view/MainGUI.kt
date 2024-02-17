@@ -462,6 +462,7 @@ class MainGUI : JFrame, PropertyChangeListener {
     private fun jMenuItem4ActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_jMenuItem4ActionPerformed
         try {
             resetDefaultTeam()
+            configurationPanel?.enableDefaultTeamSelection()
         } catch (ex: CouldNotPerformException) {
             LOGGER.warn("Could not reset default team!")
         }

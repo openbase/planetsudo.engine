@@ -72,7 +72,10 @@ class CreateTeamFrame : JFrame() {
             createButton!!.foreground = Color.RED
             return
         }
-        MainGUI.instance!!.configurationPanel!!.updateTeamList()
+        MainGUI.instance!!.configurationPanel!!.apply {
+            updateTeamList(teamData)
+            setDefaultTeamCandidate(teamData)
+        }
         isVisible = false
         reset()
     }
