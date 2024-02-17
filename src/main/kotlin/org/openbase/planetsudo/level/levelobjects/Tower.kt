@@ -54,7 +54,7 @@ class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership)
     @JvmField
     val direction: Direction2D = Direction2D(0)
     val isAttacked: Boolean = false
-    var isErected: Boolean = false
+    var isConstructed: Boolean = false
         private set
 
     init {
@@ -66,7 +66,7 @@ class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership)
         Thread {
             try {
                 while (!Thread.interrupted()) {
-                    if (!isErected) {
+                    if (!isConstructed) {
                         Thread.sleep(1000)
                         continue
                     }
@@ -82,40 +82,40 @@ class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership)
     }
 
     @Throws(CouldNotPerformException::class)
-    fun erect(type: TowerType?, commander: Agent) {
+    fun construct(type: TowerType?, commander: Agent) {
         if (!commander.isCommander) {
             commander.kill()
-            throw CouldNotPerformException("Only the commander can erect a tower!")
+            throw CouldNotPerformException("Only the commander can construct a tower!")
         }
-        if (isErected) {
-            throw CouldNotPerformException("Tower is already erected!")
+        if (isConstructed) {
+            throw CouldNotPerformException("Tower is already constructed!")
         }
         position.setLocation(commander.position)
         this.type = type
-        isErected = true
-        changes.firePropertyChange(TOWER_ERECT, null, this)
+        isConstructed = true
+        changes.firePropertyChange(TOWER_CONSTRUCT, null, this)
     }
 
     @Throws(CouldNotPerformException::class)
-    fun dismantle(commander: Agent) {
+    fun deconstruct(commander: Agent) {
         if (!commander.isCommander) {
             commander.kill()
-            throw CouldNotPerformException("Only the commander can dismantle a tower!")
+            throw CouldNotPerformException("Only the commander can deconstruct a tower!")
         }
-        if (!isErected) {
-            throw CouldNotPerformException("Could not dismantle the tower! The tower was never erected!!")
+        if (!isConstructed) {
+            throw CouldNotPerformException("Could not deconstruct the tower! The tower was never constructed!!")
         }
-        isErected = false
-        changes.firePropertyChange(TOWER_DISMANTLE, null, this)
+        isConstructed = false
+        changes.firePropertyChange(TOWER_DECONSTRUCT, null, this)
     }
 
     public override fun reset() {
         fuel = 100
-        isErected = false
+        isConstructed = false
     }
 
     fun seeTower(agent: Agent): Boolean {
-        if (!isErected) {
+        if (!isConstructed) {
             return false
         }
 
@@ -210,8 +210,8 @@ class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership)
         const val TOWER_FUEL_VOLUME: Int = 500
         const val TOWER_FUEL_STATE_CHANGE: String = "FuelStateChange"
         const val TOWER_SHIELD_STATE_CHANGE: String = "ShieldStateChange"
-        const val TOWER_ERECT: String = "erect tower"
-        const val TOWER_DISMANTLE: String = "dismantle tower"
+        const val TOWER_CONSTRUCT: String = "construct tower"
+        const val TOWER_DECONSTRUCT: String = "deconstruct tower"
 
         private val logger: Logger = LoggerFactory.getLogger(Tower::class.java)
     }

@@ -20,6 +20,7 @@ import java.awt.geom.Rectangle2D
 import java.lang.reflect.Constructor
 import java.util.*
 import java.util.logging.Level
+import kotlin.math.max
 import kotlin.math.min
 
 /**
@@ -50,6 +51,9 @@ class Agent(
     override var fuel: Int = 0
         protected set
     override var tonic: Int = 0
+        protected set
+
+    var shiftTonic: Double = 0.0
         protected set
 
     override var isAlive: Boolean
@@ -159,9 +163,19 @@ class Agent(
         }
     }
 
-    private fun calcSpeed(): Int {
-        return if (isCarryingResource) DEFAULT_AGENT_SPEED / 2 else DEFAULT_AGENT_SPEED
+    override fun isShifting(): Boolean = shiftTonic > 0.0
+    private fun consumeTonicForShifting() = isShifting().also { shifting ->
+        if (shifting) {
+            shiftTonic = max(shiftTonic - SHIFT_TONIC_CONSUMPTION, NO_SHIFT_TONIC)
+        }
     }
+
+    private fun calcSpeed(): Int =
+        if (isCarryingResource && !isShifting()) {
+            (DEFAULT_AGENT_SPEED * RESOURCE_SPEED_FACTOR).toInt()
+        } else {
+            DEFAULT_AGENT_SPEED
+        }
 
     private fun useFuel(): Boolean {
         return useFuel(1) == 1
@@ -265,7 +279,9 @@ class Agent(
         // ######################################################
     }
 
-    override fun go() {
+    override fun go() = goTo { direction }
+
+    fun goTo(directionController: Direction2D.() -> Unit) {
         if (isCarryingResource) {
             ap.getActionPoint(6)
         } else {
@@ -276,11 +292,30 @@ class Agent(
             return
         }
 
-        position.translate(direction, calcSpeed())
+        // move and apply new direction
+        moveForward()
+        direction.apply { directionController() }
+
+        // shift
+        if (isShifting()) {
+            (0..SHIFT_EXTRA_SPEED).forEach { _ ->
+                if (isCollisionDetected) {
+                    return
+                }
+                if (consumeTonicForShifting()) {
+                    // move and apply new direction
+                    moveForward()
+                    direction.apply { directionController() }
+                }
+            }
+        }
+
         if (level.collisionDetected(bounds)) { // Is collied with wall?
             kill()
         }
     }
+
+    private fun moveForward() = position.translate(direction, calcSpeed())
 
     override fun turnAround() {
         ap.actionPoint
@@ -289,19 +324,9 @@ class Agent(
         }
     }
 
-    override fun goLeft(beta: Int) {
-        go()
-        if (hasFuel()) {
-            direction.angle = direction.angle - beta
-        }
-    }
+    override fun goLeft(beta: Int) = goTo { angle -= beta }
 
-    override fun goRight(beta: Int) {
-        go()
-        if (hasFuel()) {
-            direction.angle = direction.angle + beta
-        }
-    }
+    override fun goRight(beta: Int) = goTo { angle += beta }
 
     override fun turnLeft(beta: Int) {
         ap.actionPoint
@@ -313,7 +338,7 @@ class Agent(
     override fun turnRight(beta: Int) {
         ap.actionPoint
         if (useFuel()) {
-            direction.angle = direction.angle + beta
+            direction.angle += beta
         }
     }
 
@@ -326,7 +351,7 @@ class Agent(
         try {
             if (useFuel()) {
                 val randomAngle = RandomGenerator.getRandom(0, opening) - (opening / 2)
-                direction.angle = direction.angle + randomAngle
+                direction.angle += randomAngle
             }
         } catch (ex: InvalidStateException) {
             LOGGER.error("Could not turn random.", ex)
@@ -335,10 +360,10 @@ class Agent(
 
     override fun goToMothership() {
         ap.actionPoint
-        go()
-        if (hasFuel()) {
-            mothership.levelView?.getAbsolutAngle(this)?.also {
-                direction.angle = it
+        goTo {
+            direction.apply {
+                mothership.levelView?.getAbsolutAngle(this@Agent)
+                    ?.also { angle = it }
             }
         }
     }
@@ -376,8 +401,9 @@ class Agent(
         if (useFuel()) {
             val resourceToGo = level.getCloseResource(this)
             if (resourceToGo != null) {
-                go()
-                direction.turnTo(position, resourceToGo.position)
+                goTo {
+                    turnTo(position, resourceToGo.position)
+                }
             }
         }
     }
@@ -387,8 +413,9 @@ class Agent(
         if (useFuel()) {
             val resourceToGo = level.getCloseResource(this, resourceType)
             if (resourceToGo != null) {
-                go()
-                direction.turnTo(position, resourceToGo.position)
+                goTo {
+                    turnTo(position, resourceToGo.position)
+                }
             }
         }
     }
@@ -596,9 +623,10 @@ class Agent(
         try {
             val agentToSupport = mothership.getAgentToSupport(this)
             if (agentToSupport !== this) {
-                go()
-                agentToSupport.levelView?.getAbsolutAngle(this)?.also {
-                    direction.angle = it
+                goTo {
+                    agentToSupport.levelView
+                        ?.getAbsolutAngle(this@Agent)
+                        ?.also { angle = it }
                 }
             } else {
                 throw CouldNotPerformException("Could not support itself!")
@@ -614,9 +642,10 @@ class Agent(
 
                 // do not come too close to the adversary agents
                 if (adversaryAgent.levelView!!.getDistance(this) >= (AGENT_SIZE / 2)) {
-                    go()
+                    goTo { turnTo(position, adversaryAgent.position) }
+                } else {
+                    direction.turnTo(position, adversaryAgent.position)
                 }
-                direction.turnTo(position, adversaryAgent.position)
             }
         } catch (ex: CouldNotPerformException) {
             ExceptionPrinter.printHistory(CouldNotPerformException("Could not goToAdversaryAgent!", ex), LOGGER)
@@ -643,9 +672,9 @@ class Agent(
 
     override fun goToMarker() {
         try {
-            go()
-            mothership.marker.levelView?.getAbsolutAngle(this)?.also {
-                direction.angle = it
+            goTo {
+                mothership.marker.levelView?.getAbsolutAngle(this@Agent)
+                    ?.also { angle = it }
             }
         } catch (ex: CouldNotPerformException) {
             LOGGER.warn("Could not goToMarker!", ex)
@@ -699,52 +728,61 @@ class Agent(
     }
 
     fun setGameOverSoon() {
-        this.isGameOverSoon = true
+        isGameOverSoon = true
         LOGGER.info("Game over soon!")
     }
 
-    override fun erectTower(type: TowerType) {
+    override fun constructTower(type: TowerType) {
         try {
             ap.getActionPoint(1500)
             useFuel(50)
             if (!isCommander) {
-                LOGGER.warn("Only the commander is able to erect a tower, deployment failed!")
+                LOGGER.warn("Only the commander is able to construct a tower, deployment failed!")
                 return
             }
-            mothership.tower.erect(type, this)
+            mothership.tower.construct(type, this)
             hasTower = false
         } catch (ex: CouldNotPerformException) {
             kill()
-            ExceptionPrinter.printHistory(CouldNotPerformException("Could not erect Tower!", ex), LOGGER)
+            ExceptionPrinter.printHistory(CouldNotPerformException("Could not construct Tower!", ex), LOGGER)
         }
     }
 
-    override fun dismantleTower() {
+    override fun deconstructTower() {
         try {
             ap.getActionPoint(500)
             useFuel(50)
             if (!isCommander) {
-                LOGGER.warn("Only the commander is able to dismantle a tower, deployment failed!")
+                LOGGER.warn("Only the commander is able to deconstruct a tower, deployment failed!")
                 return
             }
 
             if (!mothership.tower.seeTower(this)) {
-                LOGGER.warn("The commander is not close enough to dismantle the tower!")
+                LOGGER.warn("The commander is not close enough to deconstruct the tower!")
                 return
             }
-            mothership.tower.dismantle(this)
+            mothership.tower.deconstruct(this)
             hasTower = true
         } catch (ex: CouldNotPerformException) {
             kill()
-            ExceptionPrinter.printHistory(CouldNotPerformException("Could not dismantle Tower!", ex), LOGGER)
+            ExceptionPrinter.printHistory(CouldNotPerformException("Could not deconstruct Tower!", ex), LOGGER)
         }
     }
 
     override fun makeInvisible() {
         ap.getActionPoint(100)
-        if (tonic == MAX_TONIC) {
+        if (hasTonicForInvisibility()) {
             tonic = 0
             invisible = true
+        }
+    }
+
+    override fun shift() {
+        ap.actionPoint
+        if (hasTonic()) {
+            tonic--
+            shiftTonic++
+            GameSound.Shift.play()
         }
     }
 
@@ -755,6 +793,10 @@ class Agent(
         const val AGENT_SIZE: Int = 50
         const val AGENT_VIEW_DISTANCE: Int = AGENT_SIZE
         const val DEFAULT_AGENT_SPEED: Int = 6
+        const val SHIFT_EXTRA_SPEED: Int = 3
+        const val SHIFT_TONIC_CONSUMPTION: Double = 0.01
+        const val NO_SHIFT_TONIC: Double = 0.0
+        const val RESOURCE_SPEED_FACTOR: Double = 0.5
 
         private val LOGGER: Logger = LoggerFactory.getLogger(Agent::class.java)
     }

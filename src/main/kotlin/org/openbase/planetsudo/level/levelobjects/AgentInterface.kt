@@ -253,6 +253,20 @@ interface AgentInterface {
     fun hasFuel(): Boolean
 
     /**
+     * Gibt zurück, ob der Agent mindestens ein Tonic besitzt.
+     *
+     * @return true oder false.
+     */
+    fun hasTonic(): Boolean = tonic >= 1
+
+    /**
+     * Gibt zurück, ob der Agent genug Tonic besitzt, um sich unsichtbar zu machen.
+     *
+     * @return true oder false.
+     */
+    fun hasTonicForInvisibility(): Boolean = tonic == Agent.MAX_TONIC
+
+    /**
      * Gibt zurück, ob der Agent seine Mine noch trägt.
      *
      * @return true oder false.
@@ -568,14 +582,14 @@ interface AgentInterface {
      * @param type Hier rüber kannst du den Turmtypen auswählen welcher errichtet werden soll.
      */
     @Deprecated("NOT YET SUPPORTED")
-    fun erectTower(type: TowerType)
+    fun constructTower(type: TowerType)
 
     /**
      * Baut einen Turm wieder ab der zuvor aufgestellt wurde.
      * Diese Aktion kann nur vom Commander durchgeführt werden, und zwar nur dann, wenn er in unmittelbarer Nähe des Turms ist.
      */
     @Deprecated("NOT YET SUPPORTED")
-    fun dismantleTower()
+    fun deconstructTower()
 
     /**
      * Überprüft, ob dieser Agent einen Turm aufbauen könnte.
@@ -591,4 +605,19 @@ interface AgentInterface {
      * Ein Agent ist so lange unsichtbar, bis er eine feindliche Einheit angreift oder eine Mine setzt.
      */
     fun makeInvisible()
+
+    /**
+     * Mit einem Shift der Agent sich für die nächsten 10 Schritte (agent.go...) besonders schnell bewegen, sofern er genug Tonic besitzt.
+     * Dies kann z. B. strategisch genutzt werden, um feindlichen Angriffen zu entkommen, schneller Hilfe leisten zu können oder
+     * Ressourcen schneller zu transportieren.
+     *
+     * Aktionspunkte: 1
+     * Tonic: 1
+     */
+    fun shift()
+
+    /**
+     * Gibt zurück, ob der Agent gerade shifted.
+     */
+    fun isShifting(): Boolean
 }

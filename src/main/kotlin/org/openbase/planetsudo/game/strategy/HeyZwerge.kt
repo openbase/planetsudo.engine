@@ -178,7 +178,7 @@ class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
                 }
 
                 override fun action() {
-                    agent.erectTower(Tower.TowerType.ObservationTower)
+                    agent.constructTower(Tower.TowerType.ObservationTower)
                 }
             },
         )

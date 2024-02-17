@@ -189,7 +189,7 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 }
 
                 override fun action() {
-                    agent.erectTower(Tower.TowerType.ObservationTower)
+                    agent.constructTower(Tower.TowerType.ObservationTower)
                 }
             },
         )
@@ -213,6 +213,7 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
                 }
 
                 override fun action() {
+                    agent.shift()
                     agent.goToMothership()
                 }
             },
@@ -244,7 +245,7 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule("Order Fuel") {
                 override fun constraint(): Boolean {
-                    return agent.isAtMothership && agent.isGameOverSoon && mothership.hasFuel() && agent.fuelInPercent < 100
+                    return agent.isAtMothership && !agent.isGameOverSoon && mothership.hasFuel() && agent.fuelInPercent < 100
                 }
 
                 override fun action() {
@@ -273,6 +274,18 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
 
                 override fun action() {
                     agent.goToMothership()
+                }
+            },
+        )
+        // -------------------------------------------->
+        createRule(
+            object : Rule("Shift for Extra Resource") {
+                override fun constraint(): Boolean {
+                    return agent.isCarryingResource(ResourceType.ExtremPoint) && agent.hasTonic() && !agent.isShifting() && !agent.isAtMothership
+                }
+
+                override fun action() {
+                    agent.shift()
                 }
             },
         )
@@ -487,13 +500,13 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         )
         // -------------------------------------------->
         createRule(
-            object : Rule("Erect Tower", SwatTeam.COMMANDER) {
+            object : Rule("Construct Tower", SwatTeam.COMMANDER) {
                 override fun constraint(): Boolean {
                     return agent.hasTower() && agent.seeResource()
                 }
 
                 override fun action() {
-                    agent.erectTower(Tower.TowerType.DefenceTower)
+                    agent.constructTower(Tower.TowerType.DefenceTower)
                 }
             },
         )

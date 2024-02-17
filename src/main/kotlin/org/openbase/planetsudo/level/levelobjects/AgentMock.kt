@@ -213,11 +213,11 @@ class AgentMock : AgentInterface {
         error("Mock does not offer any functionality.")
     }
 
-    override fun erectTower(type: Tower.TowerType) {
+    override fun constructTower(type: Tower.TowerType) {
         error("Mock does not offer any functionality.")
     }
 
-    override fun dismantleTower() {
+    override fun deconstructTower() {
         error("Mock does not offer any functionality.")
     }
 
@@ -226,6 +226,14 @@ class AgentMock : AgentInterface {
     }
 
     override fun makeInvisible() {
+        error("Mock does not offer any functionality.")
+    }
+
+    override fun shift() {
+        error("Mock does not offer any functionality.")
+    }
+
+    override fun isShifting(): Boolean {
         error("Mock does not offer any functionality.")
     }
 }
