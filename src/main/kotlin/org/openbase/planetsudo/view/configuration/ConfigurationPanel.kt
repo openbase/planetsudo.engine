@@ -671,16 +671,24 @@ class ConfigurationPanel : JPanel() {
     } // GEN-LAST:event_startGameButtonActionPerformed
 
     private fun teamAComboBoxActionPerformed() { // GEN-FIRST:event_teamAComboBoxActionPerformed
-        gameManager.addTeam(teamAComboBox!!.selectedItem as TeamData, GameManager.TeamType.A)
-        if (teamAComboBox!!.isEnabled) {
-            stateProperties.setProperty(PROPERTY_SELECTED_TEAM_A, teamAComboBox!!.selectedIndex.toString())
+        teamAComboBox?.apply {
+            selectedItem?.let { selectedItem ->
+                gameManager.addTeam(selectedItem as TeamData, GameManager.TeamType.A)
+                if (isEnabled) {
+                    stateProperties.setProperty(PROPERTY_SELECTED_TEAM_A, selectedIndex.toString())
+                }
+            }
         }
     } // GEN-LAST:event_teamAComboBoxActionPerformed
 
     private fun teamBComboBoxActionPerformed() { // GEN-FIRST:event_teamBComboBoxActionPerformed
-        gameManager.addTeam(teamBComboBox!!.selectedItem as TeamData, GameManager.TeamType.B)
-        if (teamBComboBox!!.isEnabled) {
-            stateProperties.setProperty(PROPERTY_SELECTED_TEAM_B, teamBComboBox!!.selectedIndex.toString())
+        teamBComboBox?.apply{
+            selectedItem?.let {selectedItem ->
+                gameManager.addTeam(selectedItem as TeamData, GameManager.TeamType.B)
+                if(isEnabled) {
+                    stateProperties.setProperty(PROPERTY_SELECTED_TEAM_B, selectedIndex.toString())
+                }
+            }
         }
     } // GEN-LAST:event_teamBComboBoxActionPerformed
 
