@@ -545,6 +545,13 @@ interface AgentInterface {
     fun turnRight(beta: Int)
 
     /**
+     * Der Agent dreht sich zu einer nahen Resource
+     * Aktionspunkte: 1
+     * Treibstoff: 1
+     */
+    fun turnToResource()
+
+    /**
      * Der Agent läuft amok.
      */
     fun kill()
