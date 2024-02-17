@@ -207,6 +207,14 @@ class AgentMock : AgentInterface {
         error("Mock does not offer any functionality.")
     }
 
+    override fun turnToResource() {
+        error("Mock does not offer any functionality.")
+    }
+
+    override fun turnToResource(resourceType: Resource.ResourceType) {
+        error("Mock does not offer any functionality.")
+    }
+
     override fun kill() {
         error("Mock does not offer any functionality.")
     }
