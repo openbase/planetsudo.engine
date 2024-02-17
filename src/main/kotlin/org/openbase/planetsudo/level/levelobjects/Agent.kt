@@ -327,6 +327,16 @@ class Agent(
         }
     }
 
+    override fun turnToResource(resourceType: ResourceType) {
+        ap.actionPoint
+        if (useFuel()) {
+            val resourceToGo = level.getCloseResource(this, resourceType)
+            if (resourceToGo != null) {
+                direction.turnTo(position, resourceToGo.position)
+            }
+        }
+    }
+
     override fun turnRandom() {
         turnRandom(360)
     }

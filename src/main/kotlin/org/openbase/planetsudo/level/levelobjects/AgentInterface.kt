@@ -552,6 +552,14 @@ interface AgentInterface {
     fun turnToResource()
 
     /**
+     * Der Agent dreht sich zu einer nahen Resource eines bestimmten Typs
+     * Aktionspunkte: 1
+     * Treibstoff: 1
+     * @param resourceType Der Typ der Resource
+     */
+    fun turnToResource(resourceType: ResourceType)
+
+    /**
      * Der Agent läuft amok.
      */
     fun kill()
