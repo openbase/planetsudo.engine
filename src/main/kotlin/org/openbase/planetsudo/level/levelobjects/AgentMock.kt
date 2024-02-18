@@ -250,7 +250,6 @@ class AgentMock : AgentInterface {
         error("Mock does not offer any functionality.")
     }
 
-    override fun isShifting(): Boolean {
-        error("Mock does not offer any functionality.")
-    }
+    override val isShifting: Boolean
+        get() = error("Mock does not offer any functionality.")
 }
