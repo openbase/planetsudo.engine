@@ -94,6 +94,8 @@ class AgentMock : AgentInterface {
         get() = error("Mock does not offer any functionality.")
     override val isAtMothership: Boolean
         get() = error("Mock does not offer any functionality.")
+    override val adversaryAgent: GlobalAgentInterface
+        get() = error("Mock does not offer any functionality.")
     override val isCarryingResource: Boolean
         get() = error("Mock does not offer any functionality.")
 
@@ -210,6 +212,10 @@ class AgentMock : AgentInterface {
     }
 
     override fun turnToResource(resourceType: Resource.ResourceType) {
+        error("Mock does not offer any functionality.")
+    }
+
+    override fun turnToAdversaryAgent(beta: Int) {
         error("Mock does not offer any functionality.")
     }
 

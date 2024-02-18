@@ -50,7 +50,7 @@ class Agent(
         protected set
     override var fuel: Int = 0
         protected set
-    override var tonic: Int = 0
+    override var tonic: Int = 3
         protected set
 
     var shiftTonic: Double = 0.0
@@ -75,6 +75,8 @@ class Agent(
     override var isGameOverSoon: Boolean
         private set
     private val swatTeamSet: MutableSet<SwatTeam>
+
+    private var lastAversaryAgent: Agent? = null
 
     override val angle: Int
         get() = direction.angle
@@ -362,6 +364,17 @@ class Agent(
         }
     }
 
+    override fun turnToAdversaryAgent(beta: Int) {
+        ap.actionPoint
+        if (useFuel()) {
+            val adversaryAgent = level.getAdversaryAgent(this)
+            if (adversaryAgent != null) {
+                direction.turnTo(position, adversaryAgent.position)
+                direction.angle += beta
+            }
+        }
+    }
+
     override fun turnRandom() {
         turnRandom(360)
     }
@@ -508,7 +521,8 @@ class Agent(
     }
 
     override fun seeAdversaryAgent(): Boolean {
-        return level.getAdversaryAgent(this) != null
+        lastAversaryAgent = level.getAdversaryAgent(this)
+        return lastAversaryAgent != null
     }
 
     override fun seeTeamAgent(): Boolean {
@@ -805,6 +819,12 @@ class Agent(
             GameSound.Shift.play()
         }
     }
+
+    override val adversaryAgent: GlobalAgentInterface
+        get() = GlobalAgentProxy(
+            lastAversaryAgent
+                ?: error("No adversary agent seen!"),
+        ) ?: error("No adversary agent seen!")
 
     companion object {
         // 	public final static int DEFAULT_START_FUEL = 2000;
