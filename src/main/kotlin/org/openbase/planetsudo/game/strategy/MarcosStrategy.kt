@@ -38,7 +38,7 @@ class MarcosStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(20, "Gehe zu Resource") {
                 override fun constraint(): Boolean {
-                    return agent.seeResource()
+                    return agent.seeResource
                 }
 
                 override fun action() {
@@ -98,7 +98,7 @@ class MarcosStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(70, "Attackiere feindl. Mutterschiff") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryMothership()
+                    return agent.seeAdversaryMothership
                 }
 
                 override fun action() {
@@ -158,7 +158,7 @@ class MarcosStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(120, "Fight!") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryAgent()
+                    return agent.seeAdversaryAgent
                 }
 
                 override fun action() {

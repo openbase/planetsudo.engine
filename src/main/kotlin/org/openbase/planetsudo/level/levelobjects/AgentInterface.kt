@@ -268,7 +268,7 @@ interface AgentInterface {
      *
      * @return true oder false.
      */
-    fun hasFuel(): Boolean
+    val hasFuel: Boolean
 
     /**
      * Gibt zurück, ob der Agent mindestens ein Tonic besitzt.
@@ -289,7 +289,7 @@ interface AgentInterface {
      *
      * @return true oder false.
      */
-    fun hasMine(): Boolean
+    val hasMine: Boolean
 
     /**
      * Gibt an, ob der Agent noch lebt.
@@ -403,6 +403,11 @@ interface AgentInterface {
     val isTouchingResource: Boolean
 
     /**
+     * Gibt zurück, ob der Agent gerade shifted.
+     */
+    val isShifting: Boolean
+
+    /**
      * Gibt zurück, ob der Agent eine Resource vom Typ `type` berührt und diese somit aufgeben kann.
      *
      * @param type
@@ -468,21 +473,21 @@ interface AgentInterface {
      *
      * @return true oder false.
      */
-    fun seeAdversaryAgent(): Boolean
+    val seeAdversaryAgent: Boolean
 
     /**
      * Zeigt an, ob der Agent einen Agenten des eigenen Teams sieht.
      *
      * @return true oder false.
      */
-    fun seeTeamAgent(): Boolean
+    val seeTeamAgent: Boolean
 
     /**
      * Zeigt an, ob der Agent das feindliche Mutterschiff sieht.
      *
      * @return true oder false.
      */
-    fun seeAdversaryMothership(): Boolean
+    val seeAdversaryMothership: Boolean
 
     /**
      * Zeigt an, ob sich in Sicht des Agenten ein Teammitglied ohne Treibstoff
@@ -511,7 +516,7 @@ interface AgentInterface {
      *
      * @return true oder false.
      */
-    fun seeResource(): Boolean
+    val seeResource: Boolean
 
     /**
      * Zeigt an, ob der Agent eine Resource vom angegebenen Typen sehen kann.
@@ -634,7 +639,7 @@ interface AgentInterface {
      * @return
      */
     @Deprecated("NOT YET SUPPORTED")
-    fun hasTower(): Boolean
+    val hasTower: Boolean
 
     /**
      * Sofern der Agent 3 Tonic besitzt, kann er sich hiermit unsichtbar machen.
@@ -644,7 +649,7 @@ interface AgentInterface {
     fun makeInvisible()
 
     /**
-     * Mit einem Shift der Agent sich für die nächsten 10 Schritte (agent.go...) besonders schnell bewegen, sofern er genug Tonic besitzt.
+     * Mit einem Shift bewegt sich der Agent für die nächsten Schritte (agent.go...) besonders schnell, sofern er genug Tonic besitzt.
      * Dies kann z. B. strategisch genutzt werden, um feindlichen Angriffen zu entkommen, schneller Hilfe leisten zu können oder
      * Ressourcen schneller zu transportieren.
      *
@@ -652,9 +657,4 @@ interface AgentInterface {
      * Tonic: 1
      */
     fun shift()
-
-    /**
-     * Gibt zurück, ob der Agent gerade shifted.
-     */
-    fun isShifting(): Boolean
 }

@@ -53,7 +53,7 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule("Avoid Agents", SwatTeam.COMMANDER) {
                 override fun constraint(): Boolean {
-                    return agent.seeTeamAgent()
+                    return agent.seeTeamAgent
                 }
 
                 override fun action() {
@@ -63,7 +63,7 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         )
         // -------------------------------------------->
         "See Resources" swat SwatTeam.NOT_COMMANDER inCase {
-            agent.seeResource() &&
+            agent.seeResource &&
                 (agent.tonicFull && agent.seeResource(ResourceType.Tonic)).not()
         } then {
             agent.goToResource()
@@ -185,7 +185,7 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule("Place Tower", SwatTeam.COMMANDER) {
                 override fun constraint(): Boolean {
-                    return agent.isTouchingResource(ResourceType.ExtremPoint) && agent.hasTower()
+                    return agent.isTouchingResource(ResourceType.ExtremPoint) && agent.hasTower
                 }
 
                 override fun action() {
@@ -222,7 +222,7 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule("Mark Resource") {
                 override fun constraint(): Boolean {
-                    return agent.isCarryingResource && !mothership.isMarkerDeployed && agent.seeResource()
+                    return agent.isCarryingResource && !mothership.isMarkerDeployed && agent.seeResource
                 }
 
                 override fun action() {
@@ -305,7 +305,7 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule("FightAgainstMothership") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryMothership()
+                    return agent.seeAdversaryMothership
                 }
 
                 override fun action() {
@@ -317,7 +317,7 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule("FightAgainstMothership & Order Support") {
                 override fun constraint(): Boolean {
-                    return !agent.isSupportOrdered && agent.seeAdversaryMothership()
+                    return !agent.isSupportOrdered && agent.seeAdversaryMothership
                 }
 
                 override fun action() {
@@ -366,7 +366,7 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule("FightAgainstAgent") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryAgent()
+                    return agent.seeAdversaryAgent
                 }
 
                 override fun action() {
@@ -378,7 +378,7 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule("PlaceMine") {
                 override fun constraint(): Boolean {
-                    return agent.hasMine() && agent.isUnderAttack
+                    return agent.hasMine && agent.isUnderAttack
                 }
 
                 override fun action() {
@@ -428,7 +428,7 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule("OrderFuelDuringFight") {
                 override fun constraint(): Boolean {
-                    return mothership.hasFuel() && (agent.fuel < 100) && agent.seeAdversaryAgent() && agent.isAtMothership
+                    return mothership.hasFuel() && (agent.fuel < 100) && agent.seeAdversaryAgent && agent.isAtMothership
                 }
 
                 override fun action() {
@@ -502,7 +502,7 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule("Construct Tower", SwatTeam.COMMANDER) {
                 override fun constraint(): Boolean {
-                    return agent.hasTower() && agent.seeResource()
+                    return agent.hasTower && agent.seeResource
                 }
 
                 override fun action() {
@@ -523,10 +523,10 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
             },
         )
         // -------------------------------------------->
-        "Spy" all inCase { agent.isInvisible && agent.seeAdversaryAgent() } then {
+        "Spy" all inCase { agent.isInvisible && agent.seeAdversaryAgent } then {
             agent.goToAdversaryAgent()
         }
-        "Spy Mothership" all inCase { agent.isInvisible && agent.seeAdversaryMothership() } then {
+        "Spy Mothership" all inCase { agent.isInvisible && agent.seeAdversaryMothership } then {
             agent.fightWithAdversaryAgent()
         }
         // -------------------------------------------->
@@ -549,7 +549,7 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule("Cancel Support") {
                 override fun constraint(): Boolean {
-                    return agent.isSupportOrdered && !agent.seeAdversaryMothership() && agent.fuel > 10 && !agent.isUnderAttack && !agent.seeAdversaryAgent()
+                    return agent.isSupportOrdered && !agent.seeAdversaryMothership && agent.fuel > 10 && !agent.isUnderAttack && !agent.seeAdversaryAgent
                 }
 
                 override fun action() {

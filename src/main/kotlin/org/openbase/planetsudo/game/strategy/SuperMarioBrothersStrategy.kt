@@ -51,7 +51,7 @@ class SuperMarioBrothersStrategy(agent: AgentInterface) : AbstractStrategy(agent
         createRule(
             object : Rule(6900, "Feind Bekämpfen") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryAgent()
+                    return agent.seeAdversaryAgent
                 }
 
                 override fun action() {
@@ -63,7 +63,7 @@ class SuperMarioBrothersStrategy(agent: AgentInterface) : AbstractStrategy(agent
         createRule(
             object : Rule(8600, "Mutterschiff angreifen") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryMothership()
+                    return agent.seeAdversaryMothership
                 }
 
                 override fun action() {
@@ -75,7 +75,7 @@ class SuperMarioBrothersStrategy(agent: AgentInterface) : AbstractStrategy(agent
         createRule(
             object : Rule(8500, "Gegner Schiff Mine") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryMothership() && agent.hasMine()
+                    return agent.seeAdversaryMothership && agent.hasMine
                 }
 
                 override fun action() {
@@ -88,7 +88,7 @@ class SuperMarioBrothersStrategy(agent: AgentInterface) : AbstractStrategy(agent
         createRule(
             object : Rule(7000, "Recoursetyp 1 abholen") {
                 override fun constraint(): Boolean {
-                    return agent.seeResource() && agent.resourceType == ResourceType.Normal
+                    return agent.seeResource && agent.resourceType == ResourceType.Normal
                 }
 
                 override fun action() {
@@ -99,7 +99,7 @@ class SuperMarioBrothersStrategy(agent: AgentInterface) : AbstractStrategy(agent
         createRule(
             object : Rule(7200, "Recoursetyp 2 abholen") {
                 override fun constraint(): Boolean {
-                    return agent.seeResource() && agent.resourceType == ResourceType.DoublePoints
+                    return agent.seeResource && agent.resourceType == ResourceType.DoublePoints
                 }
 
                 override fun action() {
@@ -110,7 +110,7 @@ class SuperMarioBrothersStrategy(agent: AgentInterface) : AbstractStrategy(agent
         createRule(
             object : Rule(7300, "Recoursetyp 3 abholen") {
                 override fun constraint(): Boolean {
-                    return agent.seeResource() && agent.resourceType == ResourceType.ExtremPoint
+                    return agent.seeResource && agent.resourceType == ResourceType.ExtremPoint
                 }
 
                 override fun action() {
@@ -121,7 +121,7 @@ class SuperMarioBrothersStrategy(agent: AgentInterface) : AbstractStrategy(agent
         createRule(
             object : Rule(7400, "Recoursetyp 4 abholen") {
                 override fun constraint(): Boolean {
-                    return agent.seeResource() && agent.resourceType == ResourceType.ExtraMothershipFuel
+                    return agent.seeResource && agent.resourceType == ResourceType.ExtraMothershipFuel
                 }
 
                 override fun action() {
@@ -132,7 +132,7 @@ class SuperMarioBrothersStrategy(agent: AgentInterface) : AbstractStrategy(agent
         createRule(
             object : Rule(7500, "Auftanken an Resource") {
                 override fun constraint(): Boolean {
-                    return agent.seeResource() && agent.resourceType == ResourceType.ExtraAgentFuel && agent.fuelInPercent <= 85
+                    return agent.seeResource && agent.resourceType == ResourceType.ExtraAgentFuel && agent.fuelInPercent <= 85
                 }
 
                 override fun action() {
