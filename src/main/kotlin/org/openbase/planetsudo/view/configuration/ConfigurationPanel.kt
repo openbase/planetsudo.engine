@@ -105,20 +105,22 @@ class ConfigurationPanel : JPanel() {
 
             // restore selection
             if (teamAComboBox!!.itemCount > 0) {
-                (selectTeam
-                    ?: teamAComboBox!!.getItems()
-                    .filterNotNull()
-                    .find { it.name == stateProperties.getProperty(PROPERTY_SELECTED_TEAM_A, "") })
-                    ?.also {teamAComboBox!!.selectedItem = it }
-                    ?: run {teamAComboBox!!.selectedIndex = 0 }
+                (
+                    selectTeam
+                        ?: teamAComboBox!!.getItems()
+                            .filterNotNull()
+                            .find { it.name == stateProperties.getProperty(PROPERTY_SELECTED_TEAM_A, "") }
+                    )
+                    ?.also { teamAComboBox!!.selectedItem = it }
+                    ?: run { teamAComboBox!!.selectedIndex = 0 }
             }
 
             if (teamBComboBox!!.itemCount > 0) {
                 teamBComboBox!!.getItems()
                     .filterNotNull()
                     .find { it.name == stateProperties.getProperty(PROPERTY_SELECTED_TEAM_B, "") }
-                    ?.also {teamBComboBox!!.selectedItem = it }
-                    ?: run {teamBComboBox!!.selectedIndex = 0 }
+                    ?.also { teamBComboBox!!.selectedItem = it }
+                    ?: run { teamBComboBox!!.selectedIndex = 0 }
             }
 
             teamAComboBox!!.isEnabled = true
@@ -683,7 +685,7 @@ class ConfigurationPanel : JPanel() {
                 gameManager.addTeam(selectedItem as TeamData, GameManager.TeamType.A)
                 if (isEnabled) {
                     getSelection()?.name?.let {
-                        stateProperties.setProperty(PROPERTY_SELECTED_TEAM_A, it )
+                        stateProperties.setProperty(PROPERTY_SELECTED_TEAM_A, it)
                     }
                 }
             }
@@ -691,12 +693,12 @@ class ConfigurationPanel : JPanel() {
     } // GEN-LAST:event_teamAComboBoxActionPerformed
 
     private fun teamBComboBoxActionPerformed() { // GEN-FIRST:event_teamBComboBoxActionPerformed
-        teamBComboBox?.apply{
-            selectedItem?.let {selectedItem ->
+        teamBComboBox?.apply {
+            selectedItem?.let { selectedItem ->
                 gameManager.addTeam(selectedItem as TeamData, GameManager.TeamType.B)
-                if(isEnabled) {
+                if (isEnabled) {
                     getSelection()?.name?.let {
-                        stateProperties.setProperty(PROPERTY_SELECTED_TEAM_B, it )
+                        stateProperties.setProperty(PROPERTY_SELECTED_TEAM_B, it)
                     }
                 }
             }
