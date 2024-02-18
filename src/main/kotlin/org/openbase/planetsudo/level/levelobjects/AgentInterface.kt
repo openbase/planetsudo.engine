@@ -106,6 +106,11 @@ interface AgentInterface {
     val angle: Int
 
     /**
+     * Gibt die Art der Resource an, die der Agent trägt.
+     */
+    val carryingResourceType: ResourceType
+
+    /**
      * Zeigt den verbliebenen Treibstoff des Agenten an.
      *
      * @return Den verbliebenen Treibstoff als ganz Zahl.
@@ -178,7 +183,7 @@ interface AgentInterface {
     fun go()
 
     /**
-     * Der Agent dreht sich um `beta`° nach links und bewegt sich anschließend geradeaus.
+     * Der Agent bewegt sich geradeaus und dreht sich anschließend um `beta`° nach links.
      * Aktionspunkte: 3 (+ 3 wenn resource geladen)
      * Treibstoff: 1
      *
@@ -188,7 +193,7 @@ interface AgentInterface {
     fun goLeft(beta: Int)
 
     /**
-     * Der Agent dreht sich um `beta`° nach rechts und bewegt sich anschließend geradeaus.
+     * Der Agent bewegt sich geradeaus und dreht sich anschließend um `beta`° nach rechts.
      * Aktionspunkte: 3 (+ 3 wenn resource geladen)
      * Treibstoff: 1
      *
@@ -198,9 +203,12 @@ interface AgentInterface {
 
     /**
      * Der Agent bewegt sich in Richtung des Markers, falls dieser gesetzt
-     * wurde. Hierbei wird ein Weg berechnet, welcher auf krzester Distanz
-     * zum Marker fhrt. Um Hindernisse bewegt sich der Agent hierbei
+     * wurde. Hierbei wird ein Weg berechnet, welcher auf kürzester Distanz
+     * zum Marker fährt. Um Hindernisse bewegt sich der Agent hierbei
      * automatisch herum.
+     *
+     * Achtung: Der Agent bewegt sich erst geradeaus und dreht sich danach.
+     *
      * Aktionspunkte: 4 (+ 4 wenn resource geladen)
      * Treibstoff: 1
      */
@@ -208,9 +216,12 @@ interface AgentInterface {
 
     /**
      * Der Agent bewegt sich auf das Mutterschiff zu. Hierbei wird ein Weg
-     * berechnet, welcher auf krzester Distanz zum Mutterschiff
-     * fhrt. Um Hindernisse bewegt sich der Agent hierbei automatisch
+     * berechnet, welcher auf kürzester Distanz zum Mutterschiff
+     * fährt. Um Hindernisse bewegt sich der Agent hierbei automatisch
      * herum.
+     *
+     * Achtung: Der Agent bewegt sich erst geradeaus und dreht sich danach.
+     *
      * Aktionspunkte: 4 (+ 4 wenn resource geladen)
      * Treibstoff: 1
      */
@@ -218,6 +229,9 @@ interface AgentInterface {
 
     /**
      * Der Agent bewegt sich zur Resource.
+     *
+     * Achtung: Der Agent bewegt sich erst geradeaus und dreht sich danach.
+     *
      * Aktionspunkte: 4 (+ 4 wenn resource geladen)
      * Treibstoff: 1
      */
@@ -225,6 +239,9 @@ interface AgentInterface {
 
     /**
      * Der Agent bewegt sich zur Resource vom angegebenen Typen.
+     *
+     * Achtung: Der Agent bewegt sich erst geradeaus und dreht sich danach.
+     *
      * Aktionspunkte: 4 + (+ 4 wenn resource geladen)
      * Treibstoff: 1
      * @param resourceType
@@ -233,6 +250,9 @@ interface AgentInterface {
 
     /**
      * Gehe zu einem Agenten der Hilfe benötigt.
+     *
+     * Achtung: Der Agent bewegt sich erst geradeaus und dreht sich danach.
+     *
      * Aktionspunkte: 4 + (+ 4 wenn resource geladen)
      * Treibstoff: 1
      */
@@ -240,6 +260,9 @@ interface AgentInterface {
 
     /**
      * Gehe zu einem feindlichen Agenten in der Nähe.
+     *
+     * Achtung: Der Agent bewegt sich erst geradeaus und dreht sich danach.
+     *
      * Aktionspunkte: 4 + (+ 4 wenn resource geladen)
      * Treibstoff: 1
      */
@@ -543,6 +566,25 @@ interface AgentInterface {
      * Treibstoff: 1
      */
     fun turnRight(beta: Int)
+
+    /**
+     * Der Agent dreht sich zu einer nahen Resource.
+     * Falls er keine findet, dreht er sich nicht
+     *
+     * Aktionspunkte: 1
+     * Treibstoff: 1
+     */
+    fun turnToResource()
+
+    /**
+     * Der Agent dreht sich zu einer nahen Resource eines bestimmten Typs.
+     * Falls er keine findet, dreht er sich nicht
+     *
+     * Aktionspunkte: 1
+     * Treibstoff: 1
+     * @param resourceType Der Typ der Resource
+     */
+    fun turnToResource(resourceType: ResourceType)
 
     /**
      * Der Agent läuft amok.

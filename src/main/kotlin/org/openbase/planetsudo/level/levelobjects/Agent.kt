@@ -194,6 +194,9 @@ class Agent(
     override val isDisabled: Boolean
         get() = !isAlive || !hasFuel()
 
+    override val carryingResourceType: ResourceType
+        get() = resource?.type ?: ResourceType.Unknown
+
     override fun isCarryingResource(type: ResourceType): Boolean {
         if (isCarryingResource) {
             return resource?.type == type
@@ -314,6 +317,26 @@ class Agent(
         ap.actionPoint
         if (useFuel()) {
             direction.angle = direction.angle + beta
+        }
+    }
+
+    override fun turnToResource() {
+        ap.actionPoint
+        if (useFuel()) {
+            val resourceToGo = level.getCloseResource(this)
+            if (resourceToGo != null) {
+                direction.turnTo(position, resourceToGo.position)
+            }
+        }
+    }
+
+    override fun turnToResource(resourceType: ResourceType) {
+        ap.actionPoint
+        if (useFuel()) {
+            val resourceToGo = level.getCloseResource(this, resourceType)
+            if (resourceToGo != null) {
+                direction.turnTo(position, resourceToGo.position)
+            }
         }
     }
 

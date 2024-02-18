@@ -31,6 +31,8 @@ class AgentMock : AgentInterface {
         get() = error("Mock does not offer any functionality.")
     override val angle: Int
         get() = error("Mock does not offer any functionality.")
+    override val carryingResourceType: Resource.ResourceType
+        get() = error("Mock does not offer any functionality.")
     override val fuel: Int
         get() = error("Mock does not offer any functionality.")
     override val fuelInPercent: Int
@@ -202,6 +204,14 @@ class AgentMock : AgentInterface {
     }
 
     override fun turnRight(beta: Int) {
+        error("Mock does not offer any functionality.")
+    }
+
+    override fun turnToResource() {
+        error("Mock does not offer any functionality.")
+    }
+
+    override fun turnToResource(resourceType: Resource.ResourceType) {
         error("Mock does not offer any functionality.")
     }
 
