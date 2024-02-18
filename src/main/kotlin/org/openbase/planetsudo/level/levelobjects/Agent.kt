@@ -125,6 +125,9 @@ class Agent(
     override val isDisabled: Boolean
         get() = !isAlive || !hasFuel
 
+    override val carryingResourceType: ResourceType
+        get() = resource?.type ?: ResourceType.Unknown
+
     override val isCarryingResource: Boolean
         get() = resource != null
 

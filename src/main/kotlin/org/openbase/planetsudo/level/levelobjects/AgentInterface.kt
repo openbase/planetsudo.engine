@@ -106,6 +106,11 @@ interface AgentInterface {
     val angle: Int
 
     /**
+     * Gibt die Art der Resource an, die der Agent trägt.
+     */
+    val carryingResourceType: ResourceType
+
+    /**
      * Zeigt den verbliebenen Treibstoff des Agenten an.
      *
      * @return Den verbliebenen Treibstoff als ganz Zahl.
