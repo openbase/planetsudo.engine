@@ -786,7 +786,7 @@ class Agent(
 
     override fun makeInvisible() {
         ap.getActionPoint(100)
-        if (hasTonicForInvisibility()) {
+        if (hasTonicForInvisibility) {
             tonic = 0
             invisible = true
         }

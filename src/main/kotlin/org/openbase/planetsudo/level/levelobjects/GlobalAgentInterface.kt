@@ -150,7 +150,8 @@ interface GlobalAgentInterface {
      *
      * @return true oder false.
      */
-    fun hasTonicForInvisibility(): Boolean = tonic == Agent.MAX_TONIC
+    val hasTonicForInvisibility: Boolean
+        get() = tonic == Agent.MAX_TONIC
 
     /**
      * Gibt an, ob der Agent eine Resource vom `type` trägt.
