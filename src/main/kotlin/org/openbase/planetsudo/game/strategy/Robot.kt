@@ -82,7 +82,7 @@ class Robot(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(950, "Mine setzten") {
                 override fun constraint(): Boolean {
-                    return agent.hasMine() && agent.seeAdversaryAgent()
+                    return agent.hasMine && agent.seeAdversaryAgent
                 }
 
                 override fun action() {
@@ -93,7 +93,7 @@ class Robot(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(940, "Angriff Mothership") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryMothership()
+                    return agent.seeAdversaryMothership
                 }
 
                 override fun action() {
@@ -104,7 +104,7 @@ class Robot(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(930, "Angriff Agent") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryAgent()
+                    return agent.seeAdversaryAgent
                 }
 
                 override fun action() {
@@ -165,7 +165,7 @@ class Robot(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(500, "gehe zu resource") {
                 override fun constraint(): Boolean {
-                    return agent.seeResource()
+                    return agent.seeResource
                 }
 
                 override fun action() {

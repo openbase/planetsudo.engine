@@ -25,7 +25,7 @@ enum class GameSound(uri: String) {
     RechargeFuel("sound/the-notification-email-143029.wav"),
     CallForSupport("sound/need_backup.wav"),
     SpendFuel("sound/spend_fuel.wav"),
-    AgentExplosion("sound/c4_explode1.wav"),
+    AgentExplosion("sound/large-underwater-explosion-190270.wav"),
     MothershipExplosion("sound/nuclear-explosion-63470.wav"),
     MothershipUnderAttack("sound/sirene.wav"),
     EarnNormalResource("sound/button-124476.wav"),
@@ -33,9 +33,9 @@ enum class GameSound(uri: String) {
     EarnExtremResource("sound/interface-124464.wav"),
     EarnAgentFuel("sound/cartoon-jump-6462.wav"),
     EarnMothershipFuel("sound/sci-fi-charge-up-37395.wav"),
-    ErectTower("sound/sci-fi-charge-up-37395.wav"),
+    ConstructTower("sound/sci-fi-charge-up-37395.wav"),
     Laser("sound/lasershot.wav"),
-
+    Shift("sound/woosh_low_long01-98755.wav"),
     End("sound/end.wav"),
     EndSoon("sound/end_soon.wav"),
     AgentDisabled("sound/agent_empty_fuel.wav"),
@@ -48,6 +48,12 @@ enum class GameSound(uri: String) {
         val tmpData: AudioDataImpl? = try {
             AudioDataImpl(File(ClassLoader.getSystemResource(uri).file))
         } catch (ex: IOException) {
+            ExceptionPrinter.printHistory(
+                CouldNotPerformException("Could not load Soundfile[$uri] of $name", ex),
+                LoggerFactory.getLogger(GameSound::class.java),
+            )
+            null
+        } catch (ex: NullPointerException) {
             ExceptionPrinter.printHistory(
                 CouldNotPerformException("Could not load Soundfile[$uri] of $name", ex),
                 LoggerFactory.getLogger(GameSound::class.java),

@@ -84,13 +84,15 @@ class AgentMock : AgentInterface {
         error("Mock does not offer any functionality.")
     }
 
-    override fun hasFuel(): Boolean {
-        error("Mock does not offer any functionality.")
-    }
+    override val hasFuel: Boolean
+        get() {
+            error("Mock does not offer any functionality.")
+        }
 
-    override fun hasMine(): Boolean {
-        error("Mock does not offer any functionality.")
-    }
+    override val hasMine: Boolean
+        get() {
+            error("Mock does not offer any functionality.")
+        }
 
     override val isAlive: Boolean
         get() = error("Mock does not offer any functionality.")
@@ -151,17 +153,20 @@ class AgentMock : AgentInterface {
         error("Mock does not offer any functionality.")
     }
 
-    override fun seeAdversaryAgent(): Boolean {
-        error("Mock does not offer any functionality.")
-    }
+    override val seeAdversaryAgent: Boolean
+        get() {
+            error("Mock does not offer any functionality.")
+        }
 
-    override fun seeTeamAgent(): Boolean {
-        error("Mock does not offer any functionality.")
-    }
+    override val seeTeamAgent: Boolean
+        get() {
+            error("Mock does not offer any functionality.")
+        }
 
-    override fun seeAdversaryMothership(): Boolean {
-        error("Mock does not offer any functionality.")
-    }
+    override val seeAdversaryMothership: Boolean
+        get() {
+            error("Mock does not offer any functionality.")
+        }
 
     override fun seeLostTeamAgent(): Boolean {
         error("Mock does not offer any functionality.")
@@ -175,9 +180,10 @@ class AgentMock : AgentInterface {
         error("Mock does not offer any functionality.")
     }
 
-    override fun seeResource(): Boolean {
-        error("Mock does not offer any functionality.")
-    }
+    override val seeResource: Boolean
+        get() {
+            error("Mock does not offer any functionality.")
+        }
 
     override fun seeResource(resourceType: Resource.ResourceType): Boolean {
         error("Mock does not offer any functionality.")
@@ -223,19 +229,27 @@ class AgentMock : AgentInterface {
         error("Mock does not offer any functionality.")
     }
 
-    override fun erectTower(type: Tower.TowerType) {
+    override fun constructTower(type: Tower.TowerType) {
         error("Mock does not offer any functionality.")
     }
 
-    override fun dismantleTower() {
+    override fun deconstructTower() {
         error("Mock does not offer any functionality.")
     }
 
-    override fun hasTower(): Boolean {
-        error("Mock does not offer any functionality.")
-    }
+    override val hasTower: Boolean
+        get() {
+            error("Mock does not offer any functionality.")
+        }
 
     override fun makeInvisible() {
         error("Mock does not offer any functionality.")
     }
+
+    override fun shift() {
+        error("Mock does not offer any functionality.")
+    }
+
+    override val isShifting: Boolean
+        get() = error("Mock does not offer any functionality.")
 }

@@ -40,8 +40,8 @@ class TowerPanel(tower: Tower, parentPanel: LevelPanel) :
     }
 
     override fun paintComponent(g2: Graphics2D, gl: Graphics2D) {
-        // only paint if erected
-        if (!resource.isErected) {
+        // only paint if constructed
+        if (!resource.isConstructed) {
             return
         }
 
@@ -61,13 +61,13 @@ class TowerPanel(tower: Tower, parentPanel: LevelPanel) :
     }
 
     override fun propertyChange(evt: PropertyChangeEvent) {
-        if (evt.propertyName == Tower.TOWER_ERECT) {
+        if (evt.propertyName == Tower.TOWER_CONSTRUCT) {
             if ((evt.newValue as Tower) == resource) {
                 if (towerTopPanel == null) {
                     towerTopPanel = TowerTopPanel(resource, this)
                 }
             }
-        } else if (evt.propertyName == Tower.TOWER_DISMANTLE) {
+        } else if (evt.propertyName == Tower.TOWER_DECONSTRUCT) {
             if ((evt.newValue as Tower) == resource) {
                 if (towerTopPanel != null) {
                     removeChild(towerTopPanel!!)

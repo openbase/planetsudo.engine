@@ -36,8 +36,8 @@ class TowerTopPanel(tower: Tower, parentPanel: TowerPanel) :
     }
 
     override fun paintComponent(g2: Graphics2D, gl: Graphics2D) {
-        // only paint if erected
-        if (!resource.isErected) {
+        // only paint if constructed
+        if (!resource.isConstructed) {
             return
         }
 
