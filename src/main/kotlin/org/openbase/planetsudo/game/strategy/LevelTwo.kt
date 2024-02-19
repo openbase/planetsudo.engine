@@ -38,7 +38,7 @@ class LevelTwo(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(20, "Search Resources") {
                 override fun constraint(): Boolean {
-                    return agent.seeResource()
+                    return agent.seeResource
                 }
 
                 override fun action() {
@@ -86,7 +86,7 @@ class LevelTwo(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(90, "FightAgainstMothership") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryMothership()
+                    return agent.seeAdversaryMothership
                 }
 
                 override fun action() {
@@ -136,7 +136,7 @@ class LevelTwo(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(190, "FightAgainstAgent") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryAgent()
+                    return agent.seeAdversaryAgent
                 }
 
                 override fun action() {
@@ -172,7 +172,7 @@ class LevelTwo(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(500, "OrderFuelDuringFight") {
                 override fun constraint(): Boolean {
-                    return (agent.fuel < 100) && (agent.seeAdversaryAgent() || agent.isUnderAttack) && agent.isAtMothership
+                    return (agent.fuel < 100) && (agent.seeAdversaryAgent || agent.isUnderAttack) && agent.isAtMothership
                 }
 
                 override fun action() {

@@ -27,9 +27,13 @@ class GlobalAgentProxy(val agent: AgentInterface) : GlobalAgentInterface {
         get() = agent.resourceType
     override val isCarryingResource: Boolean
         get() = agent.isCarryingResource
+    override val hasFuel: Boolean
+        get() = agent.hasFuel
 
-    override fun hasFuel(): Boolean = agent.hasFuel()
     override fun isCarryingResource(type: Resource.ResourceType): Boolean = agent.isCarryingResource(type)
     override fun isTouchingResource(type: Resource.ResourceType): Boolean = agent.isTouchingResource(type)
-    override fun isShifting(): Boolean = agent.isShifting()
+    override val isShifting: Boolean
+        get() = agent.isShifting
+    override val carryingResourceType: Resource.ResourceType
+        get() = agent.carryingResourceType
 }

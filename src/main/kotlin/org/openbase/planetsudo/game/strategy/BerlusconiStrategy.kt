@@ -38,7 +38,7 @@ class BerlusconiStrategy(a: AgentInterface) : AbstractStrategy(a) {
         createRule(
             object : Rule(700, "Sehe Resource") {
                 override fun constraint(): Boolean {
-                    return agent.seeResource()
+                    return agent.seeResource
                 }
 
                 override fun action() {
@@ -86,7 +86,7 @@ class BerlusconiStrategy(a: AgentInterface) : AbstractStrategy(a) {
         createRule(
             object : Rule(801, "Feuer") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryAgent() && agent.isCarryingResource != true
+                    return agent.seeAdversaryAgent && agent.isCarryingResource != true
                 }
 
                 override fun action() {

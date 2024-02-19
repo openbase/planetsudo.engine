@@ -78,7 +78,7 @@ class StrategieNoxus(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(850, "Wenig Energie...") {
                 override fun constraint(): Boolean {
-                    return agent.fuelInPercent <= 7 && agent.hasFuel() && !agent.isUnderAttack
+                    return agent.fuelInPercent <= 7 && agent.hasFuel && !agent.isUnderAttack
                 }
 
                 override fun action() {
@@ -117,7 +117,7 @@ class StrategieNoxus(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(750, "Bekämpfe Agent...") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryAgent()
+                    return agent.seeAdversaryAgent
                 }
 
                 override fun action() {
@@ -143,7 +143,7 @@ class StrategieNoxus(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(610, "Mutterschiff verminen...") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryMothership() && agent.hasMine()
+                    return agent.seeAdversaryMothership && agent.hasMine
                 }
 
                 override fun action() {
@@ -156,7 +156,7 @@ class StrategieNoxus(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(600, "Bekämpfe Mutterschiff...") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryMothership()
+                    return agent.seeAdversaryMothership
                 }
 
                 override fun action() {
@@ -183,7 +183,7 @@ class StrategieNoxus(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(340, "Gestrandet...") {
                 override fun constraint(): Boolean {
-                    return !agent.hasFuel() && !agent.isAtMothership
+                    return !agent.hasFuel && !agent.isAtMothership
                 }
 
                 override fun action() {
@@ -277,7 +277,7 @@ class StrategieNoxus(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(200, "Resource gesichtet...") {
                 override fun constraint(): Boolean {
-                    return agent.seeResource()
+                    return agent.seeResource
                 }
 
                 override fun action() {

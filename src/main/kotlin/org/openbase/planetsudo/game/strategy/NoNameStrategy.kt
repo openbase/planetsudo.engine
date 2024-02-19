@@ -49,7 +49,7 @@ class NoNameStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(600, "Find_Resource") {
                 override fun constraint(): Boolean {
-                    return agent.seeResource()
+                    return agent.seeResource
                 }
 
                 override fun action() {
@@ -130,7 +130,7 @@ class NoNameStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(650, "attack") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryAgent()
+                    return agent.seeAdversaryAgent
                 }
 
                 override fun action() {
@@ -143,7 +143,7 @@ class NoNameStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(650, "mine") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryMothership() && agent.hasMine()
+                    return agent.seeAdversaryMothership && agent.hasMine
                 }
 
                 override fun action() {
@@ -155,7 +155,7 @@ class NoNameStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(1010, "defend") {
                 override fun constraint(): Boolean {
-                    return agent.isUnderAttack && agent.seeAdversaryAgent()
+                    return agent.isUnderAttack && agent.seeAdversaryAgent
                 }
 
                 override fun action() {
@@ -167,7 +167,7 @@ class NoNameStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(890, "attack mother") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryMothership()
+                    return agent.seeAdversaryMothership
                 }
 
                 override fun action() {

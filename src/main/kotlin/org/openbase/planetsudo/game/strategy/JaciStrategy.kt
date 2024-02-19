@@ -39,7 +39,7 @@ class JaciStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(100, "zu Ressource gehen") {
                 override fun constraint(): Boolean {
-                    return agent.seeResource()
+                    return agent.seeResource
                 }
 
                 override fun action() {
@@ -88,7 +88,7 @@ class JaciStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(600, "Bekämpfe feindliches Mutterschiff") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryMothership()
+                    return agent.seeAdversaryMothership
                 }
 
                 override fun action() {
@@ -100,7 +100,7 @@ class JaciStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(700, "Bekämpfe Feind") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryAgent()
+                    return agent.seeAdversaryAgent
                 }
 
                 override fun action() {
@@ -112,7 +112,7 @@ class JaciStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(800, "Lade Mine bei Feind ab") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryAgent() && agent.hasMine()
+                    return agent.seeAdversaryAgent && agent.hasMine
                 }
 
                 override fun action() {
@@ -148,7 +148,7 @@ class JaciStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(855, "Gegen Attacke wehren") {
                 override fun constraint(): Boolean {
-                    return agent.isUnderAttack && agent.seeAdversaryAgent()
+                    return agent.isUnderAttack && agent.seeAdversaryAgent
                 }
 
                 override fun action() {

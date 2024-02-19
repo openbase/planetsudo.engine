@@ -257,7 +257,7 @@ interface AgentInterface : GlobalAgentInterface {
      *
      * @return true oder false.
      */
-    fun hasMine(): Boolean
+    val hasMine: Boolean
 
     /**
      * Der Agent fordert `percent` Prozent Treibstoff vom Mutterschiff an.
@@ -310,21 +310,21 @@ interface AgentInterface : GlobalAgentInterface {
      *
      * @return true oder false.
      */
-    fun seeAdversaryAgent(): Boolean
+    val seeAdversaryAgent: Boolean
 
     /**
      * Zeigt an, ob der Agent einen Agenten des eigenen Teams sieht.
      *
      * @return true oder false.
      */
-    fun seeTeamAgent(): Boolean
+    val seeTeamAgent: Boolean
 
     /**
      * Zeigt an, ob der Agent das feindliche Mutterschiff sieht.
      *
      * @return true oder false.
      */
-    fun seeAdversaryMothership(): Boolean
+    val seeAdversaryMothership: Boolean
 
     /**
      * Zeigt an, ob sich in Sicht des Agenten ein Teammitglied ohne Treibstoff
@@ -353,7 +353,7 @@ interface AgentInterface : GlobalAgentInterface {
      *
      * @return true oder false.
      */
-    fun seeResource(): Boolean
+    val seeResource: Boolean
 
     /**
      * Zeigt an, ob der Agent eine Resource vom angegebenen Typen sehen kann.
@@ -485,7 +485,7 @@ interface AgentInterface : GlobalAgentInterface {
      * @return
      */
     @Deprecated("NOT YET SUPPORTED")
-    fun hasTower(): Boolean
+    val hasTower: Boolean
 
     /**
      * Sofern der Agent 3 Tonic besitzt, kann er sich hiermit unsichtbar machen.
@@ -495,7 +495,7 @@ interface AgentInterface : GlobalAgentInterface {
     fun makeInvisible()
 
     /**
-     * Mit einem Shift der Agent sich für die nächsten 10 Schritte (agent.go...) besonders schnell bewegen, sofern er genug Tonic besitzt.
+     * Mit einem Shift bewegt sich der Agent für die nächsten Schritte (agent.go...) besonders schnell, sofern er genug Tonic besitzt.
      * Dies kann z. B. strategisch genutzt werden, um feindlichen Angriffen zu entkommen, schneller Hilfe leisten zu können oder
      * Ressourcen schneller zu transportieren.
      *
