@@ -52,7 +52,7 @@ class SchnitzelsStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(900, "Sehe Resource") {
                 override fun constraint(): Boolean {
-                    return agent.seeResource()
+                    return agent.seeResource
                 }
 
                 override fun action() {
@@ -130,7 +130,7 @@ class SchnitzelsStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(945, "Feindkontakt") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryAgent()
+                    return agent.seeAdversaryAgent
                 }
 
                 override fun action() {
@@ -154,7 +154,7 @@ class SchnitzelsStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(799, "Feindliches Mutterschiff") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryMothership()
+                    return agent.seeAdversaryMothership
                 }
 
                 override fun action() {

@@ -27,7 +27,7 @@ class ZergStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(1000, "Angriff bei Sichtung vom Feind") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryAgent()
+                    return agent.seeAdversaryAgent
                 }
 
                 override fun action() {
@@ -39,7 +39,7 @@ class ZergStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(900, "Angriff Auf das Mutterschiff") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryMothership()
+                    return agent.seeAdversaryMothership
                 }
 
                 override fun action() {
@@ -149,7 +149,7 @@ class ZergStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(100, "Geh zu Ressource") {
                 override fun constraint(): Boolean {
-                    return agent.seeResource()
+                    return agent.seeResource
                 }
 
                 override fun action() {

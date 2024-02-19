@@ -273,14 +273,28 @@ interface AgentInterface {
      *
      * @return true oder false.
      */
-    fun hasFuel(): Boolean
+    val hasFuel: Boolean
+
+    /**
+     * Gibt zurück, ob der Agent mindestens ein Tonic besitzt.
+     *
+     * @return true oder false.
+     */
+    fun hasTonic(): Boolean = tonic >= 1
+
+    /**
+     * Gibt zurück, ob der Agent genug Tonic besitzt, um sich unsichtbar zu machen.
+     *
+     * @return true oder false.
+     */
+    fun hasTonicForInvisibility(): Boolean = tonic == Agent.MAX_TONIC
 
     /**
      * Gibt zurück, ob der Agent seine Mine noch trägt.
      *
      * @return true oder false.
      */
-    fun hasMine(): Boolean
+    val hasMine: Boolean
 
     /**
      * Gibt an, ob der Agent noch lebt.
@@ -394,6 +408,11 @@ interface AgentInterface {
     val isTouchingResource: Boolean
 
     /**
+     * Gibt zurück, ob der Agent gerade shifted.
+     */
+    val isShifting: Boolean
+
+    /**
      * Gibt zurück, ob der Agent eine Resource vom Typ `type` berührt und diese somit aufgeben kann.
      *
      * @param type
@@ -459,21 +478,21 @@ interface AgentInterface {
      *
      * @return true oder false.
      */
-    fun seeAdversaryAgent(): Boolean
+    val seeAdversaryAgent: Boolean
 
     /**
      * Zeigt an, ob der Agent einen Agenten des eigenen Teams sieht.
      *
      * @return true oder false.
      */
-    fun seeTeamAgent(): Boolean
+    val seeTeamAgent: Boolean
 
     /**
      * Zeigt an, ob der Agent das feindliche Mutterschiff sieht.
      *
      * @return true oder false.
      */
-    fun seeAdversaryMothership(): Boolean
+    val seeAdversaryMothership: Boolean
 
     /**
      * Zeigt an, ob sich in Sicht des Agenten ein Teammitglied ohne Treibstoff
@@ -502,7 +521,7 @@ interface AgentInterface {
      *
      * @return true oder false.
      */
-    fun seeResource(): Boolean
+    val seeResource: Boolean
 
     /**
      * Zeigt an, ob der Agent eine Resource vom angegebenen Typen sehen kann.
@@ -610,14 +629,14 @@ interface AgentInterface {
      * @param type Hier rüber kannst du den Turmtypen auswählen welcher errichtet werden soll.
      */
     @Deprecated("NOT YET SUPPORTED")
-    fun erectTower(type: TowerType)
+    fun constructTower(type: TowerType)
 
     /**
      * Baut einen Turm wieder ab der zuvor aufgestellt wurde.
      * Diese Aktion kann nur vom Commander durchgeführt werden, und zwar nur dann, wenn er in unmittelbarer Nähe des Turms ist.
      */
     @Deprecated("NOT YET SUPPORTED")
-    fun dismantleTower()
+    fun deconstructTower()
 
     /**
      * Überprüft, ob dieser Agent einen Turm aufbauen könnte.
@@ -625,7 +644,7 @@ interface AgentInterface {
      * @return
      */
     @Deprecated("NOT YET SUPPORTED")
-    fun hasTower(): Boolean
+    val hasTower: Boolean
 
     /**
      * Sofern der Agent 3 Tonic besitzt, kann er sich hiermit unsichtbar machen.
@@ -633,4 +652,14 @@ interface AgentInterface {
      * Ein Agent ist so lange unsichtbar, bis er eine feindliche Einheit angreift oder eine Mine setzt.
      */
     fun makeInvisible()
+
+    /**
+     * Mit einem Shift bewegt sich der Agent für die nächsten Schritte (agent.go...) besonders schnell, sofern er genug Tonic besitzt.
+     * Dies kann z. B. strategisch genutzt werden, um feindlichen Angriffen zu entkommen, schneller Hilfe leisten zu können oder
+     * Ressourcen schneller zu transportieren.
+     *
+     * Aktionspunkte: 1
+     * Tonic: 1
+     */
+    fun shift()
 }

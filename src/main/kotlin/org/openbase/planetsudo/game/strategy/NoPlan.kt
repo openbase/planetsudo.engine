@@ -49,7 +49,7 @@ class NoPlan(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(500, "Flee") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryAgent()
+                    return agent.seeAdversaryAgent
                 }
 
                 override fun action() {
@@ -90,7 +90,7 @@ class NoPlan(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(9, "MoveToRess") {
                 override fun constraint(): Boolean {
-                    return agent.seeResource()
+                    return agent.seeResource
                 }
 
                 override fun action() {
