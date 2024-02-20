@@ -24,6 +24,8 @@ import org.openbase.planetsudo.net.PlanetSudoClient
 import org.openbase.planetsudo.net.PlanetSudoClient.Companion.instance
 import org.openbase.planetsudo.view.MainGUI
 import org.openbase.planetsudo.view.level.LevelDisplayPanel
+import org.openbase.planetsudo.view.util.getItems
+import org.openbase.planetsudo.view.util.getSelection
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.awt.Color
@@ -62,19 +64,25 @@ class ConfigurationPanel : JPanel() {
         updateTeamList()
 
         // setup default team
-        setDefaultTeamButton!!.foreground = Color.BLACK
-        setDefaultTeamButton!!.isEnabled = true
-        defaultTeamComboBox!!.isEnabled = true
-        syncButton!!.isEnabled = false
+        enableDefaultTeamSelection()
+
         try {
-            val loadDefaultTeam = loadDefaultTeam()
-            setDefaultTeam(loadDefaultTeam)
+            loadDefaultTeam()?.let {
+                setDefaultTeam(it)
+            }
         } catch (ex: CouldNotPerformException) {
             ExceptionPrinter.printHistory(CouldNotPerformException("Could not load default team!", ex), logger)
         }
     }
 
-    fun updateTeamList() {
+    fun enableDefaultTeamSelection() {
+        setDefaultTeamButton!!.foreground = Color.BLACK
+        setDefaultTeamButton!!.isEnabled = true
+        defaultTeamComboBox!!.isEnabled = true
+        syncButton!!.isEnabled = false
+    }
+
+    fun updateTeamList(selectTeam: TeamData? = null) {
         try {
             teamAComboBox!!.isEnabled = false
             teamBComboBox!!.isEnabled = false
@@ -97,25 +105,26 @@ class ConfigurationPanel : JPanel() {
 
             // restore selection
             if (teamAComboBox!!.itemCount > 0) {
-                if (teamAComboBox!!.model.size > stateProperties.getProperty(PROPERTY_SELECTED_TEAM_A, "0").toInt()) {
-                    teamAComboBox!!.selectedIndex = stateProperties.getProperty(PROPERTY_SELECTED_TEAM_A, "0").toInt()
-                } else {
-                    teamAComboBox!!.selectedIndex = 0
-                    stateProperties.setProperty(PROPERTY_SELECTED_TEAM_A, "0")
-                }
+                (
+                    selectTeam
+                        ?: teamAComboBox!!.getItems()
+                            .filterNotNull()
+                            .find { it.name == stateProperties.getProperty(PROPERTY_SELECTED_TEAM_A, "") }
+                    )
+                    ?.also { teamAComboBox!!.selectedItem = it }
+                    ?: run { teamAComboBox!!.selectedIndex = 0 }
             }
 
             if (teamBComboBox!!.itemCount > 0) {
-                if (teamBComboBox!!.model.size > stateProperties.getProperty(PROPERTY_SELECTED_TEAM_B, "0").toInt()) {
-                    teamBComboBox!!.selectedIndex = stateProperties.getProperty(PROPERTY_SELECTED_TEAM_B, "0").toInt()
-                } else {
-                    teamBComboBox!!.selectedIndex = 0
-                    stateProperties.setProperty(PROPERTY_SELECTED_TEAM_B, "0")
-                }
+                teamBComboBox!!.getItems()
+                    .filterNotNull()
+                    .find { it.name == stateProperties.getProperty(PROPERTY_SELECTED_TEAM_B, "") }
+                    ?.also { teamBComboBox!!.selectedItem = it }
+                    ?: run { teamBComboBox!!.selectedIndex = 0 }
             }
 
             teamAComboBox!!.isEnabled = true
-            teamBComboBox!!.setEnabled(true)
+            teamBComboBox!!.isEnabled = true
         } catch (ex: CouldNotPerformException) {
             logger.warn("Could not load teams!", ex)
         }
@@ -135,10 +144,10 @@ class ConfigurationPanel : JPanel() {
         teamsPanel = JPanel()
         versusLabel = JLabel()
         teamAPanel = JPanel()
-        teamAComboBox = JComboBox<TeamData>()
+        teamAComboBox = JComboBox<TeamData?>()
         teamALabel = JLabel()
         teamBPanel = JPanel()
-        teamBComboBox = JComboBox<TeamData>()
+        teamBComboBox = JComboBox<TeamData?>()
         teamBLabel = JLabel()
         levelChooserPanel = JPanel()
         levelChooserComboBox = JComboBox<String>()
@@ -671,30 +680,49 @@ class ConfigurationPanel : JPanel() {
     } // GEN-LAST:event_startGameButtonActionPerformed
 
     private fun teamAComboBoxActionPerformed() { // GEN-FIRST:event_teamAComboBoxActionPerformed
-        gameManager.addTeam(teamAComboBox!!.selectedItem as TeamData, GameManager.TeamType.A)
-        if (teamAComboBox!!.isEnabled) {
-            stateProperties.setProperty(PROPERTY_SELECTED_TEAM_A, teamAComboBox!!.selectedIndex.toString())
+        teamAComboBox?.apply {
+            selectedItem?.let { selectedItem ->
+                gameManager.addTeam(selectedItem as TeamData, GameManager.TeamType.A)
+                if (isEnabled) {
+                    getSelection()?.name?.let {
+                        stateProperties.setProperty(PROPERTY_SELECTED_TEAM_A, it)
+                    }
+                }
+            }
         }
     } // GEN-LAST:event_teamAComboBoxActionPerformed
 
     private fun teamBComboBoxActionPerformed() { // GEN-FIRST:event_teamBComboBoxActionPerformed
-        gameManager.addTeam(teamBComboBox!!.selectedItem as TeamData, GameManager.TeamType.B)
-        if (teamBComboBox!!.isEnabled) {
-            stateProperties.setProperty(PROPERTY_SELECTED_TEAM_B, teamBComboBox!!.selectedIndex.toString())
+        teamBComboBox?.apply {
+            selectedItem?.let { selectedItem ->
+                gameManager.addTeam(selectedItem as TeamData, GameManager.TeamType.B)
+                if (isEnabled) {
+                    getSelection()?.name?.let {
+                        stateProperties.setProperty(PROPERTY_SELECTED_TEAM_B, it)
+                    }
+                }
+            }
         }
     } // GEN-LAST:event_teamBComboBoxActionPerformed
 
     private fun defaultTeamComboBoxActionPerformed() { // GEN-FIRST:event_defaultTeamComboBoxActionPerformed
     } // GEN-LAST:event_defaultTeamComboBoxActionPerformed
 
-    private fun setDefaultTeam(defaultTeamData: TeamData?) {
+    fun setDefaultTeamCandidate(teamData: TeamData) = teamData
+        .takeIf { defaultTeamComboBox!!.isEnabled }
+        ?.also {
+            saveDefaultTeam(it)
+            setDefaultTeam(it)
+        }
+
+    private fun setDefaultTeam(defaultTeamData: TeamData) {
         setDefaultTeamButton!!.foreground = Color.BLACK
         setDefaultTeamButton!!.isEnabled = false
         defaultTeamComboBox!!.isEnabled = false
         syncButton!!.isEnabled = true
         try {
             for (i in 0 until defaultTeamComboBox!!.model.size) {
-                if ((defaultTeamComboBox!!.model.getElementAt(i) as TeamData).name == defaultTeamData!!.name) {
+                if ((defaultTeamComboBox!!.model.getElementAt(i) as TeamData).name == defaultTeamData.name) {
                     defaultTeamComboBox!!.selectedItem = defaultTeamComboBox!!.model.getElementAt(i)
                     break
                 }
@@ -742,8 +770,8 @@ class ConfigurationPanel : JPanel() {
     private var logoLabel: JLabel? = null
     private var setDefaultTeamButton: JButton? = null
     private var syncButton: JButton? = null
-    private var teamAComboBox: JComboBox<TeamData>? = null
-    private var teamBComboBox: JComboBox<TeamData>? = null
+    private var teamAComboBox: JComboBox<TeamData?>? = null
+    private var teamBComboBox: JComboBox<TeamData?>? = null
     private var randomLevelButton: JButton? = null // End of variables declaration//GEN-END:variables
 
     /**
