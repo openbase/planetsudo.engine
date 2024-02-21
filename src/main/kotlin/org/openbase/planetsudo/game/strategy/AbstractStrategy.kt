@@ -8,10 +8,7 @@ import org.openbase.planetsudo.game.GameManager
 import org.openbase.planetsudo.game.SwatTeam
 import org.openbase.planetsudo.game.SwatTeam.*
 import org.openbase.planetsudo.level.AbstractLevel
-import org.openbase.planetsudo.level.levelobjects.Agent
-import org.openbase.planetsudo.level.levelobjects.AgentInterface
-import org.openbase.planetsudo.level.levelobjects.Mothership
-import org.openbase.planetsudo.level.levelobjects.MothershipInterface
+import org.openbase.planetsudo.level.levelobjects.*
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.beans.PropertyChangeEvent
@@ -26,6 +23,7 @@ abstract class AbstractStrategy(val agent: AgentInterface) : Runnable {
 
     private val strategyOwner: Agent by lazy { agent as Agent }
     val mothership: MothershipInterface by lazy { strategyOwner.mothership }
+    val adversaryAgent: GlobalAgentInterface get() = agent.adversaryAgent
     val mothershipInternal: Mothership by lazy { strategyOwner.mothership }
     private val rules: TreeMap<Int, Rule> = TreeMap()
     private val gameManager: GameManager = GameManager.gameManager

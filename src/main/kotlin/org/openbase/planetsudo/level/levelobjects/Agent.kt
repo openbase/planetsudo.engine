@@ -54,6 +54,7 @@ class Agent(
     private var helpLevelObjectOld: AbstractLevelObject? = null
     private var adversaryObject: AbstractLevelObject? = null
     private var catchedfuel = 0
+    private var lastAversaryAgent: Agent? = null
 
     val mothership: Mothership
     val team: Team
@@ -179,7 +180,9 @@ class Agent(
         get() = level.getTouchableResource(this) != null
 
     override val seeAdversaryAgent: Boolean
-        get() = level.getAdversaryAgent(this) != null
+        get() = level.getAdversaryAgent(this)
+            .also { lastAversaryAgent = it }
+            .let { it != null }
 
     override val seeTeamAgent: Boolean
         get() = level.getTeamAgent(this) != null
@@ -482,6 +485,16 @@ class Agent(
         }
     }
 
+    override fun turnToAdversaryAgent(beta: Int) {
+        ap.actionPoint
+        if (useFuel()) {
+            level.getAdversaryAgent(this)?.let { adversaryAgent ->
+                direction.turnTo(position, adversaryAgent.position)
+                direction.angle += beta
+            }
+        }
+    }
+
     override fun turnRandom() {
         turnRandom(360)
     }
@@ -773,7 +786,7 @@ class Agent(
 
     override fun makeInvisible() {
         ap.getActionPoint(100)
-        if (hasTonicForInvisibility()) {
+        if (hasTonicForInvisibility) {
             tonic = 0
             invisible = true
         }
@@ -781,12 +794,18 @@ class Agent(
 
     override fun shift() {
         ap.actionPoint
-        if (hasTonic()) {
+        if (hasTonic) {
             tonic--
             shiftTonic++
             GameSound.Shift.play()
         }
     }
+
+    override val adversaryAgent: GlobalAgentInterface
+        get() = GlobalAgentProxy(
+            lastAversaryAgent
+                ?: error("No adversary agent seen!"),
+        )
 
     companion object {
         const val MAX_TONIC: Int = 3

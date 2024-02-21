@@ -281,7 +281,7 @@ class DivineStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule("Shift for Extra Resource") {
                 override fun constraint(): Boolean {
-                    return agent.isCarryingResource(ResourceType.ExtremPoint) && agent.hasTonic() && !agent.isShifting && !agent.isAtMothership
+                    return agent.isCarryingResource(ResourceType.ExtremPoint) && agent.hasTonic && !agent.isShifting && !agent.isAtMothership
                 }
 
                 override fun action() {

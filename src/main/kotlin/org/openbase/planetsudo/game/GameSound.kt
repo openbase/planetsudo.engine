@@ -77,6 +77,7 @@ enum class GameSound(uri: String) {
             return
         }
 
+        println("Play sound: ${this.name}")
         AUDIO_SERVER.playAudio(audioData)
         soundHistory[this] = Instant.now()
     }
