@@ -4,6 +4,7 @@
  */
 package org.openbase.planetsudo.game
 
+import org.apache.commons.io.FileUtils
 import org.openbase.jps.core.JPService
 import org.openbase.jps.exception.JPNotAvailableException
 import org.openbase.jul.exception.CouldNotPerformException
@@ -149,7 +150,7 @@ class Team(data: TeamData) {
         @JvmStatic
         fun resetDefaultTeam() {
             try {
-                File(JPService.getProperty(JPTeamPath::class.java).value.absolutePath + "/" + DEFAULT_ID + ".team").delete()
+                FileUtils.delete(File(JPService.getProperty(JPTeamPath::class.java).value.absolutePath + "/" + DEFAULT_ID + ".team"))
             } catch (ex: JPNotAvailableException) {
                 ExceptionPrinter.printHistory(CouldNotPerformException("Could not reset default team!", ex), logger)
             }

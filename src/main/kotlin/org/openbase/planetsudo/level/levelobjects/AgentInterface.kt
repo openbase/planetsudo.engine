@@ -45,7 +45,76 @@ import org.openbase.planetsudo.level.levelobjects.Tower.TowerType
  *
  * @author Divine Threepwood
  */
-interface AgentInterface {
+interface AgentInterface : GlobalAgentInterface {
+
+    /**
+     * Gibt an, ob ein Zusammensto mit einer Wand bevorsteht.
+     *
+     * @return true oder false.
+     */
+    val isCollisionDetected: Boolean
+
+    /**
+     * Gibt zurück, ob der Agent Bewegungsunfähig ist. (Zerstört
+     * oder ohne Treibstoff)
+     *
+     * @return true oder false.
+     */
+    val isDisabled: Boolean
+
+    /**
+     * Abfrage, ob der Agent aktuell unsichtbar ist.
+     */
+    val isInvisible: Boolean
+
+    /**
+     * Abfrage, ob der Agent aktuell sichtbar ist.
+     */
+    val isVisible: Boolean get() = !isInvisible
+
+    /**
+     * Diese Abfrage checkt das bevorstehende Ende des Spiels. Wenn es bald
+     * vorbei ist, gibt sie true zurück, dann sollte man schleunigst zum
+     * Mutterschiff.
+     *
+     * @return true oder false
+     */
+    val isGameOverSoon: Boolean
+
+    /**
+     * Gibt zurück, ob der Agent eine Resource berührt und diese somit
+     * aufgeben kann.
+     *
+     * @return true oder false.
+     */
+    val isTouchingResource: Boolean
+
+    /**
+     * Gibt die Punkte des Teams wieder.
+     *
+     * @return Den Punktestand als ganze Zahl (z.B. 47)
+     */
+    val teamPoints: Int
+
+    /**
+     * Gibt an, ob der Agent noch lebt.
+     *
+     * @return true oder false.
+     */
+    val isAlive: Boolean
+
+    /**
+     * Gibt zurück, ob der Agent beim Mutterschiff ist.
+     *
+     * @return true oder false.
+     */
+    val isAtMothership: Boolean
+
+    /**
+     * Liefert Informationen über einen feindlichen Agenten in der Nähe.
+     */
+    val adversaryAgent: GlobalAgentInterface
+
     /**
      * Der angeforderte Support des Agenten wird beendet.
      * Treibstoff: 1
@@ -91,81 +160,6 @@ interface AgentInterface {
     fun fightWithAdversaryMothership()
 
     /**
-     * Gibt die verfügbaren Aktionspunkte wieder.
-     *
-     * @return Die Aktionspunkte als ganze Zahl. (z.B. 2051)
-     */
-    val actionPoints: Int
-
-    /**
-     * Gibt die Richtung des Agenten in Grad wieder. Rechts = 0° Runter = 90°
-     * Links = 180° Hoch = 270°
-     *
-     * @return Den Winkel von 0 - 360° als ganze Zahl. (z.B. 128)
-     */
-    val angle: Int
-
-    /**
-     * Zeigt den verbliebenen Treibstoff des Agenten an.
-     *
-     * @return Den verbliebenen Treibstoff als ganz Zahl.
-     */
-    val fuel: Int
-
-    /**
-     * Zeigt den aktuellen Tonic Bestand des Agenten an.
-     *
-     * 0 = Kein Tonic
-     * 1 = Reicht für einen Shift
-     * 2 = Reicht für zwei Shifts
-     * 3 = Reicht für drei Shifts oder ermöglicht es den Agenten unsichtbar zu machen.
-     *
-     * @return Die aktuelle Tonic Menge als ganz Zahl zwischen 0 - 3.
-     */
-    val tonic: Int
-
-    /**
-     * Zeigt den aktuellen Tonic Bestand des Agenten in Prozent.
-     *
-     *   0 % = Kein Tonic
-     *  33 % = Reicht für einen Shift
-     *  66 % = Reicht für zwei Shifts
-     * 100 % = Reicht für drei Shifts oder ermöglicht es den Agenten unsichtbar zu machen.
-     *
-     * @return Die aktuelle Tonic Menge als ganz Zahl zwischen 0 - 100.
-     */
-    val tonicInPercent: Int
-
-    /**
-     * Gibt den verbliebenen Treibstoff in Prozent an.
-     *
-     * @return Treibstoffwert in Prozent als ganze Zahl. (z.B. 47 bei 47%
-     * verbliebenen Treibstoff)
-     */
-    val fuelInPercent: Int
-
-    /**
-     * Gibt das Maximalvolumen vom Treibstoff eines Agenten an.
-     *
-     * @return
-     */
-    val fuelVolume: Int
-
-    /**
-     * Gibt den Typ der Resource wieder, welche der Agent berührt.
-     *
-     * @return Den Ressourcenwert
-     */
-    val resourceType: ResourceType?
-
-    /**
-     * Gibt die Punkte des Teams wieder.
-     *
-     * @return Den Punktestand als ganze Zahl (z.B. 47)
-     */
-    val teamPoints: Int
-
-    /**
      * Der Agent bewegt sich geradeaus.
      * Aktionspunkte: 3 (+ 3 wenn resource geladen)
      * Treibstoff: 1
@@ -173,7 +167,7 @@ interface AgentInterface {
     fun go()
 
     /**
-     * Der Agent dreht sich um `beta`° nach links und bewegt sich anschließend geradeaus.
+     * Der Agent bewegt sich geradeaus und dreht sich anschließend um `beta`° nach links.
      * Aktionspunkte: 3 (+ 3 wenn resource geladen)
      * Treibstoff: 1
      *
@@ -183,7 +177,7 @@ interface AgentInterface {
     fun goLeft(beta: Int)
 
     /**
-     * Der Agent dreht sich um `beta`° nach rechts und bewegt sich anschließend geradeaus.
+     * Der Agent bewegt sich geradeaus und dreht sich anschließend um `beta`° nach rechts.
      * Aktionspunkte: 3 (+ 3 wenn resource geladen)
      * Treibstoff: 1
      *
@@ -193,9 +187,12 @@ interface AgentInterface {
 
     /**
      * Der Agent bewegt sich in Richtung des Markers, falls dieser gesetzt
-     * wurde. Hierbei wird ein Weg berechnet, welcher auf krzester Distanz
-     * zum Marker fhrt. Um Hindernisse bewegt sich der Agent hierbei
+     * wurde. Hierbei wird ein Weg berechnet, welcher auf kürzester Distanz
+     * zum Marker fährt. Um Hindernisse bewegt sich der Agent hierbei
      * automatisch herum.
+     *
+     * Achtung: Der Agent bewegt sich erst geradeaus und dreht sich danach.
+     *
      * Aktionspunkte: 4 (+ 4 wenn resource geladen)
      * Treibstoff: 1
      */
@@ -203,9 +200,12 @@ interface AgentInterface {
 
     /**
      * Der Agent bewegt sich auf das Mutterschiff zu. Hierbei wird ein Weg
-     * berechnet, welcher auf krzester Distanz zum Mutterschiff
-     * fhrt. Um Hindernisse bewegt sich der Agent hierbei automatisch
+     * berechnet, welcher auf kürzester Distanz zum Mutterschiff
+     * fährt. Um Hindernisse bewegt sich der Agent hierbei automatisch
      * herum.
+     *
+     * Achtung: Der Agent bewegt sich erst geradeaus und dreht sich danach.
+     *
      * Aktionspunkte: 4 (+ 4 wenn resource geladen)
      * Treibstoff: 1
      */
@@ -213,6 +213,9 @@ interface AgentInterface {
 
     /**
      * Der Agent bewegt sich zur Resource.
+     *
+     * Achtung: Der Agent bewegt sich erst geradeaus und dreht sich danach.
+     *
      * Aktionspunkte: 4 (+ 4 wenn resource geladen)
      * Treibstoff: 1
      */
@@ -220,6 +223,9 @@ interface AgentInterface {
 
     /**
      * Der Agent bewegt sich zur Resource vom angegebenen Typen.
+     *
+     * Achtung: Der Agent bewegt sich erst geradeaus und dreht sich danach.
+     *
      * Aktionspunkte: 4 + (+ 4 wenn resource geladen)
      * Treibstoff: 1
      * @param resourceType
@@ -228,140 +234,30 @@ interface AgentInterface {
 
     /**
      * Gehe zu einem Agenten der Hilfe benötigt.
+     *
+     * Achtung: Der Agent bewegt sich erst geradeaus und dreht sich danach.
+     *
      * Aktionspunkte: 4 + (+ 4 wenn resource geladen)
      * Treibstoff: 1
      */
     fun goToSupportAgent()
 
     /**
-     * Gibt zurück, ob der Agent Treibstoff hat.
+     * Gehe zu einem feindlichen Agenten in der Nähe.
      *
-     * @return true oder false.
+     * Achtung: Der Agent bewegt sich erst geradeaus und dreht sich danach.
+     *
+     * Aktionspunkte: 4 + (+ 4 wenn resource geladen)
+     * Treibstoff: 1
      */
-    fun hasFuel(): Boolean
+    fun goToAdversaryAgent()
 
     /**
      * Gibt zurück, ob der Agent seine Mine noch trägt.
      *
      * @return true oder false.
      */
-    fun hasMine(): Boolean
-
-    /**
-     * Gibt an, ob der Agent noch lebt.
-     *
-     * @return true oder false.
-     */
-    val isAlive: Boolean
-
-    /**
-     * Gibt zurück, ob der Agent beim Mutterschiff ist.
-     *
-     * @return true oder false.
-     */
-    val isAtMothership: Boolean
-
-    /**
-     * Zeigt an, ob der Agent eine Resource trägt.
-     *
-     * @return true oder false
-     */
-    val isCarryingResource: Boolean
-
-    /**
-     * Gibt an, ob der Agent eine Resource vom `type` trägt.
-     *
-     * @param type
-     * @return true oder false.
-     */
-    fun isCarryingResource(type: ResourceType): Boolean
-
-    /**
-     * Zeigt an, ob der Agent eine Resource trägt.
-     *
-     * @return true oder false
-     */
-    @Deprecated("Typo fixed", replaceWith = ReplaceWith("isCarryingResource"))
-    val isCarringResource: Boolean get() = isCarryingResource
-
-    /**
-     * Gibt an, ob der Agent eine Resource vom `type` trägt.
-     *
-     * @param type
-     * @return true oder false.
-     */
-    @Deprecated("Typo fixed", replaceWith = ReplaceWith("isCarryingResource"))
-    fun isCarringResource(type: ResourceType): Boolean = isCarryingResource(type)
-
-    /**
-     * Gibt an, ob ein Zusammensto mit einer Wand bevorsteht.
-     *
-     * @return true oder false.
-     */
-    val isCollisionDetected: Boolean
-
-    /**
-     * Gibt zurück, ob der Agent ein Commander ist oder nicht.
-     *
-     * @return true oder false
-     */
-    val isCommander: Boolean
-
-    /**
-     * Gibt zurück, ob der Agent Bewegungsunfähig ist. (Zerstört
-     * oder ohne Treibstoff)
-     *
-     * @return true oder false.
-     */
-    val isDisabled: Boolean
-
-    /**
-     * Abfrage, ob der Agent sich im Kampf befindet oder nicht.
-     *
-     * @return true oder false.
-     */
-    val isFighting: Boolean
-
-    /**
-     * Abfrage, ob dieser agent Support angefordert hat!
-     * !!! Nicht ob irgend einer Support angefordert hat!!!
-     * Hierfür mothership.needSomeoneSupport(); benutzen.
-     *
-     * @return true oder false
-     */
-    val isSupportOrdered: Boolean
-
-    /**
-     * Diese Abfrage checkt das bevorstehende Ende des Spiels. Wenn es bald
-     * vorbei ist, gibt sie true zurück, dann sollte man schleunigst zum
-     * Mutterschiff.
-     *
-     * @return true oder false
-     */
-    val isGameOverSoon: Boolean
-
-    /**
-     * Gibt zurück, ob der Agent eine Resource berührt und diese somit
-     * aufgeben kann.
-     *
-     * @return true oder false.
-     */
-    val isTouchingResource: Boolean
-
-    /**
-     * Gibt zurück, ob der Agent eine Resource vom Typ `type` berührt und diese somit aufgeben kann.
-     *
-     * @param type
-     * @return
-     */
-    fun isTouchingResource(type: ResourceType): Boolean
-
-    /**
-     * Gibt an, ob der Agent unter Beschuss steht.
-     *
-     * @return true oder false.
-     */
-    val isUnderAttack: Boolean
+    val hasMine: Boolean
 
     /**
      * Der Agent fordert `percent` Prozent Treibstoff vom Mutterschiff an.
@@ -414,21 +310,21 @@ interface AgentInterface {
      *
      * @return true oder false.
      */
-    fun seeAdversaryAgent(): Boolean
+    val seeAdversaryAgent: Boolean
 
     /**
      * Zeigt an, ob der Agent einen Agenten des eigenen Teams sieht.
      *
      * @return true oder false.
      */
-    fun seeTeamAgent(): Boolean
+    val seeTeamAgent: Boolean
 
     /**
      * Zeigt an, ob der Agent das feindliche Mutterschiff sieht.
      *
      * @return true oder false.
      */
-    fun seeAdversaryMothership(): Boolean
+    val seeAdversaryMothership: Boolean
 
     /**
      * Zeigt an, ob sich in Sicht des Agenten ein Teammitglied ohne Treibstoff
@@ -457,7 +353,7 @@ interface AgentInterface {
      *
      * @return true oder false.
      */
-    fun seeResource(): Boolean
+    val seeResource: Boolean
 
     /**
      * Zeigt an, ob der Agent eine Resource vom angegebenen Typen sehen kann.
@@ -512,15 +408,43 @@ interface AgentInterface {
     fun turnRandom(opening: Int)
 
     /**
-     * Der Agent dreht sich um Winkel {
-     *
-     * `beta`° nach rechts.
+     * Der Agent dreht sich um Winkel `beta`° nach rechts.
      *
      * @param beta Gewünschter Winkel in Grad (0 - 360)
      * Aktionspunkte: 1
      * Treibstoff: 1
      */
     fun turnRight(beta: Int)
+
+    /**
+     * Der Agent dreht sich zu einer nahen Resource.
+     * Falls er keine findet, dreht er sich nicht
+     *
+     * Aktionspunkte: 1
+     * Treibstoff: 1
+     */
+    fun turnToResource()
+
+    /**
+     * Der Agent dreht sich zu einem feindlichen Agenten in Sichtweite.
+     * Falls kein feindlicher Agent in der Nähe ist, kostet diese Aktion nur APs.
+     *
+     * Optional kann ein Winkel `beta`° angegeben werden, um den Agenten zusätzlich weiter rechts rum zu drehen.
+     *
+     * Aktionspunkte: 1
+     * Treibstoff: 1
+     */
+    fun turnToAdversaryAgent(beta: Int = 0)
+
+    /**
+     * Der Agent dreht sich zu einer nahen Resource eines bestimmten Typs.
+     * Falls er keine findet, dreht er sich nicht
+     *
+     * Aktionspunkte: 1
+     * Treibstoff: 1
+     * @param resourceType Der Typ der Resource
+     */
+    fun turnToResource(resourceType: ResourceType)
 
     /**
      * Der Agent läuft amok.
@@ -533,15 +457,7 @@ interface AgentInterface {
      * @param swatTeams
      * @return
      */
-    fun isMemberOfSwatTeam(vararg swatTeams: SwatTeam): Boolean = isMemberOfSwatTeam(swatTeams.asList())
-
-    /**
-     * Überprüft, ob dieser Agent in mindestens einer der übergebenen SwatTeams enthalten ist.
-     *
-     * @param swatTeams
-     * @return
-     */
-    fun isMemberOfSwatTeam(swatTeams: Collection<SwatTeam>): Boolean
+    fun isMemberOfSwatTeam(swatTeams: Set<SwatTeam>): Boolean
 
     /**
      * Errichtet den Turm an der Position des Commander.
@@ -554,14 +470,14 @@ interface AgentInterface {
      * @param type Hier rüber kannst du den Turmtypen auswählen welcher errichtet werden soll.
      */
     @Deprecated("NOT YET SUPPORTED")
-    fun erectTower(type: TowerType)
+    fun constructTower(type: TowerType)
 
     /**
      * Baut einen Turm wieder ab der zuvor aufgestellt wurde.
      * Diese Aktion kann nur vom Commander durchgeführt werden, und zwar nur dann, wenn er in unmittelbarer Nähe des Turms ist.
      */
     @Deprecated("NOT YET SUPPORTED")
-    fun dismantleTower()
+    fun deconstructTower()
 
     /**
      * Überprüft, ob dieser Agent einen Turm aufbauen könnte.
@@ -569,5 +485,22 @@ interface AgentInterface {
      * @return
      */
     @Deprecated("NOT YET SUPPORTED")
-    fun hasTower(): Boolean
+    val hasTower: Boolean
+
+    /**
+     * Sofern der Agent 3 Tonic besitzt, kann er sich hiermit unsichtbar machen.
+     * Unsichtbar heißt, dass kein feindlicher Agent (außer der feindliche Commander) diesen Agenten sehen oder angreifen kann.
+     * Ein Agent ist so lange unsichtbar, bis er eine feindliche Einheit angreift oder eine Mine setzt.
+     */
+    fun makeInvisible()
+
+    /**
+     * Mit einem Shift bewegt sich der Agent für die nächsten Schritte (agent.go...) besonders schnell, sofern er genug Tonic besitzt.
+     * Dies kann z. B. strategisch genutzt werden, um feindlichen Angriffen zu entkommen, schneller Hilfe leisten zu können oder
+     * Ressourcen schneller zu transportieren.
+     *
+     * Aktionspunkte: 1
+     * Tonic: 1
+     */
+    fun shift()
 }

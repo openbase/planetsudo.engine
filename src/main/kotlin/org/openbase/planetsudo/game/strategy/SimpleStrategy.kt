@@ -38,7 +38,7 @@ class SimpleStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(20, "Search Resources") {
                 override fun constraint(): Boolean {
-                    return agent.seeResource()
+                    return agent.seeResource
                 }
 
                 override fun action() {

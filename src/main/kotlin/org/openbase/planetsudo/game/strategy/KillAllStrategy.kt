@@ -50,7 +50,7 @@ class KillAllStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(500, "Rohstoff S.") {
                 override fun constraint(): Boolean {
-                    return agent.seeResource()
+                    return agent.seeResource
                 }
 
                 override fun action() {
@@ -126,7 +126,7 @@ class KillAllStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(701, "Feinkontakt") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryAgent()
+                    return agent.seeAdversaryAgent
                 }
 
                 override fun action() {
@@ -138,7 +138,7 @@ class KillAllStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
         createRule(
             object : Rule(702, "Big Feinkontakt") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryMothership()
+                    return agent.seeAdversaryMothership
                 }
 
                 override fun action() {
@@ -162,7 +162,7 @@ class KillAllStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
             object : Rule(904, "unterbeschuss 2") {
                 override fun constraint(): Boolean {
                     return agent.isUnderAttack &&
-                        !agent.seeAdversaryAgent() && agent.fuelInPercent >= 50
+                        !agent.seeAdversaryAgent && agent.fuelInPercent >= 50
                 }
 
                 override fun action() {
@@ -174,7 +174,7 @@ class KillAllStrategy(agent: AgentInterface) : AbstractStrategy(agent) {
             object : Rule(903, "unterbeschuss 2") {
                 override fun constraint(): Boolean {
                     return agent.isUnderAttack &&
-                        !agent.seeAdversaryAgent() && agent.fuelInPercent < 50
+                        !agent.seeAdversaryAgent && agent.fuelInPercent < 50
                 }
 
                 override fun action() {
