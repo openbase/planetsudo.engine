@@ -33,7 +33,7 @@ class Arena : AbstractLevel() {
     }
 
     override fun loadHomePositions() = listOf(
-        Base2D(500.0, 100.0, Direction2D.UP),
+        Base2D(500.0, 100.0, Direction2D.DOWN),
         Base2D(500.0, 900.0, Direction2D.UP),
     )
 

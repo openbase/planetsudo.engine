@@ -28,7 +28,7 @@ class Engpass : AbstractLevel() {
 
     override fun loadHomePositions() = listOf(
         Base2D(80.0, 500.0, Direction2D.LEFT),
-        Base2D(920.0, 500.0, Direction2D.LEFT),
+        Base2D(920.0, 500.0, Direction2D.RIGHT),
     )
 
     override fun loadResourcePlacement() = listOf(

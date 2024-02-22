@@ -31,8 +31,8 @@ class MarioWorld : AbstractLevel() {
     }
 
     override fun loadHomePositions() = listOf(
-        Base2D(100.0, 950.0, Direction2D.DOWN),
-        Base2D(900.0, 950.0, Direction2D.DOWN),
+        Base2D(100.0, 950.0, Direction2D.UP),
+        Base2D(900.0, 950.0, Direction2D.UP),
     )
 
     override fun loadResourcePlacement() = listOf(

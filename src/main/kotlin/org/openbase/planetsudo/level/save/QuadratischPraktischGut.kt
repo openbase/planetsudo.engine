@@ -46,7 +46,7 @@ class QuadratischPraktischGut : AbstractLevel() {
 
     override fun loadHomePositions() = listOf(
         Base2D(200.0, 200.0, Direction2D.DOWN),
-        Base2D(1400.0, 1400.0, Direction2D.DOWN),
+        Base2D(1400.0, 1400.0, Direction2D.UP),
     )
 
     override fun loadResourcePlacement() = listOf(

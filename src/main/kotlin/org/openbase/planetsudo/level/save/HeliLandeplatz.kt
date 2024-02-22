@@ -33,7 +33,7 @@ class HeliLandeplatz : AbstractLevel() {
     }
 
     override fun loadHomePositions() = listOf(
-        Base2D(200.0, 850.0, Direction2D.DOWN),
+        Base2D(200.0, 850.0, Direction2D.UP),
         Base2D(900.0, 150.0, Direction2D.DOWN),
     )
 

@@ -30,7 +30,7 @@ class ChemStation : AbstractLevel() {
 
     override fun loadHomePositions() = listOf(
         Base2D(1400.0, 1000.0, Direction2D.DOWN),
-        Base2D(1400.0, 1800.0, Direction2D.DOWN),
+        Base2D(1400.0, 1800.0, Direction2D.UP),
     )
 
     override fun loadResourcePlacement() = listOf(

@@ -34,7 +34,7 @@ class AgentK : AbstractLevel() {
 
     override fun loadHomePositions(): List<Base2D> = listOf(
         Base2D(1200.0, 100.0, Direction2D.DOWN),
-        Base2D(1200.0, 1900.0, Direction2D.DOWN),
+        Base2D(1200.0, 1900.0, Direction2D.UP),
     )
 
     override fun loadResourcePlacement(): List<ResourcePlacement> = listOf(

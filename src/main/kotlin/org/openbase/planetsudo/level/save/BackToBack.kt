@@ -25,7 +25,7 @@ class BackToBack : AbstractLevel() {
     }
 
     override fun loadHomePositions() = listOf(
-        Base2D(390.0, 450.0, Direction2D.RIGHT),
+        Base2D(390.0, 450.0, Direction2D.LEFT),
         Base2D(610.0, 450.0, Direction2D.RIGHT),
     )
 

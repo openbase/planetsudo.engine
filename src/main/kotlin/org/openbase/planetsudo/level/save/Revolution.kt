@@ -45,7 +45,7 @@ class Revolution : AbstractLevel() {
 
     override fun loadHomePositions() = listOf(
         Base2D(450.0, 100.0, Direction2D.DOWN),
-        Base2D(550.0, 900.0, Direction2D.DOWN),
+        Base2D(550.0, 900.0, Direction2D.UP),
     )
 
     override fun loadResourcePlacement() = listOf(

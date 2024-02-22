@@ -34,7 +34,7 @@ class JD : AbstractLevel() {
     }
 
     override fun loadHomePositions() = listOf(
-        Base2D(750.0, 750.0, Direction2D.DOWN),
+        Base2D(750.0, 750.0, Direction2D.UP),
         Base2D(1050.0, 1050.0, Direction2D.DOWN),
     )
 
