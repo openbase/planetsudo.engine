@@ -48,8 +48,7 @@ class AgentK : AbstractLevel() {
         ResourceRandomRectangle(0, 1000, 500, 500, 5, ResourceType.Normal),
         ResourceRandomRectangle(0, 0, 500, 500, 5, ResourceType.DoublePoints),
         ResourceRandomRectangle(0, 1500, 500, 500, 5, ResourceType.DoublePoints),
-        ResourceRandomRectangle(0, 0, 500, 50, 10, ResourceType.Tonic),
-        ResourceRandomRectangle(0, 1950, 500, 50, 10, ResourceType.Tonic)
+        ResourceRandomRectangle(0, 0, 50, 2000, 20, ResourceType.Tonic)
     )
 
     override fun loadLevelColor(): Color = Color(137, 67, 162)

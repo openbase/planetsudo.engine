@@ -46,7 +46,7 @@ class DasBoot : AbstractLevel() {
         ResourceRandomRectangle(350, 750, 375, 300, 10, ResourceType.Normal),
         ResourceRandomRectangle(1500, 750, 375, 300, 10, ResourceType.Normal),
         ResourceRandomRectangle(750, 375, 675, 375, 15, ResourceType.DoublePoints),
-        ResourceRandomRectangle(750,375,675,175,10,ResourceType.Tonic)
+        ResourceRandomRectangle(750,375,675,175,15,ResourceType.Tonic)
     )
 
     override fun loadLevelColor() = Color(0, 191, 255)
