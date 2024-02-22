@@ -32,11 +32,14 @@ class Hexagon : AbstractLevel() {
     )
 
     override fun loadResourcePlacement() = listOf(
-        ResourceRandomRectangle(0, 0, 1000, 700, 0, ResourceType.Normal),
-        ResourceRandomRectangle(0, 0, 1000, 250, 0, ResourceType.DoublePoints),
-        ResourceRandomRectangle(400, 0, 200, 100, 0, ResourceType.ExtremPoint),
-        ResourceRandomRectangle(100, 0, 800, 250, 0, ResourceType.ExtraAgentFuel),
-        ResourceRandomRectangle(300, 0, 400, 250, 0, ResourceType.ExtraMothershipFuel)
+        ResourceRandomRectangle(0, 0, 2000, 1732, 15, ResourceType.Normal),
+        ResourceRandomRectangle(0, 0, 2000, 200, 10, ResourceType.DoublePoints),
+        ResourceRandomRectangle(0, 1632, 2000, 200, 10, ResourceType.DoublePoints),
+        ResourceRandomRectangle(950, 0, 100, 1732, 10, ResourceType.ExtremPoint),
+        ResourceRandomRectangle(500, 433, 1000, 866, 20, ResourceType.ExtraAgentFuel),
+        ResourceRandomRectangle(500, 433, 1000, 866, 15, ResourceType.ExtraMothershipFuel),
+        ResourceRandomRectangle(0,816,100,50,6,ResourceType.Tonic),
+        ResourceRandomRectangle(1900,816,100,100,6,ResourceType.Tonic),
     )
 
     override fun loadLevelColor() = Color(255, 153, 0)

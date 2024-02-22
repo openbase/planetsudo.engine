@@ -36,15 +36,16 @@ class LordHelmchen : AbstractLevel() {
         ResourceRandomRectangle(0, 0, 1000, 250, 6, ResourceType.DoublePoints),
         ResourceRandomRectangle(400, 0, 200, 100, 4, ResourceType.ExtremPoint),
         ResourceRandomRectangle(100, 0, 800, 250, 6, ResourceType.ExtraAgentFuel),
-        ResourceRandomRectangle(300, 0, 400, 250, 6, ResourceType.ExtraMothershipFuel)
+        ResourceRandomRectangle(300, 0, 400, 250, 6, ResourceType.ExtraMothershipFuel),
+        ResourceRandomRectangle(0,0,1000,50,10,ResourceType.Tonic)
     )
 
     override fun loadLevelColor() = Color(255, 153, 0)
 
     override fun loadLevelWallPolygons() = listOf(
         Polygon().apply {
-            addPoint(350,250)
-            addPoint(650,250)
+            addPoint(350,200)
+            addPoint(650,200)
             addPoint(650,300)
             addPoint(550,300)
             addPoint(550,700)
