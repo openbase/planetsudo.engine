@@ -16,7 +16,7 @@ import java.awt.Polygon
  *
  * @author lena
  */
-class WakaWasgehtjetztab : AbstractLevel() {
+class WakaWakaVol2 : AbstractLevel() {
     public override fun loadLevelBorderPolygon() = Polygon().apply {
         addPoint(50, 50)
         addPoint(350, 50)

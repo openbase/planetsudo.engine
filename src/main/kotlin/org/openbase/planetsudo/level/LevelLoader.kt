@@ -100,7 +100,7 @@ class LevelLoader {
             "LordHelmchen",
             "Hexagon",
             "KreuzungTonicAussen",
-            "WakaWasgehtjetztab"
+            "WakaWakaVol2"
         )
 
         @JvmStatic
