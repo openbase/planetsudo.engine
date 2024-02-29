@@ -99,7 +99,6 @@ class LevelLoader {
             "Maze",
             "LordHelmchen",
             "Hexagon",
-            "KreuzungTonicAussen",
             "WakaWakaVol2",
         )
 
