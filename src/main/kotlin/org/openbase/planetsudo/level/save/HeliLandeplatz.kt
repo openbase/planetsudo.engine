@@ -33,7 +33,7 @@ class HeliLandeplatz : AbstractLevel() {
     }
 
     override fun loadHomePositions() = listOf(
-        Base2D(200.0, 850.0, Direction2D.DOWN),
+        Base2D(200.0, 850.0, Direction2D.UP),
         Base2D(900.0, 150.0, Direction2D.DOWN),
     )
 
@@ -44,6 +44,8 @@ class HeliLandeplatz : AbstractLevel() {
         ResourceRandomRectangle(400, 300, 300, 300, 3, ResourceType.ExtremPoint),
         ResourceRandomRectangle(400, 300, 300, 300, 5, ResourceType.ExtraAgentFuel),
         ResourceRandomRectangle(400, 300, 300, 300, 10, ResourceType.ExtraMothershipFuel),
+        ResourceRandomRectangle(0, 0, 400, 50, 10, ResourceType.Tonic),
+        ResourceRandomRectangle(700, 950, 400, 50, 10, ResourceType.Tonic),
     )
 
     override fun loadLevelColor() = Color(167, 167, 197)

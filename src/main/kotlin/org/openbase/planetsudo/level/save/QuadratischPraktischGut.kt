@@ -46,7 +46,7 @@ class QuadratischPraktischGut : AbstractLevel() {
 
     override fun loadHomePositions() = listOf(
         Base2D(200.0, 200.0, Direction2D.DOWN),
-        Base2D(1400.0, 1400.0, Direction2D.DOWN),
+        Base2D(1400.0, 1400.0, Direction2D.UP),
     )
 
     override fun loadResourcePlacement() = listOf(
@@ -58,6 +58,8 @@ class QuadratischPraktischGut : AbstractLevel() {
         ResourceRandomRectangle(500, 500, 600, 600, 10, ResourceType.ExtraAgentFuel),
         ResourceRandomRectangle(500, 500, 600, 600, 10, ResourceType.ExtraMothershipFuel),
         ResourceRandomRectangle(500, 1400, 600, 200, 35, ResourceType.DoublePoints),
+        ResourceRandomRectangle(0, 700, 100, 200, 15, ResourceType.Tonic),
+        ResourceRandomRectangle(1500, 700, 100, 200, 15, ResourceType.Tonic),
     )
 
     override fun loadLevelColor() = Color(93, 0, 0)

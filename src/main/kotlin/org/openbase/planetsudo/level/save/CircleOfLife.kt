@@ -36,6 +36,8 @@ class CircleOfLife : AbstractLevel() {
         ResourceRandomRectangle(600, 0, 400, 1000, 5, ResourceType.DoublePoints),
         ResourceRandomRectangle(400, 800, 200, 200, 10, ResourceType.ExtremPoint),
         ResourceRandomRectangle(400, 0, 200, 200, 10, ResourceType.ExtraMothershipFuel),
+        ResourceRandomRectangle(0, 0, 1000, 50, 6, ResourceType.Tonic),
+        ResourceRandomRectangle(0, 950, 1000, 50, 6, ResourceType.Tonic),
     )
 
     override fun loadLevelColor() = Color(255, 153, 0)

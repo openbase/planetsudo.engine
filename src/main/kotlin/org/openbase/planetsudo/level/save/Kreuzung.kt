@@ -25,7 +25,7 @@ class Kreuzung : AbstractLevel() {
     }
 
     override fun loadHomePositions() = listOf(
-        Base2D(500.0, 100.0, Direction2D.UP),
+        Base2D(500.0, 100.0, Direction2D.DOWN),
         Base2D(500.0, 900.0, Direction2D.UP),
     )
 
@@ -34,9 +34,10 @@ class Kreuzung : AbstractLevel() {
         ResourceRandomRectangle(375, 350, 300, 10, 8, ResourceType.DoublePoints),
         ResourceRandomRectangle(375, 650, 300, 10, 8, ResourceType.DoublePoints),
         ResourceRandomRectangle(450, 450, 100, 100, 8, ResourceType.ExtremPoint),
-        ResourceRandomRectangle(450, 450, 100, 100, 8, ResourceType.Tonic),
         ResourceRandomRectangle(400, 400, 200, 200, 0, ResourceType.ExtraAgentFuel),
         ResourceRandomRectangle(400, 400, 200, 200, 0, ResourceType.ExtraMothershipFuel),
+        ResourceRandomRectangle(0, 350, 350, 300, 5, ResourceType.Tonic),
+        ResourceRandomRectangle(650, 350, 350, 300, 5, ResourceType.Tonic),
     )
 
     override fun loadLevelColor(): Color {

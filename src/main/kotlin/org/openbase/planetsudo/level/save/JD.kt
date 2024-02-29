@@ -34,7 +34,7 @@ class JD : AbstractLevel() {
     }
 
     override fun loadHomePositions() = listOf(
-        Base2D(750.0, 750.0, Direction2D.DOWN),
+        Base2D(750.0, 750.0, Direction2D.UP),
         Base2D(1050.0, 1050.0, Direction2D.DOWN),
     )
 
@@ -44,6 +44,7 @@ class JD : AbstractLevel() {
         ResourceRandomRectangle(0, 0, 1800, 1800, 10, ResourceType.ExtremPoint),
         ResourceRandomRectangle(0, 0, 1800, 1800, 10, ResourceType.ExtraAgentFuel),
         ResourceRandomRectangle(0, 0, 1800, 1800, 10, ResourceType.ExtraMothershipFuel),
+        ResourceRandomRectangle(550, 550, 700, 700, 12, ResourceType.Tonic),
     )
 
     override fun loadLevelColor() = Color(150, 150, 150)

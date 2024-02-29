@@ -18,26 +18,22 @@ import java.awt.Polygon
  */
 class Arena : AbstractLevel() {
     override fun loadLevelBorderPolygon() = Polygon().apply {
-        addPoint(0, 0)
         addPoint(0, 200)
         addPoint(400, 200)
         addPoint(400, 0)
         addPoint(600, 0)
         addPoint(600, 200)
         addPoint(1000, 200)
-        addPoint(1000, 0)
         addPoint(1000, 800)
         addPoint(600, 800)
         addPoint(600, 1000)
-        addPoint(1000, 1000)
-        addPoint(0, 1000)
         addPoint(400, 1000)
         addPoint(400, 800)
         addPoint(0, 800)
     }
 
     override fun loadHomePositions() = listOf(
-        Base2D(500.0, 100.0, Direction2D.UP),
+        Base2D(500.0, 100.0, Direction2D.DOWN),
         Base2D(500.0, 900.0, Direction2D.UP),
     )
 
@@ -46,8 +42,12 @@ class Arena : AbstractLevel() {
         ResourceRandomRectangle(300, 325, 400, 50, 10, ResourceType.DoublePoints),
         ResourceRandomRectangle(300, 675, 400, 50, 10, ResourceType.DoublePoints),
         ResourceRandomRectangle(400, 480, 200, 40, 10, ResourceType.ExtremPoint),
-        ResourceRandomRectangle(0, 0, 1000, 1000, 5, ResourceType.ExtraAgentFuel),
+        ResourceRandomRectangle(0, 0, 1000, 1000, 10, ResourceType.ExtraAgentFuel),
         ResourceRandomRectangle(0, 0, 1000, 1000, 5, ResourceType.ExtraMothershipFuel),
+        ResourceRandomRectangle(0, 200, 100, 100, 5, ResourceType.Tonic),
+        ResourceRandomRectangle(900, 200, 100, 100, 5, ResourceType.Tonic),
+        ResourceRandomRectangle(0, 700, 100, 100, 5, ResourceType.Tonic),
+        ResourceRandomRectangle(900, 700, 100, 100, 5, ResourceType.Tonic),
     )
 
     override fun loadLevelColor() = Color(67, 167, 197)

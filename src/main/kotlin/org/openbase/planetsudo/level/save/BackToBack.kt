@@ -25,7 +25,7 @@ class BackToBack : AbstractLevel() {
     }
 
     override fun loadHomePositions() = listOf(
-        Base2D(390.0, 450.0, Direction2D.RIGHT),
+        Base2D(390.0, 450.0, Direction2D.LEFT),
         Base2D(610.0, 450.0, Direction2D.RIGHT),
     )
 
@@ -35,6 +35,10 @@ class BackToBack : AbstractLevel() {
         ResourceRandomRectangle(400, 800, 200, 200, 10, ResourceType.ExtremPoint),
         ResourceRandomRectangle(0, 0, 1000, 1000, 10, ResourceType.ExtraAgentFuel),
         ResourceRandomRectangle(400, 0, 200, 200, 10, ResourceType.ExtraMothershipFuel),
+        ResourceRandomRectangle(0, 0, 50, 50, 5, ResourceType.Tonic),
+        ResourceRandomRectangle(0, 950, 50, 50, 5, ResourceType.Tonic),
+        ResourceRandomRectangle(950, 0, 50, 50, 5, ResourceType.Tonic),
+        ResourceRandomRectangle(950, 950, 50, 50, 5, ResourceType.Tonic),
     )
 
     override fun loadLevelColor() = Color(244, 164, 96)

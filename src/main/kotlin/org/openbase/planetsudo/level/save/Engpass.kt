@@ -28,7 +28,7 @@ class Engpass : AbstractLevel() {
 
     override fun loadHomePositions() = listOf(
         Base2D(80.0, 500.0, Direction2D.LEFT),
-        Base2D(920.0, 500.0, Direction2D.LEFT),
+        Base2D(920.0, 500.0, Direction2D.RIGHT),
     )
 
     override fun loadResourcePlacement() = listOf(
@@ -36,6 +36,10 @@ class Engpass : AbstractLevel() {
         ResourceRandomRectangle(0, 0, 450, 450, 5, ResourceType.DoublePoints),
         ResourceRandomRectangle(550, 550, 1000, 1000, 5, ResourceType.DoublePoints),
         ResourceRandomRectangle(495, 300, 5, 400, 20, ResourceType.ExtremPoint),
+        ResourceRandomRectangle(0, 0, 100, 100, 5, ResourceType.Tonic),
+        ResourceRandomRectangle(0, 900, 100, 100, 5, ResourceType.Tonic),
+        ResourceRandomRectangle(900, 0, 100, 100, 5, ResourceType.Tonic),
+        ResourceRandomRectangle(900, 900, 100, 100, 5, ResourceType.Tonic),
     )
 
     override fun loadLevelColor() = Color(67, 167, 197)

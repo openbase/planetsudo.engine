@@ -35,6 +35,8 @@ class SimpleWorld : AbstractLevel() {
         ResourceRandomRectangle(400, 800, 200, 200, 10, ResourceType.ExtremPoint),
         ResourceRandomRectangle(0, 0, 1000, 1000, 10, ResourceType.ExtraAgentFuel),
         ResourceRandomRectangle(400, 0, 200, 200, 10, ResourceType.ExtraMothershipFuel),
+        ResourceRandomRectangle(0, 0, 1000, 50, 12, ResourceType.Tonic),
+        ResourceRandomRectangle(0, 1000, 1000, 50, 12, ResourceType.Tonic),
     )
 
     override fun loadLevelColor() = Color(255, 153, 0)

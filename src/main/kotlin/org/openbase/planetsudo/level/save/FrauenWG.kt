@@ -74,7 +74,7 @@ class FrauenWG : AbstractLevel() {
     }
 
     override fun loadHomePositions() = listOf(
-        Base2D(750.0, 700.0, Direction2D.DOWN),
+        Base2D(750.0, 700.0, Direction2D.UP),
         Base2D(1600.0, 950.0, Direction2D.DOWN),
     )
 
@@ -87,6 +87,8 @@ class FrauenWG : AbstractLevel() {
         ResourceRandomRectangle(400, 1350, 300, 300, 50, ResourceType.ExtremPoint),
         ResourceRandomRectangle(1750, 0, 300, 300, 50, ResourceType.ExtremPoint),
         ResourceRandomRectangle(900, 550, 550, 550, 30, ResourceType.ExtraAgentFuel),
+        ResourceRandomRectangle(0, 0, 100, 1650, 15, ResourceType.Tonic),
+        ResourceRandomRectangle(2350, 0, 100, 1650, 15, ResourceType.Tonic),
     )
 
     override fun loadLevelColor() = Color(0, 0, 0)

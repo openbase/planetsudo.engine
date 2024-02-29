@@ -33,8 +33,8 @@ class Entropie : AbstractLevel() {
     }
 
     override fun loadHomePositions() = listOf(
-        Base2D(100.0, 200.0, Direction2D.DOWN),
-        Base2D(100.0, 1200.0, Direction2D.DOWN),
+        Base2D(100.0, 200.0, Direction2D.RIGHT),
+        Base2D(100.0, 1200.0, Direction2D.RIGHT),
     )
 
     override fun loadResourcePlacement() = listOf(
@@ -43,6 +43,7 @@ class Entropie : AbstractLevel() {
         ResourceRandomRectangle(150, 600, 300, 200, 50, ResourceType.ExtremPoint),
         ResourceRandomRectangle(800, 0, 100, 1400, 20, ResourceType.ExtraAgentFuel),
         ResourceRandomRectangle(150, 600, 300, 200, 10, ResourceType.ExtraMothershipFuel),
+        ResourceRandomRectangle(850, 0, 50, 1400, 6, ResourceType.Tonic),
     )
 
     override fun loadLevelColor(): Color {
