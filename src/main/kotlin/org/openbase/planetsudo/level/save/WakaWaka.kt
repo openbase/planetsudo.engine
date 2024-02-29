@@ -148,8 +148,8 @@ class WakaWaka : AbstractLevel() {
         ResourceRandomRectangle(1000, 50, 1500, 550, 10, ResourceType.ExtremPoint),
         ResourceRandomRectangle(50, 50, 1500, 1100, 20, ResourceType.ExtraAgentFuel),
         ResourceRandomRectangle(50, 50, 1500, 1100, 10, ResourceType.ExtraMothershipFuel),
-        ResourceRandomRectangle(450,50,1050,300,20, ResourceType.Tonic),
-        ResourceRandomRectangle(1200,50,300,1050,20, ResourceType.Tonic)
+        ResourceRandomRectangle(450, 50, 1050, 300, 20, ResourceType.Tonic),
+        ResourceRandomRectangle(1200, 50, 300, 1050, 20, ResourceType.Tonic),
     )
 
     override fun loadLevelColor(): Color = Color(10, 125, 0)

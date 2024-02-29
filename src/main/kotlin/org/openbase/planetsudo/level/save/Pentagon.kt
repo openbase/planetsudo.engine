@@ -36,7 +36,7 @@ class Pentagon : AbstractLevel() {
         ResourceRandomRectangle(0, 0, 3000, 500, 50, ResourceType.ExtremPoint),
         ResourceRandomRectangle(0, 0, 3000, 2000, 70, ResourceType.ExtraMothershipFuel),
         ResourceRandomRectangle(0, 0, 3000, 2900, 150, ResourceType.ExtraAgentFuel),
-        ResourceRandomRectangle(0,1100,3000,1500,75,ResourceType.Tonic)
+        ResourceRandomRectangle(0, 1100, 3000, 1500, 75, ResourceType.Tonic),
     )
 
     override fun loadLevelColor() = Color(0, 0, 210)

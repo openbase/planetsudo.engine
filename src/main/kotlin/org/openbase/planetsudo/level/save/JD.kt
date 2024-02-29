@@ -44,7 +44,7 @@ class JD : AbstractLevel() {
         ResourceRandomRectangle(0, 0, 1800, 1800, 10, ResourceType.ExtremPoint),
         ResourceRandomRectangle(0, 0, 1800, 1800, 10, ResourceType.ExtraAgentFuel),
         ResourceRandomRectangle(0, 0, 1800, 1800, 10, ResourceType.ExtraMothershipFuel),
-        ResourceRandomRectangle(550,550,700,700,12,ResourceType.Tonic)
+        ResourceRandomRectangle(550, 550, 700, 700, 12, ResourceType.Tonic),
     )
 
     override fun loadLevelColor() = Color(150, 150, 150)

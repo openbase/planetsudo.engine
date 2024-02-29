@@ -18,17 +18,17 @@ import java.awt.Polygon
  */
 class LordHelmchen : AbstractLevel() {
     override fun loadLevelBorderPolygon() = Polygon().apply {
-        addPoint(300,0)
-        addPoint(700,0)
-        addPoint(850,100)
-        addPoint(1000,700)
-        addPoint(0,700)
-        addPoint(150,100)
+        addPoint(300, 0)
+        addPoint(700, 0)
+        addPoint(850, 100)
+        addPoint(1000, 700)
+        addPoint(0, 700)
+        addPoint(150, 100)
     }
 
     override fun loadHomePositions() = listOf(
         Base2D(350.0, 500.0, Direction2D.LEFT),
-        Base2D(650.0, 500.0, Direction2D.RIGHT)
+        Base2D(650.0, 500.0, Direction2D.RIGHT),
     )
 
     override fun loadResourcePlacement() = listOf(
@@ -37,21 +37,21 @@ class LordHelmchen : AbstractLevel() {
         ResourceRandomRectangle(400, 0, 200, 100, 4, ResourceType.ExtremPoint),
         ResourceRandomRectangle(100, 0, 800, 250, 6, ResourceType.ExtraAgentFuel),
         ResourceRandomRectangle(300, 0, 400, 250, 6, ResourceType.ExtraMothershipFuel),
-        ResourceRandomRectangle(0,0,1000,50,10,ResourceType.Tonic)
+        ResourceRandomRectangle(0, 0, 1000, 50, 10, ResourceType.Tonic),
     )
 
     override fun loadLevelColor() = Color(255, 153, 0)
 
     override fun loadLevelWallPolygons() = listOf(
         Polygon().apply {
-            addPoint(350,200)
-            addPoint(650,200)
-            addPoint(650,300)
-            addPoint(550,300)
-            addPoint(550,700)
-            addPoint(450,700)
-            addPoint(450,300)
-            addPoint(350,300)
-        }
+            addPoint(350, 200)
+            addPoint(650, 200)
+            addPoint(650, 300)
+            addPoint(550, 300)
+            addPoint(550, 700)
+            addPoint(450, 700)
+            addPoint(450, 300)
+            addPoint(350, 300)
+        },
     )
 }
