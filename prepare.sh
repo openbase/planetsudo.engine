@@ -11,6 +11,6 @@ APP_NAME='planetsudo engine'
 APP_NAME=${BLUE}${APP_NAME}${NC}
 echo -e "=== ${APP_NAME} project ${WHITE}cleanup${NC}"
 ./gradlew clean --quiet $@
-echo -e "=== ${APP_NAME} project ${WHITE}installation${NC}"
+echo -e "=== ${APP_NAME} project ${WHITE}prepare${NC}"
 echo -e "nothing to prepare..."
 echo -e "=== ${APP_NAME} was ${GREEN}successfully${NC} prepared."

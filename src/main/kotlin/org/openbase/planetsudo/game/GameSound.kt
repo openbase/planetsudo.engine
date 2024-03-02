@@ -53,6 +53,12 @@ enum class GameSound(uri: String) {
                 LoggerFactory.getLogger(GameSound::class.java),
             )
             null
+        } catch (ex: CouldNotPerformException) {
+            ExceptionPrinter.printHistory(
+                CouldNotPerformException("Could not load Soundfile[$uri] of $name", ex),
+                LoggerFactory.getLogger(GameSound::class.java),
+            )
+            null
         } catch (ex: NullPointerException) {
             ExceptionPrinter.printHistory(
                 CouldNotPerformException("Could not load Soundfile[$uri] of $name", ex),
