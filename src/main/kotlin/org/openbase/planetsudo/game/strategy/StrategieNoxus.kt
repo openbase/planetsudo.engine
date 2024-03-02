@@ -12,7 +12,7 @@ import org.openbase.planetsudo.level.levelobjects.Resource.ResourceType
  *
  * @author [Divine Threepwood](mailto:divine@openbase.org)
  */
-class StrategieNoxus(agent: AgentInterface) : AbstractStrategy(agent) {
+class StrategieNoxus(agent: AgentInterface) : StrategyLevel3(agent) {
 
     /**
      * Hier wird angegeben wie viele Agenten dem Team zur Verfügung stehen sollen.

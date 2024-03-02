@@ -9,7 +9,7 @@ import org.openbase.planetsudo.level.levelobjects.Tower
  *
  * @author [Divine Threepwood](mailto:divine@openbase.org)
  */
-class HeyZwerge(agent: AgentInterface) : AbstractStrategy(agent) {
+class HeyZwerge(agent: AgentInterface) : StrategyLevel3(agent) {
 
     /**
      * Hier wird angegeben wie viele Agenten dem Team zur Verfügung stehen sollen.

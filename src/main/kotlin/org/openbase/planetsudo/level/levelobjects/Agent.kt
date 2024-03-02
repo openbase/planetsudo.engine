@@ -312,7 +312,7 @@ class Agent(
     fun startGame() {
         LOGGER.info("startAgent$this")
         // ############## Load strategy #########################
-        val constructor: Constructor<out AbstractStrategy>
+        val constructor: Constructor<out AbstractStrategy<*>>
         try {
             constructor = mothership.team.strategy.getConstructor(AgentInterface::class.java)
         } catch (ex: CouldNotPerformException) {
@@ -320,7 +320,7 @@ class Agent(
             kill()
             return
         }
-        val strategy: AbstractStrategy
+        val strategy: AbstractStrategy<*>
         try {
             strategy = constructor.newInstance(this)
         } catch (ex: CouldNotPerformException) {

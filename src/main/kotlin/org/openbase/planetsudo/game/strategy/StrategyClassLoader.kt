@@ -51,12 +51,12 @@ object StrategyClassLoader {
 
     @JvmStatic
     @Throws(CouldNotPerformException::class)
-    fun loadStrategy(strategyName: String): Class<out AbstractStrategy> {
+    fun loadStrategy(strategyName: String): Class<out AbstractStrategy<*>> {
         try {
             val clazz =
                 ADAPTIVE_CLASS_LOADER.loadClass(AbstractStrategy::class.java.getPackage().name + "." + strategyName)
             LOGGER.info("Load successful " + AbstractStrategy::class.java.getPackage().name + "." + strategyName)
-            return clazz as Class<AbstractStrategy>
+            return clazz as Class<AbstractStrategy<*>>
         } catch (ex: ClassNotFoundException) {
             throw CouldNotPerformException("Could not load Class[$strategyName]external strategy!", ex)
         }

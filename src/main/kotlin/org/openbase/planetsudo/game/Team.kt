@@ -40,7 +40,7 @@ class Team(data: TeamData) {
     var mothership: Mothership? = null
 
     @JvmField
-    var strategy: Class<out AbstractStrategy>
+    var strategy: Class<out AbstractStrategy<*>>
     var points: Int = 0
         private set
     private var members: List<String>

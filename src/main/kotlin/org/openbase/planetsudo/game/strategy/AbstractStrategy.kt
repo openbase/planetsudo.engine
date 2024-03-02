@@ -14,17 +14,21 @@ import org.slf4j.LoggerFactory
 import java.beans.PropertyChangeEvent
 import java.util.*
 
+typealias StrategyLevel1 = AbstractStrategy<AgentBasicInterface>
+typealias StrategyLevel2 = AbstractStrategy<AgentBattleInterface>
+typealias StrategyLevel3 = AbstractStrategy<AgentInterface>
+
 /**
  *
  * @author [Divine Threepwood](mailto:divine@openbase.org)
  */
-abstract class AbstractStrategy(val agent: AgentInterface) : Runnable {
+abstract class AbstractStrategy<LEVEL : GlobalAgentInterface>(val agent: LEVEL) : Runnable {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     private val strategyOwner: Agent by lazy { agent as Agent }
     val mothership: MothershipInterface by lazy { strategyOwner.mothership }
-    val adversaryAgent: GlobalAgentInterface get() = agent.adversaryAgent
-    val mothershipInternal: Mothership by lazy { strategyOwner.mothership }
+    val adversaryAgent: GlobalAgentInterface get() = strategyOwner.adversaryAgent
+    private val mothershipInternal: Mothership by lazy { strategyOwner.mothership }
     private val rules: TreeMap<Int, Rule> = TreeMap()
     private val gameManager: GameManager = GameManager.gameManager
 
@@ -54,7 +58,7 @@ abstract class AbstractStrategy(val agent: AgentInterface) : Runnable {
 
     private fun bindGameSpeed() {
         if (agent is Agent) {
-            gameSpeedFactor = agent.mothership.level.getGameSpeedFactor()
+            gameSpeedFactor = strategyOwner.mothership.level.getGameSpeedFactor()
         }
     }
 
@@ -87,7 +91,7 @@ abstract class AbstractStrategy(val agent: AgentInterface) : Runnable {
         logger.debug("Create rule $rule")
         if (rules.containsKey(getKey(rule))) {
             logger.error("There exist min two rules with the same priority!")
-            agent.kill()
+            strategyOwner.kill()
         }
         rules[getKey(rule)] = rule
         return rule
@@ -103,7 +107,7 @@ abstract class AbstractStrategy(val agent: AgentInterface) : Runnable {
 
     private fun executeRule() {
         for (rule in rules.values) {
-            if (rule.constraint() && agent.isMemberOfSwatTeam(rule.swatTeams)) {
+            if (rule.constraint() && strategyOwner.isMemberOfSwatTeam(rule.swatTeams)) {
                 strategyOwner.lastAction = rule.name
                 rule.action()
                 break
@@ -125,14 +129,14 @@ abstract class AbstractStrategy(val agent: AgentInterface) : Runnable {
         when (swatTeam) {
             ALL, COMMANDER -> {
                 logger.error("SwatTeam[" + swatTeam.name + "] is not modifiable!")
-                agent.kill()
+                strategyOwner.kill()
                 return
             }
 
             else -> {
                 if (swatTeam.negative) {
                     logger.error("SwatTeam[" + swatTeam.name + "] is not modifiable!")
-                    agent.kill()
+                    strategyOwner.kill()
                     return
                 }
             }
@@ -141,13 +145,13 @@ abstract class AbstractStrategy(val agent: AgentInterface) : Runnable {
         for (agentNumber in agentNumbers) {
             if (agentNumber < 0) {
                 logger.error("Could not create SwatTeam[" + swatTeam.name + "] because negative agent number is not allowed!")
-                agent.kill()
+                strategyOwner.kill()
                 return
             }
 
             if (agentNumber >= agentCount || agentNumber >= agentList.size) {
                 logger.error("Could not create SwatTeam[" + swatTeam.name + "] because team has not enough members!")
-                agent.kill()
+                strategyOwner.kill()
                 return
             }
 
@@ -164,7 +168,7 @@ abstract class AbstractStrategy(val agent: AgentInterface) : Runnable {
     protected abstract fun loadAgentCount(): Int
 
     protected infix fun RuleBuilder.then(action: AgentInterface.() -> Unit): Rule = this
-        .apply { this.action = { agent.action() } }
+        .apply { this.action = { strategyOwner.action() } }
         .build()
         .let { createRule(it) }
 

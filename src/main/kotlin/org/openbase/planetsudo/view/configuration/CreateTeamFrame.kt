@@ -31,7 +31,7 @@ class CreateTeamFrame : JFrame() {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     private fun createTeam() {
-        var strategy: Class<out AbstractStrategy?>? = null
+        var strategy: Class<out AbstractStrategy<*>?>? = null
         val members: MutableList<String> = ArrayList()
         strategyTextField!!.foreground = Color.BLACK
         createButton!!.foreground = Color.BLACK
