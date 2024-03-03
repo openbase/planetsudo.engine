@@ -39,9 +39,14 @@ interface AgentBasicInterface : GlobalAgentInterface {
     val isAtMothership: Boolean
 
     /**
-     * Der Agent übergibt die Resource dem Mutterschiff.
+     * Der Agent übergibt die Resource dem Mutterschiff, sofern er sich am Mutterschiff befindet.
      * Treibstoff: 1
      * Aktionspunkte: 10
+     * Gewinn:
+     *     ResourceType.Normal              ->   10 Punkte
+     *     ResourceType.DoublePoints        ->   20 Punkte
+     *     ResourceType.ExtremPoint         ->   50 Punkte
+     *     ResourceType.ExtraMothershipFuel ->   20 % Mutterschiff Treibstoff
      */
     fun deliverResourceToMothership()
 
@@ -95,21 +100,10 @@ interface AgentBasicInterface : GlobalAgentInterface {
     fun goToResource()
 
     /**
-     * Der Agent bewegt sich zur Resource vom angegebenen Typen.
-     *
-     * Achtung: Der Agent bewegt sich erst geradeaus und dreht sich danach.
-     *
-     * Aktionspunkte: 4 + (+ 4 wenn resource geladen)
-     * Treibstoff: 1
-     * @param resourceType
-     */
-    fun goToResource(resourceType: Resource.ResourceType)
-
-    /**
-     * Der Agent fordert `percent` Prozent Treibstoff vom Mutterschiff an.
+     * Der Agent fordert so viel Treibstoff vom Mutterschiff an bis sein Tank zu `percent` Prozent voll ist.
      *
      * @param percent Der anzufordernde Treibstoffwert in Prozent als ganze Zahl
-     * von 0 - 100.
+     * zwischen 0 - 100.
      * Aktionspunkte: 20 + 2 für jeden getankten Treibstoff.
      */
     fun orderFuel(percent: Int)
@@ -117,7 +111,24 @@ interface AgentBasicInterface : GlobalAgentInterface {
     /**
      * Der Befehl zum Aufnehmen einer Resource, wenn der Agent sie anfassen kann.
      * Treibstoff: 1
-     * Aktionspunkte: 10 + Normal(200), DoublePoints(400), ExtremPoint(700), ExtraAgentFuel(400), ExtraMothershipFuel(400), Mine(200)
+     * Aktionspunkte: 10 +
+     *     ResourceType.Normal              ->  200 AP
+     *     ResourceType.DoublePoints        ->  400 AP
+     *     ResourceType.ExtremPoint         ->  700 AP
+     *     ResourceType.Tonic               -> 1000 AP
+     *     ResourceType.ExtraAgentFuel      ->  400 AP
+     *     ResourceType.ExtraMothershipFuel ->  400 AP
+     *     ResourceType.Mine                ->    0 AP
+     *
+     * Gewinn:
+     *     ResourceType.Normal              ->    1 Resource wird getragen
+     *     ResourceType.DoublePoints        ->    1 Resource wird getragen
+     *     ResourceType.ExtremPoint         ->    1 Resource wird getragen
+     *     ResourceType.Tonic               ->    1 Tonic
+     *     ResourceType.ExtraAgentFuel      ->   10 % Agenten Treibstoff
+     *     ResourceType.ExtraMothershipFuel ->    1 Resource wird getragen
+     *     ResourceType.Mine                ->    1 Tod
+     *
      */
     fun pickupResource()
 
@@ -137,19 +148,15 @@ interface AgentBasicInterface : GlobalAgentInterface {
     fun searchResources()
 
     /**
-     * Zeigt an, ob der Agent einen Agenten des eigenen Teams sieht.
+     * Der Agent bewegt sich zur Resource vom angegebenen Typen.
      *
-     * @return true oder false.
-     */
-    val seeTeamAgent: Boolean
-
-    /**
-     * Zeigt an, ob sich in Sicht des Agenten ein Teammitglied ohne Treibstoff
-     * befindet.
+     * Achtung: Der Agent bewegt sich erst geradeaus und dreht sich danach.
      *
-     * @return true oder false.
+     * Aktionspunkte: 4 + (+ 4 wenn resource geladen)
+     * Treibstoff: 1
+     * @param resourceType
      */
-    fun seeLostTeamAgent(): Boolean
+    fun goToResource(resourceType: Resource.ResourceType)
 
     /**
      * Zeigt an, ob der Agent eine Resource sehen kann.
@@ -164,6 +171,21 @@ interface AgentBasicInterface : GlobalAgentInterface {
      * @return true oder false.
      */
     fun seeResource(resourceType: Resource.ResourceType): Boolean
+
+    /**
+     * Zeigt an, ob der Agent einen Agenten des eigenen Teams sieht.
+     *
+     * @return true oder false.
+     */
+    val seeTeamAgent: Boolean
+
+    /**
+     * Zeigt an, ob sich in Sicht des Agenten ein Teammitglied ohne Treibstoff
+     * befindet.
+     *
+     * @return true oder false.
+     */
+    fun seeLostTeamAgent(): Boolean
 
     /**
      * Der Agent spendet einem Teammitglied Treibstoff

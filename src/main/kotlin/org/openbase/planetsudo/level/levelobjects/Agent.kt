@@ -97,6 +97,7 @@ class Agent(
             return adversary
         }
 
+    @Suppress("OVERRIDE_DEPRECATION")
     override val isCommander: Boolean
 
     override val actionPoints: Int get() = ap.actionPoints
@@ -225,10 +226,8 @@ class Agent(
 
     @Throws(InvalidStateException::class)
     private fun carryResource(resource: Resource?) {
-        if (resource != null) {
-            if (resource.capture(this)) {
-                this.resource = resource
-            }
+        if (resource?.capture(this) == true) {
+            this.resource = resource
         }
     }
 
@@ -727,8 +726,10 @@ class Agent(
 
     override fun seeMarker(): Boolean = mothership.teamMarker.seeMarker(this)
 
+    @Suppress("OVERRIDE_DEPRECATION")
     override fun seeTower(): Boolean = mothership.tower.seeTower(this)
 
+    @Suppress("OVERRIDE_DEPRECATION")
     override fun isMemberOfSwatTeam(swatTeams: Set<SwatTeam>): Boolean {
         // Check if agent was excluded.
         swatTeams
@@ -745,6 +746,7 @@ class Agent(
         return swatTeams.intersect(swatTeamSet).isNotEmpty()
     }
 
+    @Suppress("OVERRIDE_DEPRECATION")
     override fun constructTower(type: TowerType) {
         try {
             ap.getActionPoint(1500)
@@ -761,6 +763,7 @@ class Agent(
         }
     }
 
+    @Suppress("OVERRIDE_DEPRECATION")
     override fun deconstructTower() {
         try {
             ap.getActionPoint(500)

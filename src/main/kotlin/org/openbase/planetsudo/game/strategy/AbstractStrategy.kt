@@ -16,7 +16,8 @@ import java.util.*
 
 typealias StrategyLevel1 = AbstractStrategy<AgentBasicInterface>
 typealias StrategyLevel2 = AbstractStrategy<AgentBattleInterface>
-typealias StrategyLevel3 = AbstractStrategy<AgentInterface>
+typealias StrategyLevel3 = AbstractStrategy<AgentSpecialInterface>
+typealias StrategyLevelLegacy = AbstractStrategy<AgentLegacyInterface>
 
 /**
  *

@@ -123,9 +123,9 @@ class Resource(id: Int, @JvmField val type: ResourceType, level: AbstractLevel, 
                 ResourceType.Tonic -> return 1000
                 ResourceType.ExtraAgentFuel -> return 400
                 ResourceType.ExtraMothershipFuel -> return 400
-                ResourceType.Mine -> return 200
+                ResourceType.Mine -> return 0
                 else -> {
-                    logger.error("Could not calculate capturing time because resource type is unknown!")
+                    logger.error("Could not calculate capturing ap because resource type is unknown!")
                     return 1000
                 }
             }

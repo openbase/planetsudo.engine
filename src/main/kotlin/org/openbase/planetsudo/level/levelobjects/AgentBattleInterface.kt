@@ -3,16 +3,37 @@ package org.openbase.planetsudo.level.levelobjects
 interface AgentBattleInterface : AgentBasicInterface {
 
     /**
+     * Zeigt an, ob der Agent einen feindlichen Agenten sieht.
+     *
+     * @return true oder false.
+     */
+    val seeAdversaryAgent: Boolean
+
+    /**
      * Liefert Informationen über einen feindlichen Agenten in der Nähe.
      */
     val adversaryAgent: GlobalAgentInterface
 
     /**
-     * Der Agent legt seine Mine an seiner aktuellen Position ab.
-     * Aktionspunkte: 50
-     * Treibstoff: 5
+     * Der Agent dreht sich zu einem feindlichen Agenten in Sichtweite.
+     * Falls kein feindlicher Agent in der Nähe ist, kostet diese Aktion nur APs.
+     *
+     * Optional kann ein Winkel `beta`° angegeben werden, um den Agenten zusätzlich weiter rechts rum zu drehen.
+     *
+     * Aktionspunkte: 1
+     * Treibstoff: 1
      */
-    fun deployMine()
+    fun turnToAdversaryAgent(beta: Int = 0)
+
+    /**
+     * Gehe zu einem feindlichen Agenten in der Nähe.
+     *
+     * Achtung: Der Agent bewegt sich erst geradeaus und dreht sich danach.
+     *
+     * Aktionspunkte: 4 + (+ 4 wenn resource geladen)
+     * Treibstoff: 1
+     */
+    fun goToAdversaryAgent()
 
     /**
      * Der Befehl zum Bekämpfen eines feindlichen Agenten.
@@ -30,16 +51,6 @@ interface AgentBattleInterface : AgentBasicInterface {
     fun fightWithAdversaryMothership()
 
     /**
-     * Gehe zu einem feindlichen Agenten in der Nähe.
-     *
-     * Achtung: Der Agent bewegt sich erst geradeaus und dreht sich danach.
-     *
-     * Aktionspunkte: 4 + (+ 4 wenn resource geladen)
-     * Treibstoff: 1
-     */
-    fun goToAdversaryAgent()
-
-    /**
      * Gibt zurück, ob der Agent seine Mine noch trägt.
      *
      * @return true oder false.
@@ -47,19 +58,11 @@ interface AgentBattleInterface : AgentBasicInterface {
     val hasMine: Boolean
 
     /**
-     * Der Befehl zum Reparieren des eigenen Mutterschiffs. Hierzu muss sich der
-     * Agent am Mutterschiff befinden!
-     * Aktionspunkte: 30
-     * Treibstoff: 1
+     * Der Agent legt seine Mine an seiner aktuellen Position ab.
+     * Aktionspunkte: 50
+     * Treibstoff: 5
      */
-    fun repairMothership()
-
-    /**
-     * Zeigt an, ob der Agent einen feindlichen Agenten sieht.
-     *
-     * @return true oder false.
-     */
-    val seeAdversaryAgent: Boolean
+    fun deployMine()
 
     /**
      * Zeigt an, ob der Agent das feindliche Mutterschiff sieht.
@@ -69,13 +72,10 @@ interface AgentBattleInterface : AgentBasicInterface {
     val seeAdversaryMothership: Boolean
 
     /**
-     * Der Agent dreht sich zu einem feindlichen Agenten in Sichtweite.
-     * Falls kein feindlicher Agent in der Nähe ist, kostet diese Aktion nur APs.
-     *
-     * Optional kann ein Winkel `beta`° angegeben werden, um den Agenten zusätzlich weiter rechts rum zu drehen.
-     *
-     * Aktionspunkte: 1
+     * Der Befehl zum Reparieren des eigenen Mutterschiffs. Hierzu muss sich der
+     * Agent am Mutterschiff befinden!
+     * Aktionspunkte: 30
      * Treibstoff: 1
      */
-    fun turnToAdversaryAgent(beta: Int = 0)
+    fun repairMothership()
 }

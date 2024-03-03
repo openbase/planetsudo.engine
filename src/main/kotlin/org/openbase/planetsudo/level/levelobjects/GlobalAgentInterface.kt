@@ -3,7 +3,14 @@ package org.openbase.planetsudo.level.levelobjects
 interface GlobalAgentInterface {
 
     /**
-     * Gibt die verfügbaren Aktionspunkte wieder.
+     * Gibt zurück, ob der Agent ein Commander ist oder nicht.
+     *
+     * @return true oder false
+     */
+    val isCommander: Boolean
+
+    /**
+     * Gibt die verfügbaren Aktionspunkte für den Agenten wieder.
      *
      * @return Die Aktionspunkte als ganze Zahl. (z.B. 2051)
      */
@@ -16,13 +23,6 @@ interface GlobalAgentInterface {
      * @return Den Winkel von 0 - 360° als ganze Zahl. (z.B. 128)
      */
     val angle: Int
-
-    /**
-     * Zeigt den verbliebenen Treibstoff des Agenten an.
-     *
-     * @return Den verbliebenen Treibstoff als ganz Zahl.
-     */
-    val fuel: Int
 
     /**
      * Zeigt den aktuellen Tonic Bestand des Agenten an.
@@ -49,93 +49,9 @@ interface GlobalAgentInterface {
     val tonicInPercent: Int
 
     /**
-     * Gibt den verbliebenen Treibstoff in Prozent an.
-     *
-     * @return Treibstoffwert in Prozent als ganze Zahl. (z.B. 47 bei 47%
-     * verbliebenen Treibstoff)
-     */
-    val fuelInPercent: Int
-
-    /**
-     * Gibt das Maximalvolumen vom Treibstoff eines Agenten an.
-     *
-     * @return
-     */
-    val fuelVolume: Int
-
-    /**
-     * Gibt den Typ der Resource wieder, welche der Agent berührt.
-     *
-     * @return Den Ressourcenwert
-     */
-    val resourceType: Resource.ResourceType
-
-    /**
-     * Gibt die Art der Resource an, die der Agent trägt.
-     */
-    val carryingResourceType: Resource.ResourceType
-
-    /**
-     * Gibt zurück, ob der Agent ein Commander ist oder nicht.
-     *
-     * @return true oder false
-     */
-    val isCommander: Boolean
-
-    /**
-     * Abfrage, ob der Agent sich im Kampf befindet oder nicht.
-     *
-     * @return true oder false.
-     */
-    val isFighting: Boolean
-
-    /**
-     * Abfrage, ob dieser agent Support angefordert hat!
-     * !!! Nicht ob irgend einer Support angefordert hat!!!
-     * Hierfür mothership.needSomeoneSupport(); benutzen.
-     *
-     * @return true oder false
-     */
-    val isSupportOrdered: Boolean
-
-    /**
-     * Gibt an, ob der Agent unter Beschuss steht.
-     *
-     * @return true oder false.
-     */
-    val isUnderAttack: Boolean
-
-    /**
-     * Zeigt an, ob der Agent eine Resource trägt.
-     *
-     * @return true oder false
-     */
-    val isCarryingResource: Boolean
-
-    /**
-     * Gibt zurück, ob der Agent gerade shifted.
-     */
-    val isShifting: Boolean
-
-    /**
-     * Gibt zurück, ob der Agent Treibstoff hat.
-     *
-     * @return true oder false.
-     */
-    val hasFuel: Boolean
-
-    /**
      *  Gibt an, ob der Agent die maximale Anzahl an Tonic besitzt und somit genug Tonic hat um sich unsichtbar zu machen.
      */
     val tonicFull: Boolean get() = tonic == Agent.MAX_TONIC
-
-    /**
-     * Zeigt an, ob der Agent eine Resource trägt.
-     *
-     * @return true oder false
-     */
-    @Deprecated("Typo fixed", replaceWith = ReplaceWith("isCarryingResource"))
-    val isCarringResource: Boolean get() = isCarryingResource
 
     /**
      * Gibt zurück, ob der Agent mindestens ein Tonic besitzt.
@@ -154,21 +70,40 @@ interface GlobalAgentInterface {
         get() = tonic == Agent.MAX_TONIC
 
     /**
-     * Gibt an, ob der Agent eine Resource vom `type` trägt.
+     * Zeigt den verbliebenen Treibstoff des Agenten an.
      *
-     * @param type
-     * @return true oder false.
+     * @return Den verbliebenen Treibstoff als ganz Zahl.
      */
-    fun isCarryingResource(type: Resource.ResourceType): Boolean
+    val fuel: Int
 
     /**
-     * Gibt an, ob der Agent eine Resource vom `type` trägt.
+     * Gibt den verbliebenen Treibstoff in Prozent an.
      *
-     * @param type
+     * @return Treibstoffwert in Prozent als ganze Zahl. (z.B. 47 bei 47%
+     * verbliebenen Treibstoff)
+     */
+    val fuelInPercent: Int
+
+    /**
+     * Gibt das Maximalvolumen vom Treibstoff eines Agenten an.
+     *
+     * @return
+     */
+    val fuelVolume: Int
+
+    /**
+     * Gibt zurück, ob der Agent Treibstoff hat.
+     *
      * @return true oder false.
      */
-    @Deprecated("Typo fixed", replaceWith = ReplaceWith("isCarryingResource"))
-    fun isCarringResource(type: Resource.ResourceType): Boolean = isCarryingResource(type)
+    val hasFuel: Boolean
+
+    /**
+     * Gibt den Typ der Resource wieder, welche der Agent berührt.
+     *
+     * @return Den Ressourcenwert
+     */
+    val resourceType: Resource.ResourceType
 
     /**
      * Gibt zurück, ob der Agent eine Resource vom Typ `type` berührt und diese somit aufheben kann.
@@ -177,4 +112,52 @@ interface GlobalAgentInterface {
      * @return true oder false.
      */
     fun isTouchingResource(type: Resource.ResourceType): Boolean
+
+    /**
+     * Gibt die Art der Resource an, die der Agent trägt.
+     */
+    val carryingResourceType: Resource.ResourceType
+
+    /**
+     * Zeigt an, ob der Agent eine Resource trägt.
+     *
+     * @return true oder false
+     */
+    val isCarryingResource: Boolean
+
+    /**
+     * Gibt an, ob der Agent eine Resource vom `type` trägt.
+     *
+     * @param type
+     * @return true oder false.
+     */
+    fun isCarryingResource(type: Resource.ResourceType): Boolean
+
+    /**
+     * Abfrage, ob der Agent sich im Kampf befindet oder nicht.
+     *
+     * @return true oder false.
+     */
+    val isFighting: Boolean
+
+    /**
+     * Gibt an, ob der Agent unter Beschuss steht.
+     *
+     * @return true oder false.
+     */
+    val isUnderAttack: Boolean
+
+    /**
+     * Gibt zurück, ob der Agent gerade shifted.
+     */
+    val isShifting: Boolean
+
+    /**
+     * Abfrage, ob dieser agent Support angefordert hat!
+     * !!! Nicht ob irgend einer Support angefordert hat!!!
+     * Hierfür mothership.needSomeoneSupport(); benutzen.
+     *
+     * @return true oder false
+     */
+    val isSupportOrdered: Boolean
 }
