@@ -10,7 +10,7 @@ import org.openbase.planetsudo.level.levelobjects.AgentInterface
  *
  * @author [Divine Threepwood](mailto:divine@openbase.org)
  */
-class NoPlan(agent: AgentInterface) : StrategyLevel3(agent) {
+class NoPlan(agent: AgentInterface) : StrategyLevelLegacy(agent) {
     /**
      * Hier wird angegeben wie viele Agenten dem Team zur Verfügung stehen sollen.
      * @return Anzahl der Agenten

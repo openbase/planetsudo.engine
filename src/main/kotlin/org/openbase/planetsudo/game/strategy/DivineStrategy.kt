@@ -9,7 +9,7 @@ import org.openbase.planetsudo.level.levelobjects.Tower
  *
  * @author [Divine Threepwood](mailto:divine@openbase.org)
  */
-class DivineStrategy(agent: AgentInterface) : StrategyLevel3(agent) {
+class DivineStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
 
     /**
      * Hier wird angegeben wie viele Agenten dem Team zur Verfügung stehen sollen.
@@ -64,7 +64,7 @@ class DivineStrategy(agent: AgentInterface) : StrategyLevel3(agent) {
         // -------------------------------------------->
         "See Resources" swat SwatTeam.NOT_COMMANDER inCase {
             agent.seeResource &&
-                (agent.tonicFull && agent.seeResource(ResourceType.Tonic)).not()
+                    (agent.tonicFull && agent.seeResource(ResourceType.Tonic)).not()
         } then {
             agent.goToResource()
         }
@@ -110,10 +110,10 @@ class DivineStrategy(agent: AgentInterface) : StrategyLevel3(agent) {
             object : Rule("PickUp") {
                 override fun constraint(): Boolean {
                     return !agent.isCommander && (
-                        agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(
-                            ResourceType.ExtraMothershipFuel,
-                        )
-                        )
+                            agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(
+                                ResourceType.ExtraMothershipFuel,
+                            )
+                            )
                 }
 
                 override fun action() {
@@ -141,10 +141,10 @@ class DivineStrategy(agent: AgentInterface) : StrategyLevel3(agent) {
             object : Rule("PickUp and Place") {
                 override fun constraint(): Boolean {
                     return agent.isCommander && (
-                        agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(
-                            ResourceType.ExtraMothershipFuel,
-                        )
-                        ) && !mothership.isMarkerDeployed && !agent.seeMarker()
+                            agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(
+                                ResourceType.ExtraMothershipFuel,
+                            )
+                            ) && !mothership.isMarkerDeployed && !agent.seeMarker()
                 }
 
                 override fun action() {

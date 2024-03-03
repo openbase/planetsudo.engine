@@ -14,7 +14,7 @@ class AbstractStrategyTest {
         var rule: Rule? = null
         val agent = mockk<AgentMock>(relaxed = true)
         var condition = false
-        object : StrategyLevel3(agent) {
+        object : StrategyLevelLegacy(agent) {
             init {
                 loadRules()
             }
@@ -40,7 +40,7 @@ class AbstractStrategyTest {
         var rule: Rule? = null
         val agent = mockk<AgentMock>(relaxed = true)
         var condition = false
-        object : StrategyLevel3(agent) {
+        object : StrategyLevelLegacy(agent) {
             init {
                 loadRules()
             }
@@ -66,7 +66,7 @@ class AbstractStrategyTest {
         var rule: Rule? = null
         val agent = mockk<AgentMock>(relaxed = true)
         var condition = false
-        object : StrategyLevel3(agent) {
+        object : StrategyLevelLegacy(agent) {
             init {
                 loadRules()
             }
@@ -92,7 +92,7 @@ class AbstractStrategyTest {
         var rule: Rule? = null
         val agent = mockk<AgentMock>(relaxed = true)
         var condition = false
-        object : StrategyLevel3(agent) {
+        object : StrategyLevelLegacy(agent) {
             init {
                 loadRules()
             }

@@ -11,7 +11,7 @@ import org.openbase.planetsudo.level.levelobjects.Resource.ResourceType
  *
  * @author [Divine Threepwood](mailto:divine@openbase.org)
  */
-class JaciStrategy(agent: AgentInterface) : StrategyLevel3(agent) {
+class JaciStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
 
     /**
      * Hier wird angegeben wie viele Agenten dem Team zur Verfügung stehen sollen.

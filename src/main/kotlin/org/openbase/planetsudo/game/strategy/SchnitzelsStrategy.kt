@@ -11,7 +11,7 @@ import org.openbase.planetsudo.level.levelobjects.Resource.ResourceType
  *
  * @author [Divine Threepwood](mailto:divine@openbase.org)
  */
-class SchnitzelsStrategy(agent: AgentInterface) : StrategyLevel3(agent) {
+class SchnitzelsStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
 
     /**
      * Hier wird angegeben wie viele Agenten dem Team zur Verfügung stehen sollen.
@@ -66,7 +66,7 @@ class SchnitzelsStrategy(agent: AgentInterface) : StrategyLevel3(agent) {
             object : Rule(901, "Berührt Resource") {
                 override fun constraint(): Boolean {
                     return agent.isTouchingResource && agent.resourceType !=
-                        ResourceType.Mine
+                            ResourceType.Mine
                 }
 
                 override fun action() {

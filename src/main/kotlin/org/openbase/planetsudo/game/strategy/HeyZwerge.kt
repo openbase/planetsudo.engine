@@ -9,7 +9,7 @@ import org.openbase.planetsudo.level.levelobjects.Tower
  *
  * @author [Divine Threepwood](mailto:divine@openbase.org)
  */
-class HeyZwerge(agent: AgentInterface) : StrategyLevel3(agent) {
+class HeyZwerge(agent: AgentInterface) : StrategyLevelLegacy(agent) {
 
     /**
      * Hier wird angegeben wie viele Agenten dem Team zur Verfügung stehen sollen.
@@ -103,10 +103,10 @@ class HeyZwerge(agent: AgentInterface) : StrategyLevel3(agent) {
             object : Rule("PickUp") {
                 override fun constraint(): Boolean {
                     return !agent.isCommander && (
-                        agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(
-                            ResourceType.ExtraMothershipFuel,
-                        )
-                        )
+                            agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(
+                                ResourceType.ExtraMothershipFuel,
+                            )
+                            )
                 }
 
                 override fun action() {
@@ -134,10 +134,10 @@ class HeyZwerge(agent: AgentInterface) : StrategyLevel3(agent) {
             object : Rule("PickUp and Place") {
                 override fun constraint(): Boolean {
                     return agent.isCommander && (
-                        agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(
-                            ResourceType.ExtraMothershipFuel,
-                        )
-                        ) && !mothership.isMarkerDeployed && !agent.seeMarker()
+                            agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(
+                                ResourceType.ExtraMothershipFuel,
+                            )
+                            ) && !mothership.isMarkerDeployed && !agent.seeMarker()
                 }
 
                 override fun action() {

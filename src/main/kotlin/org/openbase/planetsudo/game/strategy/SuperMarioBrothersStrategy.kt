@@ -11,7 +11,7 @@ import org.openbase.planetsudo.level.levelobjects.Resource.ResourceType
  *
  * @author [Divine Threepwood](mailto:divine@openbase.org)
  */
-class SuperMarioBrothersStrategy(agent: AgentInterface) : StrategyLevel3(agent) {
+class SuperMarioBrothersStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
 
     /**
      * Hier wird angegeben wie viele Agenten dem Team zur Verfügung stehen sollen.
@@ -169,9 +169,9 @@ class SuperMarioBrothersStrategy(agent: AgentInterface) : StrategyLevel3(agent) 
             object : Rule(7700, "Tank füllen") {
                 override fun constraint(): Boolean {
                     return (
-                        agent.fuelInPercent <= 60 &&
-                            mothership.hasFuel()
-                        )
+                            agent.fuelInPercent <= 60 &&
+                                    mothership.hasFuel()
+                            )
                 }
 
                 override fun action() {
@@ -184,9 +184,9 @@ class SuperMarioBrothersStrategy(agent: AgentInterface) : StrategyLevel3(agent) 
             object : Rule(7750, "Tank füllen") {
                 override fun constraint(): Boolean {
                     return (
-                        agent.fuelInPercent <= 60 &&
-                            agent.isAtMothership
-                        )
+                            agent.fuelInPercent <= 60 &&
+                                    agent.isAtMothership
+                            )
                 }
 
                 override fun action() {
