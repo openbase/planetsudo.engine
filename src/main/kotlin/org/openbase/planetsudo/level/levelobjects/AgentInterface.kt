@@ -16,9 +16,6 @@
  */
 package org.openbase.planetsudo.level.levelobjects
 
-import org.openbase.planetsudo.game.SwatTeam
-import org.openbase.planetsudo.level.levelobjects.Tower.TowerType
-
 /*-
  * #%L
  * PlanetSudo GameEngine
