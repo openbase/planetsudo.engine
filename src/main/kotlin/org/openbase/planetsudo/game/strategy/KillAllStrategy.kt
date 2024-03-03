@@ -63,7 +63,7 @@ class KillAllStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
             object : Rule(510, "Rohstoff T.") {
                 override fun constraint(): Boolean {
                     return agent.resourceType != ResourceType.Mine &&
-                            agent.isTouchingResource
+                        agent.isTouchingResource
                 }
 
                 override fun action() {
@@ -88,7 +88,7 @@ class KillAllStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
             object : Rule(1005, "Rohstoff A.") {
                 override fun constraint(): Boolean {
                     return agent.isCarryingResource &&
-                            agent.isAtMothership
+                        agent.isAtMothership
                 }
 
                 override fun action() {
@@ -114,7 +114,7 @@ class KillAllStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
             object : Rule(999, "Tankbewachung2.") {
                 override fun constraint(): Boolean {
                     return agent.fuelInPercent <= 40 &&
-                            agent.isAtMothership
+                        agent.isAtMothership
                 }
 
                 override fun action() {
@@ -162,7 +162,7 @@ class KillAllStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
             object : Rule(904, "unterbeschuss 2") {
                 override fun constraint(): Boolean {
                     return agent.isUnderAttack &&
-                            !agent.seeAdversaryAgent && agent.fuelInPercent >= 50
+                        !agent.seeAdversaryAgent && agent.fuelInPercent >= 50
                 }
 
                 override fun action() {
@@ -174,7 +174,7 @@ class KillAllStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
             object : Rule(903, "unterbeschuss 2") {
                 override fun constraint(): Boolean {
                     return agent.isUnderAttack &&
-                            !agent.seeAdversaryAgent && agent.fuelInPercent < 50
+                        !agent.seeAdversaryAgent && agent.fuelInPercent < 50
                 }
 
                 override fun action() {
@@ -186,9 +186,9 @@ class KillAllStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
             object : Rule(903, "mothership repair") {
                 override fun constraint(): Boolean {
                     return (
-                            mothership.shieldForce <= 55 &&
-                                    !agent.isAtMothership
-                            )
+                        mothership.shieldForce <= 55 &&
+                            !agent.isAtMothership
+                        )
                 }
 
                 override fun action() {
@@ -200,9 +200,9 @@ class KillAllStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
             object : Rule(903, "mothership repair") {
                 override fun constraint(): Boolean {
                     return (
-                            mothership.shieldForce <= 55 &&
-                                    agent.isAtMothership
-                            )
+                        mothership.shieldForce <= 55 &&
+                            agent.isAtMothership
+                        )
                 }
 
                 override fun action() {

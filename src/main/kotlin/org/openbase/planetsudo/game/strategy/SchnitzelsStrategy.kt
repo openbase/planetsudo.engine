@@ -66,7 +66,7 @@ class SchnitzelsStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
             object : Rule(901, "Berührt Resource") {
                 override fun constraint(): Boolean {
                     return agent.isTouchingResource && agent.resourceType !=
-                            ResourceType.Mine
+                        ResourceType.Mine
                 }
 
                 override fun action() {

@@ -169,9 +169,9 @@ class SuperMarioBrothersStrategy(agent: AgentInterface) : StrategyLevelLegacy(ag
             object : Rule(7700, "Tank füllen") {
                 override fun constraint(): Boolean {
                     return (
-                            agent.fuelInPercent <= 60 &&
-                                    mothership.hasFuel()
-                            )
+                        agent.fuelInPercent <= 60 &&
+                            mothership.hasFuel()
+                        )
                 }
 
                 override fun action() {
@@ -184,9 +184,9 @@ class SuperMarioBrothersStrategy(agent: AgentInterface) : StrategyLevelLegacy(ag
             object : Rule(7750, "Tank füllen") {
                 override fun constraint(): Boolean {
                     return (
-                            agent.fuelInPercent <= 60 &&
-                                    agent.isAtMothership
-                            )
+                        agent.fuelInPercent <= 60 &&
+                            agent.isAtMothership
+                        )
                 }
 
                 override fun action() {
