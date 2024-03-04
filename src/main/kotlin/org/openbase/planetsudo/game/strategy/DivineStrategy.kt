@@ -245,7 +245,7 @@ class DivineStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule("Order Fuel") {
                 override fun constraint(): Boolean {
-                    return agent.isAtMothership && !agent.isGameOverSoon && mothership.hasFuel() && agent.fuelInPercent < 100
+                    return agent.isAtMothership && !agent.isGameOverSoon && mothership.hasFuel() && agent.fuelInPercent < 90
                 }
 
                 override fun action() {
@@ -293,7 +293,7 @@ class DivineStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule("HelpLostAgent") {
                 override fun constraint(): Boolean {
-                    return agent.seeLostTeamAgent()
+                    return agent.seeLostTeamAgent() && !teamAgent.isAtMothership
                 }
 
                 override fun action() {
@@ -526,8 +526,17 @@ class DivineStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         "Spy" all inCase { agent.isInvisible && agent.seeAdversaryAgent } then {
             agent.goToAdversaryAgent()
         }
-        "Spy Mothership" all inCase { agent.isInvisible && agent.seeAdversaryMothership } then {
+        "Attack Mothership" all inCase { agent.isInvisible && agent.seeAdversaryMothership } then {
+            agent.fightWithAdversaryMothership()
+        }
+        "Attack Agent" all inCase { agent.isInvisible && agent.seeAdversaryAgent && agent.seeAdversaryMothership } then {
             agent.fightWithAdversaryAgent()
+        }
+        "Prepare for Attack" all inCase { agent.isInvisible && agent.seeAdversaryMothership && agent.actionPoints < 10000 } then {
+            // wait for APs
+        }
+        "Call Force" all inCase { agent.isInvisible && agent.seeAdversaryMothership && !agent.isSupportOrdered } then {
+            agent.orderSupport()
         }
         // -------------------------------------------->
         "Make invisible" all inCase { agent.tonicInPercent == 100 && agent.isVisible && agent.isFighting } then {
