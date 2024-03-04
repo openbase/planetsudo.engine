@@ -3,6 +3,20 @@ package org.openbase.planetsudo.level.levelobjects
 interface GlobalAgentInterface {
 
     /**
+     * Gibt an, ob der Agent noch lebt.
+     *
+     * @return true oder false.
+     */
+    val isAlive: Boolean
+
+    /**
+     * Gibt zurück, ob der Agent beim Mutterschiff ist.
+     *
+     * @return true oder false.
+     */
+    val isAtMothership: Boolean
+
+    /**
      * Gibt zurück, ob der Agent ein Commander ist oder nicht.
      *
      * @return true oder false
@@ -104,6 +118,14 @@ interface GlobalAgentInterface {
      * @return Den Ressourcenwert
      */
     val resourceType: Resource.ResourceType
+
+    /**
+     * Gibt zurück, ob der Agent eine Resource berührt und diese somit
+     * aufgeben kann.
+     *
+     * @return true oder false.
+     */
+    val isTouchingResource: Boolean
 
     /**
      * Gibt zurück, ob der Agent eine Resource vom Typ `type` berührt und diese somit aufheben kann.

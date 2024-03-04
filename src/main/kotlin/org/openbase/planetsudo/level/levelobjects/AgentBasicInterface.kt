@@ -17,28 +17,6 @@ interface AgentBasicInterface : GlobalAgentInterface {
     val isDisabled: Boolean
 
     /**
-     * Gibt zurück, ob der Agent eine Resource berührt und diese somit
-     * aufgeben kann.
-     *
-     * @return true oder false.
-     */
-    val isTouchingResource: Boolean
-
-    /**
-     * Gibt an, ob der Agent noch lebt.
-     *
-     * @return true oder false.
-     */
-    val isAlive: Boolean
-
-    /**
-     * Gibt zurück, ob der Agent beim Mutterschiff ist.
-     *
-     * @return true oder false.
-     */
-    val isAtMothership: Boolean
-
-    /**
      * Der Agent übergibt die Resource dem Mutterschiff, sofern er sich am Mutterschiff befindet.
      * Treibstoff: 1
      * Aktionspunkte: 10
@@ -178,6 +156,11 @@ interface AgentBasicInterface : GlobalAgentInterface {
      * @return true oder false.
      */
     val seeTeamAgent: Boolean
+
+    /**
+     * Liefert Informationen über einen Agenten deines Teams in der Nähe.
+     */
+    val teamAgent: GlobalAgentInterface
 
     /**
      * Zeigt an, ob sich in Sicht des Agenten ein Teammitglied ohne Treibstoff

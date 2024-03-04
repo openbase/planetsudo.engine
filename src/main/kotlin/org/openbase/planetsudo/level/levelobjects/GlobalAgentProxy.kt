@@ -1,6 +1,10 @@
 package org.openbase.planetsudo.level.levelobjects
 
-class GlobalAgentProxy(val agent: AgentInterface) : GlobalAgentInterface {
+class GlobalAgentProxy(val agent: GlobalAgentInterface) : GlobalAgentInterface {
+    override val isAlive: Boolean
+        get() = agent.isAlive
+    override val isAtMothership: Boolean
+        get() = agent.isAtMothership
     override val isCommander: Boolean
         get() = agent.isCommander
     override val isFighting: Boolean
@@ -25,6 +29,8 @@ class GlobalAgentProxy(val agent: AgentInterface) : GlobalAgentInterface {
         get() = agent.fuelVolume
     override val resourceType: Resource.ResourceType
         get() = agent.resourceType
+    override val isTouchingResource: Boolean
+        get() = agent.isTouchingResource
     override val isCarryingResource: Boolean
         get() = agent.isCarryingResource
     override val hasFuel: Boolean
