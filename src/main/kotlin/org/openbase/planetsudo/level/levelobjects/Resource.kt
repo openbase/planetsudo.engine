@@ -178,6 +178,8 @@ class Resource(id: Int, @JvmField val type: ResourceType, level: AbstractLevel, 
 
                     ResourceType.ExtraAgentFuel -> {
                         agent.spendFuel(Mothership.AGENT_FUEL_VOLUME / 10)
+                        // TODO: Here we could visualize by a burning agent that more fuel
+                        //  was consumed then it could be stored.
                         GameSound.EarnAgentFuel.play()
                         return 0
                     }

@@ -83,9 +83,13 @@ abstract class AbstractStrategy<LEVEL : GlobalAgentInterface>(val agent: LEVEL) 
                 )
                 strategyOwner.kill()
             }
-            Thread.sleep((DEFAULT_GAME_CYCLE / gameSpeedFactor).toLong())
+            delayByGameSpeed()
         }
         logger.info("AI of agent $agent is dead now!")
+    }
+
+    fun delayByGameSpeed() {
+        Thread.sleep((DEFAULT_GAME_CYCLE / gameSpeedFactor).toLong())
     }
 
     fun createRule(rule: Rule): Rule {
@@ -111,6 +115,7 @@ abstract class AbstractStrategy<LEVEL : GlobalAgentInterface>(val agent: LEVEL) 
             if (rule.constraint() && strategyOwner.isMemberOfSwatTeam(rule.swatTeams)) {
                 strategyOwner.lastAction = rule.name
                 rule.action()
+                strategyOwner.resetActionCounter()
                 break
             }
         }

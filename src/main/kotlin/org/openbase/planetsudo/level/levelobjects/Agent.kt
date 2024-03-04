@@ -19,7 +19,9 @@ import org.slf4j.LoggerFactory
 import java.awt.geom.Rectangle2D
 import java.lang.reflect.Constructor
 import java.util.*
+import java.util.concurrent.locks.ReentrantLock
 import java.util.logging.Level
+import kotlin.concurrent.withLock
 import kotlin.math.max
 import kotlin.math.min
 
@@ -45,6 +47,7 @@ class Agent(
     AgentInterface {
 
     private val ap: ActionPoints = ActionPoints(this)
+    private var actionCounter = 0
     private val swatTeamSet: MutableSet<SwatTeam>
 
     private var attacked: Boolean
@@ -273,36 +276,38 @@ class Agent(
     }
 
     private fun goTo(directionController: Direction2D.() -> Unit) {
-        if (isCarryingResource) {
-            ap.getActionPoint(6)
-        } else {
-            ap.getActionPoint(3)
-        }
+        performAction(
+            when (isCarryingResource) {
+                true -> 6
+                false -> 3
+            },
+        ) {
 
-        if (!useFuel()) {
-            return
-        }
+            if (!useFuel()) {
+                return@performAction
+            }
 
-        // move and apply new direction
-        moveForward()
-        direction.apply { directionController() }
+            // move and apply new direction
+            moveForward()
+            direction.apply { directionController() }
 
-        // shift
-        if (isShifting) {
-            (0..SHIFT_EXTRA_SPEED).forEach { _ ->
-                if (isCollisionDetected) {
-                    return
-                }
-                if (consumeTonicForShifting()) {
-                    // move and apply new direction
-                    moveForward()
-                    direction.apply { directionController() }
+            // shift
+            if (isShifting) {
+                (0..SHIFT_EXTRA_SPEED).forEach { _ ->
+                    if (isCollisionDetected) {
+                        return@performAction
+                    }
+                    if (consumeTonicForShifting()) {
+                        // move and apply new direction
+                        moveForward()
+                        direction.apply { directionController() }
+                    }
                 }
             }
-        }
 
-        if (level.collisionDetected(bounds)) { // Is collied with wall?
-            kill()
+            if (level.collisionDetected(bounds)) { // Is collied with wall?
+                kill()
+            }
         }
     }
 
@@ -319,15 +324,15 @@ class Agent(
             kill()
             return
         }
-        val strategy: AbstractStrategy<*>
         try {
-            strategy = constructor.newInstance(this)
+            constructor.newInstance(this).also { strategy ->
+                Thread(strategy, name + "StrategyThread").start()
+            }
         } catch (ex: CouldNotPerformException) {
             LOGGER.error("Could not load strategy!", ex)
             kill()
             return
         }
-        Thread(strategy, name + "Thread").start()
         // ######################################################
     }
 
@@ -374,8 +379,24 @@ class Agent(
         return tmp2Resource
     }
 
-    fun spendFuel(value: Int) {
-        fuel = min(fuelVolume.toDouble(), (fuel + value).toDouble()).toInt()
+    private val fuelLock = ReentrantLock()
+
+    /**
+     * Refill the fuel of the agent and returns the leftover that did not fit into the tank.
+     */
+    internal fun spendFuel(value: Int): Int = fuelLock.withLock {
+        (fuelVolume - fuel).let { leftFuelSpace ->
+            min(leftFuelSpace, value).let { fuelToSpend ->
+                fuel += fuelToSpend
+                value - fuelToSpend
+            }
+
+        }.also {
+            if (fuel > fuelVolume) {
+                kill()
+                throw InvalidStateException("Agent has more fuel than possible!")
+            }
+        }
     }
 
     fun addActionPoint() = ap.addActionPoint()
@@ -408,23 +429,26 @@ class Agent(
     @Synchronized
     override fun deployMine() {
         invisible = false
-        ap.getActionPoint(50)
-        if (useFuel(5) == 5 && hasMine) {
-            val newMine = Resource(
-                level.generateNewResourceID(),
-                level,
-                this,
-            )
-            level.addResource(newMine)
-            hasMine = false
-            GameSound.DeployMine.play()
+        performAction(50) {
+            if (useFuel(5) == 5 && hasMine) {
+                val newMine = Resource(
+                    level.generateNewResourceID(),
+                    level,
+                    this,
+                )
+                level.addResource(newMine)
+                hasMine = false
+                GameSound.DeployMine.play()
+            }
         }
     }
 
     override fun releaseResource() {
-        if (isCarryingResource || resource != null) {
-            resource?.release()
-            resource = null
+        performAction(1) {
+            if (isCarryingResource || resource != null) {
+                resource?.release()
+                resource = null
+            }
         }
     }
 
@@ -442,9 +466,10 @@ class Agent(
     override fun go() = goTo { direction }
 
     override fun turnAround() {
-        ap.actionPoint
-        if (useFuel()) {
-            direction.invert()
+        performAction(1) {
+            if (useFuel()) {
+                direction.invert()
+            }
         }
     }
 
@@ -453,43 +478,48 @@ class Agent(
     override fun goRight(beta: Int) = goTo { angle += beta }
 
     override fun turnLeft(beta: Int) {
-        ap.actionPoint
-        if (useFuel()) {
-            direction.angle -= beta
+        performAction(1) {
+            if (useFuel()) {
+                direction.angle -= beta
+            }
         }
     }
 
     override fun turnRight(beta: Int) {
-        ap.actionPoint
-        if (useFuel()) {
-            direction.angle += beta
+        performAction(1) {
+            if (useFuel()) {
+                direction.angle += beta
+            }
         }
     }
 
     override fun turnToResource() {
-        ap.actionPoint
-        if (useFuel()) {
-            level.getCloseResource(this)?.let { resourceToGo ->
-                direction.turnTo(position, resourceToGo.position)
+        performAction(1) {
+            if (useFuel()) {
+                level.getCloseResource(this)?.let { resourceToGo ->
+                    direction.turnTo(position, resourceToGo.position)
+                }
             }
         }
     }
 
     override fun turnToResource(resourceType: ResourceType) {
-        ap.actionPoint
-        if (useFuel()) {
-            level.getCloseResource(this, resourceType)?.let { resourceToGo ->
-                direction.turnTo(position, resourceToGo.position)
+        performAction(1) {
+            if (useFuel()) {
+                level.getCloseResource(this, resourceType)?.let { resourceToGo ->
+                    direction.turnTo(position, resourceToGo.position)
+                }
             }
         }
     }
 
     override fun turnToAdversaryAgent(beta: Int) {
-        ap.actionPoint
-        if (useFuel()) {
-            level.getAdversaryAgent(this)?.let { adversaryAgent ->
-                direction.turnTo(position, adversaryAgent.position)
-                direction.angle += beta
+        performAction(1) {
+            if (useFuel()) {
+                level.getAdversaryAgent(this)?.let { adversaryAgent ->
+                    direction.turnTo(position, adversaryAgent.position)
+                    direction.angle += beta
+                }
             }
         }
     }
@@ -499,14 +529,15 @@ class Agent(
     }
 
     override fun turnRandom(opening: Int) {
-        ap.actionPoint
-        try {
-            if (useFuel()) {
-                val randomAngle = RandomGenerator.getRandom(0, opening) - (opening / 2)
-                direction.angle += randomAngle
+        performAction(1) {
+            try {
+                if (useFuel()) {
+                    val randomAngle = RandomGenerator.getRandom(0, opening) - (opening / 2)
+                    direction.angle += randomAngle
+                }
+            } catch (ex: InvalidStateException) {
+                LOGGER.error("Could not turn random.", ex)
             }
-        } catch (ex: InvalidStateException) {
-            LOGGER.error("Could not turn random.", ex)
         }
     }
 
@@ -519,50 +550,54 @@ class Agent(
     }
 
     override fun orderFuel(percent: Int) {
-        ap.getActionPoint(20)
-        if (percent < 0 || percent > 100) {
-            LOGGER.error("Could not refill fuel! Percent value[$percent] is not in bounds! Valuerange 0-100")
-            kill()
-            return
-        }
-
-        if (mothership.hasFuel()) {
-            for (toOrder in ((fuelVolume * percent) / 100) - fuel downTo 1) {
-                fuel += mothership.orderFuel(1, this)
-                ap.getActionPoint(2)
+        performAction(20) {
+            if (percent < 0 || percent > 100) {
+                LOGGER.error("Could not refill fuel! Percent value[$percent] is not in bounds! Valuerange 0-100")
+                kill()
+                return@performAction
             }
-            GameSound.RechargeFuel.play()
+
+            if (mothership.hasFuel()) {
+                for (toOrder in ((fuelVolume * percent) / 100) - fuel downTo 1) {
+                    spendFuel(mothership.orderFuel(1, this))
+                    ap.getActionPoint(2)
+                }
+                GameSound.RechargeFuel.play()
+            }
         }
     }
 
     override fun seeResource(resourceType: ResourceType): Boolean = level.getCloseResource(this, resourceType) != null
 
     override fun goToResource() {
-        ap.actionPoint
-        if (useFuel()) {
-            level.getCloseResource(this)?.let { resourceToGo ->
-                goTo { turnTo(position, resourceToGo.position) }
+        performAction(1) {
+            if (useFuel()) {
+                level.getCloseResource(this)?.let { resourceToGo ->
+                    goTo { turnTo(position, resourceToGo.position) }
+                }
             }
         }
     }
 
     override fun goToResource(resourceType: ResourceType) {
-        ap.actionPoint
-        if (useFuel()) {
-            level.getCloseResource(this, resourceType)?.let { resourceToGo ->
-                goTo { turnTo(position, resourceToGo.position) }
+        performAction(1) {
+            if (useFuel()) {
+                level.getCloseResource(this, resourceType)?.let { resourceToGo ->
+                    goTo { turnTo(position, resourceToGo.position) }
+                }
             }
         }
     }
 
     override fun deliverResourceToMothership() {
-        ap.getActionPoint(10)
-        try {
-            if (isCarryingResource && useFuel() && isAtMothership) {
-                mothership.passResource(this)
+        performAction(10) {
+            try {
+                if (isCarryingResource && useFuel() && isAtMothership) {
+                    mothership.passResource(this)
+                }
+            } catch (ex: CouldNotPerformException) {
+                LOGGER.warn("Could not deliver resource to Mothership!", ex)
             }
-        } catch (ex: CouldNotPerformException) {
-            LOGGER.warn("Could not deliver resource to Mothership!", ex)
         }
     }
 
@@ -571,80 +606,89 @@ class Agent(
     }
 
     override fun searchResources() {
-        val startAngle = direction.angle
         for (i in 0..17) {
-            ap.getActionPoint(10)
             if (seeResource) {
                 return
             }
-            turnLeft(20)
+            performAction(20) {
+                turnLeft(20)
+            }
         }
     }
 
     override fun pickupResource() {
-        ap.getActionPoint(10)
-        try {
-            if (useFuel()) {
-                val resourceToCollect = level.getTouchableResource(this)
-                if (resourceToCollect != null && resourceToCollect.type != ResourceType.ExtraAgentFuel) {
-                    releaseResource()
+        performAction(10) {
+            try {
+                if (useFuel()) {
+                    val resourceToCollect = level.getTouchableResource(this)
+                    if (resourceToCollect != null && resourceToCollect.type != ResourceType.ExtraAgentFuel) {
+                        releaseResource()
+                    }
+                    if (resourceToCollect != null && resourceToCollect.setBusy(team)) {
+                        direction.turnTo(position, resourceToCollect.position)
+                        ap.getActionPoint(resourceToCollect.capturingActionPoints)
+                        carryResource(resourceToCollect)
+                    }
                 }
-                if (resourceToCollect != null && resourceToCollect.setBusy(team)) {
-                    direction.turnTo(position, resourceToCollect.position)
-                    ap.getActionPoint(resourceToCollect.capturingActionPoints)
-                    carryResource(resourceToCollect)
-                }
+            } catch (ex: InvalidStateException) {
+                LOGGER.warn("Could not pickup resource!", ex)
             }
-        } catch (ex: InvalidStateException) {
-            LOGGER.warn("Could not pickup resource!", ex)
         }
     }
 
     override fun spendTeamAgentFuel(value: Int) {
-        if (useFuel()) {
-            val teamAgent = level.getLostTeamAgent(this)
-            if (teamAgent != null) {
-                helpLevelObject = teamAgent
-                isHelping = true
-                direction.turnTo(position, teamAgent.position)
-                ap.getActionPoint(value * 2)
-                teamAgent.fuel += useFuel(value)
-                GameSound.SpendFuel.play()
+        performAction {
+            if (useFuel()) {
+                val teamAgent = level.getLostTeamAgent(this)
+                if (teamAgent != null) {
+                    helpLevelObject = teamAgent
+                    isHelping = true
+                    direction.turnTo(position, teamAgent.position)
+                    ap.getActionPoint(value * 2)
+                    teamAgent.spendFuel(useFuel(value)).also {
+                        // charge leftover back to origin
+                            leftover ->
+                        spendFuel(leftover)
+                    }
+                    GameSound.SpendFuel.play()
+                }
             }
+            isHelping = false
         }
-        isHelping = false
     }
 
     override fun fightWithAdversaryAgent() {
         invisible = false
-        ap.actionPoint
-        if (useFuel()) {
-            val adversaryAgent = level.getAdversaryAgent(this)
-            adversaryObject = adversaryAgent
-            if (adversaryAgent != null) {
-                adversaryAgent.attacked = true
-                ap.getActionPoint(20)
-                direction.turnTo(position, adversaryAgent.position)
-                if (adversaryAgent.hasFuel) {
-                    catchedfuel = (adversaryAgent.useFuel((Mothership.Companion.AGENT_FUEL_VOLUME / 500) * 2) / 3)
-                    fuel = min(fuelVolume.toDouble(), (fuel + catchedfuel).toDouble()).toInt()
+        performAction(1) {
+            if (useFuel()) {
+                val adversaryAgent = level.getAdversaryAgent(this)
+                adversaryObject = adversaryAgent
+                if (adversaryAgent != null) {
+                    adversaryAgent.attacked = true
+                    ap.getActionPoint(20)
+                    direction.turnTo(position, adversaryAgent.position)
+                    if (adversaryAgent.hasFuel) {
+                        catchedfuel = (adversaryAgent.useFuel((Mothership.AGENT_FUEL_VOLUME / 500) * 2) / 3)
+                        spendFuel(catchedfuel)
+                    }
+                    GameSound.Laser.play()
                 }
-                GameSound.Laser.play()
             }
         }
     }
 
     override fun fightWithAdversaryMothership() {
         invisible = false
-        ap.actionPoint
-        if (useFuel()) {
-            val adversaryMothership = level.getAdversaryMothership(this)
-            adversaryObject = adversaryMothership
-            if (adversaryMothership != null) {
-                ap.getActionPoint(30)
-                direction.turnTo(position, adversaryMothership.position)
-                adversaryMothership.attack()
-                GameSound.Laser.play()
+        performAction(1) {
+            if (useFuel()) {
+                val adversaryMothership = level.getAdversaryMothership(this)
+                adversaryObject = adversaryMothership
+                if (adversaryMothership != null) {
+                    ap.getActionPoint(30)
+                    direction.turnTo(position, adversaryMothership.position)
+                    adversaryMothership.attack()
+                    GameSound.Laser.play()
+                }
             }
         }
     }
@@ -654,17 +698,19 @@ class Agent(
     }
 
     override fun repairMothership() {
-        ap.getActionPoint(30)
-        if (useFuel() && isAtMothership) {
-            mothership.repair()
+        performAction(30) {
+            if (useFuel() && isAtMothership) {
+                mothership.repair()
+            }
         }
     }
 
     override fun orderSupport() {
-        ap.getActionPoint(5)
-        if (!isSupportOrdered) {
-            mothership.callForSupport(this)
-            GameSound.CallForSupport.play()
+        performAction(5) {
+            if (!isSupportOrdered) {
+                mothership.callForSupport(this)
+                GameSound.CallForSupport.play()
+            }
         }
     }
 
@@ -691,7 +737,9 @@ class Agent(
                 if (adversaryAgent.levelView!!.getDistance(this) >= (AGENT_SIZE / 2)) {
                     goTo { turnTo(position, adversaryAgent.position) }
                 } else {
-                    direction.turnTo(position, adversaryAgent.position)
+                    performAction {
+                        direction.turnTo(position, adversaryAgent.position)
+                    }
                 }
             }
         } catch (ex: CouldNotPerformException) {
@@ -700,16 +748,18 @@ class Agent(
     }
 
     override fun cancelSupport() {
-        ap.getActionPoint(5)
-        if (isSupportOrdered) {
-            mothership.cancelSupport(this)
+        performAction(5) {
+            if (isSupportOrdered) {
+                mothership.cancelSupport(this)
+            }
         }
     }
 
     override fun deployMarker() {
-        ap.getActionPoint(5)
-        if (useFuel()) {
-            mothership.placeMarker(position.clone())
+        performAction(5) {
+            if (useFuel()) {
+                mothership.placeMarker(position.clone())
+            }
         }
     }
 
@@ -748,59 +798,64 @@ class Agent(
 
     @Suppress("OVERRIDE_DEPRECATION")
     override fun constructTower(type: TowerType) {
-        try {
-            ap.getActionPoint(1500)
-            useFuel(50)
-            if (!isCommander) {
-                LOGGER.warn("Only the commander is able to construct a tower, deployment failed!")
-                return
+        performAction(1500) {
+            try {
+                useFuel(50)
+                if (!isCommander) {
+                    LOGGER.warn("Only the commander is able to construct a tower, deployment failed!")
+                    return@performAction
+                }
+                mothership.tower.construct(type, this)
+                hasTower = false
+            } catch (ex: CouldNotPerformException) {
+                kill()
+                ExceptionPrinter.printHistory(CouldNotPerformException("Could not construct Tower!", ex), LOGGER)
             }
-            mothership.tower.construct(type, this)
-            hasTower = false
-        } catch (ex: CouldNotPerformException) {
-            kill()
-            ExceptionPrinter.printHistory(CouldNotPerformException("Could not construct Tower!", ex), LOGGER)
         }
     }
 
     @Suppress("OVERRIDE_DEPRECATION")
     override fun deconstructTower() {
-        try {
-            ap.getActionPoint(500)
-            useFuel(50)
+        performAction(500) {
+            try {
+                useFuel(50)
 
-            if (!isCommander) {
-                LOGGER.warn("Only the commander is able to deconstruct a tower, deployment failed!")
-                return
+                if (!isCommander) {
+                    LOGGER.warn("Only the commander is able to deconstruct a tower, deployment failed!")
+                    return@performAction
+                }
+
+                if (!mothership.tower.seeTower(this)) {
+                    LOGGER.warn("The commander is not close enough to deconstruct the tower!")
+                    return@performAction
+                }
+
+                mothership.tower.deconstruct(this)
+                hasTower = true
+            } catch (ex: CouldNotPerformException) {
+                kill()
+                ExceptionPrinter.printHistory(CouldNotPerformException("Could not deconstruct Tower!", ex), LOGGER)
             }
-
-            if (!mothership.tower.seeTower(this)) {
-                LOGGER.warn("The commander is not close enough to deconstruct the tower!")
-                return
-            }
-
-            mothership.tower.deconstruct(this)
-            hasTower = true
-        } catch (ex: CouldNotPerformException) {
-            kill()
-            ExceptionPrinter.printHistory(CouldNotPerformException("Could not deconstruct Tower!", ex), LOGGER)
         }
     }
 
     override fun makeInvisible() {
-        ap.getActionPoint(100)
-        if (hasTonicForInvisibility) {
-            tonic = 0
-            invisible = true
+        performAction(100) {
+            if (hasTonicForInvisibility) {
+                tonic = 0
+                invisible = true
+            }
         }
     }
 
     override fun shift() {
-        ap.actionPoint
-        if (hasTonic) {
-            tonic--
-            shiftTonic++
-            GameSound.Shift.play()
+        performAction {
+            ap.actionPoint
+            if (hasTonic) {
+                tonic--
+                shiftTonic++
+                GameSound.Shift.play()
+            }
         }
     }
 
@@ -809,6 +864,24 @@ class Agent(
             lastAversaryAgent
                 ?: error("No adversary agent seen!"),
         )
+
+    private fun performAction(actionPoints: Int? = null, block: () -> Unit) {
+        actionPoints?.also { ap.getActionPoint(it) }
+        actionCounter++
+
+        // delay multi action rule
+        if (actionCounter > 1) {
+            level.delayByGameSpeed()
+        }
+
+        block()
+    }
+
+    fun resetActionCounter() {
+        actionCounter = 0
+    }
+
+    fun getActionCounterAndReset() = actionCounter.also { actionCounter = 0 }
 
     companion object {
         const val MAX_TONIC: Int = 3

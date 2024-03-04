@@ -63,9 +63,9 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
     override fun run() {
         logger.info("Start Level $this")
         try {
-            for (mothership in motherships) {
-                mothership!!.startGame()
-            }
+            motherships
+                .filterNotNull()
+                .forEach { it.startGame() }
         } catch (ex: CouldNotPerformException) {
             logger.warn("Could not start Level!", ex)
             return
@@ -79,9 +79,13 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
                     }
                 }
             }
-            Thread.sleep((AbstractStrategy.DEFAULT_GAME_CYCLE / gameSpeedFactor).toLong())
+            delayByGameSpeed()
         }
         logger.info("Level Ends.")
+    }
+
+    fun delayByGameSpeed() {
+        Thread.sleep((AbstractStrategy.DEFAULT_GAME_CYCLE / gameSpeedFactor).toLong())
     }
 
     var mineCounter: Int = 0

@@ -47,16 +47,12 @@ class Team(data: TeamData) {
     protected var changes: PropertyChangeSupport? = null
 
     init {
-        try {
-            this.name = data.name
-            this.teamColor = data.teamColor
-            this.strategy = loadStrategy(data.strategy)
-            this.points = 0
-            this.changes = PropertyChangeSupport(this)
-            this.members = data.members
-        } catch (ex: CouldNotPerformException) {
-            throw org.openbase.jul.exception.InstantiationException(this, ex)
-        }
+        this.name = data.name
+        this.teamColor = data.teamColor
+        this.strategy = loadStrategy(data.strategy)
+        this.points = 0
+        this.changes = PropertyChangeSupport(this)
+        this.members = data.members
     }
 
     private fun loadAgentCount(): Int {

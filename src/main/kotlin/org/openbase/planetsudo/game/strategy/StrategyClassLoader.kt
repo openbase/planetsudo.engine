@@ -58,7 +58,7 @@ object StrategyClassLoader {
             LOGGER.info("Load successful " + AbstractStrategy::class.java.getPackage().name + "." + strategyName)
             return clazz as Class<AbstractStrategy<*>>
         } catch (ex: ClassNotFoundException) {
-            throw CouldNotPerformException("Could not load Class[$strategyName]external strategy!", ex)
+            throw CouldNotPerformException("Could not load Strategy[$strategyName]!", ex)
         }
     }
 }

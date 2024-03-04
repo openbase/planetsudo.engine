@@ -5,6 +5,7 @@
 package org.openbase.planetsudo.game
 
 import org.openbase.jul.exception.CouldNotPerformException
+import org.openbase.jul.exception.printer.ExceptionPrinter
 import org.openbase.planetsudo.level.AbstractLevel
 import org.openbase.planetsudo.main.GUIController
 import org.slf4j.Logger
@@ -100,7 +101,7 @@ class GameManager : Runnable {
                 }
             }
         } catch (ex: CouldNotPerformException) {
-            LOGGER.warn("Could not add team!", ex)
+            ExceptionPrinter.printHistory("Could not add team!", ex, LOGGER)
             return false
         }
         return true
@@ -127,12 +128,12 @@ class GameManager : Runnable {
                 setGameState(GameState.Initialisation)
 
                 if (level == null) {
-                    LOGGER.error("Abord gamestart: No level set!")
+                    LOGGER.error("Aboard game start: No level set!")
                     setGameState(GameState.Configuration)
                     return
                 }
                 if (teamA == null || teamB == null) {
-                    LOGGER.error("Abord gamestart: Not enough teams set!")
+                    LOGGER.error("Aboard game start: Not enough teams set!")
                     setGameState(GameState.Configuration)
                     return
                 }
