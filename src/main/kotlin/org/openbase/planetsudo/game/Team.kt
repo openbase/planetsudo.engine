@@ -117,13 +117,11 @@ class Team(data: TeamData) {
 
         private val TEAM_DATA_PROCESSOR = JSonObjectFileProcessor(TeamData::class.java)
 
-        @JvmOverloads
         @Throws(CouldNotPerformException::class)
         fun saveDefaultTeam(data: TeamData, force: Boolean = false) {
             save(data, DEFAULT_ID, force)
         }
 
-        @JvmOverloads
         @Throws(CouldNotPerformException::class)
         fun save(data: TeamData, teamName: String? = data.name, force: Boolean = true) {
             try {
