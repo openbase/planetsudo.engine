@@ -51,7 +51,6 @@ class LevelResourcePanel(resource: Resource, parentResourcePanel: LevelPanel) :
     override fun paintComponent(g2: Graphics2D, gl: Graphics2D) {
         boundingBox = resource.bounds
         owner = resource.owner
-
         if (owner == null) {
             if (mine) {
                 if (AbstractLevelObjectPanel.Companion.animationFlag) {

@@ -31,7 +31,7 @@ class TeamMarker(@JvmField val team: Team, level: AbstractLevel) : AbstractLevel
 
     fun place(position: Point2D) {
         synchronized(MARKER_LOCK) {
-            if (isPlaced && this.position.equals(position)) {
+            if (isPlaced && this.position == position) {
                 return
             }
             this.position = position
@@ -63,8 +63,10 @@ class TeamMarker(@JvmField val team: Team, level: AbstractLevel) : AbstractLevel
     }
 
     fun seeMarker(agent: Agent): Boolean {
-        if (!isPlaced) {
-            return false
+        synchronized(MARKER_LOCK) {
+            if (!isPlaced) {
+                return false
+            }
         }
 
         return bounds.intersects(agent.bounds)

@@ -11,37 +11,40 @@ import org.apache.commons.lang.builder.HashCodeBuilder
  *
  * @author [Divine Threepwood](mailto:divine@openbase.org)
  */
-class Point2D @JvmOverloads constructor(x: kotlin.Double = 0.0, y: kotlin.Double = 0.0) :
-    java.awt.geom.Point2D(),
-    Cloneable {
+class Point2D(x: kotlin.Double = 0.0, y: kotlin.Double = 0.0) : java.awt.geom.Point2D(), Cloneable {
+
     var xy: DoubleArray = DoubleArray(2)
+
+    var modified: Boolean
+        private set
+        get() = field.also { field = false }
 
     init {
         xy[0] = x
         xy[1] = y
+        modified = true
     }
 
     constructor(point: Point2D) : this(point.xy[0], point.xy[1])
 
-    override fun getX(): kotlin.Double {
-        return xy[0]
-    }
+    override fun getX(): kotlin.Double = xy[0]
 
-    override fun getY(): kotlin.Double {
-        return xy[1]
-    }
+    override fun getY(): kotlin.Double = xy[1]
 
     fun setX(x: kotlin.Double) {
         xy[0] = x
+        modified = true
     }
 
     fun setY(y: kotlin.Double) {
         xy[1] = y
+        modified = true
     }
 
     override fun setLocation(x: kotlin.Double, y: kotlin.Double) {
         xy[0] = x
         xy[1] = y
+        modified = true
     }
 
     override fun clone(): Point2D {
@@ -51,11 +54,13 @@ class Point2D @JvmOverloads constructor(x: kotlin.Double = 0.0, y: kotlin.Double
     fun translateIntoBase(base: Point2D) {
         xy[0] -= base.x
         xy[1] -= base.y
+        modified = true
     }
 
     fun translate(direction: Direction2D, lenght: Int) {
         xy[0] += direction.vector.x * lenght
         xy[1] += direction.vector.y * lenght
+        modified = true
     }
 
     override fun hashCode(): Int {
@@ -79,8 +84,8 @@ class Point2D @JvmOverloads constructor(x: kotlin.Double = 0.0, y: kotlin.Double
         val point = obj as Point2D
         // if deriving: appendSuper(super.equals(obj)).
         return EqualsBuilder()
-            .append(xy[0], point.xy.get(0))
-            .append(xy[1], point.xy.get(1))
+            .append(xy[0], point.xy[0])
+            .append(xy[1], point.xy[1])
             .isEquals
     }
 

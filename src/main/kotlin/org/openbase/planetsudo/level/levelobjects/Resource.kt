@@ -22,7 +22,19 @@ class Resource(id: Int, @JvmField val type: ResourceType, level: AbstractLevel, 
     AbstractLevelObject(
         id,
         Resource::class.java.simpleName + "[" + id + "]",
-        AbstractResourcePanel.ObjectType.Dynamic,
+        when (type) {
+            ResourceType.Normal,
+            ResourceType.DoublePoints,
+            ResourceType.ExtremPoint,
+            ResourceType.ExtraMothershipFuel,
+            -> AbstractResourcePanel.ObjectType.Dynamic
+
+            ResourceType.Unknown,
+            ResourceType.ExtraAgentFuel,
+            ResourceType.Mine,
+            ResourceType.Tonic,
+            -> AbstractResourcePanel.ObjectType.Static
+        },
         level,
         position,
         RESOURCE_SIZE.toDouble(),
@@ -92,8 +104,8 @@ class Resource(id: Int, @JvmField val type: ResourceType, level: AbstractLevel, 
             }
             owner = agent
             conquerors.clear()
+            position = agent.position
         }
-        position = agent.position
         when (type) {
             ResourceType.ExtraAgentFuel -> {
                 use(agent)

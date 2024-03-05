@@ -6,6 +6,7 @@ import org.openbase.jul.visual.swing.engine.draw2d.AbstractResourcePanel
 import org.openbase.planetsudo.game.GameManager
 import org.openbase.planetsudo.game.GameSound
 import org.openbase.planetsudo.game.Team
+import org.openbase.planetsudo.geometry.Base2D
 import org.openbase.planetsudo.geometry.Point2D
 import org.openbase.planetsudo.level.AbstractLevel
 import org.openbase.planetsudo.main.GUIController
@@ -15,7 +16,10 @@ import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
 import java.beans.PropertyChangeEvent
 import java.util.*
+import java.util.concurrent.locks.ReentrantReadWriteLock
 import javax.swing.Timer
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 import kotlin.math.max
 
 /**
@@ -37,8 +41,9 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
     MothershipInterface {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-    val AGENTLOCK: Any = Any()
-    val SUPPORT_CHANNEL_LOCK: Any = Any()
+    private val agentLock = ReentrantReadWriteLock()
+    private val supportChannelLock = ReentrantReadWriteLock()
+    val base: Base2D = level.getMothershipBase(id)
 
     @JvmField
     val team: Team
@@ -52,6 +57,7 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
         private set
     private val timer: Timer
     var agents: List<Agent>
+        private set
     private val supportChannel: MutableList<Agent>
 
     @JvmField
@@ -77,9 +83,11 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
         )
         fuel = MOTHERSHIP_FUEL_VOLUME
         mineCounter = level.mineCounter
-        agents.forEach { it.kill() }
-        strategyAgentCount = team.agentCount
-        loadAgents()
+        agentLock.write {
+            agents.forEach { it.kill() }
+            strategyAgentCount = team.agentCount
+            loadAgents()
+        }
         this.shieldForce = 100
     }
 
@@ -93,24 +101,27 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
     }
 
     private fun loadAgents() {
-        GUIController.setEvent(
-            PropertyChangeEvent(
-                this,
-                GUIController.LOADING_STATE_CHANGE,
-                strategyAgentCount,
-                "Lade " + team.name + " Agent",
-            ),
-        )
-        var agent: Agent
-        val agentFuelVolume = (AGENT_FUEL_VOLUME / strategyAgentCount)
-        var currentFuelVolume: Int
-        var commanderFlag = true
-        for (i in 0 until strategyAgentCount) {
-            GUIController.setEvent(PropertyChangeEvent(this, GUIController.LOADING_STEP, null, i))
-            currentFuelVolume = if (commanderFlag) agentFuelVolume + COMMANDER_BONUS_FUEL_VOLUME else agentFuelVolume
-            agent = Agent(team.name + "Agent", commanderFlag, currentFuelVolume, this)
-            commanderFlag = false
-            agents = agents.plus(agent)
+        agentLock.write {
+            GUIController.setEvent(
+                PropertyChangeEvent(
+                    this,
+                    GUIController.LOADING_STATE_CHANGE,
+                    strategyAgentCount,
+                    "Lade " + team.name + " Agent",
+                ),
+            )
+            var agent: Agent
+            val agentFuelVolume = (AGENT_FUEL_VOLUME / strategyAgentCount)
+            var currentFuelVolume: Int
+            var commanderFlag = true
+            for (i in 0 until strategyAgentCount) {
+                GUIController.setEvent(PropertyChangeEvent(this, GUIController.LOADING_STEP, null, i))
+                currentFuelVolume =
+                    if (commanderFlag) agentFuelVolume + COMMANDER_BONUS_FUEL_VOLUME else agentFuelVolume
+                agent = Agent(team.name + "Agent", commanderFlag, currentFuelVolume, this)
+                commanderFlag = false
+                agents = agents.plus(agent)
+            }
         }
     }
 
@@ -168,7 +179,9 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
     }
 
     fun startGame() {
-        agents.forEach { it.startGame() }
+        agentLock.read {
+            agents.forEach { it.startGame() }
+        }
     }
 
     private var agentIndex = 0
@@ -189,27 +202,24 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
     }
 
     fun addActionPoint() {
-        if (agentCount != 0) {
-            agentIndex = (agentIndex + 1) % (agentCount)
-            synchronized(AGENTLOCK) {
+        agentLock.read {
+            if (agents.isNotEmpty()) {
+                agentIndex = (agentIndex + 1) % (agents.size)
                 nextAgent = agents[agentIndex]
             }
-            if (nextAgent != null) {
-                nextAgent!!.addActionPoint()
-            }
+            nextAgent?.addActionPoint()
         }
     }
 
-    fun computeNextAgentId(): Int = id * 10000 + agents.size
+    fun computeNextAgentId(): Int = agentLock.read { id * 10000 + agents.size }
 
-    override val agentCount: Int
-        get() = synchronized(AGENTLOCK) {
-            return agents.size
-        }
+    override val agentCount: Int get() = agentLock.read { agents.size }
 
-    fun removeAgent(agent: Agent) = agents
-        .firstOrNull { it.id == agent.id }
-        ?.also { agents = agents.minus(it) }
+    fun removeAgent(agent: Agent) = agentLock.write {
+        agents
+            .firstOrNull { it.id == agent.id }
+            ?.also { agents = agents.minus(it) }
+    }
 
     val agentHomePosition: Point2D
         get() = position.clone()
@@ -280,19 +290,21 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
     val agentsAtHomePoints: Int
         get() = ((agentsAtHomePosition * 100) / agentCount)
 
-    val agentsAtHomePosition: Int
+    private val agentsAtHomePosition: Int
         get() {
-            var counter = 0
-            agents.forEach { agent ->
-                if (bounds.contains(agent.bounds) || bounds.intersects(agent.bounds)) {
-                    counter++
+            agentLock.read {
+                var counter = 0
+                agents.forEach { agent ->
+                    if (bounds.contains(agent.bounds) || bounds.intersects(agent.bounds)) {
+                        counter++
+                    }
                 }
+                return counter
             }
-            return counter
         }
 
     fun callForSupport(agent: Agent) {
-        synchronized(SUPPORT_CHANNEL_LOCK) {
+        supportChannelLock.write {
             if (supportChannel.contains(agent)) {
                 return
             }
@@ -302,14 +314,14 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
     }
 
     override fun needSomeoneSupport(): Boolean {
-        synchronized(SUPPORT_CHANNEL_LOCK) {
+        supportChannelLock.read {
             return supportChannel.size > 0
         }
     }
 
     @Throws(CouldNotPerformException::class)
     fun getAgentToSupport(helper: Agent): Agent {
-        synchronized(SUPPORT_CHANNEL_LOCK) {
+        supportChannelLock.read {
             if (supportChannel.isEmpty()) {
                 throw CouldNotPerformException("No support necessary.")
             }
@@ -319,17 +331,17 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
                 .minByOrNull { helper.levelView?.getDistance(it) ?: Int.MAX_VALUE }
                 ?: throw CouldNotPerformException("No support possible.")
 
-            // remove caller from support channel if support possible
+            // remove caller from support channel if support is possible
             if (supportCaller.bounds.intersects(helper.viewBounds)) {
                 cancelSupport(supportCaller)
             }
-            supportCaller.levelView?.updateObjectMovement(true)
+            supportCaller.levelView?.updateObjectMovement()
             return supportCaller
         }
     }
 
     fun cancelSupport(agent: Agent) {
-        synchronized(SUPPORT_CHANNEL_LOCK) {
+        supportChannelLock.write {
             supportChannel.remove(agent)
             agent.setNeedSupport(false)
         }
@@ -350,7 +362,7 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
     val marker: TeamMarker
         get() = teamMarker.marker
 
-    fun setGameOverSoon() = agents.forEach { it.setGameOverSoon() }
+    fun setGameOverSoon() = agentLock.read { agents.forEach { it.setGameOverSoon() } }
 
     companion object {
         const val MOTHERSHIP_FUEL_STATE_CHANGE: String = "FuelStateChange"

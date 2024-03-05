@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory
 import java.awt.Color
 import java.awt.Graphics2D
 import java.util.*
+import kotlin.collections.HashMap
 import kotlin.math.max
 import kotlin.math.min
 
@@ -57,7 +58,7 @@ class LevelView(level: AbstractLevel, levelObject: AbstractLevelObject) {
         }
         this.levelRepresentation = arrayOfNulls(width * height)
         this.initLevelRepresentation()
-        this.updateObjectMovement(true)
+        this.updateObjectMovement()
     }
 
     private fun initLevelRepresentation() {
@@ -107,49 +108,21 @@ class LevelView(level: AbstractLevel, levelObject: AbstractLevelObject) {
         )
     }
 
-    fun getAbsolutAngle(levelObject: AbstractLevelObject): Int {
-// 		logger.info("BEGIN: GetAbsoluteAngle");
-        val angle = getAngle(calcLevelRasterElement(levelObject), calcLevelRasterElement(this.levelObject))
-        assert(angle != -1)
-        return angle
-    }
+    fun getDistance(otherLevelObject: AbstractLevelObject): Int = this
+        .run { updateLevelView() }
+        .let { otherLevelObject.toRasterElement().distance }
 
-    fun getDistance(levelObject: AbstractLevelObject): Int {
-// 		logger.debug("GetDistance");
-        return getDistance(calcLevelRasterElement(levelObject), calcLevelRasterElement(this.levelObject))
-    }
+    fun getRelativeDirection(otherLevelObject: AbstractLevelObject): Int? =
+        getAngle(calcLevelRasterElement(otherLevelObject))
 
-    fun dijkstraTest() {
-// 		logger.debug("dijkstraTest");
-        dijkstra(levelRepresentation[0]!!, levelRepresentation[width * height - 1]!!)
-    }
+    private fun getAngle(position: LevelRasterElement): Int? =
+        position.neigbours
+            .minByOrNull { it.element.distance }
+            ?.angle
 
-    private fun getDistance(position: LevelRasterElement, destination: LevelRasterElement): Int {
-// 		logger.debug("getDistance");
-        dijkstra(position, destination)
-        return position.distance
-    }
-
-    private fun getAngle(position: LevelRasterElement, destination: LevelRasterElement): Int {
-// 		logger.debug("getAngle");
-        dijkstra(position, destination)
-        var neigbourNextToDestination: LevelRasterElementNeigbour? = null
-        for (neigbour in position.neigbours) {
-            if (neigbourNextToDestination == null || neigbourNextToDestination.element.distance > neigbour.element.distance) {
-                neigbourNextToDestination = neigbour
-            }
-        }
-        if (neigbourNextToDestination == null) {
-            logger.error("No way to destionation found!")
-            return 0
-        }
-        return neigbourNextToDestination.angle
-    }
-
-    @JvmOverloads
-    fun updateObjectMovement(force: Boolean = false) {
+    fun updateObjectMovement() {
         logger.debug("UpdateObjectMovement")
-        dijkstra(null, calcLevelRasterElement(levelObject), force)
+        updateLevelView(calcLevelRasterElement(levelObject))
     }
 
     private fun dijkstra2(position: LevelRasterElement, destination: LevelRasterElement, force: Boolean) {
@@ -188,46 +161,78 @@ class LevelView(level: AbstractLevel, levelObject: AbstractLevelObject) {
         } while (element !== position && element != null) //
     }
 
-    private fun stablePosition(): Boolean {
-        return levelObject.position.equals(lastPosition)
-    }
+    private fun stablePosition(): Boolean = !changedPosition()
+    
+    private fun changedPosition(): Boolean =
+        lastPosition?.let { last ->
+            levelObject.position.x != last.x || levelObject.position.y != last.y
+        } ?: true
 
-    private fun dijkstra(position: LevelRasterElement, destination: LevelRasterElement) {
-        dijkstra(position, destination, false)
-    }
+    //    @Synchronized
+//    private fun dijkstra(position: LevelRasterElement?, destination: LevelRasterElement, force: Boolean) {
+//        if (!force && stablePosition()) {
+//            logger.debug("Skip dijkstra.")
+//            return
+//        }
+//        this.lastPosition = levelObject.position
+//        // Initialisation
+//        val distanceQueue = PriorityQueue<LevelRasterElement?>()
+//        for (element in levelRepresentation) {
+//            element!!.reset(destination)
+//        }
+//        // find next element with closed distance
+//        var element: LevelRasterElement? = destination
+//        do {
+//            element?.isVisited = true
+//            for (neigbour in element!!.neigbours) {
+//                if (!neigbour.element.isVisited) {
+//                    neigbour.element.setDistance(element.distance + neigbour.weight)
+//
+//                    if (!distanceQueue.contains(neigbour.element)) {
+//                        distanceQueue.add(neigbour.element)
+//                    }
+//                }
+//            }
+//            element = distanceQueue.poll()
+// //        } while (element != null && element != position);
+//        } while (element != null)
+//    }
 
+    /**
+     * Generates a new distance map by using parts of the dijkstra algorithm.
+     */
     @Synchronized
-    private fun dijkstra(position: LevelRasterElement?, destination: LevelRasterElement, force: Boolean) {
-        if (!force && stablePosition()) {
-            logger.debug("Skip dijkstra.")
+    private fun updateLevelView(destination: LevelRasterElement = calcLevelRasterElement(levelObject)) {
+        if (stablePosition()) {
+            logger.debug("Skip update since position has not changed.")
             return
         }
-        this.lastPosition = levelObject.position
-        // 		logger.debug("BEGINN: dijkstra new calc.");
-// 		long startTime = System.currentTimeMillis();
+        this.lastPosition = levelObject.position.clone()
+
         // Initialisation
-        val distanceQueue = PriorityQueue<LevelRasterElement?>()
+        val distanceQueue = HashMap<Int, LevelRasterElement>()
         for (element in levelRepresentation) {
             element!!.reset(destination)
         }
+
         // find next element with closed distance
         var element: LevelRasterElement? = destination
-        do {
+        while (!Thread.currentThread().isInterrupted) {
             element?.isVisited = true
-            for (neigbour in element!!.neigbours) {
-                if (!neigbour.element.isVisited) {
-                    neigbour.element.setDistance(element.distance + neigbour.weight)
-
-                    if (!distanceQueue.contains(neigbour.element)) {
-                        distanceQueue.add(neigbour.element)
+            element?.neigbours
+                ?.filter { !it.element.isVisited }
+                ?.forEach { neighbour ->
+                    neighbour.element.setDistance(element?.distance?.plus(neighbour.weight) ?: neighbour.weight)
+                    if (!distanceQueue.contains(neighbour.element.index)) {
+                        distanceQueue[neighbour.element.index] = neighbour.element
                     }
                 }
-            }
-            element = distanceQueue.poll()
-            // } while (element != null && element != position);
-        } while (element != null)
-        // 		logger.debug("END["+(System.currentTimeMillis()-startTime)+"]: dijkstra new calc.");
+            element = distanceQueue.values.minByOrNull { it.distance }.also { distanceQueue.remove(it?.index) }
+                ?: return
+        }
     }
+
+    private fun AbstractLevelObject.toRasterElement() = calcLevelRasterElement(this)
 
     companion object {
         const val RASTER_SIZE: Int = 10

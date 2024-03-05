@@ -68,7 +68,7 @@ class LevelRasterElement(val index: Int, private val levelView: LevelView) : Com
     }
 
     fun setDistance(distance: Int) {
-        this.distance = min(this.distance.toDouble(), distance.toDouble()).toInt()
+        this.distance = min(this.distance, distance)
     }
 
     override fun compareTo(element: LevelRasterElement): Int {

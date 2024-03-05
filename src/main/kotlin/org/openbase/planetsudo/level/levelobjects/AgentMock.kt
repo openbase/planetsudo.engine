@@ -164,6 +164,10 @@ class AgentMock : AgentInterface {
         get() {
             error("Mock does not offer any functionality.")
         }
+    override val teamAgent: GlobalAgentInterface
+        get() {
+            error("Mock does not offer any functionality.")
+        }
 
     override val seeAdversaryMothership: Boolean
         get() {

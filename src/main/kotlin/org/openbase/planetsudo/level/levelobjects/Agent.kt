@@ -24,6 +24,7 @@ import java.util.logging.Level
 import kotlin.concurrent.withLock
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.random.Random
 
 /**
  *
@@ -57,7 +58,8 @@ class Agent(
     private var helpLevelObjectOld: AbstractLevelObject? = null
     private var adversaryObject: AbstractLevelObject? = null
     private var catchedfuel = 0
-    private var lastAversaryAgent: Agent? = null
+    private var lastAversaryAgent: GlobalAgentInterface? = null
+    private var lastTeamAgent: GlobalAgentInterface? = null
 
     val mothership: Mothership
     val team: Team
@@ -189,7 +191,9 @@ class Agent(
             .let { it != null }
 
     override val seeTeamAgent: Boolean
-        get() = level.getTeamAgent(this) != null
+        get() = level.getTeamAgent(this)
+            .also { lastTeamAgent = it }
+            .let { it != null }
 
     override val seeAdversaryMothership: Boolean
         get() = level.getAdversaryMothership(this) != null
@@ -410,7 +414,7 @@ class Agent(
         hasMine = mothership.orderMine()
         hasTower = isCommander
         try {
-            direction = Direction2D(RandomGenerator.getRandom(1, 360))
+            direction = Direction2D(mothership.base.direction.angle.plus(Random.nextInt(-90, 91)))
         } catch (ex: InvalidStateException) {
             java.util.logging.Logger.getLogger(Agent::class.java.name).log(Level.SEVERE, null, ex)
         }
@@ -542,7 +546,7 @@ class Agent(
     override fun goToMothership() {
         ap.actionPoint
         goTo {
-            mothership.levelView?.getAbsolutAngle(this@Agent)
+            mothership.levelView?.getRelativeDirection(this@Agent)
                 ?.also { angle = it }
         }
     }
@@ -644,7 +648,7 @@ class Agent(
                     direction.turnTo(position, teamAgent.position)
                     ap.getActionPoint(value * 2)
                     teamAgent.spendFuel(useFuel(value)).also {
-                            // charge leftover back to origin
+                        // charge leftover back to origin
                             leftover ->
                         spendFuel(leftover)
                     }
@@ -691,9 +695,10 @@ class Agent(
         }
     }
 
-    override fun seeLostTeamAgent(): Boolean {
-        return level.getLostTeamAgent(this) != null
-    }
+    override fun seeLostTeamAgent(): Boolean =
+        level.getLostTeamAgent(this)
+            .also { lastTeamAgent = it }
+            .let { it != null }
 
     override fun repairMothership() {
         performAction(30) {
@@ -717,7 +722,7 @@ class Agent(
             val agentToSupport = mothership.getAgentToSupport(this)
             if (agentToSupport !== this) {
                 goTo {
-                    agentToSupport.levelView?.getAbsolutAngle(this@Agent)
+                    agentToSupport.levelView?.getRelativeDirection(this@Agent)
                         ?.also { angle = it }
                 }
             } else {
@@ -764,7 +769,7 @@ class Agent(
     override fun goToMarker() {
         try {
             goTo {
-                mothership.marker.levelView?.getAbsolutAngle(this@Agent)
+                mothership.marker.levelView?.getRelativeDirection(this@Agent)
                     ?.also { angle = it }
             }
         } catch (ex: CouldNotPerformException) {
@@ -861,6 +866,12 @@ class Agent(
         get() = GlobalAgentProxy(
             lastAversaryAgent
                 ?: error("No adversary agent seen!"),
+        )
+
+    override val teamAgent: GlobalAgentInterface
+        get() = GlobalAgentProxy(
+            lastTeamAgent
+                ?: error("No team agent seen!"),
         )
 
     private fun performAction(actionPoints: Int? = null, block: () -> Unit) {
