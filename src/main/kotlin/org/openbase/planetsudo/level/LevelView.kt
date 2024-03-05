@@ -162,7 +162,7 @@ class LevelView(level: AbstractLevel, levelObject: AbstractLevelObject) {
     }
 
     private fun stablePosition(): Boolean = !changedPosition()
-    
+
     private fun changedPosition(): Boolean =
         lastPosition?.let { last ->
             levelObject.position.x != last.x || levelObject.position.y != last.y

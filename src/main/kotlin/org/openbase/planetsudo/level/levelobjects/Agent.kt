@@ -648,7 +648,7 @@ class Agent(
                     direction.turnTo(position, teamAgent.position)
                     ap.getActionPoint(value * 2)
                     teamAgent.spendFuel(useFuel(value)).also {
-                        // charge leftover back to origin
+                            // charge leftover back to origin
                             leftover ->
                         spendFuel(leftover)
                     }
