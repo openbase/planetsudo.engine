@@ -99,7 +99,7 @@ class AbstractStrategyTest {
 
             override fun loadAgentCount() = 1
             override fun loadRules() {
-                rule = "Rule for non commander" nonCommander inCase { condition } then { agent.orderSupport() }
+                rule = "Rule for non commander" nonCommander inCase { condition } then { agent.requestSupport() }
             }
         }
 
@@ -110,6 +110,6 @@ class AbstractStrategyTest {
         condition = false
         rule!!.constraint() `should be equal to` false
         rule!!.action()
-        verify { agent.orderSupport() }
+        verify { agent.requestSupport() }
     }
 }

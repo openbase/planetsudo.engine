@@ -7,7 +7,7 @@ class AgentMock : AgentInterface {
         error("Mock does not offer any functionality.")
     }
 
-    override fun deliverResourceToMothership() {
+    override fun transferResourceToMothership() {
         error("Mock does not offer any functionality.")
     }
 
@@ -19,11 +19,11 @@ class AgentMock : AgentInterface {
         error("Mock does not offer any functionality.")
     }
 
-    override fun fightWithAdversaryAgent() {
+    override fun fightWithEnemyAgent() {
         error("Mock does not offer any functionality.")
     }
 
-    override fun fightWithAdversaryMothership() {
+    override fun fightWithEnemyMothership() {
         error("Mock does not offer any functionality.")
     }
 
@@ -80,7 +80,7 @@ class AgentMock : AgentInterface {
         error("Mock does not offer any functionality.")
     }
 
-    override fun goToAdversaryAgent() {
+    override fun goToEnemyAgent() {
         error("Mock does not offer any functionality.")
     }
 
@@ -98,7 +98,7 @@ class AgentMock : AgentInterface {
         get() = error("Mock does not offer any functionality.")
     override val isAtMothership: Boolean
         get() = error("Mock does not offer any functionality.")
-    override val adversaryAgent: GlobalAgentInterface
+    override val enemyAgent: GlobalAgentInterface
         get() = error("Mock does not offer any functionality.")
     override val isCarryingResource: Boolean
         get() = error("Mock does not offer any functionality.")
@@ -117,7 +117,7 @@ class AgentMock : AgentInterface {
         get() = error("Mock does not offer any functionality.")
     override val isFighting: Boolean
         get() = error("Mock does not offer any functionality.")
-    override val isSupportOrdered: Boolean
+    override val hasRequestedSupport: Boolean
         get() = error("Mock does not offer any functionality.")
     override val isGameOverSoon: Boolean
         get() = error("Mock does not offer any functionality.")
@@ -135,7 +135,7 @@ class AgentMock : AgentInterface {
         error("Mock does not offer any functionality.")
     }
 
-    override fun orderSupport() {
+    override fun requestSupport() {
         error("Mock does not offer any functionality.")
     }
 
@@ -155,7 +155,7 @@ class AgentMock : AgentInterface {
         error("Mock does not offer any functionality.")
     }
 
-    override val seeAdversaryAgent: Boolean
+    override val seeEnemyAgent: Boolean
         get() {
             error("Mock does not offer any functionality.")
         }
@@ -169,7 +169,7 @@ class AgentMock : AgentInterface {
             error("Mock does not offer any functionality.")
         }
 
-    override val seeAdversaryMothership: Boolean
+    override val seeEnemyMothership: Boolean
         get() {
             error("Mock does not offer any functionality.")
         }
@@ -227,7 +227,7 @@ class AgentMock : AgentInterface {
         error("Mock does not offer any functionality.")
     }
 
-    override fun turnToAdversaryAgent(beta: Int) {
+    override fun turnToEnemyAgent(beta: Int) {
         error("Mock does not offer any functionality.")
     }
 

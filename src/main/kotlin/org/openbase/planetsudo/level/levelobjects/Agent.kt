@@ -118,7 +118,7 @@ class Agent(
     override var isAlive: Boolean
         private set
     override val fuelVolume: Int
-    override var isSupportOrdered: Boolean = false
+    override var hasRequestedSupport: Boolean = false
         private set
 
     override var isGameOverSoon: Boolean
@@ -185,7 +185,7 @@ class Agent(
     override val isTouchingResource: Boolean
         get() = level.getTouchableResource(this) != null
 
-    override val seeAdversaryAgent: Boolean
+    override val seeEnemyAgent: Boolean
         get() = level.getAdversaryAgent(this)
             .also { lastAversaryAgent = it }
             .let { it != null }
@@ -195,7 +195,7 @@ class Agent(
             .also { lastTeamAgent = it }
             .let { it != null }
 
-    override val seeAdversaryMothership: Boolean
+    override val seeEnemyMothership: Boolean
         get() = level.getAdversaryMothership(this) != null
 
     private val futureBounds: Rectangle2D
@@ -349,7 +349,7 @@ class Agent(
     }
 
     fun setNeedSupport(needSupport: Boolean) {
-        isSupportOrdered = needSupport
+        hasRequestedSupport = needSupport
     }
 
     fun joinSwatTeam(swatTeam: SwatTeam) {
@@ -459,7 +459,7 @@ class Agent(
         mothership.removeAgent(this)
         isAlive = false
         fuel = 0
-        if (isSupportOrdered) {
+        if (hasRequestedSupport) {
             mothership.cancelSupport(this)
         }
         GameSound.AgentExplosion.play()
@@ -515,7 +515,7 @@ class Agent(
         }
     }
 
-    override fun turnToAdversaryAgent(beta: Int) {
+    override fun turnToEnemyAgent(beta: Int) {
         performAction(1) {
             if (useFuel()) {
                 level.getAdversaryAgent(this)?.let { adversaryAgent ->
@@ -591,7 +591,7 @@ class Agent(
         }
     }
 
-    override fun deliverResourceToMothership() {
+    override fun transferResourceToMothership() {
         performAction(10) {
             try {
                 if (isCarryingResource && useFuel() && isAtMothership) {
@@ -659,7 +659,7 @@ class Agent(
         }
     }
 
-    override fun fightWithAdversaryAgent() {
+    override fun fightWithEnemyAgent() {
         invisible = false
         performAction(1) {
             if (useFuel()) {
@@ -679,7 +679,7 @@ class Agent(
         }
     }
 
-    override fun fightWithAdversaryMothership() {
+    override fun fightWithEnemyMothership() {
         invisible = false
         performAction(1) {
             if (useFuel()) {
@@ -708,9 +708,9 @@ class Agent(
         }
     }
 
-    override fun orderSupport() {
+    override fun requestSupport() {
         performAction(5) {
-            if (!isSupportOrdered) {
+            if (!hasRequestedSupport) {
                 mothership.callForSupport(this)
                 GameSound.CallForSupport.play()
             }
@@ -733,7 +733,7 @@ class Agent(
         }
     }
 
-    override fun goToAdversaryAgent() {
+    override fun goToEnemyAgent() {
         try {
             level.getAdversaryAgent(this)?.let { adversaryAgent ->
                 // do not come too close to the adversary agents
@@ -752,7 +752,7 @@ class Agent(
 
     override fun cancelSupport() {
         performAction(5) {
-            if (isSupportOrdered) {
+            if (hasRequestedSupport) {
                 mothership.cancelSupport(this)
             }
         }
@@ -862,7 +862,7 @@ class Agent(
         }
     }
 
-    override val adversaryAgent: GlobalAgentInterface
+    override val enemyAgent: GlobalAgentInterface
         get() = GlobalAgentProxy(
             lastAversaryAgent
                 ?: error("No adversary agent seen!"),

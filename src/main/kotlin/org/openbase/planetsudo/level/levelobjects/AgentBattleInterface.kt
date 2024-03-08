@@ -7,12 +7,12 @@ interface AgentBattleInterface : AgentBasicInterface {
      *
      * @return true oder false.
      */
-    val seeAdversaryAgent: Boolean
+    val seeEnemyAgent: Boolean
 
     /**
      * Liefert Informationen über einen feindlichen Agenten in der Nähe.
      */
-    val adversaryAgent: GlobalAgentInterface
+    val enemyAgent: GlobalAgentInterface
 
     /**
      * Der Agent dreht sich zu einem feindlichen Agenten in Sichtweite.
@@ -23,7 +23,7 @@ interface AgentBattleInterface : AgentBasicInterface {
      * Aktionspunkte: 1
      * Treibstoff: 1
      */
-    fun turnToAdversaryAgent(beta: Int = 0)
+    fun turnToEnemyAgent(beta: Int = 0)
 
     /**
      * Gehe zu einem feindlichen Agenten in der Nähe.
@@ -33,7 +33,7 @@ interface AgentBattleInterface : AgentBasicInterface {
      * Aktionspunkte: 4 + (+ 4 wenn resource geladen)
      * Treibstoff: 1
      */
-    fun goToAdversaryAgent()
+    fun goToEnemyAgent()
 
     /**
      * Der Befehl zum Bekämpfen eines feindlichen Agenten.
@@ -41,14 +41,14 @@ interface AgentBattleInterface : AgentBasicInterface {
      * Aktionspunkte: 21
      * Treibstoff: 1
      */
-    fun fightWithAdversaryAgent()
+    fun fightWithEnemyAgent()
 
     /**
      * Der Befehl zum Angreifen des feindlichen Mutterschiffs.
      * Aktionspunkte: 30
      * Treibstoff: 1
      */
-    fun fightWithAdversaryMothership()
+    fun fightWithEnemyMothership()
 
     /**
      * Gibt zurück, ob der Agent seine Mine noch trägt.
@@ -69,7 +69,7 @@ interface AgentBattleInterface : AgentBasicInterface {
      *
      * @return true oder false.
      */
-    val seeAdversaryMothership: Boolean
+    val seeEnemyMothership: Boolean
 
     /**
      * Der Befehl zum Reparieren des eigenen Mutterschiffs. Hierzu muss sich der

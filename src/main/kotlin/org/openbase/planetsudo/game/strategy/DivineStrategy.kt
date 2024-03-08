@@ -64,7 +64,7 @@ class DivineStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         // -------------------------------------------->
         "See Resources" swat SwatTeam.NOT_COMMANDER inCase {
             agent.seeResource &&
-                (agent.tonicFull && agent.seeResource(ResourceType.Tonic)).not()
+                (agent.isTonicAtLimit && agent.seeResource(ResourceType.Tonic)).not()
         } then {
             agent.goToResource()
         }
@@ -166,7 +166,7 @@ class DivineStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
             },
         )
         // -------------------------------------------->
-        "PickUp Tonic" all inCase { agent.isTouchingResource(ResourceType.Tonic) && !agent.tonicFull } then {
+        "PickUp Tonic" all inCase { agent.isTouchingResource(ResourceType.Tonic) && !agent.isTonicAtLimit } then {
             agent.pickupResource()
         }
         // -------------------------------------------->
@@ -257,7 +257,7 @@ class DivineStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule("Support Agent") {
                 override fun constraint(): Boolean {
-                    return mothership.needSomeoneSupport() && !agent.isSupportOrdered
+                    return mothership.needSomeoneSupport() && !agent.hasRequestedSupport
                 }
 
                 override fun action() {
@@ -305,11 +305,11 @@ class DivineStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule("FightAgainstMothership") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryMothership
+                    return agent.seeEnemyMothership
                 }
 
                 override fun action() {
-                    agent.fightWithAdversaryMothership()
+                    agent.fightWithEnemyMothership()
                 }
             },
         )
@@ -317,12 +317,12 @@ class DivineStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule("FightAgainstMothership & Order Support") {
                 override fun constraint(): Boolean {
-                    return !agent.isSupportOrdered && agent.seeAdversaryMothership
+                    return !agent.hasRequestedSupport && agent.seeEnemyMothership
                 }
 
                 override fun action() {
-                    agent.fightWithAdversaryMothership()
-                    agent.orderSupport()
+                    agent.fightWithEnemyMothership()
+                    agent.requestSupport()
                 }
             },
         )
@@ -366,11 +366,11 @@ class DivineStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule("FightAgainstAgent") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryAgent
+                    return agent.seeEnemyAgent
                 }
 
                 override fun action() {
-                    agent.fightWithAdversaryAgent()
+                    agent.fightWithEnemyAgent()
                 }
             },
         )
@@ -428,12 +428,12 @@ class DivineStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule("OrderFuelDuringFight") {
                 override fun constraint(): Boolean {
-                    return mothership.hasFuel() && (agent.fuel < 100) && agent.seeAdversaryAgent && agent.isAtMothership
+                    return mothership.hasFuel() && (agent.fuel < 100) && agent.seeEnemyAgent && agent.isAtMothership
                 }
 
                 override fun action() {
                     agent.orderFuel(5)
-                    agent.fightWithAdversaryAgent()
+                    agent.fightWithEnemyAgent()
                 }
             },
         )
@@ -445,7 +445,7 @@ class DivineStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
                 }
 
                 override fun action() {
-                    agent.deliverResourceToMothership()
+                    agent.transferResourceToMothership()
                     agent.turnAround()
                 }
             },
@@ -454,11 +454,11 @@ class DivineStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule("CallForHelpDuringFight") {
                 override fun constraint(): Boolean {
-                    return !agent.isSupportOrdered && agent.isUnderAttack
+                    return !agent.hasRequestedSupport && agent.isUnderAttack
                 }
 
                 override fun action() {
-                    agent.orderSupport()
+                    agent.requestSupport()
                 }
             },
         )
@@ -466,11 +466,11 @@ class DivineStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule("CallForHelp") {
                 override fun constraint(): Boolean {
-                    return !agent.isSupportOrdered && !agent.isAtMothership && agent.fuel < 5
+                    return !agent.hasRequestedSupport && !agent.isAtMothership && agent.fuel < 5
                 }
 
                 override fun action() {
-                    agent.orderSupport()
+                    agent.requestSupport()
                 }
             },
         )
@@ -523,20 +523,20 @@ class DivineStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
             },
         )
         // -------------------------------------------->
-        "Spy" all inCase { agent.isInvisible && agent.seeAdversaryAgent } then {
-            agent.goToAdversaryAgent()
+        "Spy" all inCase { agent.isInvisible && agent.seeEnemyAgent } then {
+            agent.goToEnemyAgent()
         }
-        "Attack Mothership" all inCase { agent.isInvisible && agent.seeAdversaryMothership } then {
-            agent.fightWithAdversaryMothership()
+        "Attack Mothership" all inCase { agent.isInvisible && agent.seeEnemyMothership } then {
+            agent.fightWithEnemyMothership()
         }
-        "Attack Agent" all inCase { agent.isInvisible && agent.seeAdversaryAgent && agent.seeAdversaryMothership } then {
-            agent.fightWithAdversaryAgent()
+        "Attack Agent" all inCase { agent.isInvisible && agent.seeEnemyAgent && agent.seeEnemyMothership } then {
+            agent.fightWithEnemyAgent()
         }
-        "Prepare for Attack" all inCase { agent.isInvisible && agent.seeAdversaryMothership && agent.actionPoints < 10000 } then {
+        "Prepare for Attack" all inCase { agent.isInvisible && agent.seeEnemyMothership && agent.actionPoints < 10000 } then {
             // wait for APs
         }
-        "Call Force" all inCase { agent.isInvisible && agent.seeAdversaryMothership && !agent.isSupportOrdered } then {
-            agent.orderSupport()
+        "Call Force" all inCase { agent.isInvisible && agent.seeEnemyMothership && !agent.hasRequestedSupport } then {
+            agent.requestSupport()
         }
         // -------------------------------------------->
         "Make invisible" all inCase { agent.tonicInPercent == 100 && agent.isVisible && agent.isFighting } then {
@@ -558,7 +558,7 @@ class DivineStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule("Cancel Support") {
                 override fun constraint(): Boolean {
-                    return agent.isSupportOrdered && !agent.seeAdversaryMothership && agent.fuel > 10 && !agent.isUnderAttack && !agent.seeAdversaryAgent
+                    return agent.hasRequestedSupport && !agent.seeEnemyMothership && agent.fuel > 10 && !agent.isUnderAttack && !agent.seeEnemyAgent
                 }
 
                 override fun action() {

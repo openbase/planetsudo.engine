@@ -79,7 +79,7 @@ class JaciStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
                 }
 
                 override fun action() {
-                    agent.deliverResourceToMothership()
+                    agent.transferResourceToMothership()
                 }
             },
         )
@@ -88,11 +88,11 @@ class JaciStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule(600, "Bekämpfe feindliches Mutterschiff") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryMothership
+                    return agent.seeEnemyMothership
                 }
 
                 override fun action() {
-                    agent.fightWithAdversaryMothership()
+                    agent.fightWithEnemyMothership()
                 }
             },
         )
@@ -100,11 +100,11 @@ class JaciStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule(700, "Bekämpfe Feind") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryAgent
+                    return agent.seeEnemyAgent
                 }
 
                 override fun action() {
-                    agent.fightWithAdversaryAgent()
+                    agent.fightWithEnemyAgent()
                 }
             },
         )
@@ -112,7 +112,7 @@ class JaciStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule(800, "Lade Mine bei Feind ab") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryAgent && agent.hasMine
+                    return agent.seeEnemyAgent && agent.hasMine
                 }
 
                 override fun action() {
@@ -148,11 +148,11 @@ class JaciStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule(855, "Gegen Attacke wehren") {
                 override fun constraint(): Boolean {
-                    return agent.isUnderAttack && agent.seeAdversaryAgent
+                    return agent.isUnderAttack && agent.seeEnemyAgent
                 }
 
                 override fun action() {
-                    agent.fightWithAdversaryAgent()
+                    agent.fightWithEnemyAgent()
                 }
             },
         )

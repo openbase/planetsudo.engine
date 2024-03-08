@@ -86,7 +86,7 @@ class NoNameStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
                 }
 
                 override fun action() {
-                    agent.deliverResourceToMothership()
+                    agent.transferResourceToMothership()
                 }
             },
         ) // -------------------------------------------->
@@ -130,11 +130,11 @@ class NoNameStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule(650, "attack") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryAgent
+                    return agent.seeEnemyAgent
                 }
 
                 override fun action() {
-                    agent.fightWithAdversaryAgent()
+                    agent.fightWithEnemyAgent()
                 }
             },
         )
@@ -143,7 +143,7 @@ class NoNameStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule(650, "mine") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryMothership && agent.hasMine
+                    return agent.seeEnemyMothership && agent.hasMine
                 }
 
                 override fun action() {
@@ -155,11 +155,11 @@ class NoNameStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule(1010, "defend") {
                 override fun constraint(): Boolean {
-                    return agent.isUnderAttack && agent.seeAdversaryAgent
+                    return agent.isUnderAttack && agent.seeEnemyAgent
                 }
 
                 override fun action() {
-                    agent.fightWithAdversaryAgent()
+                    agent.fightWithEnemyAgent()
                 }
             },
         )
@@ -167,11 +167,11 @@ class NoNameStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule(890, "attack mother") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryMothership
+                    return agent.seeEnemyMothership
                 }
 
                 override fun action() {
-                    agent.fightWithAdversaryMothership()
+                    agent.fightWithEnemyMothership()
                 }
             },
         )

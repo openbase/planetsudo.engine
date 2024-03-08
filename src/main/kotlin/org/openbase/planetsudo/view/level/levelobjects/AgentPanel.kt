@@ -76,7 +76,7 @@ class AgentPanel(resource: Agent, parentResourcePanel: MothershipPanel) :
         g22!!.transform(getBoundsTransformation(direction!!))
         // g22.fillRect(3, 10, 19, 9);
         g22!!.fill(TEAM_COLOR_POLYGON)
-        if (resource.isSupportOrdered && animationFlag) {
+        if (resource.hasRequestedSupport && animationFlag) {
 // 				if(((System.currentTimeMillis()/500)%500)>5) {
             g22!!.color = COLOR_DISABLED
             // 				}

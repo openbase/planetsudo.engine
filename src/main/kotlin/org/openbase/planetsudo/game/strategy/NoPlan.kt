@@ -49,7 +49,7 @@ class NoPlan(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule(500, "Flee") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryAgent
+                    return agent.seeEnemyAgent
                 }
 
                 override fun action() {
@@ -67,7 +67,7 @@ class NoPlan(agent: AgentInterface) : StrategyLevelLegacy(agent) {
 
                 override fun action() {
                     if (agent.isAtMothership) {
-                        agent.deliverResourceToMothership()
+                        agent.transferResourceToMothership()
                     } else {
                         agent.goToMothership()
                     }

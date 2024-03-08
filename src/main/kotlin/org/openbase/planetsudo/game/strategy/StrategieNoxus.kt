@@ -117,11 +117,11 @@ class StrategieNoxus(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule(750, "Bekämpfe Agent...") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryAgent
+                    return agent.seeEnemyAgent
                 }
 
                 override fun action() {
-                    agent.fightWithAdversaryAgent()
+                    agent.fightWithEnemyAgent()
                 }
             },
         )
@@ -143,7 +143,7 @@ class StrategieNoxus(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule(610, "Mutterschiff verminen...") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryMothership && agent.hasMine
+                    return agent.seeEnemyMothership && agent.hasMine
                 }
 
                 override fun action() {
@@ -156,12 +156,12 @@ class StrategieNoxus(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule(600, "Bekämpfe Mutterschiff...") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryMothership
+                    return agent.seeEnemyMothership
                 }
 
                 override fun action() {
                     agent.deployMarker()
-                    agent.fightWithAdversaryMothership()
+                    agent.fightWithEnemyMothership()
                 }
             },
         )
@@ -170,7 +170,7 @@ class StrategieNoxus(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule(350, "Notkanal schließen.") {
                 override fun constraint(): Boolean {
-                    return agent.isSupportOrdered && agent.fuelInPercent >= 7
+                    return agent.hasRequestedSupport && agent.fuelInPercent >= 7
                 }
 
                 override fun action() {
@@ -187,7 +187,7 @@ class StrategieNoxus(agent: AgentInterface) : StrategyLevelLegacy(agent) {
                 }
 
                 override fun action() {
-                    agent.orderSupport()
+                    agent.requestSupport()
                 }
             },
         )
@@ -226,7 +226,7 @@ class StrategieNoxus(agent: AgentInterface) : StrategyLevelLegacy(agent) {
                 }
 
                 override fun action() {
-                    agent.deliverResourceToMothership()
+                    agent.transferResourceToMothership()
                     agent.turnAround()
                 }
             },
