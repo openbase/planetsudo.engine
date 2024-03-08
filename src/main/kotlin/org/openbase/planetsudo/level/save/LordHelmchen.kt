@@ -33,7 +33,7 @@ class LordHelmchen : AbstractLevel() {
 
     override fun loadResourcePlacement() = listOf(
         ResourceRandomRectangle(0, 0, 500, 700, 3, ResourceType.Normal),
-        ResourceRandomRectangle(500,0,500,700,3,ResourceType.Normal),
+        ResourceRandomRectangle(500, 0, 500, 700, 3, ResourceType.Normal),
         ResourceRandomRectangle(0, 0, 1000, 250, 6, ResourceType.DoublePoints),
         ResourceRandomRectangle(400, 0, 200, 100, 4, ResourceType.ExtremPoint),
         ResourceRandomRectangle(100, 0, 800, 250, 6, ResourceType.ExtraAgentFuel),
