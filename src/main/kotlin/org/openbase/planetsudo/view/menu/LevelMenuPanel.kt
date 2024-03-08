@@ -12,6 +12,7 @@ package org.openbase.planetsudo.view.menu
 import org.openbase.planetsudo.level.AbstractLevel
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
+import java.beans.PropertyChangeListener
 import javax.swing.*
 
 /**
@@ -26,6 +27,14 @@ class LevelMenuPanel : JPanel(), ActionListener {
 
     fun setLevel(level: AbstractLevel) {
         levelName = level.name
+        level.addPropertyChangeListener {
+            if (it.propertyName == AbstractLevel.GAME_SPEED_FACTOR_CHANGED) {
+                timer.isRunning.let { running ->
+                    timer.delay = (1000.0 * (1 / (it.newValue as Double))).toInt()
+                    if (running) timer.restart()
+                }
+            }
+        }
         updateTitle()
     }
 
