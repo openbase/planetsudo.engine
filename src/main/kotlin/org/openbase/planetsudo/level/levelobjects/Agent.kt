@@ -154,7 +154,13 @@ class Agent(
         get() = (tonic / MAX_TONIC) * 100
 
     override val isCollisionDetected: Boolean
-        get() = level.collisionDetected(futureBounds)
+        get() = level.collisionDetected(computeFutureBounds(direction))
+
+    override fun isCollisionDetectedAtLeft(beta: Int): Boolean =
+        level.collisionDetected(computeFutureBoundsLeft(beta))
+
+    override fun isCollisionDetectedAtRight(beta: Int): Boolean =
+        level.collisionDetected(computeFutureBoundsRight(beta))
 
     override val isShifting
         get(): Boolean = shiftTonic > 0.0
@@ -198,16 +204,25 @@ class Agent(
     override val seeEnemyMothership: Boolean
         get() = level.getAdversaryMothership(this) != null
 
-    private val futureBounds: Rectangle2D
-        get() {
-            val futurePosition = direction.translate(position.clone(), calcSpeed())
-            return Rectangle2D.Double(
-                futurePosition.x.toInt() - (width / 2),
-                futurePosition.y.toInt() - (height / 2),
-                width,
-                height,
-            )
-        }
+    private fun computeFutureBoundsLeft(beta: Int): Rectangle2D =
+        Direction2D(direction.angle)
+            .also { it.angle -= beta }
+            .let { computeFutureBounds(it) }
+
+    private fun computeFutureBoundsRight(beta: Int): Rectangle2D =
+        Direction2D(direction.angle)
+            .also { it.angle += beta }
+            .let { computeFutureBounds(it) }
+
+    private fun computeFutureBounds(futureDirection: Direction2D): Rectangle2D {
+        val futurePosition = futureDirection.translate(position.clone(), calcSpeed())
+        return Rectangle2D.Double(
+            futurePosition.x.toInt() - (width / 2),
+            futurePosition.y.toInt() - (height / 2),
+            width,
+            height,
+        )
+    }
 
     init {
         LOGGER.info("Create $this")
