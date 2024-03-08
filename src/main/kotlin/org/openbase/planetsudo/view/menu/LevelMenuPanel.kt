@@ -20,26 +20,34 @@ import javax.swing.*
  */
 class LevelMenuPanel : JPanel(), ActionListener {
     private var minutes: Int
-    private var secunds: Int
+    private var seconds: Int
     private val timer: Timer
     private var levelName: String
 
     fun setLevel(level: AbstractLevel) {
         levelName = level.name
+        level.addPropertyChangeListener {
+            if (it.propertyName == AbstractLevel.GAME_SPEED_FACTOR_CHANGED) {
+                timer.isRunning.let { running ->
+                    timer.delay = (1000.0 * (1 / (it.newValue as Double))).toInt()
+                    if (running) timer.restart()
+                }
+            }
+        }
         updateTitle()
     }
 
     private var text: String? = null
     private fun updateTitle() {
         text = "$levelName ["
-        if (minutes < 9) {
+        if (minutes <= 9) {
             text += "0"
         }
         text += "$minutes:"
-        if (secunds < 9) {
+        if (seconds <= 9) {
             text += "0"
         }
-        text += "$secunds]"
+        text += "$seconds]"
         nameAndTimeLabel!!.text = text
     }
 
@@ -55,7 +63,7 @@ class LevelMenuPanel : JPanel(), ActionListener {
 
     fun reset() {
         stopTimer()
-        secunds = 0
+        seconds = 0
         minutes = 0
     }
 
@@ -102,18 +110,18 @@ class LevelMenuPanel : JPanel(), ActionListener {
     init {
         initComponents()
         this.minutes = 0
-        this.secunds = 0
+        this.seconds = 0
         this.levelName = "Level"
         this.timer = Timer(1000, this)
     }
 
     // End of variables declaration//GEN-END:variables
     override fun actionPerformed(ex: ActionEvent) {
-        if (secunds >= 60) {
-            minutes++
-            secunds = 0
+        if (seconds < 59) {
+            seconds++
         } else {
-            secunds++
+            minutes++
+            seconds = 0
         }
         updateTitle()
     }
