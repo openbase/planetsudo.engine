@@ -75,8 +75,8 @@ class LuckyLoop : AbstractLevel() {
         ResourceRandomRectangle(925, 725, 925, 725, 30, ResourceType.ExtraAgentFuel),
         ResourceRandomRectangle(950, 350, 300, 300, 20, ResourceType.ExtraMothershipFuel),
         ResourceRandomRectangle(550, 800, 300, 300, 20, ResourceType.ExtraMothershipFuel),
-        ResourceRandomRectangle(850, 0, 1000, 100, 20, ResourceType.Tonic),
-        ResourceRandomRectangle(0, 1350, 1000, 100, 20, ResourceType.Tonic),
+        ResourceRandomRectangle(850, 0, 1000, 100, 30, ResourceType.Tonic),
+        ResourceRandomRectangle(0, 1350, 1000, 100, 30, ResourceType.Tonic),
     )
 
     override fun loadLevelColor(): Color {

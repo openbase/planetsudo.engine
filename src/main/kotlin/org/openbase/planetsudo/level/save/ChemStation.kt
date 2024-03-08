@@ -43,8 +43,8 @@ class ChemStation : AbstractLevel() {
         ResourceRandomRectangle(400, 400, 600, 2000, 30, ResourceType.ExtraMothershipFuel),
         ResourceRandomRectangle(1800, 400, 600, 2000, 30, ResourceType.ExtraMothershipFuel),
         ResourceRandomRectangle(100, 800, 2600, 1200, 70, ResourceType.ExtraAgentFuel),
-        ResourceRandomRectangle(0, 800, 200, 1200, 15, ResourceType.Tonic),
-        ResourceRandomRectangle(2600, 800, 200, 1200, 15, ResourceType.Tonic),
+        ResourceRandomRectangle(0, 800, 200, 1200, 50, ResourceType.Tonic),
+        ResourceRandomRectangle(2600, 800, 200, 1200, 50, ResourceType.Tonic),
     )
 
     override fun loadLevelColor(): Color {
