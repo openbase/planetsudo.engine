@@ -288,7 +288,7 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
     }
 
     val agentsAtHomePoints: Int
-        get() = ((agentsAtHomePosition * 100) / agentCount)
+        get() = ((agentsAtHomePosition * 100) / strategyAgentCount)
 
     private val agentsAtHomePosition: Int
         get() {
