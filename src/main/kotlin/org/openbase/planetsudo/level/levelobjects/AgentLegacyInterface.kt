@@ -124,4 +124,10 @@ interface AgentLegacyInterface : AgentSpecialInterface {
         replaceWith = ReplaceWith("requestSupport"),
     )
     fun orderSupport() = requestSupport()
+
+    @Deprecated(
+        "Please use isTonicAtLimit instead",
+        replaceWith = ReplaceWith("isTonicAtLimit"),
+    )
+    val tonicFull get() = isTonicAtLimit
 }
