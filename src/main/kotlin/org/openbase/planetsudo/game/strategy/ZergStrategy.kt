@@ -27,11 +27,11 @@ class ZergStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule(1000, "Angriff bei Sichtung vom Feind") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryAgent
+                    return agent.seeEnemyAgent
                 }
 
                 override fun action() {
-                    agent.fightWithAdversaryAgent()
+                    agent.fightWithEnemyAgent()
                 }
             },
         )
@@ -39,11 +39,11 @@ class ZergStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule(900, "Angriff Auf das Mutterschiff") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryMothership
+                    return agent.seeEnemyMothership
                 }
 
                 override fun action() {
-                    agent.fightWithAdversaryMothership()
+                    agent.fightWithEnemyMothership()
                     agent.deployMine()
                 }
             },
@@ -116,7 +116,7 @@ class ZergStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
                 }
 
                 override fun action() {
-                    agent.deliverResourceToMothership()
+                    agent.transferResourceToMothership()
                     agent.orderFuel(100)
                 }
             },

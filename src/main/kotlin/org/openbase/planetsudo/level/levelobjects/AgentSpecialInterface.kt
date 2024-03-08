@@ -68,7 +68,7 @@ interface AgentSpecialInterface : AgentBattleInterface {
      * Treibstoff: 0
      * Aktionspunkte: 5
      */
-    fun orderSupport()
+    fun requestSupport()
 
     /**
      * Gehe zu einem Agenten der Hilfe benötigt.

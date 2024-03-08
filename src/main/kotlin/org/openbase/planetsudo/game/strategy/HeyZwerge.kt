@@ -245,7 +245,7 @@ class HeyZwerge(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule("Support Agent") {
                 override fun constraint(): Boolean {
-                    return mothership.needSomeoneSupport() && !agent.isSupportOrdered
+                    return mothership.needSomeoneSupport() && !agent.hasRequestedSupport
                 }
 
                 override fun action() {
@@ -281,11 +281,11 @@ class HeyZwerge(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule("FightAgainstMothership") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryMothership
+                    return agent.seeEnemyMothership
                 }
 
                 override fun action() {
-                    agent.fightWithAdversaryMothership()
+                    agent.fightWithEnemyMothership()
                 }
             },
         )
@@ -293,12 +293,12 @@ class HeyZwerge(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule("FightAgainstMothership & Order Support") {
                 override fun constraint(): Boolean {
-                    return !agent.isSupportOrdered && agent.seeAdversaryMothership
+                    return !agent.hasRequestedSupport && agent.seeEnemyMothership
                 }
 
                 override fun action() {
-                    agent.fightWithAdversaryMothership()
-                    agent.orderSupport()
+                    agent.fightWithEnemyMothership()
+                    agent.requestSupport()
                 }
             },
         )
@@ -342,11 +342,11 @@ class HeyZwerge(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule("FightAgainstAgent") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryAgent
+                    return agent.seeEnemyAgent
                 }
 
                 override fun action() {
-                    agent.fightWithAdversaryAgent()
+                    agent.fightWithEnemyAgent()
                 }
             },
         )
@@ -404,12 +404,12 @@ class HeyZwerge(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule("OrderFuelDuringFight") {
                 override fun constraint(): Boolean {
-                    return mothership.hasFuel() && (agent.fuel < 100) && agent.seeAdversaryAgent && agent.isAtMothership
+                    return mothership.hasFuel() && (agent.fuel < 100) && agent.seeEnemyAgent && agent.isAtMothership
                 }
 
                 override fun action() {
                     agent.orderFuel(5)
-                    agent.fightWithAdversaryAgent()
+                    agent.fightWithEnemyAgent()
                 }
             },
         )
@@ -421,7 +421,7 @@ class HeyZwerge(agent: AgentInterface) : StrategyLevelLegacy(agent) {
                 }
 
                 override fun action() {
-                    agent.deliverResourceToMothership()
+                    agent.transferResourceToMothership()
                     agent.turnAround()
                 }
             },
@@ -430,11 +430,11 @@ class HeyZwerge(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule("CallForHelp") {
                 override fun constraint(): Boolean {
-                    return (!agent.isSupportOrdered) && ((agent.fuel < 5) || agent.isUnderAttack)
+                    return (!agent.hasRequestedSupport) && ((agent.fuel < 5) || agent.isUnderAttack)
                 }
 
                 override fun action() {
-                    agent.orderSupport()
+                    agent.requestSupport()
                 }
             },
         )
@@ -490,7 +490,7 @@ class HeyZwerge(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule("Cancel Support") {
                 override fun constraint(): Boolean {
-                    return agent.isSupportOrdered && !agent.seeAdversaryMothership && agent.fuel > 10 && !agent.isUnderAttack && !agent.seeAdversaryAgent
+                    return agent.hasRequestedSupport && !agent.seeEnemyMothership && agent.fuel > 10 && !agent.isUnderAttack && !agent.seeEnemyAgent
                 }
 
                 override fun action() {

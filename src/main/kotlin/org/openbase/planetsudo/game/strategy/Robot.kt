@@ -42,7 +42,7 @@ class Robot(agent: AgentInterface) : StrategyLevelLegacy(agent) {
                 }
 
                 override fun action() {
-                    agent.fightWithAdversaryAgent()
+                    agent.fightWithEnemyAgent()
                 }
             },
         )
@@ -82,7 +82,7 @@ class Robot(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule(950, "Mine setzten") {
                 override fun constraint(): Boolean {
-                    return agent.hasMine && agent.seeAdversaryAgent
+                    return agent.hasMine && agent.seeEnemyAgent
                 }
 
                 override fun action() {
@@ -93,22 +93,22 @@ class Robot(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule(940, "Angriff Mothership") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryMothership
+                    return agent.seeEnemyMothership
                 }
 
                 override fun action() {
-                    agent.fightWithAdversaryMothership()
+                    agent.fightWithEnemyMothership()
                 }
             },
         )
         createRule(
             object : Rule(930, "Angriff Agent") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryAgent
+                    return agent.seeEnemyAgent
                 }
 
                 override fun action() {
-                    agent.fightWithAdversaryAgent()
+                    agent.fightWithEnemyAgent()
                 }
             },
         )
@@ -120,7 +120,7 @@ class Robot(agent: AgentInterface) : StrategyLevelLegacy(agent) {
                 }
 
                 override fun action() {
-                    agent.deliverResourceToMothership()
+                    agent.transferResourceToMothership()
                 }
             },
         )

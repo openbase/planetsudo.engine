@@ -64,4 +64,70 @@ interface AgentLegacyInterface : AgentSpecialInterface {
      */
     @Deprecated("Typo fixed", replaceWith = ReplaceWith("isCarryingResource"))
     val isCarringResource: Boolean get() = isCarryingResource
+
+    @Deprecated(
+        "Please use hasRequestedSupport instead",
+        replaceWith = ReplaceWith("hasRequestedSupport"),
+    )
+    val isSupportOrdered get() = hasRequestedSupport
+
+    @Deprecated(
+        "Please use transferResourceToMothership instead",
+        replaceWith = ReplaceWith("transferResourceToMothership"),
+    )
+    fun deliverResourceToMothership() = transferResourceToMothership()
+
+    @Deprecated(
+        "Please use seeEnemyAgent instead",
+        replaceWith = ReplaceWith("seeEnemyAgent"),
+    )
+    val seeAdversaryAgent: Boolean get() = seeEnemyAgent
+
+    @Deprecated(
+        "Please use enemyAgent instead",
+        replaceWith = ReplaceWith("enemyAgent"),
+    )
+    val adversaryAgent: GlobalAgentInterface get() = enemyAgent
+
+    @Deprecated(
+        "Please use turnToEnemyAgent instead",
+        replaceWith = ReplaceWith("turnToEnemyAgent"),
+    )
+    fun turnToAdversaryAgent(beta: Int = 0) = turnToEnemyAgent(beta)
+
+    @Deprecated(
+        "Please use goToEnemyAgent instead",
+        replaceWith = ReplaceWith("goToEnemyAgent"),
+    )
+    fun goToAdversaryAgent() = goToEnemyAgent()
+
+    @Deprecated(
+        "Please use fightWithEnemyAgent instead",
+        replaceWith = ReplaceWith("fightWithEnemyAgent"),
+    )
+    fun fightWithAdversaryAgent() = fightWithEnemyAgent()
+
+    @Deprecated(
+        "Please use fightWithEnemyMothership instead",
+        replaceWith = ReplaceWith("fightWithEnemyMothership"),
+    )
+    fun fightWithAdversaryMothership() = fightWithEnemyMothership()
+
+    @Deprecated(
+        "Please use seeEnemyMothership instead",
+        replaceWith = ReplaceWith("seeEnemyMothership"),
+    )
+    val seeAdversaryMothership: Boolean get() = seeEnemyMothership
+
+    @Deprecated(
+        "Please use requestSupport instead",
+        replaceWith = ReplaceWith("requestSupport"),
+    )
+    fun orderSupport() = requestSupport()
+
+    @Deprecated(
+        "Please use isTonicAtLimit instead",
+        replaceWith = ReplaceWith("isTonicAtLimit"),
+    )
+    val tonicFull get() = isTonicAtLimit
 }

@@ -92,7 +92,7 @@ class KillAllStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
                 }
 
                 override fun action() {
-                    agent.deliverResourceToMothership()
+                    agent.transferResourceToMothership()
                 }
             },
         )
@@ -126,11 +126,11 @@ class KillAllStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule(701, "Feinkontakt") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryAgent
+                    return agent.seeEnemyAgent
                 }
 
                 override fun action() {
-                    agent.fightWithAdversaryAgent()
+                    agent.fightWithEnemyAgent()
                 }
             },
         )
@@ -138,11 +138,11 @@ class KillAllStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule(702, "Big Feinkontakt") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryMothership
+                    return agent.seeEnemyMothership
                 }
 
                 override fun action() {
-                    agent.fightWithAdversaryMothership()
+                    agent.fightWithEnemyMothership()
                 }
             },
         )
@@ -162,7 +162,7 @@ class KillAllStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
             object : Rule(904, "unterbeschuss 2") {
                 override fun constraint(): Boolean {
                     return agent.isUnderAttack &&
-                        !agent.seeAdversaryAgent && agent.fuelInPercent >= 50
+                        !agent.seeEnemyAgent && agent.fuelInPercent >= 50
                 }
 
                 override fun action() {
@@ -174,7 +174,7 @@ class KillAllStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
             object : Rule(903, "unterbeschuss 2") {
                 override fun constraint(): Boolean {
                     return agent.isUnderAttack &&
-                        !agent.seeAdversaryAgent && agent.fuelInPercent < 50
+                        !agent.seeEnemyAgent && agent.fuelInPercent < 50
                 }
 
                 override fun action() {

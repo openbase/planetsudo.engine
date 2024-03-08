@@ -51,11 +51,11 @@ class SuperMarioBrothersStrategy(agent: AgentInterface) : StrategyLevelLegacy(ag
         createRule(
             object : Rule(6900, "Feind Bekämpfen") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryAgent
+                    return agent.seeEnemyAgent
                 }
 
                 override fun action() {
-                    agent.fightWithAdversaryAgent()
+                    agent.fightWithEnemyAgent()
                 }
             },
         )
@@ -63,11 +63,11 @@ class SuperMarioBrothersStrategy(agent: AgentInterface) : StrategyLevelLegacy(ag
         createRule(
             object : Rule(8600, "Mutterschiff angreifen") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryMothership
+                    return agent.seeEnemyMothership
                 }
 
                 override fun action() {
-                    agent.fightWithAdversaryMothership()
+                    agent.fightWithEnemyMothership()
                 }
             },
         )
@@ -75,7 +75,7 @@ class SuperMarioBrothersStrategy(agent: AgentInterface) : StrategyLevelLegacy(ag
         createRule(
             object : Rule(8500, "Gegner Schiff Mine") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryMothership && agent.hasMine
+                    return agent.seeEnemyMothership && agent.hasMine
                 }
 
                 override fun action() {
@@ -160,7 +160,7 @@ class SuperMarioBrothersStrategy(agent: AgentInterface) : StrategyLevelLegacy(ag
                 }
 
                 override fun action() {
-                    agent.deliverResourceToMothership()
+                    agent.transferResourceToMothership()
                 }
             },
         )
@@ -202,7 +202,7 @@ class SuperMarioBrothersStrategy(agent: AgentInterface) : StrategyLevelLegacy(ag
                 }
 
                 override fun action() {
-                    agent.fightWithAdversaryAgent()
+                    agent.fightWithEnemyAgent()
                 }
             },
         )

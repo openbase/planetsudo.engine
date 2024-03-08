@@ -1,34 +1,34 @@
 package org.openbase.planetsudo.level.levelobjects
 
-interface GlobalAgentInterface {
+class GlobalAgentInterfaceGermanWrapper(private val agent: GlobalAgentInterface) {
 
     /**
      * Gibt an, ob der Agent noch lebt.
      *
      * @return true oder false.
      */
-    val isAlive: Boolean
+    val istAmLeben: Boolean get() = agent.isAlive
 
     /**
      * Gibt zurück, ob der Agent beim Mutterschiff ist.
      *
      * @return true oder false.
      */
-    val isAtMothership: Boolean
+    val istAmMutterschiff: Boolean get() = agent.isAtMothership
 
     /**
      * Gibt zurück, ob der Agent ein Commander ist oder nicht.
      *
      * @return true oder false
      */
-    val isCommander: Boolean
+    val istCommander: Boolean get() = agent.isCommander
 
     /**
      * Liefert die aktuell verfügbaren Aktionspunkte des Agenten.
      *
      * @return Die Aktionspunkte als ganze Zahl. (z.B. 2051)
      */
-    val actionPoints: Int
+    val aktionspunkte: Int get() = agent.actionPoints
 
     /**
      * Gibt die Richtung des Agenten in Grad wieder. Osten = 0° Süden = 90°
@@ -36,7 +36,7 @@ interface GlobalAgentInterface {
      *
      * @return Den Winkel von 0 - 360° als ganze Zahl. (z.B. 128)
      */
-    val angle: Int
+    val winkel: Int get() = agent.angle
 
     /**
      * Zeigt den aktuellen Tonic Bestand des Agenten an.
@@ -48,7 +48,7 @@ interface GlobalAgentInterface {
      *
      * @return Die aktuelle Tonic Menge als ganz Zahl zwischen 0 - 3.
      */
-    val tonic: Int
+    val tonic: Int get() = agent.tonic
 
     /**
      * Zeigt den aktuellen Tonic Bestand des Agenten in Prozent.
@@ -60,35 +60,33 @@ interface GlobalAgentInterface {
      *
      * @return Die aktuelle Tonic Menge als ganz Zahl zwischen 0 - 100.
      */
-    val tonicInPercent: Int
+    val tonicInProzent: Int get() = agent.tonicInPercent
 
     /**
      *  Gibt an, ob der Agent die maximale Anzahl an Tonic besitzt und somit genug Tonic hat um sich unsichtbar zu machen.
      */
-    val isTonicAtLimit: Boolean get() = tonic == Agent.MAX_TONIC
+    val istTonicAmLimit: Boolean get() = agent.isTonicAtLimit
 
     /**
      * Gibt zurück, ob der Agent mindestens ein Tonic besitzt.
      *
      * @return true oder false.
      */
-    val hasTonic: Boolean
-        get() = tonic > 0
+    val hatTonic: Boolean get() = agent.hasTonic
 
     /**
      * Gibt zurück, ob der Agent genug Tonic besitzt, um sich unsichtbar zu machen.
      *
      * @return true oder false.
      */
-    val hasTonicForInvisibility: Boolean
-        get() = tonic == Agent.MAX_TONIC
+    val hatTonicFuerUnsichbarkeit: Boolean get() = agent.hasTonicForInvisibility
 
     /**
      * Zeigt den verbliebenen Treibstoff des Agenten an.
      *
      * @return Den verbliebenen Treibstoff als ganz Zahl.
      */
-    val fuel: Int
+    val treibstoff: Int get() = agent.fuel
 
     /**
      * Gibt den verbliebenen Treibstoff in Prozent an.
@@ -96,28 +94,28 @@ interface GlobalAgentInterface {
      * @return Treibstoffwert in Prozent als ganze Zahl. (z.B. 47 bei 47%
      * verbliebenen Treibstoff)
      */
-    val fuelInPercent: Int
+    val treibstoffInProzent: Int get() = agent.fuelInPercent
 
     /**
      * Gibt das maximal Treibstoffvolumen eines Agenten an.
      *
      * @return
      */
-    val fuelVolume: Int
+    val treibstoffVolumen: Int get() = agent.fuelVolume
 
     /**
      * Gibt zurück, ob der Agent aktuell Treibstoff besitzt.
      *
      * @return true oder false.
      */
-    val hasFuel: Boolean
+    val hatTreibstoff: Boolean get() = agent.hasFuel
 
     /**
      * Gibt den Typ der Resource wieder, welche der Agent berührt.
      *
      * @return Den Ressourcenwert
      */
-    val resourceType: Resource.ResourceType
+    val ressourcenTyp: Resource.ResourceType get() = agent.resourceType
 
     /**
      * Gibt zurück, ob der Agent eine Resource berührt und diese somit
@@ -125,7 +123,7 @@ interface GlobalAgentInterface {
      *
      * @return true oder false.
      */
-    val isTouchingResource: Boolean
+    val istRessourceAmBeruehren: Boolean get() = agent.isTouchingResource
 
     /**
      * Gibt zurück, ob der Agent eine Resource vom Typ `type` berührt und diese somit aufheben kann.
@@ -133,20 +131,20 @@ interface GlobalAgentInterface {
      * @param type
      * @return true oder false.
      */
-    fun isTouchingResource(type: Resource.ResourceType): Boolean
+    fun istRessourceAmBeruehren(type: Resource.ResourceType): Boolean = agent.isTouchingResource(type)
 
     /**
      * Gibt die Art der Resource an, die der Agent aktuell trägt.
      * Wird aktuell keine Resource getragen, so wird ResourceType.UNKNOWN zurück gegeben.
      */
-    val carryingResourceType: Resource.ResourceType
+    val resourceVomTyp: Resource.ResourceType get() = agent.carryingResourceType
 
     /**
      * Gibt an, ob der Agent eine Resource trägt.
      *
      * @return true oder false
      */
-    val isCarryingResource: Boolean
+    val istEineResourceAmTragen: Boolean get() = agent.isCarryingResource
 
     /**
      * Gibt an, ob der Agent eine Resource vom `type` trägt.
@@ -154,26 +152,26 @@ interface GlobalAgentInterface {
      * @param type
      * @return true oder false.
      */
-    fun isCarryingResource(type: Resource.ResourceType): Boolean
+    fun istEineResourceAmTragenVomTypen(type: Resource.ResourceType): Boolean = agent.isCarryingResource(type)
 
     /**
      * Abfrage, ob der Agent sich aktuell im Kampf befindet oder nicht.
      *
      * @return true oder false.
      */
-    val isFighting: Boolean
+    val istAmKämpfen: Boolean get() = agent.isFighting
 
     /**
      * Gibt an, ob der Agent unter Beschuss steht.
      *
      * @return true oder false.
      */
-    val isUnderAttack: Boolean
+    val wirdAngegriffen: Boolean get() = agent.isUnderAttack
 
     /**
      * Gibt zurück, ob der Agent gerade shifted.
      */
-    val isShifting: Boolean
+    val istAmSchiften: Boolean get() = agent.isShifting
 
     /**
      * Abfrage, ob dieser agent Support angefordert hat.
@@ -181,5 +179,5 @@ interface GlobalAgentInterface {
      *
      * @return true oder false
      */
-    val hasRequestedSupport: Boolean
+    val hatUnterstuetzungAngefordert: Boolean get() = agent.hasRequestedSupport
 }

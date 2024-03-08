@@ -26,7 +26,7 @@ interface AgentBasicInterface : GlobalAgentInterface {
      *     ResourceType.ExtremPoint         ->   50 Punkte
      *     ResourceType.ExtraMothershipFuel ->   20 % Mutterschiff Treibstoff
      */
-    fun deliverResourceToMothership()
+    fun transferResourceToMothership()
 
     /**
      * Der Agent bewegt sich geradeaus.

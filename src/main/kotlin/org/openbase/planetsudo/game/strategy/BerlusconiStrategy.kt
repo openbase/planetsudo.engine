@@ -78,7 +78,7 @@ class BerlusconiStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
                 }
 
                 override fun action() {
-                    agent.deliverResourceToMothership()
+                    agent.transferResourceToMothership()
                 }
             },
         )
@@ -86,11 +86,11 @@ class BerlusconiStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         createRule(
             object : Rule(801, "Feuer") {
                 override fun constraint(): Boolean {
-                    return agent.seeAdversaryAgent && agent.isCarryingResource != true
+                    return agent.seeEnemyAgent && agent.isCarryingResource != true
                 }
 
                 override fun action() {
-                    agent.fightWithAdversaryAgent()
+                    agent.fightWithEnemyAgent()
                 }
             },
         )

@@ -9,8 +9,8 @@ class GlobalAgentProxy(val agent: GlobalAgentInterface) : GlobalAgentInterface {
         get() = agent.isCommander
     override val isFighting: Boolean
         get() = agent.isFighting
-    override val isSupportOrdered: Boolean
-        get() = agent.isSupportOrdered
+    override val hasRequestedSupport: Boolean
+        get() = agent.hasRequestedSupport
     override val isUnderAttack: Boolean
         get() = agent.isUnderAttack
     override val actionPoints: Int
