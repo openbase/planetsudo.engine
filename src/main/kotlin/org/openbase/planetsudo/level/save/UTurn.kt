@@ -41,7 +41,7 @@ class UTurn : AbstractLevel() {
         ResourceRandomRectangle(0, 0, 1000, 1000, 10, ResourceType.ExtremPoint),
         ResourceRandomRectangle(0, 0, 1000, 1000, 10, ResourceType.ExtraAgentFuel),
         ResourceRandomRectangle(0, 0, 1000, 1000, 10, ResourceType.ExtraMothershipFuel),
-        ResourceRandomRectangle(0, 950, 1000, 50, 15, ResourceType.Tonic),
+        ResourceRandomRectangle(0, 950, 1000, 50, 20, ResourceType.Tonic),
     )
 
     override fun loadLevelColor(): Color {

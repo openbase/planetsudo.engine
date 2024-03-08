@@ -46,8 +46,8 @@ class TwoKings : AbstractLevel() {
         ResourceRandomRectangle(0, 850, 1500, 650, 10, ResourceType.Normal),
         ResourceRandomRectangle(0, 0, 1500, 650, 5, ResourceType.DoublePoints),
         ResourceRandomRectangle(0, 850, 1500, 650, 5, ResourceType.DoublePoints),
-        ResourceRandomRectangle(0, 0, 100, 1500, 15, ResourceType.Tonic),
-        ResourceRandomRectangle(1400, 0, 100, 1500, 15, ResourceType.Tonic),
+        ResourceRandomRectangle(0, 0, 100, 1500, 20, ResourceType.Tonic),
+        ResourceRandomRectangle(1400, 0, 100, 1500, 20, ResourceType.Tonic),
     )
 
     override fun loadLevelColor() = Color(37, 67, 162)
