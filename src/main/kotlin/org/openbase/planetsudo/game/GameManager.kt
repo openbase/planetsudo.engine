@@ -204,7 +204,7 @@ class GameManager : Runnable {
 
         const val DEFAULT_GAME_SPEED_FACTOR: Int = 1
 
-        const val MIN_GAME_SPEED_FACTOR: Double = 0.01
+        const val MIN_GAME_SPEED_FACTOR: Double = 0.00
         const val MAX_GAME_SPEED_FACTOR: Double = 100.0
 
         @JvmStatic
