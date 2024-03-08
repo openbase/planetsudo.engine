@@ -3,6 +3,7 @@ package org.openbase.planetsudo.level.levelobjects
 import org.openbase.planetsudo.game.SwatTeam
 
 interface AgentLegacyInterface : AgentSpecialInterface {
+
     /**
      * Gibt zurück, ob der Agent den Turm sieht.
      *
