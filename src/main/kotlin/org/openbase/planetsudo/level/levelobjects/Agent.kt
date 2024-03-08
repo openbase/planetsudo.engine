@@ -56,9 +56,9 @@ class Agent(
     private var isHelping = false
     private var helpLevelObject: AbstractLevelObject? = null
     private var helpLevelObjectOld: AbstractLevelObject? = null
-    private var adversaryObject: AbstractLevelObject? = null
+    private var enemyObject: AbstractLevelObject? = null
     private var catchedfuel = 0
-    private var lastAversaryAgent: GlobalAgentInterface? = null
+    private var lastEnemyAgent: GlobalAgentInterface? = null
     private var lastTeamAgent: GlobalAgentInterface? = null
 
     val mothership: Mothership
@@ -97,9 +97,9 @@ class Agent(
 
     val isFightingWith: AbstractLevelObject?
         get() {
-            val adversary = adversaryObject
-            adversaryObject = null
-            return adversary
+            val enemy = enemyObject
+            enemyObject = null
+            return enemy
         }
 
     @Suppress("OVERRIDE_DEPRECATION")
@@ -139,7 +139,7 @@ class Agent(
         get() = resource != null
 
     override val isFighting: Boolean
-        get() = adversaryObject != null
+        get() = enemyObject != null
 
     override val seeResource: Boolean
         get() = level.getCloseResource(this) != null
@@ -187,7 +187,7 @@ class Agent(
 
     override val seeEnemyAgent: Boolean
         get() = level.getAdversaryAgent(this)
-            .also { lastAversaryAgent = it }
+            .also { lastEnemyAgent = it }
             .let { it != null }
 
     override val seeTeamAgent: Boolean
@@ -257,7 +257,7 @@ class Agent(
 
     private fun disable() {
         releaseResource()
-        adversaryObject = null
+        enemyObject = null
         isHelping = false
     }
 
@@ -518,8 +518,8 @@ class Agent(
     override fun turnToEnemyAgent(beta: Int) {
         performAction(1) {
             if (useFuel()) {
-                level.getAdversaryAgent(this)?.let { adversaryAgent ->
-                    direction.turnTo(position, adversaryAgent.position)
+                level.getAdversaryAgent(this)?.let { enemyAgent ->
+                    direction.turnTo(position, enemyAgent.position)
                     direction.angle += beta
                 }
             }
@@ -663,14 +663,14 @@ class Agent(
         invisible = false
         performAction(1) {
             if (useFuel()) {
-                val adversaryAgent = level.getAdversaryAgent(this)
-                adversaryObject = adversaryAgent
-                if (adversaryAgent != null) {
-                    adversaryAgent.attacked = true
+                val enemyAgent = level.getAdversaryAgent(this)
+                enemyObject = enemyAgent
+                if (enemyAgent != null) {
+                    enemyAgent.attacked = true
                     ap.getActionPoint(20)
-                    direction.turnTo(position, adversaryAgent.position)
-                    if (adversaryAgent.hasFuel) {
-                        catchedfuel = (adversaryAgent.useFuel((Mothership.AGENT_FUEL_VOLUME / 500) * 2) / 3)
+                    direction.turnTo(position, enemyAgent.position)
+                    if (enemyAgent.hasFuel) {
+                        catchedfuel = (enemyAgent.useFuel((Mothership.AGENT_FUEL_VOLUME / 500) * 2) / 3)
                         spendFuel(catchedfuel)
                     }
                     GameSound.Laser.play()
@@ -683,12 +683,12 @@ class Agent(
         invisible = false
         performAction(1) {
             if (useFuel()) {
-                val adversaryMothership = level.getAdversaryMothership(this)
-                adversaryObject = adversaryMothership
-                if (adversaryMothership != null) {
+                val enemyMothership = level.getAdversaryMothership(this)
+                enemyObject = enemyMothership
+                if (enemyMothership != null) {
                     ap.getActionPoint(30)
-                    direction.turnTo(position, adversaryMothership.position)
-                    adversaryMothership.attack()
+                    direction.turnTo(position, enemyMothership.position)
+                    enemyMothership.attack()
                     GameSound.Laser.play()
                 }
             }
@@ -735,13 +735,13 @@ class Agent(
 
     override fun goToEnemyAgent() {
         try {
-            level.getAdversaryAgent(this)?.let { adversaryAgent ->
+            level.getAdversaryAgent(this)?.let { enemyAgent ->
                 // do not come too close to the adversary agents
-                if (adversaryAgent.levelView!!.getDistance(this) >= (AGENT_SIZE / 2)) {
-                    goTo { turnTo(position, adversaryAgent.position) }
+                if (enemyAgent.levelView!!.getDistance(this) >= (AGENT_SIZE / 2)) {
+                    goTo { turnTo(position, enemyAgent.position) }
                 } else {
                     performAction {
-                        direction.turnTo(position, adversaryAgent.position)
+                        direction.turnTo(position, enemyAgent.position)
                     }
                 }
             }
@@ -864,7 +864,7 @@ class Agent(
 
     override val enemyAgent: GlobalAgentInterface
         get() = GlobalAgentProxy(
-            lastAversaryAgent
+            lastEnemyAgent
                 ?: error("No adversary agent seen!"),
         )
 

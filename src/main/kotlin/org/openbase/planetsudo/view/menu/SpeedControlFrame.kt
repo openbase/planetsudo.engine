@@ -127,7 +127,6 @@ class SpeedControlFrame : JFrame() {
             exp((value - 50) * 0.092)
         }
 
-        println("value $value to $x")
         return x
     }
 
