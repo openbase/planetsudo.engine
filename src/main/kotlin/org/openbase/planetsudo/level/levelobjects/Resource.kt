@@ -41,8 +41,15 @@ class Resource(id: Int, @JvmField val type: ResourceType, level: AbstractLevel, 
         RESOURCE_SIZE.toDouble(),
         ObjectShape.Rec,
     ) {
-    enum class ResourceType {
-        Unknown, Normal, DoublePoints, ExtremPoint, ExtraAgentFuel, ExtraMothershipFuel, Mine, Tonic
+    enum class ResourceType(val isConsumable: Boolean = false) {
+        Unknown,
+        Normal,
+        DoublePoints,
+        ExtremPoint,
+        ExtraAgentFuel(true),
+        ExtraMothershipFuel,
+        Mine,
+        Tonic(true),
     }
 
     var owner: Agent? = null
@@ -219,6 +226,9 @@ class Resource(id: Int, @JvmField val type: ResourceType, level: AbstractLevel, 
         logger.warn("Ignore double resource use!")
         return 0
     }
+
+    fun isNotOwnedByTeamMember(agent: Agent): Boolean =
+        !isOwned || owner!!.team != agent.team
 
     companion object {
         const val KILL_EVENT: String = "KillEvent"
