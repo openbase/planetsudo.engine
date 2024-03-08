@@ -3,6 +3,20 @@ package org.openbase.planetsudo.level.levelobjects
 interface AgentSpecialInterface : AgentBattleInterface {
 
     /**
+     * Gibt an, ob ein Zusammenstoß mit einer Wand zur linken Seite bevorsteht.
+     *
+     * @return true oder false.
+     */
+    fun isCollisionDetectedAtLeft(beta: Int): Boolean
+
+    /**
+     * Gibt an, ob ein Zusammenstoß mit einer Wand zur rechten Seite bevorsteht.
+     *
+     * @return true oder false.
+     */
+    fun isCollisionDetectedAtRight(beta: Int): Boolean
+
+    /**
      * Abfrage, ob der Agent aktuell unsichtbar ist.
      */
     val isInvisible: Boolean

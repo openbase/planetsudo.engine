@@ -239,6 +239,14 @@ class AgentMock : AgentInterface {
         error("Mock does not offer any functionality.")
     }
 
+    override fun isCollisionDetectedAtLeft(beta: Int): Boolean {
+        error("Mock does not offer any functionality.")
+    }
+
+    override fun isCollisionDetectedAtRight(beta: Int): Boolean {
+        error("Mock does not offer any functionality.")
+    }
+
     override fun constructTower(type: Tower.TowerType) {
         error("Mock does not offer any functionality.")
     }
