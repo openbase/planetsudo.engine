@@ -65,9 +65,9 @@ class OffensiveBackdoor : AbstractLevel() {
         ResourceRandomRectangle(900, 1650, 800, 100, 7, ResourceType.ExtraAgentFuel),
         ResourceRandomRectangle(50, 1650, 200, 150, 3, ResourceType.ExtremPoint),
         ResourceRandomRectangle(2350, 1650, 200, 150, 3, ResourceType.ExtremPoint),
-        ResourceRandomRectangle(1150, 300, 300, 150, 10, ResourceType.Tonic),
-        ResourceRandomRectangle(1150, 1350, 300, 150, 10, ResourceType.Tonic),
-        ResourceRandomRectangle(0, 1650, 2550, 150, 15, ResourceType.Tonic),
+        ResourceRandomRectangle(1150, 300, 300, 150, 20, ResourceType.Tonic),
+        ResourceRandomRectangle(1150, 1350, 300, 150, 20, ResourceType.Tonic),
+        ResourceRandomRectangle(0, 1650, 2550, 150, 30, ResourceType.Tonic),
     )
 
     override fun loadLevelColor() = Color(255, 153, 0)
