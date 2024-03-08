@@ -12,7 +12,6 @@ package org.openbase.planetsudo.view.menu
 import org.openbase.planetsudo.level.AbstractLevel
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
-import java.beans.PropertyChangeListener
 import javax.swing.*
 
 /**
