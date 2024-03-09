@@ -36,6 +36,11 @@ interface AgentBattleInterface : AgentBasicInterface {
     fun goToEnemyAgent()
 
     /**
+     * Gehe zu einem
+     */
+    fun goToTeamAgent()
+
+    /**
      * Der Befehl zum Bekämpfen eines feindlichen Agenten.
      * Wenn ein Agent einen anderen erfolgreich angreift, bekommt er eine Treibstoffbelohnung.
      * Aktionspunkte: 21
