@@ -1,7 +1,7 @@
 package org.openbase.planetsudo.level.levelobjects
 
-open class AgentSpecialInterfaceGermanWrapper(private val agent: AgentSpecialInterface<out AgentSpecialInterfaceGermanWrapper>)
-    : AgentBattleInterfaceGermanWrapper(agent) {
+open class AgentSpecialInterfaceGermanWrapper(private val agent: AgentSpecialInterface<out AgentSpecialInterfaceGermanWrapper>) :
+    AgentBattleInterfaceGermanWrapper(agent) {
 
     /**
      * Gibt an, ob ein Zusammenstoß mit einer Wand zur linken Seite bevorsteht.

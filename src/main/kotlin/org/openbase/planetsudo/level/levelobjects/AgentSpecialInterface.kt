@@ -1,8 +1,8 @@
 package org.openbase.planetsudo.level.levelobjects
 
-interface AgentSpecialInterface<DE: AgentSpecialInterfaceGermanWrapper> : AgentBattleInterface<DE> {
+interface AgentSpecialInterface<DE : AgentSpecialInterfaceGermanWrapper> : AgentBattleInterface<DE> {
 
-   override val de get() = AgentSpecialInterfaceGermanWrapper(this)
+    override val de get() = AgentSpecialInterfaceGermanWrapper(this)
 
     /**
      * Gibt an, ob ein Zusammenstoß mit einer Wand zur linken Seite bevorsteht.

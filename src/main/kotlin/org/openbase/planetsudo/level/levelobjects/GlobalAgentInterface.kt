@@ -1,6 +1,6 @@
 package org.openbase.planetsudo.level.levelobjects
 
-interface GlobalAgentInterface<DE: GlobalAgentInterfaceGermanWrapper> {
+interface GlobalAgentInterface<DE : GlobalAgentInterfaceGermanWrapper> {
 
     val de get() = GlobalAgentInterfaceGermanWrapper(this)
 

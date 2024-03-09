@@ -1,7 +1,7 @@
 package org.openbase.planetsudo.level.levelobjects
 
-open class AgentBattleInterfaceGermanWrapper(private val agent: AgentBattleInterface<*>)
-    : AgentBasicInterfaceGermanWrapper(agent) {
+open class AgentBattleInterfaceGermanWrapper(private val agent: AgentBattleInterface<*>) :
+    AgentBasicInterfaceGermanWrapper(agent) {
 
     /**
      * Zeigt an, ob der Agent einen feindlichen Agenten sieht.

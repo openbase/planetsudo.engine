@@ -25,7 +25,7 @@ package org.openbase.planetsudo.level.levelobjects
  *
  * @author Divine Threepwood
  */
-class MothershipInterfaceGermanWrapper (private val mothership: MothershipInterface){
+class MothershipInterfaceGermanWrapper(private val mothership: MothershipInterface) {
     /**
      * Löscht den Marker sofern dieser gesetzt wurde.
      */

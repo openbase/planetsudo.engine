@@ -1,6 +1,6 @@
 package org.openbase.planetsudo.level.levelobjects
 
-interface AgentBasicInterface<DE: AgentBasicInterfaceGermanWrapper> : GlobalAgentInterface<DE> {
+interface AgentBasicInterface<DE : AgentBasicInterfaceGermanWrapper> : GlobalAgentInterface<DE> {
 
     override val de: AgentBasicInterfaceGermanWrapper get() = AgentBasicInterfaceGermanWrapper(this)
 

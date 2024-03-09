@@ -1,7 +1,7 @@
 package org.openbase.planetsudo.level.levelobjects
 
-open class AgentBasicInterfaceGermanWrapper(private val agent: AgentBasicInterface<*>)
-    : GlobalAgentInterfaceGermanWrapper(agent) {
+open class AgentBasicInterfaceGermanWrapper(private val agent: AgentBasicInterface<*>) :
+    GlobalAgentInterfaceGermanWrapper(agent) {
     /**
      * Gibt an, ob ein Zusammenstoß mit einer Wand bevorsteht.
      *
@@ -27,7 +27,7 @@ open class AgentBasicInterfaceGermanWrapper(private val agent: AgentBasicInterfa
      *     ResourceType.ExtremPoint         ->   50 Punkte
      *     ResourceType.ExtraMothershipFuel ->   20 % Mutterschiff Treibstoff
      */
-    fun  uebertrageRessourceAnMutterschiff() = agent.transferResourceToMothership()
+    fun uebertrageRessourceAnMutterschiff() = agent.transferResourceToMothership()
 
     /**
      * Der Agent bewegt sich geradeaus.
@@ -149,7 +149,7 @@ open class AgentBasicInterfaceGermanWrapper(private val agent: AgentBasicInterfa
      *
      * @return true oder false.
      */
-    fun seheRessource(resourceType: Resource.ResourceType) : Boolean = agent.seeResource(resourceType)
+    fun seheRessource(resourceType: Resource.ResourceType): Boolean = agent.seeResource(resourceType)
 
     /**
      * Zeigt an, ob der Agent einen Agenten des eigenen Teams sieht.
