@@ -88,7 +88,7 @@ interface AgentLegacyInterface : AgentSpecialInterface<AgentSpecialInterfaceGerm
         "Please use enemyAgent instead",
         replaceWith = ReplaceWith("enemyAgent"),
     )
-    val adversaryAgent: GlobalAgentInterface<*> get() = enemyAgent
+    val adversaryAgent get() = enemyAgent
 
     @Deprecated(
         "Please use turnToEnemyAgent instead",
