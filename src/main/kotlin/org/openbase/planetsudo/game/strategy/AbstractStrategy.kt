@@ -28,8 +28,8 @@ abstract class AbstractStrategy<LEVEL : GlobalAgentInterface<*>>(val agent: Agen
 
     private val strategyOwner: Agent by lazy { agent as Agent }
     val mothership: MothershipInterface by lazy { strategyOwner.mothership }
-    val enemyAgent: GlobalAgentInterface<*> get() = strategyOwner.enemyAgent
-    val teamAgent: GlobalAgentInterface<*> get() = strategyOwner.teamAgent
+    val enemyAgent get() = strategyOwner.enemyAgent
+    val teamAgent get() = strategyOwner.teamAgent
     private val mothershipInternal: Mothership by lazy { strategyOwner.mothership }
     private val rules: TreeMap<Int, Rule> = TreeMap()
     private val gameManager: GameManager = GameManager.gameManager
