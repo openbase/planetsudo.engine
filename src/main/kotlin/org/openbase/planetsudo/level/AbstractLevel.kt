@@ -264,19 +264,13 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
      * @param resourceType
      * @return
      */
-    fun getCloseResource(agent: Agent, resourceType: ResourceType): Resource? {
+    fun getCloseResource(agent: Agent, resourceType: ResourceType): Resource? =
         synchronized(RESOURCES_LOCK) {
-            for (resource in resources) {
-                if (!resource.isUsed && resource.type == resourceType && (!resource.isOwned || resource.owner!!.team != agent.team) &&
-                    resource.isSaveFor(agent) &&
-                    resource.bounds.intersects(agent.viewBounds)
-                ) {
-                    return resource
-                }
-            }
+            resources
+                .filter { it.type == resourceType }
+                .filter { it.isSaveFor(agent) }
+                .findAvailableResource(agent, agent.viewBounds)
         }
-        return null
-    }
 
     /**
      * WARNING: method returns null in case of no close resource.
