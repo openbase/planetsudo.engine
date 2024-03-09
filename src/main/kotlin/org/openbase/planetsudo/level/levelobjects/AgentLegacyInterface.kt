@@ -2,7 +2,7 @@ package org.openbase.planetsudo.level.levelobjects
 
 import org.openbase.planetsudo.game.SwatTeam
 
-interface AgentLegacyInterface : AgentSpecialInterface {
+interface AgentLegacyInterface : AgentSpecialInterface<AgentSpecialInterfaceGermanWrapper> {
 
     /**
      * Gibt zurück, ob der Agent den Turm sieht.
@@ -88,7 +88,7 @@ interface AgentLegacyInterface : AgentSpecialInterface {
         "Please use enemyAgent instead",
         replaceWith = ReplaceWith("enemyAgent"),
     )
-    val adversaryAgent: GlobalAgentInterface get() = enemyAgent
+    val adversaryAgent: GlobalAgentInterface<*> get() = enemyAgent
 
     @Deprecated(
         "Please use turnToEnemyAgent instead",

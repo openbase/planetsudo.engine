@@ -1,6 +1,6 @@
 package org.openbase.planetsudo.level.levelobjects
 
-class GlobalAgentInterfaceGermanWrapper(private val agent: GlobalAgentInterface) {
+open class GlobalAgentInterfaceGermanWrapper(private val agent: GlobalAgentInterface<*>) {
 
     /**
      * Gibt an, ob der Agent noch lebt.

@@ -1,39 +1,38 @@
 package org.openbase.planetsudo.level.levelobjects
 
-interface AgentSpecialInterface<DE: AgentSpecialInterfaceGermanWrapper> : AgentBattleInterface<DE> {
-
-   override val de get() = AgentSpecialInterfaceGermanWrapper(this)
+open class AgentSpecialInterfaceGermanWrapper(private val agent: AgentSpecialInterface<out AgentSpecialInterfaceGermanWrapper>)
+    : AgentBattleInterfaceGermanWrapper(agent) {
 
     /**
      * Gibt an, ob ein Zusammenstoß mit einer Wand zur linken Seite bevorsteht.
      *
      * @return true oder false.
      */
-    fun isCollisionDetectedAtLeft(beta: Int): Boolean
+    fun istKollisionLinksErkannt(beta: Int) = agent.isCollisionDetectedAtLeft(beta)
 
     /**
      * Gibt an, ob ein Zusammenstoß mit einer Wand zur rechten Seite bevorsteht.
      *
      * @return true oder false.
      */
-    fun isCollisionDetectedAtRight(beta: Int): Boolean
+    fun istKollisionRechtsErkannt(beta: Int) = agent.isCollisionDetectedAtRight(beta)
 
     /**
      * Abfrage, ob der Agent aktuell unsichtbar ist.
      */
-    val isInvisible: Boolean
+    val istUnsichtbar get() = agent.isInvisible
 
     /**
      * Abfrage, ob der Agent aktuell sichtbar ist.
      */
-    val isVisible: Boolean get() = !isInvisible
+    val istSichtbar: Boolean get() = !istUnsichtbar
 
     /**
      * Sofern der Agent 3 Tonic besitzt, kann er sich hiermit unsichtbar machen.
      * Unsichtbar heißt, dass kein feindlicher Agent (außer der feindliche Commander) diesen Agenten sehen oder angreifen kann.
      * Ein Agent ist so lange unsichtbar, bis er eine feindliche Einheit angreift oder eine Mine setzt.
      */
-    fun makeInvisible()
+    fun unsichtbarMachen() = agent.makeInvisible()
 
     /**
      * Diese Abfrage checkt das bevorstehende Ende des Spiels. Wenn es bald
@@ -42,14 +41,14 @@ interface AgentSpecialInterface<DE: AgentSpecialInterfaceGermanWrapper> : AgentB
      *
      * @return true oder false
      */
-    val isGameOverSoon: Boolean
+    val istSpielBaldVorbei get() = agent.isGameOverSoon
 
     /**
      * Gibt die Punkte des Teams wieder.
      *
      * @return Den Punktestand als ganze Zahl (z.B. 47)
      */
-    val teamPoints: Int
+    val teamPunkte get() = agent.teamPoints
 
     /**
      * Setzt eine Markierung, die für das ganze Team sichtbar ist. Alle Agenten
@@ -57,14 +56,14 @@ interface AgentSpecialInterface<DE: AgentSpecialInterfaceGermanWrapper> : AgentB
      * Treibstoff: 1
      * Aktionspunkte: 5
      */
-    fun deployMarker()
+    fun setzeMarkierung() = agent.deployMarker()
 
     /**
      * Gibt zurück, ob der Agent den Marker sieht.
      *
      * @return true oder false
      */
-    fun seeMarker(): Boolean
+    fun seheMarkierung() = agent.seeMarker()
 
     /**
      * Der Agent bewegt sich in Richtung einer Markierung, falls dieser gesetzt
@@ -77,14 +76,14 @@ interface AgentSpecialInterface<DE: AgentSpecialInterfaceGermanWrapper> : AgentB
      * Aktionspunkte: 4 (+ 4 wenn resource geladen)
      * Treibstoff: 1
      */
-    fun goToMarker()
+    fun geheZuMarkierung() = agent.goToMarker()
 
     /**
      * Befehl zum Aussenden des Hilferufs.
      * Treibstoff: 0
      * Aktionspunkte: 5
      */
-    fun requestSupport()
+    fun fordereHilfeAn() = agent.requestSupport()
 
     /**
      * Gehe zu einem Agenten der Hilfe benötigt.
@@ -94,14 +93,14 @@ interface AgentSpecialInterface<DE: AgentSpecialInterfaceGermanWrapper> : AgentB
      * Aktionspunkte: 4 + (+ 4 wenn resource geladen)
      * Treibstoff: 1
      */
-    fun goToSupportAgent()
+    fun geheZuHilfeBenoetigendemAgenten() = agent.goToSupportAgent()
 
     /**
      * Der angeforderte Support des Agenten wird beendet.
      * Treibstoff: 1
      * Aktionspunkte: 5
      */
-    fun cancelSupport()
+    fun brecheHilfeAb() = agent.cancelSupport()
 
     /**
      * Mit einem Shift bewegt sich der Agent für die nächsten Schritte (agent.go...) besonders schnell, sofern er genug Tonic besitzt.
@@ -111,10 +110,10 @@ interface AgentSpecialInterface<DE: AgentSpecialInterfaceGermanWrapper> : AgentB
      * Aktionspunkte: 1
      * Tonic: 1
      */
-    fun shift()
+    fun shifte() = agent.shift()
 
     /**
      * Der Agent läuft amok.
      */
-    fun kill()
+    fun töteDich() = agent.kill()
 }

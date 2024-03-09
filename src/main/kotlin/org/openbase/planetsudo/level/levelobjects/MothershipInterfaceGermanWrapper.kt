@@ -25,78 +25,75 @@ package org.openbase.planetsudo.level.levelobjects
  *
  * @author Divine Threepwood
  */
-interface MothershipInterface {
-
-    val de get() = MothershipInterfaceGermanWrapper(this)
-
+class MothershipInterfaceGermanWrapper (private val mothership: MothershipInterface){
     /**
      * Löscht den Marker sofern dieser gesetzt wurde.
      */
-    fun clearMarker()
+    fun loescheMarkierung() = mothership.clearMarker()
 
     /**
      * Gibt zurück, wie viele Agenten das Team hat.
      * @return Anzahl der Agenten
      */
-    val agentCount: Int
+    val agentenZahl get() = mothership.agentCount
 
     /**
-     * Gibt die Schildstrke des Mutterschiffs wieder.
-     * @return Schildstrke von 0 - 100 als ganze Zahl.
+     * Gibt die Schildstaerke des Mutterschiffs wieder.
+     * @return Schildstaerke von 0 - 100 als ganze Zahl.
      */
-    val shieldForce: Int
+    val schildstaerke get() = mothership.shieldForce
 
     /**
      * Gibt zurück, ob das Mutterschiff Treibstoff hat.
      * @return true oder false.
      */
-    fun hasFuel(): Boolean
+    fun hatTreibstoff() = mothership.hasFuel()
 
     /**
      * Gibt an wie viel Treibstoff das Mutterschiff noch besitzt.
      * @return
      */
-    val fuel: Int
+    val treibstoff get() = mothership.fuel
 
     /**
      * Gibt an wie viel Treibstoff das Mutterschiff maximal besitzen kann.
      * @return
      */
-    val fuelVolume: Int
+    val treibstoffVolumen get() = mothership.fuelVolume
 
     /**
      * Gibt prozentual an wie viel Treibstoff das Mutterschiff aktuell besitzt.
      * @return
      */
-    val fuelInPercent: Int
+    val treibstoffInProzent get() = mothership.fuelInPercent
 
     /**
      * Gibt zurück, ob das Mutterschiff brennt und somit Treibstoff verliert.
      * @return true oder false.
      */
-    val isBurning: Boolean
+    val istAmBrennen get() = mothership.isBurning
 
     /**
      * Gibt zurück, ob das Mutterschiff und somit der Schutzschild beschdigt ist.
      * @return true oder false.
      */
-    val isDamaged: Boolean
+    val istBeschaedigt get() = mothership.isDamaged
 
     /**
      * Gibt zurück ob der Marker gesetzt wurde.
      * @return true oder false.
      */
-    val isMarkerDeployed: Boolean
+    val istMarkierungGesetzt get() = mothership.isMarkerDeployed
 
     /**
      * Gibt zurück, ob das Mutterschiff maximal beschdigt wurde. (Das Schutzschild is komplett zerstrt)
      * @return true oder false.
      */
-    val isMaxDamaged: Boolean
+    val istMaximalBeschaedigt get() = mothership.isMaxDamaged
 
     /**
      * Gibt zurück ob ein Agent des eigenen Teams Hilfe benötigt.
      * @return true oder false.
      */
-    fun needSomeoneSupport(): Boolean
+    fun braucheUnterstuetzung() = mothership.needSomeoneSupport()
 }

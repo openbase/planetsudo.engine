@@ -1,20 +1,19 @@
 package org.openbase.planetsudo.level.levelobjects
 
-interface AgentBattleInterface<DE: AgentBasicInterfaceGermanWrapper> : AgentBasicInterface<DE> {
-
-    override val de get() = AgentBattleInterfaceGermanWrapper(this)
+open class AgentBattleInterfaceGermanWrapper(private val agent: AgentBattleInterface<*>)
+    : AgentBasicInterfaceGermanWrapper(agent) {
 
     /**
      * Zeigt an, ob der Agent einen feindlichen Agenten sieht.
      *
      * @return true oder false.
      */
-    val seeEnemyAgent: Boolean
+    val seheGegerischenAgent get() = agent.seeEnemyAgent
 
     /**
      * Liefert Informationen über einen feindlichen Agenten in der Nähe.
      */
-    val enemyAgent: GlobalAgentInterface<GlobalAgentInterfaceGermanWrapper>
+    val gegnerischerAgent get() = agent.enemyAgent
 
     /**
      * Der Agent dreht sich zu einem feindlichen Agenten in Sichtweite.
@@ -25,7 +24,7 @@ interface AgentBattleInterface<DE: AgentBasicInterfaceGermanWrapper> : AgentBasi
      * Aktionspunkte: 1
      * Treibstoff: 1
      */
-    fun turnToEnemyAgent(beta: Int = 0)
+    fun dreheZuGegnerischemAgent(beta: Int = 0) = agent.turnToEnemyAgent(beta)
 
     /**
      * Gehe zu einem feindlichen Agenten in der Nähe.
@@ -35,7 +34,7 @@ interface AgentBattleInterface<DE: AgentBasicInterfaceGermanWrapper> : AgentBasi
      * Aktionspunkte: 4 + (+ 4 wenn resource geladen)
      * Treibstoff: 1
      */
-    fun goToEnemyAgent()
+    fun geheZuGegnerischemAgent() = agent.goToEnemyAgent()
 
     /**
      * Der Befehl zum Bekämpfen eines feindlichen Agenten.
@@ -43,35 +42,35 @@ interface AgentBattleInterface<DE: AgentBasicInterfaceGermanWrapper> : AgentBasi
      * Aktionspunkte: 21
      * Treibstoff: 1
      */
-    fun fightWithEnemyAgent()
+    fun kaempfeMitGegnerischemAgent() = agent.fightWithEnemyAgent()
 
     /**
      * Der Befehl zum Angreifen des feindlichen Mutterschiffs.
      * Aktionspunkte: 30
      * Treibstoff: 1
      */
-    fun fightWithEnemyMothership()
+    fun kaempfeMitGegnerischemMutterschiff() = agent.fightWithEnemyMothership()
 
     /**
      * Gibt zurück, ob der Agent seine Mine noch trägt.
      *
      * @return true oder false.
      */
-    val hasMine: Boolean
+    val hatMine get() = agent.hasMine
 
     /**
      * Der Agent legt seine Mine an seiner aktuellen Position ab.
      * Aktionspunkte: 50
      * Treibstoff: 5
      */
-    fun deployMine()
+    fun legeMine() = agent.deployMine()
 
     /**
      * Zeigt an, ob der Agent das feindliche Mutterschiff sieht.
      *
      * @return true oder false.
      */
-    val seeEnemyMothership: Boolean
+    val seheGegnerischesMutterschiff get() = agent.seeEnemyMothership
 
     /**
      * Der Befehl zum Reparieren des eigenen Mutterschiffs. Hierzu muss sich der
@@ -79,5 +78,5 @@ interface AgentBattleInterface<DE: AgentBasicInterfaceGermanWrapper> : AgentBasi
      * Aktionspunkte: 30
      * Treibstoff: 1
      */
-    fun repairMothership()
+    fun reparireMutterschiff() = agent.repairMothership()
 }
