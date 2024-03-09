@@ -1,6 +1,6 @@
 package org.openbase.planetsudo.level.levelobjects
 
-class GlobalAgentProxy(val agent: GlobalAgentInterface) : GlobalAgentInterface {
+class GlobalAgentProxy(val agent: GlobalAgentInterface<out GlobalAgentInterfaceGermanWrapper>) : GlobalAgentInterface<GlobalAgentInterfaceGermanWrapper> {
     override val isAlive: Boolean
         get() = agent.isAlive
     override val isAtMothership: Boolean

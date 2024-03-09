@@ -14,22 +14,22 @@ import org.slf4j.LoggerFactory
 import java.beans.PropertyChangeEvent
 import java.util.*
 
-typealias StrategyLevel1 = AbstractStrategy<AgentBasicInterface>
-typealias StrategyLevel2 = AbstractStrategy<AgentBattleInterface>
-typealias StrategyLevel3 = AbstractStrategy<AgentSpecialInterface>
+typealias StrategyLevel1 = AbstractStrategy<AgentBasicInterface<AgentBasicInterfaceGermanWrapper>>
+typealias StrategyLevel2 = AbstractStrategy<AgentBattleInterface<AgentBattleInterfaceGermanWrapper>>
+typealias StrategyLevel3 = AbstractStrategy<AgentSpecialInterface<AgentSpecialInterfaceGermanWrapper>>
 typealias StrategyLevelLegacy = AbstractStrategy<AgentLegacyInterface>
 
 /**
  *
  * @author [Divine Threepwood](mailto:divine@openbase.org)
  */
-abstract class AbstractStrategy<LEVEL : GlobalAgentInterface>(val agent: LEVEL) : Runnable {
+abstract class AbstractStrategy<LEVEL : GlobalAgentInterface<*>>(val agent: AgentInterface) : Runnable {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     private val strategyOwner: Agent by lazy { agent as Agent }
     val mothership: MothershipInterface by lazy { strategyOwner.mothership }
-    val enemyAgent: GlobalAgentInterface get() = strategyOwner.enemyAgent
-    val teamAgent: GlobalAgentInterface get() = strategyOwner.teamAgent
+    val enemyAgent get() = strategyOwner.enemyAgent
+    val teamAgent get() = strategyOwner.teamAgent
     private val mothershipInternal: Mothership by lazy { strategyOwner.mothership }
     private val rules: TreeMap<Int, Rule> = TreeMap()
     private val gameManager: GameManager = GameManager.gameManager

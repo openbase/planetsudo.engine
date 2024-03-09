@@ -1,6 +1,8 @@
 package org.openbase.planetsudo.level.levelobjects
 
-interface GlobalAgentInterface {
+interface GlobalAgentInterface<DE : GlobalAgentInterfaceGermanWrapper> {
+
+    val de get() = GlobalAgentInterfaceGermanWrapper(this)
 
     /**
      * Gibt an, ob der Agent noch lebt.
