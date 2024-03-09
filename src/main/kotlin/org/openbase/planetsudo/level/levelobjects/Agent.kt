@@ -83,7 +83,7 @@ class Agent(
                 Point2D(
                     position,
                 ),
-                AGENT_VIEW_DISTANCE,
+                AGENT_VIEW_DISTANCE / 2,
             )
             return Ellipse2D.Double(
                 point.x - AGENT_VIEW_DISTANCE,
@@ -927,7 +927,7 @@ class Agent(
     companion object {
         const val MAX_TONIC: Int = 3
         const val AGENT_SIZE: Int = 50
-        const val AGENT_VIEW_DISTANCE: Int = AGENT_SIZE
+        const val AGENT_VIEW_DISTANCE: Int = AGENT_SIZE * 2
         const val DEFAULT_AGENT_SPEED: Int = 6
         const val SHIFT_EXTRA_SPEED: Int = 3
         const val SHIFT_TONIC_CONSUMPTION: Double = 0.01

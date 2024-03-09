@@ -62,6 +62,17 @@ class AgentPanel(resource: Agent, parentResourcePanel: MothershipPanel) :
             gl.drawLine(boundingBox.maxX.toInt(), boundingBox.maxY.toInt(), trans_x, trans_y)
         }
 
+        gl.color = Color.CYAN
+        gl.drawOval(resource.viewBounds.x.toInt(),resource.viewBounds.y.toInt(),resource.viewBounds.width.toInt(),resource.viewBounds.height.toInt())
+
+        gl.drawString("${resource.id}", boundingBox.maxX.toInt(), boundingBox.minY.toInt())
+        if(resource.isDisabled)
+            gl.drawString("__Disabled", boundingBox.maxX.toInt(), boundingBox.minY.toInt())
+        if(!resource.isAlive)
+            gl.drawString("___________Unalive", boundingBox.maxX.toInt(), boundingBox.minY.toInt())
+        if(!resource.hasFuel)
+            gl.drawString("____________________NoFuel", boundingBox.maxX.toInt(), boundingBox.minY.toInt())
+
         if (DEBUG && MainGUI.levelView == resource.levelView) {
             resource.levelView?.drawLevelView(
                 parentResourcePanel.boundingBox.x.toInt(),
