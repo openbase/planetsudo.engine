@@ -51,8 +51,8 @@ class Broken : AbstractLevel() {
         ResourceRandomRectangle(300, 800, 300, 500, 35, ResourceType.ExtremPoint),
         ResourceRandomRectangle(700, 0, 600, 2000, 30, ResourceType.ExtraMothershipFuel),
         ResourceRandomRectangle(700, 0, 600, 2000, 50, ResourceType.ExtraAgentFuel),
-        ResourceRandomRectangle(0, 500, 500, 1000, 15, ResourceType.Tonic),
-        ResourceRandomRectangle(1500, 500, 500, 1000, 15, ResourceType.Tonic),
+        ResourceRandomRectangle(0, 500, 500, 1000, 50, ResourceType.Tonic),
+        ResourceRandomRectangle(1500, 500, 500, 1000, 50, ResourceType.Tonic),
     )
 
     override fun loadLevelColor() = Color(74, 164, 94)

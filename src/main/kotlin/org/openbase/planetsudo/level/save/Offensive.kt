@@ -70,8 +70,8 @@ class Offensive : AbstractLevel() {
         ResourceRandomRectangle(1150, 1350, 300, 150, 8, ResourceType.ExtremPoint),
         ResourceRandomRectangle(1150, 800, 300, 200, 3, ResourceType.ExtraAgentFuel),
         ResourceRandomRectangle(1150, 800, 300, 200, 2, ResourceType.ExtraMothershipFuel),
-        ResourceRandomRectangle(1150, 300, 300, 150, 10, ResourceType.Tonic),
-        ResourceRandomRectangle(1150, 1350, 300, 150, 10, ResourceType.Tonic),
+        ResourceRandomRectangle(1150, 300, 300, 150, 20, ResourceType.Tonic),
+        ResourceRandomRectangle(1150, 1350, 300, 150, 20, ResourceType.Tonic),
     )
 
     override fun loadLevelColor() = Color(255, 153, 0)

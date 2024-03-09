@@ -44,10 +44,10 @@ class Arena : AbstractLevel() {
         ResourceRandomRectangle(400, 480, 200, 40, 10, ResourceType.ExtremPoint),
         ResourceRandomRectangle(0, 0, 1000, 1000, 10, ResourceType.ExtraAgentFuel),
         ResourceRandomRectangle(0, 0, 1000, 1000, 5, ResourceType.ExtraMothershipFuel),
-        ResourceRandomRectangle(0, 200, 100, 100, 5, ResourceType.Tonic),
-        ResourceRandomRectangle(900, 200, 100, 100, 5, ResourceType.Tonic),
-        ResourceRandomRectangle(0, 700, 100, 100, 5, ResourceType.Tonic),
-        ResourceRandomRectangle(900, 700, 100, 100, 5, ResourceType.Tonic),
+        ResourceRandomRectangle(0, 200, 100, 100, 10, ResourceType.Tonic),
+        ResourceRandomRectangle(900, 200, 100, 100, 10, ResourceType.Tonic),
+        ResourceRandomRectangle(0, 700, 100, 100, 10, ResourceType.Tonic),
+        ResourceRandomRectangle(900, 700, 100, 100, 10, ResourceType.Tonic),
     )
 
     override fun loadLevelColor() = Color(67, 167, 197)

@@ -87,8 +87,8 @@ class FrauenWG : AbstractLevel() {
         ResourceRandomRectangle(400, 1350, 300, 300, 50, ResourceType.ExtremPoint),
         ResourceRandomRectangle(1750, 0, 300, 300, 50, ResourceType.ExtremPoint),
         ResourceRandomRectangle(900, 550, 550, 550, 30, ResourceType.ExtraAgentFuel),
-        ResourceRandomRectangle(0, 0, 100, 1650, 15, ResourceType.Tonic),
-        ResourceRandomRectangle(2350, 0, 100, 1650, 15, ResourceType.Tonic),
+        ResourceRandomRectangle(0, 0, 100, 1650, 30, ResourceType.Tonic),
+        ResourceRandomRectangle(2350, 0, 100, 1650, 30, ResourceType.Tonic),
     )
 
     override fun loadLevelColor() = Color(0, 0, 0)
