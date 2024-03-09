@@ -109,7 +109,7 @@ open class AgentBasicInterfaceGermanWrapper(private val agent: AgentBasicInterfa
      *     ResourceType.Mine                ->    1 Tod
      *
      */
-    fun nehemRessourceAuf() = agent.pickupResource()
+    fun nehmeRessourceAuf() = agent.pickupResource()
 
     /**
      * Wenn der Agent eine Resource trägt, lässt er sie wieder fallen.
