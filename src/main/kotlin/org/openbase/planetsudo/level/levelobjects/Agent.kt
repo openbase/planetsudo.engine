@@ -308,23 +308,25 @@ class Agent(
             // move and apply new direction
             moveForward()
             direction.apply { directionController() }
+            if (level.collisionDetected(bounds)) { // Is collied with wall?
+                kill()
+            }
 
             // shift
             if (isShifting) {
                 (0..SHIFT_EXTRA_SPEED).forEach { _ ->
                     if (isCollisionDetected) {
-                        return@performAction
+                        kill()
                     }
                     if (consumeTonicForShifting()) {
                         // move and apply new direction
                         moveForward()
                         direction.apply { directionController() }
                     }
+                    if (level.collisionDetected(bounds)) { // Is collied with wall?
+                        kill()
+                    }
                 }
-            }
-
-            if (level.collisionDetected(bounds)) { // Is collied with wall?
-                kill()
             }
         }
     }
