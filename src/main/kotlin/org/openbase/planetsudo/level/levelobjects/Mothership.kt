@@ -332,7 +332,7 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
                 ?: throw CouldNotPerformException("No support possible.")
 
             // remove caller from support channel if support is possible
-            if (supportCaller.bounds.intersects(helper.viewBounds)) {
+            if (helper.viewBounds.intersects(supportCaller.bounds)) {
                 cancelSupport(supportCaller)
             }
             supportCaller.levelView?.updateObjectMovement()

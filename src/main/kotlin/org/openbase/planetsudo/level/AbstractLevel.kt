@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory
 import java.awt.Color
 import java.awt.Polygon
 import java.awt.geom.Rectangle2D
+import java.awt.geom.RectangularShape
 import java.beans.PropertyChangeEvent
 import java.beans.PropertyChangeListener
 import java.beans.PropertyChangeSupport
@@ -269,7 +270,7 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
             for (resource in resources) {
                 if (!resource.isUsed && resource.type == resourceType && (!resource.isOwned || resource.owner!!.team != agent.team) &&
                     resource.isSaveFor(agent) &&
-                    resource.bounds.intersects(agent.viewBounds)
+                    agent.viewBounds.intersects(resource.bounds)
                 ) {
                     return resource
                 }
@@ -302,16 +303,16 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
             resources.findAvailableResource(agent, agent.bounds)
         }
 
-    private fun List<Resource>.findAvailableResource(agent: Agent, area: Rectangle2D) = this
+    private fun List<Resource>.findAvailableResource(agent: Agent, area: RectangularShape) = this
         .filter { !it.isUsed }
         .filter { it.isNotOwnedByTeamMember(agent) }
-        .find { it.bounds.intersects(area) }
+        .find { area.intersects(it.bounds) }
 
     fun getAdversaryMothership(agent: Agent): Mothership? {
         for (mothership in motherships) {
             if ((mothership!!.team != agent.team) &&
                 !mothership.isMaxDamaged &&
-                mothership.bounds.intersects(agent.viewBounds)
+                agent.viewBounds.intersects(mothership.bounds)
             ) {
                 return mothership
             }
@@ -324,7 +325,7 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
         ?.agents
         ?.filter { enemyAgent -> enemyAgent.isVisible || agent.isCommander }
         ?.filter { enemyAgent -> enemyAgent.hasFuel && enemyAgent.isAlive }
-        ?.firstOrNull { enemyAgent -> enemyAgent.bounds.intersects(agent.viewBounds) }
+        ?.firstOrNull { enemyAgent -> agent.viewBounds.intersects(enemyAgent.bounds) }
 
     fun getTeamAgent(agent: Agent): Agent? {
         for (mothership in motherships) {
@@ -333,7 +334,7 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
                     if (teamAgent == agent) {
                         continue
                     }
-                    if (teamAgent.hasFuel && teamAgent.bounds.intersects(agent.viewBounds)) {
+                    if (teamAgent.hasFuel && agent.viewBounds.intersects(teamAgent.bounds)) {
                         return teamAgent
                     }
                 }
@@ -346,7 +347,7 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
         for (mothership in motherships) {
             if (mothership!!.team == agent.team) {
                 for (teamAgent in mothership.agents) {
-                    if (!teamAgent.hasFuel && teamAgent.bounds.intersects(agent.viewBounds)) {
+                    if (!teamAgent.hasFuel && agent.viewBounds.intersects(teamAgent.bounds)) {
                         return teamAgent
                     }
                 }

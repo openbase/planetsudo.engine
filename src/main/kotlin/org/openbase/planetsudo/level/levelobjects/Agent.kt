@@ -16,6 +16,7 @@ import org.openbase.planetsudo.level.levelobjects.Tower.TowerType
 import org.openbase.planetsudo.util.RandomGenerator
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.awt.geom.Ellipse2D
 import java.awt.geom.Rectangle2D
 import java.lang.reflect.Constructor
 import java.util.*
@@ -76,7 +77,7 @@ class Agent(
     var invisible = false
         private set
 
-    val viewBounds: Rectangle2D.Double
+    val viewBounds: Ellipse2D.Double
         get() {
             val point = direction.translate(
                 Point2D(
@@ -84,7 +85,7 @@ class Agent(
                 ),
                 AGENT_VIEW_DISTANCE,
             )
-            return Rectangle2D.Double(
+            return Ellipse2D.Double(
                 point.x - AGENT_VIEW_DISTANCE,
                 point.y - AGENT_VIEW_DISTANCE,
                 (AGENT_VIEW_DISTANCE * 2).toDouble(),
@@ -344,7 +345,7 @@ class Agent(
         }
         try {
             constructor.newInstance(this).also { strategy ->
-                Thread(strategy, name + "StrategyThread").start()
+                Thread(strategy, name + id + "StrategyThread").start()
             }
         } catch (ex: CouldNotPerformException) {
             LOGGER.error("Could not load strategy!", ex)
