@@ -115,5 +115,5 @@ open class AgentSpecialInterfaceGermanWrapper(private val agent: AgentSpecialInt
     /**
      * Der Agent läuft amok.
      */
-    fun töteDich() = agent.kill()
+    fun toeteDich() = agent.kill()
 }
