@@ -38,6 +38,16 @@ interface AgentBattleInterface<DE : AgentBasicInterfaceGermanWrapper> : AgentBas
     fun goToEnemyAgent()
 
     /**
+     * Gehe zu einem Teammitglied in der Nähe.
+     *
+     * Achtung: Der Agent bewegt sich erst geradeaus und dreht sich danach.
+     *
+     * Aktionspunkte: 4 + (+ 4 wenn resource geladen)
+     * Treibstoff: 1
+     */
+    fun goToTeamAgent()
+
+    /**
      * Der Befehl zum Bekämpfen eines feindlichen Agenten.
      * Wenn ein Agent einen anderen erfolgreich angreift, bekommt er eine Treibstoffbelohnung.
      * Aktionspunkte: 21

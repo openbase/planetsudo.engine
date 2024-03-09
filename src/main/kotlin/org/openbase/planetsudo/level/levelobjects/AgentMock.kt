@@ -83,6 +83,9 @@ class AgentMock : AgentInterface {
     override fun goToEnemyAgent() {
         error("Mock does not offer any functionality.")
     }
+    override fun goToTeamAgent() {
+        error("Mock does not offer any functionality.")
+    }
 
     override val hasFuel: Boolean
         get() {

@@ -748,6 +748,22 @@ class Agent(
         }
     }
 
+    override fun goToTeamAgent() {
+        try {
+            level.getTeamAgent(this)?.let { teamAgent ->
+                if (teamAgent.levelView!!.getDistance(this) > 0) {
+                    goTo { turnTo(position, teamAgent.position) }
+                } else {
+                    performAction {
+                        direction.turnTo(position, teamAgent.position)
+                    }
+                }
+            }
+        } catch (ex: CouldNotPerformException) {
+            ExceptionPrinter.printHistory(CouldNotPerformException("Could not goToTeamAgent!", ex), LOGGER)
+        }
+    }
+
     override fun goToEnemyAgent() {
         try {
             level.getAdversaryAgent(this)?.let { enemyAgent ->
