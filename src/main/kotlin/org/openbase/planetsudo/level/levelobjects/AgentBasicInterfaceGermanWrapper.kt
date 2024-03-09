@@ -1,15 +1,13 @@
 package org.openbase.planetsudo.level.levelobjects
 
-interface AgentBasicInterface<DE : AgentBasicInterfaceGermanWrapper> : GlobalAgentInterface<DE> {
-
-    override val de: AgentBasicInterfaceGermanWrapper get() = AgentBasicInterfaceGermanWrapper(this)
-
+open class AgentBasicInterfaceGermanWrapper(private val agent: AgentBasicInterface<*>) :
+    GlobalAgentInterfaceGermanWrapper(agent) {
     /**
      * Gibt an, ob ein Zusammenstoß mit einer Wand bevorsteht.
      *
      * @return true oder false.
      */
-    val isCollisionDetected: Boolean
+    val istKollisionErkannt get() = agent.isCollisionDetected
 
     /**
      * Gibt zurück, ob der Agent Bewegungsunfähig ist. (Zerstört
@@ -17,7 +15,7 @@ interface AgentBasicInterface<DE : AgentBasicInterfaceGermanWrapper> : GlobalAge
      *
      * @return true oder false.
      */
-    val isDisabled: Boolean
+    val istBewegungsunfaehig get() = agent.isDisabled
 
     /**
      * Der Agent übergibt die Resource dem Mutterschiff, sofern er sich am Mutterschiff befindet.
@@ -29,14 +27,14 @@ interface AgentBasicInterface<DE : AgentBasicInterfaceGermanWrapper> : GlobalAge
      *     ResourceType.ExtremPoint         ->   50 Punkte
      *     ResourceType.ExtraMothershipFuel ->   20 % Mutterschiff Treibstoff
      */
-    fun transferResourceToMothership()
+    fun uebertrageRessourceAnMutterschiff() = agent.transferResourceToMothership()
 
     /**
      * Der Agent bewegt sich geradeaus.
      * Aktionspunkte: 3 (+ 3 wenn resource geladen)
      * Treibstoff: 1
      */
-    fun go()
+    fun gehe() = agent.go()
 
     /**
      * Der Agent bewegt sich geradeaus und dreht sich anschließend um `beta`° nach links.
@@ -46,7 +44,7 @@ interface AgentBasicInterface<DE : AgentBasicInterfaceGermanWrapper> : GlobalAge
      *
      * @param beta Drehwinkel
      */
-    fun goLeft(beta: Int)
+    fun geheLinks(beta: Int) = agent.goLeft(beta)
 
     /**
      * Der Agent bewegt sich geradeaus und dreht sich anschließend um `beta`° nach rechts.
@@ -55,7 +53,7 @@ interface AgentBasicInterface<DE : AgentBasicInterfaceGermanWrapper> : GlobalAge
      *
      * @param beta Drehwinkel
      */
-    fun goRight(beta: Int)
+    fun geheRechts(beta: Int) = agent.goRight(beta)
 
     /**
      * Der Agent bewegt sich auf das Mutterschiff zu. Hierbei wird ein Weg
@@ -68,7 +66,7 @@ interface AgentBasicInterface<DE : AgentBasicInterfaceGermanWrapper> : GlobalAge
      * Aktionspunkte: 4 (+ 4 wenn resource geladen)
      * Treibstoff: 1
      */
-    fun goToMothership()
+    fun geheZuMutterschiff() = agent.goToMothership()
 
     /**
      * Der Agent bewegt sich zur Resource.
@@ -78,7 +76,7 @@ interface AgentBasicInterface<DE : AgentBasicInterfaceGermanWrapper> : GlobalAge
      * Aktionspunkte: 4 (+ 4 wenn resource geladen)
      * Treibstoff: 1
      */
-    fun goToResource()
+    fun geheZuRessource() = agent.goToResource()
 
     /**
      * Der Agent fordert so viel Treibstoff vom Mutterschiff an bis sein Tank zu `percent` Prozent voll ist.
@@ -87,7 +85,7 @@ interface AgentBasicInterface<DE : AgentBasicInterfaceGermanWrapper> : GlobalAge
      * zwischen 0 - 100.
      * Aktionspunkte: 20 + 2 für jeden getankten Treibstoff.
      */
-    fun orderFuel(percent: Int)
+    fun bestelleTreibstoff(percent: Int) = agent.orderFuel(percent)
 
     /**
      * Der Befehl zum Aufnehmen einer Resource, wenn der Agent sie anfassen kann.
@@ -111,14 +109,14 @@ interface AgentBasicInterface<DE : AgentBasicInterfaceGermanWrapper> : GlobalAge
      *     ResourceType.Mine                ->    1 Tod
      *
      */
-    fun pickupResource()
+    fun nehmeRessourceAuf() = agent.pickupResource()
 
     /**
      * Wenn der Agent eine Resource trägt, lässt er sie wieder fallen.
      * Treibstoff: 0
      * Aktionspunkte: 0
      */
-    fun releaseResource()
+    fun ressourceFallenLassen() = agent.releaseResource()
 
     /**
      * Der Agent dreht sich einmal im Kreis. Sieht er während der Drehung eine
@@ -126,7 +124,7 @@ interface AgentBasicInterface<DE : AgentBasicInterfaceGermanWrapper> : GlobalAge
      * Aktionspunkte: 10 pro 20° Drehung
      * Treibstoff: 1 pro 20° Drehung
      */
-    fun searchResources()
+    fun sucheRessource() = agent.searchResources()
 
     /**
      * Der Agent bewegt sich zur Resource vom angegebenen Typen.
@@ -137,33 +135,33 @@ interface AgentBasicInterface<DE : AgentBasicInterfaceGermanWrapper> : GlobalAge
      * Treibstoff: 1
      * @param resourceType
      */
-    fun goToResource(resourceType: Resource.ResourceType)
+    fun geheZuRessource(resourceType: Resource.ResourceType) = agent.goToResource(resourceType)
 
     /**
      * Zeigt an, ob der Agent eine Resource sehen kann.
      *
      * @return true oder false.
      */
-    val seeResource: Boolean
+    val seheRessource get() = agent.seeResource
 
     /**
      * Zeigt an, ob der Agent eine Resource vom angegebenen Typen sehen kann.
      *
      * @return true oder false.
      */
-    fun seeResource(resourceType: Resource.ResourceType): Boolean
+    fun seheRessource(resourceType: Resource.ResourceType): Boolean = agent.seeResource(resourceType)
 
     /**
      * Zeigt an, ob der Agent einen Agenten des eigenen Teams sieht.
      *
      * @return true oder false.
      */
-    val seeTeamAgent: Boolean
+    val seheTeamAgent get() = agent.seeTeamAgent
 
     /**
      * Liefert Informationen über einen Agenten deines Teams in der Nähe.
      */
-    val teamAgent: GlobalAgentInterface<GlobalAgentInterfaceGermanWrapper>
+    val teamAgent get() = agent.teamAgent
 
     /**
      * Zeigt an, ob sich in Sicht des Agenten ein Teammitglied ohne Treibstoff
@@ -171,7 +169,7 @@ interface AgentBasicInterface<DE : AgentBasicInterfaceGermanWrapper> : GlobalAge
      *
      * @return true oder false.
      */
-    fun seeLostTeamAgent(): Boolean
+    fun seheVerlorenenTeamAgent(): Boolean = agent.seeLostTeamAgent()
 
     /**
      * Der Agent spendet einem Teammitglied Treibstoff
@@ -182,14 +180,14 @@ interface AgentBasicInterface<DE : AgentBasicInterfaceGermanWrapper> : GlobalAge
      * Treibstoff: 1 + value
      * @param value Der zu spendende Treibstoff.
      */
-    fun spendTeamAgentFuel(value: Int)
+    fun spendeTreibstoffAnTeamAgent(value: Int) = agent.spendTeamAgentFuel(value)
 
     /**
      * Der Agent dreht sich um 180 Grad in die entgegengesetzte Richtung.
      * Aktionspunkte: 1
      * Treibstoff: 1
      */
-    fun turnAround()
+    fun dreheUm() = agent.turnAround()
 
     /**
      * Der Agent dreht sich um Winkel beta nach links.
@@ -198,14 +196,14 @@ interface AgentBasicInterface<DE : AgentBasicInterfaceGermanWrapper> : GlobalAge
      * Aktionspunkte: 1
      * Treibstoff: 1
      */
-    fun turnLeft(beta: Int)
+    fun dreheLinks(beta: Int) = agent.turnLeft(beta)
 
     /**
      * Der Agent dreht sich in eine zufällige Richtung.
      * Aktionspunkte: 1
      * Treibstoff: 1
      */
-    fun turnRandom()
+    fun dreheZufaellig() = agent.turnRandom()
 
     /**
      * Der Agent dreht sich in eine beliebige, zufällige Richtung mit dem
@@ -216,7 +214,7 @@ interface AgentBasicInterface<DE : AgentBasicInterfaceGermanWrapper> : GlobalAge
      *
      * @param opening
      */
-    fun turnRandom(opening: Int)
+    fun dreheZufaellig(opening: Int) = agent.turnRandom(opening)
 
     /**
      * Der Agent dreht sich um Winkel `beta`° nach rechts.
@@ -225,7 +223,7 @@ interface AgentBasicInterface<DE : AgentBasicInterfaceGermanWrapper> : GlobalAge
      * Aktionspunkte: 1
      * Treibstoff: 1
      */
-    fun turnRight(beta: Int)
+    fun dreheRechts(beta: Int) = agent.turnRight(beta)
 
     /**
      * Der Agent dreht sich zu einer nahen Resource.
@@ -234,7 +232,7 @@ interface AgentBasicInterface<DE : AgentBasicInterfaceGermanWrapper> : GlobalAge
      * Aktionspunkte: 1
      * Treibstoff: 1
      */
-    fun turnToResource()
+    fun dreheZuRessource() = agent.turnToResource()
 
     /**
      * Der Agent dreht sich zu einer nahen Resource eines bestimmten Typs.
@@ -244,5 +242,5 @@ interface AgentBasicInterface<DE : AgentBasicInterfaceGermanWrapper> : GlobalAge
      * Treibstoff: 1
      * @param resourceType Der Typ der Resource
      */
-    fun turnToResource(resourceType: Resource.ResourceType)
+    fun dreheZuRessource(resourceType: Resource.ResourceType) = agent.turnToResource(resourceType)
 }

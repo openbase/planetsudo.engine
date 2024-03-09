@@ -58,8 +58,8 @@ class Agent(
     private var helpLevelObjectOld: AbstractLevelObject? = null
     private var enemyObject: AbstractLevelObject? = null
     private var catchedfuel = 0
-    private var lastEnemyAgent: GlobalAgentInterface? = null
-    private var lastTeamAgent: GlobalAgentInterface? = null
+    private var lastEnemyAgent: GlobalAgentInterface<out GlobalAgentInterfaceGermanWrapper>? = null
+    private var lastTeamAgent: GlobalAgentInterface<out GlobalAgentInterfaceGermanWrapper>? = null
 
     val mothership: Mothership
     val team: Team
@@ -638,7 +638,7 @@ class Agent(
             try {
                 if (useFuel()) {
                     val resourceToCollect = level.getTouchableResource(this)
-                    if (resourceToCollect != null && resourceToCollect.type != ResourceType.ExtraAgentFuel) {
+                    if (resourceToCollect != null && !resourceToCollect.type.isConsumable) {
                         releaseResource()
                     }
                     if (resourceToCollect != null && resourceToCollect.setBusy(team)) {
@@ -893,13 +893,13 @@ class Agent(
         }
     }
 
-    override val enemyAgent: GlobalAgentInterface
+    override val enemyAgent: GlobalAgentInterface<GlobalAgentInterfaceGermanWrapper>
         get() = GlobalAgentProxy(
             lastEnemyAgent
                 ?: error("No adversary agent seen!"),
         )
 
-    override val teamAgent: GlobalAgentInterface
+    override val teamAgent: GlobalAgentInterface<GlobalAgentInterfaceGermanWrapper>
         get() = GlobalAgentProxy(
             lastTeamAgent
                 ?: error("No team agent seen!"),
