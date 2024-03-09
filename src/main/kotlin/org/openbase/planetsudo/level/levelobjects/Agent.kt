@@ -463,7 +463,9 @@ class Agent(
     }
 
     override fun releaseResource() {
-        performAction(1) {
+        // this should never consume APs since an agent that has no fuel does not get APs but still needs to be able
+        // to release the resource
+        performAction {
             if (isCarryingResource || resource != null) {
                 resource?.release()
                 resource = null

@@ -320,7 +320,7 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
     }
 
     fun getAdversaryAgent(agent: Agent): Agent? = motherships
-        .firstOrNull { mothership -> mothership?.team != agent.team }
+        .find { mothership -> mothership?.team != agent.team }
         ?.agents
         ?.filter { enemyAgent -> enemyAgent.isVisible || agent.isCommander }
         ?.filter { enemyAgent -> enemyAgent.hasFuel && enemyAgent.isAlive }
