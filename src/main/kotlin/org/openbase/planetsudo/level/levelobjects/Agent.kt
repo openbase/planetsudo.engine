@@ -638,7 +638,7 @@ class Agent(
             try {
                 if (useFuel()) {
                     val resourceToCollect = level.getTouchableResource(this)
-                    if (resourceToCollect != null && resourceToCollect.type != ResourceType.ExtraAgentFuel) {
+                    if (resourceToCollect != null && !resourceToCollect.type.isConsumable) {
                         releaseResource()
                     }
                     if (resourceToCollect != null && resourceToCollect.setBusy(team)) {

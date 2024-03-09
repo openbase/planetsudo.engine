@@ -284,20 +284,12 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
      * @param agent
      * @return
      */
-    fun getCloseResource(agent: Agent): Resource? {
+    fun getCloseResource(agent: Agent): Resource? =
         synchronized(RESOURCES_LOCK) {
-            for (resource in resources) {
-                if (!resource.isUsed &&
-                    (!resource.isOwned || (resource.owner!!.team != agent.team || !resource.owner!!.hasFuel)) &&
-                    resource.isSaveFor(agent) &&
-                    resource.bounds.intersects(agent.viewBounds)
-                ) {
-                    return resource
-                }
-            }
+            resources
+                .filter { it.isSaveFor(agent) }
+                .findAvailableResource(agent, agent.viewBounds)
         }
-        return null
-    }
 
     /**
      * WARNING: method returns null in case of no touchable resource.
@@ -305,18 +297,15 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
      * @param agent
      * @return
      */
-    fun getTouchableResource(agent: Agent): Resource? {
+    fun getTouchableResource(agent: Agent): Resource? =
         synchronized(RESOURCES_LOCK) {
-            for (resource in resources) {
-                if (!resource.isUsed && resource.bounds.intersects(agent.bounds) &&
-                    (resource.owner == null || resource.owner!!.team != agent.team)
-                ) {
-                    return resource
-                }
-            }
+            resources.findAvailableResource(agent, agent.bounds)
         }
-        return null
-    }
+
+    private fun List<Resource>.findAvailableResource(agent: Agent, area: Rectangle2D) = this
+        .filter { !it.isUsed }
+        .filter { it.isNotOwnedByTeamMember(agent) }
+        .find { it.bounds.intersects(area) }
 
     fun getAdversaryMothership(agent: Agent): Mothership? {
         for (mothership in motherships) {
