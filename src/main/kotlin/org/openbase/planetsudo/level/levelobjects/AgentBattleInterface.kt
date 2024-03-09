@@ -36,7 +36,12 @@ interface AgentBattleInterface : AgentBasicInterface {
     fun goToEnemyAgent()
 
     /**
-     * Gehe zu einem
+     * Gehe zu einem Teammitglied in der Nähe.
+     *
+     * Achtung: Der Agent bewegt sich erst geradeaus und dreht sich danach.
+     *
+     * Aktionspunkte: 4 + (+ 4 wenn resource geladen)
+     * Treibstoff: 1
      */
     fun goToTeamAgent()
 
