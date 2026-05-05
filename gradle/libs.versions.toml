@@ -4,7 +4,7 @@
 [versions]
 commons-io-commons-io = "2.4"
 org-jdesktop-beansbinding = "1.2.1"
-org-openbase-jul = "3.6.0"
+org-openbase-jul = "3.7.4"
 tomcat-tomcat-util = "3.2.1"
 junit = "1.9.22"
 mockk = "1.13.9"

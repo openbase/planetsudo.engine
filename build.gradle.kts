@@ -22,11 +22,11 @@ description =
 val releaseVersion = !version.toString().endsWith("-SNAPSHOT")
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(21)
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
     targetCompatibility = sourceCompatibility
     withSourcesJar()
     withJavadocJar()
@@ -151,10 +151,6 @@ signing {
 }
 
 tasks.javadoc {
-    if (JavaVersion.current().isJava9Compatible) {
-        (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
-    }
-
     include("**/AgentBasicInterface.kt", "**/MothershipInterface.kt")
 }
 
