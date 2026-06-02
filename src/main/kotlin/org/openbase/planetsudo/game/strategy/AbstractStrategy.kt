@@ -5,7 +5,6 @@
 package org.openbase.planetsudo.game.strategy
 
 import org.openbase.jps.core.JPService
-import org.openbase.jps.preset.JPTestMode
 import org.openbase.planetsudo.game.GameManager
 import org.openbase.planetsudo.game.SwatTeam
 import org.openbase.planetsudo.game.SwatTeam.*
