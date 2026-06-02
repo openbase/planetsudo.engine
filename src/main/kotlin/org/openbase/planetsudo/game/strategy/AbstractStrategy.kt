@@ -4,6 +4,7 @@
  */
 package org.openbase.planetsudo.game.strategy
 
+import org.openbase.jps.core.JPService
 import org.openbase.planetsudo.game.GameManager
 import org.openbase.planetsudo.game.SwatTeam
 import org.openbase.planetsudo.game.SwatTeam.*
@@ -42,7 +43,7 @@ abstract class AbstractStrategy<LEVEL : GlobalAgentInterface<*>>(val agent: Agen
     init {
         this.agentCount = loadAgentCount()
 
-        if (agent is Agent) {
+        if (agent is Agent && !JPService.testMode()) {
             this.loadRules()
             this.loadSwatTeams()
             connectToMothership()

@@ -3,16 +3,21 @@ package org.openbase.planetsudo.game.strategy
 import io.mockk.mockk
 import io.mockk.verify
 import org.amshove.kluent.`should be equal to`
+import org.openbase.jps.core.JPService
 import org.openbase.planetsudo.game.SwatTeam
-import org.openbase.planetsudo.level.levelobjects.AgentMock
+import org.openbase.planetsudo.level.levelobjects.Agent
 import kotlin.test.Test
 
 class AbstractStrategyTest {
 
+    init {
+        JPService.setupJUnitTestMode()
+    }
+
     @Test
     fun `rule dsl should assign rule to all`() {
         var rule: Rule? = null
-        val agent = mockk<AgentMock>(relaxed = true)
+        val agent = mockk<Agent>(relaxed = true)
         var condition = false
         object : StrategyLevelLegacy(agent) {
             init {
@@ -25,20 +30,22 @@ class AbstractStrategyTest {
             }
         }
 
-        rule!!.swatTeams.size `should be equal to` 1
-        rule!!.swatTeams.first() `should be equal to` SwatTeam.ALL
-        condition = true
-        rule!!.constraint() `should be equal to` true
-        condition = false
-        rule!!.constraint() `should be equal to` false
-        rule!!.action()
+        rule!!.run {
+            swatTeams.size `should be equal to` 1
+            swatTeams.first() `should be equal to` SwatTeam.ALL
+            condition = true
+            constraint() `should be equal to` true
+            condition = false
+            constraint() `should be equal to` false
+            action()
+        }
         verify { agent.turnRandom() }
     }
 
     @Test
     fun `rule dsl should assign rule to commander`() {
         var rule: Rule? = null
-        val agent = mockk<AgentMock>(relaxed = true)
+        val agent = mockk<Agent>(relaxed = true)
         var condition = false
         object : StrategyLevelLegacy(agent) {
             init {
@@ -51,20 +58,22 @@ class AbstractStrategyTest {
             }
         }
 
-        rule!!.swatTeams.size `should be equal to` 1
-        rule!!.swatTeams.first() `should be equal to` SwatTeam.COMMANDER
-        condition = true
-        rule!!.constraint() `should be equal to` true
-        condition = false
-        rule!!.constraint() `should be equal to` false
-        rule!!.action()
+        rule!!.run {
+            swatTeams.size `should be equal to` 1
+            swatTeams.first() `should be equal to` SwatTeam.COMMANDER
+            condition = true
+            constraint() `should be equal to` true
+            condition = false
+            constraint() `should be equal to` false
+            action()
+        }
         verify { agent.cancelSupport() }
     }
 
     @Test
     fun `rule dsl should assign rule to swat alpha`() {
         var rule: Rule? = null
-        val agent = mockk<AgentMock>(relaxed = true)
+        val agent = mockk<Agent>(relaxed = true)
         var condition = false
         object : StrategyLevelLegacy(agent) {
             init {
@@ -77,20 +86,22 @@ class AbstractStrategyTest {
             }
         }
 
-        rule!!.swatTeams.size `should be equal to` 1
-        rule!!.swatTeams.first() `should be equal to` SwatTeam.ALPHA
-        condition = true
-        rule!!.constraint() `should be equal to` true
-        condition = false
-        rule!!.constraint() `should be equal to` false
-        rule!!.action()
+        rule!!.run {
+            swatTeams.size `should be equal to` 1
+            swatTeams.first() `should be equal to` SwatTeam.ALPHA
+            condition = true
+            constraint() `should be equal to` true
+            condition = false
+            constraint() `should be equal to` false
+            action()
+        }
         verify { agent.turnAround() }
     }
 
     @Test
     fun `rule dsl should assign rule not to commander`() {
         var rule: Rule? = null
-        val agent = mockk<AgentMock>(relaxed = true)
+        val agent = mockk<Agent>(relaxed = true)
         var condition = false
         object : StrategyLevelLegacy(agent) {
             init {
@@ -103,13 +114,15 @@ class AbstractStrategyTest {
             }
         }
 
-        rule!!.swatTeams.size `should be equal to` 2
-        rule!!.swatTeams.sorted() `should be equal to` setOf(SwatTeam.NOT_COMMANDER, SwatTeam.ALL).sorted()
-        condition = true
-        rule!!.constraint() `should be equal to` true
-        condition = false
-        rule!!.constraint() `should be equal to` false
-        rule!!.action()
+        rule!!.run {
+            swatTeams.size `should be equal to` 2
+            swatTeams.sorted() `should be equal to` setOf(SwatTeam.NOT_COMMANDER, SwatTeam.ALL).sorted()
+            condition = true
+            constraint() `should be equal to` true
+            condition = false
+            constraint() `should be equal to` false
+            action()
+        }
         verify { agent.requestSupport() }
     }
 }
