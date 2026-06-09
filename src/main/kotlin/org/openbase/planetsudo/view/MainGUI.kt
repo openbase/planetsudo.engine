@@ -66,6 +66,12 @@ class MainGUI : JFrame, PropertyChangeListener {
     private val cardLayout: CardLayout? = null
     private var fullscreenMode = false
 
+    // track previous bounds so we can restore after fake-fullscreen on macOS
+    private var previousBounds: java.awt.Rectangle? = null
+    private var wasFullscreen = false
+
+    private fun isMacOs(): Boolean = System.getProperty("os.name").lowercase().contains("mac")
+
     fun initialize() {
         SwingUtilities.invokeLater {
             initComponents()
@@ -86,47 +92,82 @@ class MainGUI : JFrame, PropertyChangeListener {
     fun setFullScreenMode(enabled: Boolean) {
         fullscreenMode = enabled
         LOGGER.info("setFullscreenMode $fullscreenMode")
-        isVisible = false
-        if (fullscreenMode) {
-            // setSize(guiController.getVisualFeedbackConfig().getFrameDimension());
-            // setSize(screenDim);
-            setLocation(0, 0)
-            if (isDisplayable) dispose()
-            isUndecorated = true
 
-            val env = GraphicsEnvironment.getLocalGraphicsEnvironment()
-            val device = env.defaultScreenDevice
+        // All window operations must run on EDT. initialize() already calls this on EDT but be defensive.
+        SwingUtilities.invokeLater {
+            isVisible = false
 
-            try {
-                device.fullScreenWindow = this // Setzen des FullScreenmodus.
-                this.validate()
-                // fullscreenModeMenuItem.setText("Leave FullScreen Mode");
-            } catch (ex: CouldNotPerformException) {
-                LOGGER.error("no Fullscreen.", ex)
-                device.fullScreenWindow = null
+            if (fullscreenMode) {
+                if (wasFullscreen) {
+                    // already fullscreen
+                } else {
+                    wasFullscreen = true
+                    // save previous bounds so we can restore later
+                    previousBounds = this.bounds
+
+                    if (isMacOs()) {
+                        // fake fullscreen on macOS: borderless window sized to the screen bounds
+                        if (isDisplayable) dispose()
+                        isUndecorated = true
+                        extendedState = JFrame.NORMAL
+
+                        val bounds = this.graphicsConfiguration.bounds
+                        this.bounds = bounds
+
+                        isVisible = true
+                        toFront()
+                        requestFocus()
+                    } else {
+                        val env = GraphicsEnvironment.getLocalGraphicsEnvironment()
+                        val device = env.defaultScreenDevice
+
+                        try {
+                            if (device.isFullScreenSupported) {
+                                device.fullScreenWindow = this
+                            } else {
+                                if (isDisplayable) dispose()
+                                isUndecorated = true
+                                extendedState = JFrame.MAXIMIZED_BOTH
+                                isVisible = true
+                            }
+                        } catch (ex: CouldNotPerformException) {
+                            LOGGER.error("no Fullscreen.", ex)
+                            device.fullScreenWindow = null
+                        }
+                    }
+                }
+            } else {
+                // exit fullscreen
+                if (!wasFullscreen) {
+                    // nothing to do
+                } else {
+                    wasFullscreen = false
+
+                    // leaving fullscreen on macOS: restore undecorated state and previous bounds
+                    if (isMacOs()) {
+                        if (isDisplayable) dispose()
+                        isUndecorated = false
+                        extendedState = JFrame.NORMAL
+                        previousBounds?.let { this.bounds = it }
+                        isVisible = true
+                        toFront()
+                        requestFocus()
+                    } else {
+                        val env = GraphicsEnvironment.getLocalGraphicsEnvironment()
+                        val device = env.defaultScreenDevice
+                        try {
+                            device.fullScreenWindow = null
+                        } catch (ex: CouldNotPerformException) {
+                            LOGGER.error("no Fullscreen.", ex)
+                            device.fullScreenWindow = null
+                        }
+                    }
+                }
             }
-        } else {
-            // pack();
-            setLocation(X_LOCATION, Y_LOCATION)
-            size = screenDim
-            extendedState = this.extendedState or MAXIMIZED_BOTH
 
-            if (isDisplayable) dispose()
-            isUndecorated = false
-
-            val env = GraphicsEnvironment.getLocalGraphicsEnvironment()
-            val device = env.defaultScreenDevice
-
-            try {
-                device.fullScreenWindow = null // Setzen des FullScreenmodus.
-                // fullscreenModeMenuItem.setText("Enter FullScreen Mode");
-            } catch (ex: CouldNotPerformException) {
-                LOGGER.error("no Fullscreen.", ex)
-                device.fullScreenWindow = null
-            }
+            validate()
+            isVisible = true
         }
-        validate()
-        isVisible = true
     }
 
     fun fullscreenModeEnabled(): Boolean {
@@ -404,6 +445,26 @@ class MainGUI : JFrame, PropertyChangeListener {
         )
 
         pack()
+//        // register ESC to exit fullscreen reliably (works even if menu is not reachable)
+//        try {
+//            val im = rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+//            im.put(
+//                KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0),
+//                "exitFullscreen",
+//            )
+//            rootPane.actionMap.put(
+//                "exitFullscreen",
+//                object : AbstractAction() {
+//                    override fun actionPerformed(e: ActionEvent?) {
+//                        // leave fullscreen and update checkbox state
+//                        setFullScreenMode(false)
+//                        jCheckBoxMenuItem1?.isSelected = false
+//                    }
+//                },
+//            )
+//        } catch (t: Throwable) {
+//            LOGGER.warn("Could not register ESC fullscreen shortcut", t)
+//        }
     } // </editor-fold>//GEN-END:initComponents
 
     private fun exitMenuItemActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_exitMenuItemActionPerformed
