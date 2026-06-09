@@ -445,26 +445,6 @@ class MainGUI : JFrame, PropertyChangeListener {
         )
 
         pack()
-//        // register ESC to exit fullscreen reliably (works even if menu is not reachable)
-//        try {
-//            val im = rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-//            im.put(
-//                KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0),
-//                "exitFullscreen",
-//            )
-//            rootPane.actionMap.put(
-//                "exitFullscreen",
-//                object : AbstractAction() {
-//                    override fun actionPerformed(e: ActionEvent?) {
-//                        // leave fullscreen and update checkbox state
-//                        setFullScreenMode(false)
-//                        jCheckBoxMenuItem1?.isSelected = false
-//                    }
-//                },
-//            )
-//        } catch (t: Throwable) {
-//            LOGGER.warn("Could not register ESC fullscreen shortcut", t)
-//        }
     } // </editor-fold>//GEN-END:initComponents
 
     private fun exitMenuItemActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_exitMenuItemActionPerformed
