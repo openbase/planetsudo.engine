@@ -78,10 +78,10 @@ class MainGUI : JFrame, PropertyChangeListener {
             configurationPanel = ConfigurationPanel()
             levelLoadingPanel = LevelLoadingPanel()
             gamePanel = GamePanel()
-            mainPanel!!.add(configurationPanel, CONFIGURATION_PANEL)
-            mainPanel!!.add(levelLoadingPanel, LOADING_PANEL)
-            mainPanel!!.add(gamePanel, GAME_PANEL)
-            (mainPanel!!.layout as CardLayout).show(mainPanel, CONFIGURATION_PANEL)
+            mainPanel?.add(configurationPanel, CONFIGURATION_PANEL)
+            mainPanel?.add(levelLoadingPanel, LOADING_PANEL)
+            mainPanel?.add(gamePanel, GAME_PANEL)
+            (mainPanel?.layout as CardLayout).show(mainPanel, CONFIGURATION_PANEL)
             setFullScreenMode(DEFAULT_FULLSCREENMODE)
             guiController!!.addPropertyChangeListener(instance!!)
             displayTeamPanelCheckBoxMenuItem!!.isSelected = gamePanel!!.isTeamPanelDisplayed
@@ -142,25 +142,26 @@ class MainGUI : JFrame, PropertyChangeListener {
                     // nothing to do
                 } else {
                     wasFullscreen = false
+                    setLocation(X_LOCATION, Y_LOCATION)
+                    size = screenDim
 
                     // leaving fullscreen on macOS: restore undecorated state and previous bounds
                     if (isMacOs()) {
                         if (isDisplayable) dispose()
                         isUndecorated = false
-                        extendedState = JFrame.NORMAL
-                        previousBounds?.let { this.bounds = it }
+
+                        previousBounds?.let {
+                            extendedState = NORMAL
+                            this.bounds = it
+                        } ?: run { extendedState = MAXIMIZED_BOTH }
                         isVisible = true
                         toFront()
                         requestFocus()
                     } else {
-                        val env = GraphicsEnvironment.getLocalGraphicsEnvironment()
-                        val device = env.defaultScreenDevice
-                        try {
-                            device.fullScreenWindow = null
-                        } catch (ex: CouldNotPerformException) {
-                            LOGGER.error("no Fullscreen.", ex)
-                            device.fullScreenWindow = null
-                        }
+                        GraphicsEnvironment
+                            .getLocalGraphicsEnvironment()
+                            .defaultScreenDevice
+                            .fullScreenWindow = null
                     }
                 }
             }
@@ -363,7 +364,7 @@ class MainGUI : JFrame, PropertyChangeListener {
         fileMenu!!.add(stopMenuItem)
         fileMenu!!.add(jSeparator2)
 
-        exitMenuItem!!.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK)
+        exitMenuItem!!.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK)
         exitMenuItem!!.text = "Beenden"
         exitMenuItem!!.addActionListener { evt -> exitMenuItemActionPerformed(evt) }
         fileMenu!!.add(exitMenuItem)
@@ -401,12 +402,12 @@ class MainGUI : JFrame, PropertyChangeListener {
 
         toolMenu!!.text = "Einstellungen"
 
-        jMenuItem2!!.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK)
+        jMenuItem2!!.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK)
         jMenuItem2!!.text = "Spielgeschwindigkeit"
         jMenuItem2!!.addActionListener { evt -> jMenuItem2ActionPerformed(evt) }
         toolMenu!!.add(jMenuItem2)
 
-        createTeamMenuItem!!.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.CTRL_MASK)
+        createTeamMenuItem!!.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.CTRL_DOWN_MASK)
         createTeamMenuItem!!.text = "Team Erstellen"
         createTeamMenuItem!!.addActionListener { evt -> createTeamMenuItemActionPerformed(evt) }
         toolMenu!!.add(createTeamMenuItem)
@@ -437,12 +438,14 @@ class MainGUI : JFrame, PropertyChangeListener {
         contentPane.layout = layout
         layout.setHorizontalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE.toInt()),
+                .addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, X_DIM, Short.MAX_VALUE.toInt()),
         )
         layout.setVerticalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE.toInt()),
+                .addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, Y_DIM, Short.MAX_VALUE.toInt()),
         )
+
+        minimumSize = Dimension(X_DIM, Y_DIM)
 
         pack()
     } // </editor-fold>//GEN-END:initComponents
@@ -546,8 +549,8 @@ class MainGUI : JFrame, PropertyChangeListener {
         var instance: MainGUI? = null
         const val X_LOCATION: Int = 0
         const val Y_LOCATION: Int = 0
-        const val X_DIM: Int = 800
-        const val Y_DIM: Int = 600
+        const val X_DIM: Int = 1250
+        const val Y_DIM: Int = 900
         const val DEFAULT_FULLSCREENMODE: Boolean = false
 
         var levelView: LevelView? = null
