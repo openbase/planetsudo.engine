@@ -393,7 +393,7 @@ class MainGUI : JFrame, PropertyChangeListener {
         editMenu!!.add(jMenu2)
         editMenu!!.add(jSeparator1)
 
-        jCheckBoxMenuItem1!!.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0)
+        jCheckBoxMenuItem1!!.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.ALT_DOWN_MASK)
         jCheckBoxMenuItem1!!.text = "Vollbild"
         jCheckBoxMenuItem1!!.addActionListener { evt -> jCheckBoxMenuItem1ActionPerformed(evt) }
         editMenu!!.add(jCheckBoxMenuItem1)
