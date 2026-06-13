@@ -111,11 +111,11 @@ class ConfigurationPanel : JPanel() {
             // restore selection
             if (teamAComboBox!!.itemCount > 0) {
                 (
-                        selectTeam
-                            ?: teamAComboBox!!.getItems()
-                                .filterNotNull()
-                                .find { it.name == stateProperties.getProperty(PROPERTY_SELECTED_TEAM_A, "") }
-                        )
+                    selectTeam
+                        ?: teamAComboBox!!.getItems()
+                            .filterNotNull()
+                            .find { it.name == stateProperties.getProperty(PROPERTY_SELECTED_TEAM_A, "") }
+                    )
                     ?.also { teamAComboBox!!.selectedItem = it }
                     ?: run { teamAComboBox!!.selectedIndex = 0 }
             }
