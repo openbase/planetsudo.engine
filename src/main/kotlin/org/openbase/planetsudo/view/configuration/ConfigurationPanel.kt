@@ -36,6 +36,10 @@ import java.util.*
 import javax.swing.*
 import javax.swing.border.BevelBorder
 import javax.swing.border.SoftBevelBorder
+import javax.swing.event.ListSelectionEvent
+import javax.swing.event.PopupMenuEvent
+import javax.swing.event.PopupMenuListener
+import javax.swing.plaf.basic.ComboPopup
 import kotlin.random.Random
 
 /**
@@ -54,8 +58,9 @@ class ConfigurationPanel : JPanel() {
             levelChooserComboBox!!.addItem(levelName)
         }
         if (levelChooserComboBox!!.itemCount >= 0) {
-            val index = stateProperties.getProperty(PROPERTY_SELECTED_LEVEL, "0").toInt()
-            levelChooserComboBox!!.selectedIndex = if (index < levelChooserComboBox!!.itemCount) index else 0
+            stateProperties.getProperty(PROPERTY_SELECTED_LEVEL, "0").toIntOrNull()?.let { index ->
+                levelChooserComboBox!!.selectedIndex = if (index < levelChooserComboBox!!.itemCount) index else 0
+            }
         }
         levelChooserComboBox!!.isEnabled = true
         randomLevelButton!!.isEnabled = true
@@ -106,11 +111,11 @@ class ConfigurationPanel : JPanel() {
             // restore selection
             if (teamAComboBox!!.itemCount > 0) {
                 (
-                    selectTeam
-                        ?: teamAComboBox!!.getItems()
-                            .filterNotNull()
-                            .find { it.name == stateProperties.getProperty(PROPERTY_SELECTED_TEAM_A, "") }
-                    )
+                        selectTeam
+                            ?: teamAComboBox!!.getItems()
+                                .filterNotNull()
+                                .find { it.name == stateProperties.getProperty(PROPERTY_SELECTED_TEAM_A, "") }
+                        )
                     ?.also { teamAComboBox!!.selectedItem = it }
                     ?: run { teamAComboBox!!.selectedIndex = 0 }
             }
@@ -347,6 +352,33 @@ class ConfigurationPanel : JPanel() {
         levelChooserComboBox!!.setMaximumRowCount(20)
         levelChooserComboBox!!.setModel(DefaultComboBoxModel())
         levelChooserComboBox!!.addActionListener { _ -> levelChooserComboBoxActionPerformed() }
+        levelChooserComboBox!!.addPopupMenuListener(
+            object : PopupMenuListener {
+                override fun popupMenuWillBecomeVisible(e: PopupMenuEvent?) {
+                    val child: Any? = levelChooserComboBox!!.getAccessibleContext().getAccessibleChild(0)
+
+                    if (child is ComboPopup) {
+                        child.list.addListSelectionListener { event: ListSelectionEvent? ->
+                            if (!event!!.getValueIsAdjusting()) {
+                                child.list.getSelectedValue()?.toString()?.let { levelName ->
+                                    setLevelPreview(levelName, levelIndex = child.list.selectedIndex)
+                                }
+                            }
+                        }
+                    }
+                }
+
+                override fun popupMenuWillBecomeInvisible(e: PopupMenuEvent?) {
+                    levelChooserComboBox?.selectedItem?.toString()?.let { levelName ->
+                        levelChooserComboBox?.selectedIndex?.let { levelIndex ->
+                            setLevelPreview(levelName = levelName, levelIndex = levelIndex)
+                        }
+                    }
+                }
+
+                override fun popupMenuCanceled(e: PopupMenuEvent?) {}
+            },
+        )
 
         randomLevelButton!!.text = "Zufällig"
         randomLevelButton!!.addActionListener { _ -> randomLevelButtonActionPerformed() }
@@ -641,22 +673,9 @@ class ConfigurationPanel : JPanel() {
             @Throws(Exception::class)
             override fun doInBackground(): Any? {
                 synchronized(levelChooserComboBox!!) {
-                    if (levelChooserComboBox!!.selectedItem != null) {
-                        try {
-                            if (levelChooserComboBox!!.isEnabled) {
-                                stateProperties.setProperty(
-                                    PROPERTY_SELECTED_LEVEL,
-                                    levelChooserComboBox!!.selectedIndex.toString(),
-                                )
-                            }
-                            val level = getInstance()!!
-                                .loadLevel(levelChooserComboBox!!.selectedItem!!.toString())
-                            gameManager.setLevel(level!!)
-                            levelPreviewDisplayPanel!!.setLevel(level)
-                            levelPreviewDisplayPanel!!.isOpaque = true
-                            levelPreviewDisplayPanel!!.background = level.color
-                        } catch (ex: CouldNotPerformException) {
-                            logger.error("Could not update level preview!", ex)
+                    levelChooserComboBox?.selectedItem?.toString()?.let { selectedItem ->
+                        levelChooserComboBox?.selectedIndex?.let { selectedIndex ->
+                            setLevelPreview(selectedItem, selectedIndex)
                         }
                     }
                 }
@@ -664,6 +683,25 @@ class ConfigurationPanel : JPanel() {
             }
         }.execute()
     } // GEN-LAST:event_levelChooserComboBoxActionPerformed
+
+    private fun setLevelPreview(levelName: String, levelIndex: Int) {
+        try {
+            if (levelChooserComboBox!!.isEnabled) {
+                logger.error("set $levelIndex")
+                stateProperties.setProperty(
+                    PROPERTY_SELECTED_LEVEL,
+                    levelIndex.toString(),
+                )
+            }
+            val level = getInstance()!!.loadLevel(levelName)
+            gameManager.setLevel(level!!)
+            levelPreviewDisplayPanel!!.setLevel(level)
+            levelPreviewDisplayPanel!!.isOpaque = true
+            levelPreviewDisplayPanel!!.background = level.color
+        } catch (ex: CouldNotPerformException) {
+            logger.error("Could not update level preview!", ex)
+        }
+    }
 
     private fun randomLevelButtonActionPerformed() =
         levelChooserComboBox
