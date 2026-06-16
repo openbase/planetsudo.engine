@@ -315,8 +315,8 @@ class Agent(
             // shift
             if (isShifting) {
                 (0..SHIFT_EXTRA_SPEED).forEach { _ ->
-                    if (isCollisionDetected) {
-                        kill()
+                    if (isCollisionDetected) { // Will collide with wall?
+                        return@performAction
                     }
                     if (consumeTonicForShifting()) {
                         // move and apply new direction

@@ -359,7 +359,7 @@ class ConfigurationPanel : JPanel() {
 
                     if (child is ComboPopup) {
                         child.list.addListSelectionListener { event: ListSelectionEvent? ->
-                            if (!event!!.getValueIsAdjusting()) {
+                            if (!event!!.valueIsAdjusting) {
                                 child.list.getSelectedValue()?.toString()?.let { levelName ->
                                     setLevelPreview(levelName, levelIndex = child.list.selectedIndex)
                                 }

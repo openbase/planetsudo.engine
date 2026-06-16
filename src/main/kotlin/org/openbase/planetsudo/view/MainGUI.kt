@@ -51,7 +51,7 @@ class MainGUI : JFrame, PropertyChangeListener {
      */
     constructor(guiController: GUIController?) : super("PlanetSudo") {
         instance = this
-        this.screenDim = Dimension(X_DIM, Y_DIM)
+        this.screenDim = Dimension(X_MIN_DIM, Y_MIN_DIM)
         this.guiController = guiController
         this.iconImage = ImageIcon("img/PlanetSudoLogoIcon.png").image
     }
@@ -66,16 +66,22 @@ class MainGUI : JFrame, PropertyChangeListener {
     private val cardLayout: CardLayout? = null
     private var fullscreenMode = false
 
+    // track previous bounds so we can restore after fake-fullscreen on macOS
+    private var previousBounds: java.awt.Rectangle? = null
+    private var wasFullscreen = false
+
+    private fun isMacOs(): Boolean = System.getProperty("os.name").lowercase().contains("mac")
+
     fun initialize() {
         SwingUtilities.invokeLater {
             initComponents()
             configurationPanel = ConfigurationPanel()
             levelLoadingPanel = LevelLoadingPanel()
             gamePanel = GamePanel()
-            mainPanel!!.add(configurationPanel, CONFIGURATION_PANEL)
-            mainPanel!!.add(levelLoadingPanel, LOADING_PANEL)
-            mainPanel!!.add(gamePanel, GAME_PANEL)
-            (mainPanel!!.layout as CardLayout).show(mainPanel, CONFIGURATION_PANEL)
+            mainPanel?.add(configurationPanel, CONFIGURATION_PANEL)
+            mainPanel?.add(levelLoadingPanel, LOADING_PANEL)
+            mainPanel?.add(gamePanel, GAME_PANEL)
+            (mainPanel?.layout as? CardLayout)?.show(mainPanel, CONFIGURATION_PANEL)
             setFullScreenMode(DEFAULT_FULLSCREENMODE)
             guiController!!.addPropertyChangeListener(instance!!)
             displayTeamPanelCheckBoxMenuItem!!.isSelected = gamePanel!!.isTeamPanelDisplayed
@@ -86,47 +92,83 @@ class MainGUI : JFrame, PropertyChangeListener {
     fun setFullScreenMode(enabled: Boolean) {
         fullscreenMode = enabled
         LOGGER.info("setFullscreenMode $fullscreenMode")
-        isVisible = false
-        if (fullscreenMode) {
-            // setSize(guiController.getVisualFeedbackConfig().getFrameDimension());
-            // setSize(screenDim);
-            setLocation(0, 0)
-            if (isDisplayable) dispose()
-            isUndecorated = true
 
-            val env = GraphicsEnvironment.getLocalGraphicsEnvironment()
-            val device = env.defaultScreenDevice
+        // All window operations must run on EDT. initialize() already calls this on EDT but be defensive.
+        SwingUtilities.invokeLater {
+            isVisible = false
 
-            try {
-                device.fullScreenWindow = this // Setzen des FullScreenmodus.
-                this.validate()
-                // fullscreenModeMenuItem.setText("Leave FullScreen Mode");
-            } catch (ex: CouldNotPerformException) {
-                LOGGER.error("no Fullscreen.", ex)
-                device.fullScreenWindow = null
+            if (fullscreenMode) {
+                if (wasFullscreen) {
+                    // already fullscreen
+                } else {
+                    wasFullscreen = true
+                    // save previous bounds so we can restore later
+                    previousBounds = this.bounds
+
+                    if (isMacOs()) {
+                        // fake fullscreen on macOS: borderless window sized to the screen bounds
+                        if (isDisplayable) dispose()
+                        isUndecorated = true
+                        extendedState = JFrame.NORMAL
+
+                        val bounds = this.graphicsConfiguration.bounds
+                        this.bounds = bounds
+
+                        isVisible = true
+                        toFront()
+                        requestFocus()
+                    } else {
+                        val env = GraphicsEnvironment.getLocalGraphicsEnvironment()
+                        val device = env.defaultScreenDevice
+
+                        try {
+                            if (device.isFullScreenSupported) {
+                                device.fullScreenWindow = this
+                            } else {
+                                if (isDisplayable) dispose()
+                                isUndecorated = true
+                                extendedState = JFrame.MAXIMIZED_BOTH
+                                isVisible = true
+                            }
+                        } catch (ex: CouldNotPerformException) {
+                            LOGGER.error("no Fullscreen.", ex)
+                            device.fullScreenWindow = null
+                        }
+                    }
+                }
+            } else {
+                // exit fullscreen
+                if (!wasFullscreen) {
+                    // nothing to do
+                } else {
+                    wasFullscreen = false
+                    setLocation(X_LOCATION, Y_LOCATION)
+                    size = screenDim
+
+                    if (isDisplayable) dispose()
+                    isUndecorated = false
+
+                    // leaving fullscreen only on non macOS device
+                    if (!isMacOs()) {
+                        GraphicsEnvironment
+                            .getLocalGraphicsEnvironment()
+                            .defaultScreenDevice
+                            .fullScreenWindow = null
+                    }
+
+                    previousBounds?.let {
+                        extendedState = NORMAL
+                        this.bounds = it
+                    } ?: run { extendedState = MAXIMIZED_BOTH }
+                    isVisible = true
+                    toFront()
+                }
             }
-        } else {
-            // pack();
-            setLocation(X_LOCATION, Y_LOCATION)
-            size = screenDim
-            extendedState = this.extendedState or MAXIMIZED_BOTH
 
-            if (isDisplayable) dispose()
-            isUndecorated = false
-
-            val env = GraphicsEnvironment.getLocalGraphicsEnvironment()
-            val device = env.defaultScreenDevice
-
-            try {
-                device.fullScreenWindow = null // Setzen des FullScreenmodus.
-                // fullscreenModeMenuItem.setText("Enter FullScreen Mode");
-            } catch (ex: CouldNotPerformException) {
-                LOGGER.error("no Fullscreen.", ex)
-                device.fullScreenWindow = null
-            }
+            requestFocus()
+            validate()
+            isVisible = true
         }
-        validate()
-        isVisible = true
     }
 
     fun fullscreenModeEnabled(): Boolean {
@@ -322,7 +364,7 @@ class MainGUI : JFrame, PropertyChangeListener {
         fileMenu!!.add(stopMenuItem)
         fileMenu!!.add(jSeparator2)
 
-        exitMenuItem!!.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK)
+        exitMenuItem!!.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK)
         exitMenuItem!!.text = "Beenden"
         exitMenuItem!!.addActionListener { evt -> exitMenuItemActionPerformed(evt) }
         fileMenu!!.add(exitMenuItem)
@@ -351,7 +393,7 @@ class MainGUI : JFrame, PropertyChangeListener {
         editMenu!!.add(jMenu2)
         editMenu!!.add(jSeparator1)
 
-        jCheckBoxMenuItem1!!.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0)
+        jCheckBoxMenuItem1!!.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.ALT_DOWN_MASK)
         jCheckBoxMenuItem1!!.text = "Vollbild"
         jCheckBoxMenuItem1!!.addActionListener { evt -> jCheckBoxMenuItem1ActionPerformed(evt) }
         editMenu!!.add(jCheckBoxMenuItem1)
@@ -360,12 +402,12 @@ class MainGUI : JFrame, PropertyChangeListener {
 
         toolMenu!!.text = "Einstellungen"
 
-        jMenuItem2!!.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK)
+        jMenuItem2!!.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK)
         jMenuItem2!!.text = "Spielgeschwindigkeit"
         jMenuItem2!!.addActionListener { evt -> jMenuItem2ActionPerformed(evt) }
         toolMenu!!.add(jMenuItem2)
 
-        createTeamMenuItem!!.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.CTRL_MASK)
+        createTeamMenuItem!!.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.CTRL_DOWN_MASK)
         createTeamMenuItem!!.text = "Team Erstellen"
         createTeamMenuItem!!.addActionListener { evt -> createTeamMenuItemActionPerformed(evt) }
         toolMenu!!.add(createTeamMenuItem)
@@ -396,12 +438,14 @@ class MainGUI : JFrame, PropertyChangeListener {
         contentPane.layout = layout
         layout.setHorizontalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE.toInt()),
+                .addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, X_MIN_DIM, Short.MAX_VALUE.toInt()),
         )
         layout.setVerticalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE.toInt()),
+                .addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, Y_MIN_DIM, Short.MAX_VALUE.toInt()),
         )
+
+        minimumSize = Dimension(X_MIN_DIM, Y_MIN_DIM)
 
         pack()
     } // </editor-fold>//GEN-END:initComponents
@@ -505,8 +549,8 @@ class MainGUI : JFrame, PropertyChangeListener {
         var instance: MainGUI? = null
         const val X_LOCATION: Int = 0
         const val Y_LOCATION: Int = 0
-        const val X_DIM: Int = 800
-        const val Y_DIM: Int = 600
+        const val X_MIN_DIM: Int = 1280
+        const val Y_MIN_DIM: Int = 960
         const val DEFAULT_FULLSCREENMODE: Boolean = false
 
         var levelView: LevelView? = null
