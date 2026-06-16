@@ -145,27 +145,27 @@ class MainGUI : JFrame, PropertyChangeListener {
                     setLocation(X_LOCATION, Y_LOCATION)
                     size = screenDim
 
-                    // leaving fullscreen on macOS: restore undecorated state and previous bounds
-                    if (isMacOs()) {
-                        if (isDisplayable) dispose()
-                        isUndecorated = false
+                    if (isDisplayable) dispose()
+                    isUndecorated = false
 
-                        previousBounds?.let {
-                            extendedState = NORMAL
-                            this.bounds = it
-                        } ?: run { extendedState = MAXIMIZED_BOTH }
-                        isVisible = true
-                        toFront()
-                        requestFocus()
-                    } else {
+                    // leaving fullscreen only on non macOS device
+                    if (!isMacOs()) {
                         GraphicsEnvironment
                             .getLocalGraphicsEnvironment()
                             .defaultScreenDevice
                             .fullScreenWindow = null
                     }
+
+                    previousBounds?.let {
+                        extendedState = NORMAL
+                        this.bounds = it
+                    } ?: run { extendedState = MAXIMIZED_BOTH }
+                    isVisible = true
+                    toFront()
                 }
             }
 
+            requestFocus()
             validate()
             isVisible = true
         }
