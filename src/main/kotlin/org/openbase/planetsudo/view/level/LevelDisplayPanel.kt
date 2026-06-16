@@ -14,6 +14,7 @@ import org.openbase.planetsudo.level.AbstractLevel
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import javax.swing.GroupLayout
+import javax.swing.JLabel
 
 /**
  *
@@ -40,6 +41,8 @@ class LevelDisplayPanel : ResourceDisplayPanel<LevelPanel>(), Runnable {
     fun setLevel(level: AbstractLevel) {
         setVisibleResourcePanel(LevelPanel(level, this))
     }
+
+    private val level get() = visibleResourcePanel?.resource
 
     fun displayLevelObjects() {
         if (visibleResourcePanel != null) {
@@ -89,6 +92,9 @@ class LevelDisplayPanel : ResourceDisplayPanel<LevelPanel>(), Runnable {
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGap(0, 300, Short.MAX_VALUE.toInt()),
         )
+        level?.let {
+            parent.add("Label", JLabel("Name: ${level?.name} (${level?.size}) }"))
+        }
     } // </editor-fold>//GEN-END:initComponents
 
     override fun run() {
