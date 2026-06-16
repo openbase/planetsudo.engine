@@ -81,7 +81,7 @@ class MainGUI : JFrame, PropertyChangeListener {
             mainPanel?.add(configurationPanel, CONFIGURATION_PANEL)
             mainPanel?.add(levelLoadingPanel, LOADING_PANEL)
             mainPanel?.add(gamePanel, GAME_PANEL)
-            (mainPanel?.layout as CardLayout).show(mainPanel, CONFIGURATION_PANEL)
+            (mainPanel?.layout as? CardLayout)?.show(mainPanel, CONFIGURATION_PANEL)
             setFullScreenMode(DEFAULT_FULLSCREENMODE)
             guiController!!.addPropertyChangeListener(instance!!)
             displayTeamPanelCheckBoxMenuItem!!.isSelected = gamePanel!!.isTeamPanelDisplayed
