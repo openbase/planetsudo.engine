@@ -51,7 +51,7 @@ class MainGUI : JFrame, PropertyChangeListener {
      */
     constructor(guiController: GUIController?) : super("PlanetSudo") {
         instance = this
-        this.screenDim = Dimension(X_DIM, Y_DIM)
+        this.screenDim = Dimension(X_MIN_DIM, Y_MIN_DIM)
         this.guiController = guiController
         this.iconImage = ImageIcon("img/PlanetSudoLogoIcon.png").image
     }
@@ -438,14 +438,14 @@ class MainGUI : JFrame, PropertyChangeListener {
         contentPane.layout = layout
         layout.setHorizontalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, X_DIM, Short.MAX_VALUE.toInt()),
+                .addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, X_MIN_DIM, Short.MAX_VALUE.toInt()),
         )
         layout.setVerticalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, Y_DIM, Short.MAX_VALUE.toInt()),
+                .addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, Y_MIN_DIM, Short.MAX_VALUE.toInt()),
         )
 
-        minimumSize = Dimension(X_DIM, Y_DIM)
+        minimumSize = Dimension(X_MIN_DIM, Y_MIN_DIM)
 
         pack()
     } // </editor-fold>//GEN-END:initComponents
@@ -549,8 +549,8 @@ class MainGUI : JFrame, PropertyChangeListener {
         var instance: MainGUI? = null
         const val X_LOCATION: Int = 0
         const val Y_LOCATION: Int = 0
-        const val X_DIM: Int = 1250
-        const val Y_DIM: Int = 900
+        const val X_MIN_DIM: Int = 1250
+        const val Y_MIN_DIM: Int = 900
         const val DEFAULT_FULLSCREENMODE: Boolean = false
 
         var levelView: LevelView? = null
