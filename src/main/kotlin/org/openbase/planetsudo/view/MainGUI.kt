@@ -549,8 +549,8 @@ class MainGUI : JFrame, PropertyChangeListener {
         var instance: MainGUI? = null
         const val X_LOCATION: Int = 0
         const val Y_LOCATION: Int = 0
-        const val X_MIN_DIM: Int = 1250
-        const val Y_MIN_DIM: Int = 900
+        const val X_MIN_DIM: Int = 1280
+        const val Y_MIN_DIM: Int = 960
         const val DEFAULT_FULLSCREENMODE: Boolean = false
 
         var levelView: LevelView? = null
