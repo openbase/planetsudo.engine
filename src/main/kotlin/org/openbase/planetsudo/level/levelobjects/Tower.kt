@@ -9,6 +9,7 @@ import org.openbase.planetsudo.game.GameSound
 import org.openbase.planetsudo.geometry.Direction2D
 import org.openbase.planetsudo.geometry.Point2D
 import org.openbase.planetsudo.level.AbstractLevel
+import org.openbase.planetsudo.level.LevelSize
 import org.openbase.planetsudo.level.ResourcePlacement
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -45,6 +46,7 @@ class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership)
     private val condition = lock.newCondition()
     private val placement: ResourcePlacement? = null
     private val timer: Timer
+    private var levelSize: LevelSize = LevelSize.UNKNOWN
 
     var shieldForce: Int = 0
         private set
@@ -56,6 +58,7 @@ class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership)
     val isAttacked: Boolean = false
     var isConstructed: Boolean = false
         private set
+
 
     init {
         this.position = Point2D()
@@ -187,6 +190,14 @@ class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership)
         }
     }
 
+    fun scanLevelSize() {
+        if (!isConstructed) {
+            return
+        }
+        levelSize = level.size
+        changes.firePropertyChange(TOWER_SCAN_LEVEL, null, null)
+    }
+
     val isBurning: Boolean
         get() = shieldForce < Mothership.BURNING_TOWER && hasFuel()
 
@@ -210,6 +221,7 @@ class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership)
         const val TOWER_FUEL_VOLUME: Int = 500
         const val TOWER_FUEL_STATE_CHANGE: String = "FuelStateChange"
         const val TOWER_SHIELD_STATE_CHANGE: String = "ShieldStateChange"
+        const val TOWER_SCAN_LEVEL: String = "ScanLevel"
         const val TOWER_CONSTRUCT: String = "construct tower"
         const val TOWER_DECONSTRUCT: String = "deconstruct tower"
 

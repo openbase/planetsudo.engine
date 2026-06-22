@@ -6,7 +6,7 @@ enum class LevelSize(val label: String) {
     SMALL("Klein"),
     MEDIUM("Mittel"),
     LARGE("Groß"),
-
+    UNKNOWN("?"),
     ;
 
     companion object {
