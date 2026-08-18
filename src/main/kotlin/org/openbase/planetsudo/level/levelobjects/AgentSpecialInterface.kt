@@ -4,6 +4,7 @@ interface AgentSpecialInterface<DE : AgentSpecialInterfaceGermanWrapper> : Agent
 
     override val de get() = AgentSpecialInterfaceGermanWrapper(this)
 
+
     /**
      * Gibt an, ob ein Zusammenstoß mit einer Wand zur linken Seite bevorsteht.
      *
@@ -12,11 +13,27 @@ interface AgentSpecialInterface<DE : AgentSpecialInterfaceGermanWrapper> : Agent
     fun isCollisionDetectedAtLeft(beta: Int): Boolean
 
     /**
+     * Abfrage, ob sich eine Wand in der linken Sichtweite befindet.
+     *
+     * @param beta Winkel in Grad (0 = vorne - 90 = links - 180 = hinten)
+     * @param distance Sicht-Distanz in Pixeln
+     */
+    fun seeWallAtLeft(beta: Int, distance: Int): Boolean
+
+    /**
      * Gibt an, ob ein Zusammenstoß mit einer Wand zur rechten Seite bevorsteht.
      *
      * @return true oder false.
      */
     fun isCollisionDetectedAtRight(beta: Int): Boolean
+
+    /**
+     * Abfrage, ob sich eine Wand in der rechten Sichtweite befindet.
+     *
+     * @param beta Winkel in Grad (0 = vorne - 90 = rechts - 180 = hinten)
+     * @param distance Sicht-Distanz in Pixeln
+     */
+    fun seeWallAtRight(beta: Int, distance: Int): Boolean
 
     /**
      * Abfrage, ob der Agent aktuell unsichtbar ist.

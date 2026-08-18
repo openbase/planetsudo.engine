@@ -162,6 +162,40 @@ class Agent(
     override fun isCollisionDetectedAtRight(beta: Int): Boolean =
         level.collisionDetected(computeFutureBoundsRight(beta))
 
+    override fun seeWallAtLeft(beta: Int, distance: Int): Boolean {
+        // compute front point of the agent
+        val dir = Direction2D(direction.angle).also { it.angle -= beta }
+        val front = position.clone()
+        front.translate(dir, (width / 2).toInt())
+
+        // step along the direction and check small area for walls
+        for (d in 1..distance) {
+            val p = front.clone()
+            p.translate(dir, d)
+            val testRect = Rectangle2D.Double(p.x - 1.0, p.y - 1.0, 2.0, 2.0)
+            if (level.containsWall(testRect)) {
+                return true
+            }
+        }
+        return false
+    }
+
+    override fun seeWallAtRight(beta: Int, distance: Int): Boolean {
+        val dir = Direction2D(direction.angle).also { it.angle += beta }
+        val front = position.clone()
+        front.translate(dir, (width / 2).toInt())
+
+        for (d in 1..distance) {
+            val p = front.clone()
+            p.translate(dir, d)
+            val testRect = Rectangle2D.Double(p.x - 1.0, p.y - 1.0, 2.0, 2.0)
+            if (level.containsWall(testRect)) {
+                return true
+            }
+        }
+        return false
+    }
+
     override val isShifting
         get(): Boolean = shiftTonic > 0.0
 
@@ -931,6 +965,8 @@ class Agent(
         const val MAX_TONIC: Int = 3
         const val AGENT_SIZE: Int = 50
         const val AGENT_VIEW_DISTANCE: Int = AGENT_SIZE
+        /** Default see distance (in pixels) for agent line-of-sight checks */
+        const val SEE_DISTANCE: Int = AGENT_VIEW_DISTANCE
         const val DEFAULT_AGENT_SPEED: Int = 6
         const val SHIFT_EXTRA_SPEED: Int = 3
         const val SHIFT_TONIC_CONSUMPTION: Double = 0.01
