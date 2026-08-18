@@ -4,7 +4,6 @@ interface AgentSpecialInterface<DE : AgentSpecialInterfaceGermanWrapper> : Agent
 
     override val de get() = AgentSpecialInterfaceGermanWrapper(this)
 
-
     /**
      * Gibt an, ob ein Zusammenstoß mit einer Wand zur linken Seite bevorsteht.
      *
