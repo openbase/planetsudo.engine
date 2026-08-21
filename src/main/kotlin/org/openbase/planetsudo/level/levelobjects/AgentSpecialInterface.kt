@@ -1,5 +1,7 @@
 package org.openbase.planetsudo.level.levelobjects
 
+import org.openbase.planetsudo.level.levelobjects.Agent.Companion.AGENT_VIEW_DISTANCE
+
 interface AgentSpecialInterface<DE : AgentSpecialInterfaceGermanWrapper> : AgentBattleInterface<DE> {
 
     override val de get() = AgentSpecialInterfaceGermanWrapper(this)
@@ -17,7 +19,7 @@ interface AgentSpecialInterface<DE : AgentSpecialInterfaceGermanWrapper> : Agent
      * @param beta Winkel in Grad (0 = vorne - 90 = links - 180 = hinten)
      * @param distance Sicht-Distanz in Pixeln
      */
-    fun seeWallAtLeft(beta: Int, distance: Int): Boolean
+    fun seeWallAtLeft(beta: Int, distance: Int = AGENT_VIEW_DISTANCE): Boolean
 
     /**
      * Gibt an, ob ein Zusammenstoß mit einer Wand zur rechten Seite bevorsteht.
@@ -32,7 +34,7 @@ interface AgentSpecialInterface<DE : AgentSpecialInterfaceGermanWrapper> : Agent
      * @param beta Winkel in Grad (0 = vorne - 90 = rechts - 180 = hinten)
      * @param distance Sicht-Distanz in Pixeln
      */
-    fun seeWallAtRight(beta: Int, distance: Int): Boolean
+    fun seeWallAtRight(beta: Int, distance: Int = AGENT_VIEW_DISTANCE): Boolean
 
     /**
      * Abfrage, ob der Agent aktuell unsichtbar ist.

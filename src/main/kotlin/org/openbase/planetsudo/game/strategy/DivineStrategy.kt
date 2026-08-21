@@ -40,6 +40,20 @@ class DivineStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         )
 
         "Discover" commander inCase { true } then { agent.goRight(4) }
+//        "Discover" commander inCase { true } then { agent.goRight(4) }
+//        "Follow Left Wall" commander inCase { agent.seeWallAtLeft(45) } then { agent.go() }
+        "Follow Wall" commander inCase {
+            agent.seeWallAtRight(135) && agent.seeWallAtRight(45) && !agent.seeWallAtRight(
+                0,
+            )
+        } then { agent.go() }
+        "Follow Corner" commander inCase { agent.seeWallAtRight(45) && agent.seeWallAtRight(0) } then { agent.goLeft(20) }
+        "Follow Edge" commander inCase {
+            agent.seeWallAtRight(135) && !agent.seeWallAtRight(100) && !agent.seeWallAtRight(
+                0,
+            )
+        } then { agent.turnRight(10) }
+
 
         "Scan" commander inCase { tower.type == Tower.TowerType.ObservationTower && tower.levelSize == LevelSize.UNKNOWN } then {
             tower.scanLevelSize()
@@ -64,7 +78,7 @@ class DivineStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         // -------------------------------------------->
         "See Resources" swat SwatTeam.NOT_COMMANDER inCase {
             agent.seeResource &&
-                (agent.isTonicAtLimit && agent.seeResource(ResourceType.Tonic)).not()
+                    (agent.isTonicAtLimit && agent.seeResource(ResourceType.Tonic)).not()
         } then {
             agent.goToResource()
         }
@@ -110,10 +124,10 @@ class DivineStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
             object : Rule("PickUp") {
                 override fun constraint(): Boolean {
                     return !agent.isCommander && (
-                        agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(
-                            ResourceType.ExtraMothershipFuel,
-                        )
-                        )
+                            agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(
+                                ResourceType.ExtraMothershipFuel,
+                            )
+                            )
                 }
 
                 override fun action() {
@@ -141,10 +155,10 @@ class DivineStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
             object : Rule("PickUp and Place") {
                 override fun constraint(): Boolean {
                     return agent.isCommander && (
-                        agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(
-                            ResourceType.ExtraMothershipFuel,
-                        )
-                        ) && !mothership.isMarkerDeployed && !agent.seeMarker()
+                            agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(
+                                ResourceType.ExtraMothershipFuel,
+                            )
+                            ) && !mothership.isMarkerDeployed && !agent.seeMarker()
                 }
 
                 override fun action() {
@@ -352,7 +366,7 @@ class DivineStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         )
         // -------------------------------------------->
         createRule(
-            object : Rule("RepaireMothership") {
+            object : Rule("RepairMothership") {
                 override fun constraint(): Boolean {
                     return mothership.isDamaged && agent.isAtMothership
                 }
@@ -488,7 +502,7 @@ class DivineStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         )
         // -------------------------------------------->
         createRule(
-            object : Rule("Follow Wall", SwatTeam.COMMANDER) {
+            object : Rule("Avoid Wall Collision", SwatTeam.COMMANDER) {
                 override fun constraint(): Boolean {
                     return agent.isCollisionDetected
                 }

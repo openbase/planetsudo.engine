@@ -13,6 +13,7 @@ plugins {
     `maven-publish`
     signing
     id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
+    kotlin("plugin.lombok") version "1.9.22"
 }
 
 group = "org.openbase"
@@ -55,6 +56,7 @@ dependencies {
     testImplementation(libs.org.jetbrains.kotlin.test.junit5)
     testImplementation(libs.io.mockk)
     testImplementation(libs.org.amshove.kluent)
+    testImplementation(kotlin("test"))
 }
 
 nexusPublishing {
