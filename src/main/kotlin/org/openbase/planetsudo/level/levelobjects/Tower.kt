@@ -200,7 +200,7 @@ class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership)
     }
 
     override fun scanLevelSize() {
-        if (!isConstructed) {
+        if (!isConstructed || levelSize != LevelSize.UNKNOWN) {
             return
         }
         levelSize = level.size
