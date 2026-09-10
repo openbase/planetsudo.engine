@@ -52,32 +52,34 @@ class DivineStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         } then { agent.turnRight(2) }
         "Follow Wall With Clearance" commander inCase {
             (
-                    agent.seeWallAtRight(45, WallDistance.CLOSE)
-                            && agent.seeWallAtRight(135, WallDistance.CLOSE)
-                    ) && !agent.seeWallAtRight(0, WallDistance.VERY_FAR_AWAY)
+                agent.seeWallAtRight(45, WallDistance.CLOSE) &&
+                    agent.seeWallAtRight(135, WallDistance.CLOSE)
+                ) && !agent.seeWallAtRight(0, WallDistance.VERY_FAR_AWAY)
         } then { agent.goLeft(5) }
         "Follow Wall Closer" commander inCase {
             (
-                    agent.seeWallAtRight(45, WallDistance.VERY_FAR_AWAY)
-                            && agent.seeWallAtRight(135, WallDistance.VERY_FAR_AWAY)
-                    ) && !agent.seeWallAtRight(0, WallDistance.VERY_FAR_AWAY)
+                agent.seeWallAtRight(45, WallDistance.VERY_FAR_AWAY) &&
+                    agent.seeWallAtRight(135, WallDistance.VERY_FAR_AWAY)
+                ) && !agent.seeWallAtRight(0, WallDistance.VERY_FAR_AWAY)
         } then { agent.goRight(5) }
         "Follow Wall" commander inCase {
             (
-                    agent.seeWallAtRight(45, WallDistance.FAR_AWAY)
-                            && agent.seeWallAtRight(135, WallDistance.FAR_AWAY)
-                    ) && !agent.seeWallAtRight(0, WallDistance.VERY_FAR_AWAY)
+                agent.seeWallAtRight(45, WallDistance.FAR_AWAY) &&
+                    agent.seeWallAtRight(135, WallDistance.FAR_AWAY)
+                ) && !agent.seeWallAtRight(0, WallDistance.VERY_FAR_AWAY)
         } then { agent.go() }
         "Follow Corner" commander inCase {
-            agent.seeWallAtRight(0, WallDistance.FAR_AWAY) && (agent.seeWallAtRight(
-                45,
-                WallDistance.VERY_FAR_AWAY,
-            ) || agent.seeWallAtRight(90, WallDistance.VERY_FAR_AWAY))
+            agent.seeWallAtRight(0, WallDistance.FAR_AWAY) && (
+                agent.seeWallAtRight(
+                    45,
+                    WallDistance.VERY_FAR_AWAY,
+                ) || agent.seeWallAtRight(90, WallDistance.VERY_FAR_AWAY)
+                )
         } then { agent.goLeft(20) }
         "Follow Edge" commander inCase {
-            agent.seeWallAtRight(135, WallDistance.VERY_FAR_AWAY)
-                    && !agent.seeWallAtRight(110, WallDistance.VERY_FAR_AWAY)
-                    && !agent.seeWallAtRight(0, WallDistance.FAR_AWAY)
+            agent.seeWallAtRight(135, WallDistance.VERY_FAR_AWAY) &&
+                !agent.seeWallAtRight(110, WallDistance.VERY_FAR_AWAY) &&
+                !agent.seeWallAtRight(0, WallDistance.FAR_AWAY)
         } then { agent.turnRight(20) }
 
         "Scan" commander inCase { tower.type == Tower.TowerType.ObservationTower && tower.levelSize == LevelSize.UNKNOWN } then {
@@ -103,7 +105,7 @@ class DivineStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         // -------------------------------------------->
         "See Resources" swat SwatTeam.NOT_COMMANDER inCase {
             agent.seeResource &&
-                    (agent.isTonicAtLimit && agent.seeResource(ResourceType.Tonic)).not()
+                (agent.isTonicAtLimit && agent.seeResource(ResourceType.Tonic)).not()
         } then {
             agent.goToResource()
         }
@@ -149,10 +151,10 @@ class DivineStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
             object : Rule("PickUp") {
                 override fun constraint(): Boolean {
                     return !agent.isCommander && (
-                            agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(
-                                ResourceType.ExtraMothershipFuel,
-                            )
-                            )
+                        agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(
+                            ResourceType.ExtraMothershipFuel,
+                        )
+                        )
                 }
 
                 override fun action() {
@@ -180,10 +182,10 @@ class DivineStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
             object : Rule("PickUp and Place") {
                 override fun constraint(): Boolean {
                     return agent.isCommander && (
-                            agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(
-                                ResourceType.ExtraMothershipFuel,
-                            )
-                            ) && !mothership.isMarkerDeployed && !agent.seeMarker()
+                        agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(
+                            ResourceType.ExtraMothershipFuel,
+                        )
+                        ) && !mothership.isMarkerDeployed && !agent.seeMarker()
                 }
 
                 override fun action() {

@@ -1,6 +1,5 @@
 package org.openbase.planetsudo.level.levelobjects
 
-
 interface AgentSpecialInterface<DE : AgentSpecialInterfaceGermanWrapper> : AgentBattleInterface<DE> {
 
     override val de get() = AgentSpecialInterfaceGermanWrapper(this)
