@@ -162,18 +162,18 @@ class Agent(
     override fun isCollisionDetectedAtRight(beta: Int): Boolean =
         level.collisionDetected(computeFutureBoundsRight(beta))
 
-    override fun seeWallAtLeft(beta: Int, distance: Int): Boolean {
+    override fun seeWallAtLeft(beta: Int, distance: WallDistance): Boolean {
         val dir = Direction2D(direction.angle).also { it.angle -= beta }
         val front = position.clone()
         front.translate(dir, (width / 2).toInt())
-        return level.hitsWall(front, dir, distance)
+        return level.hitsWall(front, dir, distance.pixel)
     }
 
-    override fun seeWallAtRight(beta: Int, distance: Int): Boolean {
+    override fun seeWallAtRight(beta: Int, distance: WallDistance): Boolean {
         val dir = Direction2D(direction.angle).also { it.angle += beta }
         val front = position.clone()
         front.translate(dir, (width / 2).toInt())
-        return level.hitsWall(front, dir, distance)
+        return level.hitsWall(front, dir, distance.pixel)
     }
 
     override val isShifting

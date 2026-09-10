@@ -14,6 +14,7 @@ import java.awt.geom.Arc2D
 import java.beans.PropertyChangeEvent
 import java.beans.PropertyChangeListener
 import javax.swing.Timer
+import kotlin.math.hypot
 
 /**
  *
@@ -28,7 +29,7 @@ class TowerTopPanel(tower: Tower, parentPanel: TowerPanel) :
         DrawLayer.BACKGROUND,
     ),
     PropertyChangeListener {
-    private val tower: Tower
+    private val tower: Tower?
 
     private var gg2: Graphics2D? = null
     private var direction: Direction2D? = null
@@ -70,7 +71,8 @@ class TowerTopPanel(tower: Tower, parentPanel: TowerPanel) :
     }
 
     override fun paintComponent(g2: Graphics2D, gl: Graphics2D) {
-        // only paint if constructed
+        // Guard against stale or already-removed tower references during asynchronous Swing repaints.
+        val currentTower = tower ?: return
         if (!resource.isConstructed) {
             return
         }
@@ -79,7 +81,7 @@ class TowerTopPanel(tower: Tower, parentPanel: TowerPanel) :
         direction = resource.direction
 
         gg2 = g2.create() as Graphics2D
-        paintImageRotated(tower.direction, gg2!!)
+        paintImageRotated(currentTower.direction, gg2!!)
 
         // draw scanning waves if active
         if (scanning) {
@@ -116,7 +118,7 @@ class TowerTopPanel(tower: Tower, parentPanel: TowerPanel) :
         //                parentResourcePanel.removeChild(this);
         //            }
         //        }
-        if (evt.propertyName == Tower.TOWER_SCAN_LEVEL) {
+        if (evt.propertyName == Tower.TOWER_SCAN_LEVEL && tower != null) {
             // start wave animation: compute max radius to level borders
             val levelBounds = tower.level.levelBorderPolygon.bounds2D
             val cx = tower.position.x
@@ -132,7 +134,7 @@ class TowerTopPanel(tower: Tower, parentPanel: TowerPanel) :
             for (c in corners) {
                 val dx = c[0] - cx
                 val dy = c[1] - cy
-                val d = Math.hypot(dx, dy)
+                val d = hypot(dx, dy)
                 if (d > maxd) maxd = d
             }
             scanMaxRadius = maxd
