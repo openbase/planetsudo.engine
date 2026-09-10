@@ -32,16 +32,6 @@ interface TowerInterface {
     val de get() = TowerInterfaceGermanWrapper(this)
 
     /**
-     * Checks whether the given agent can see the tower.
-     */
-    fun seeTower(agent: Agent): Boolean
-
-    /**
-     * Orders fuel from the tower. Returns the amount actually provided.
-     */
-    fun orderFuel(fuel: Int, agent: Agent?): Int
-
-    /**
      * Returns whether the tower has any fuel left.
      */
     fun hasFuel(): Boolean

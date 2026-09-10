@@ -126,7 +126,7 @@ class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership)
         isConstructed = false
     }
 
-    override fun seeTower(agent: Agent): Boolean {
+    fun seeTower(agent: Agent): Boolean {
         if (!isConstructed) {
             return false
         }
@@ -134,7 +134,7 @@ class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership)
         return bounds.intersects(agent.bounds)
     }
 
-    override fun orderFuel(fuel: Int, agent: Agent?): Int {
+    fun orderFuel(fuel: Int, agent: Agent?): Int {
         var fuel = fuel
         if (agent == null || bounds.contains(agent.bounds)) {
             try {

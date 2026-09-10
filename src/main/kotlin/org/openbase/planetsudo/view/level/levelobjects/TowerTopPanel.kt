@@ -79,35 +79,37 @@ class TowerTopPanel(tower: Tower, parentPanel: TowerPanel) :
         direction = resource.direction
 
         gg2 = g2.create() as Graphics2D
-        paintImageRotated(tower.direction, gg2!!)
+        try {
+            paintImageRotated(tower.direction, gg2!!)
 
-        // draw scanning waves if active
-        if (scanning) {
-            try {
+            // draw scanning waves if active
+            if (scanning) {
                 val overlay = g2.create() as Graphics2D
-                overlay.composite = java.awt.AlphaComposite.getInstance(java.awt.AlphaComposite.SRC_OVER, 1.0f)
-                overlay.stroke = BasicStroke(3.0f)
+                try {
+                    overlay.composite = java.awt.AlphaComposite.getInstance(java.awt.AlphaComposite.SRC_OVER, 1.0f)
+                    overlay.stroke = BasicStroke(3.0f)
 
-                val cx = boundingBox.centerX
-                val cy = boundingBox.centerY
+                    val cx = boundingBox.centerX
+                    val cy = boundingBox.centerY
 
-                for (r in scanRings) {
-                    if (r <= 0) continue
-                    val progress = (r / scanMaxRadius).coerceIn(0.0, 1.0)
-                    val alpha = (1.0 - progress) * 0.7
-                    val color = Color(0, 220, 255, (alpha * 255).toInt().coerceIn(0, 255))
-                    overlay.color = color
-                    val ir = r
-                    overlay.draw(Arc2D.Double(cx - ir, cy - ir, ir * 2, ir * 2, 0.0, 360.0, Arc2D.OPEN))
+                    for (r in scanRings) {
+                        if (r <= 0) continue
+                        val progress = (r / scanMaxRadius).coerceIn(0.0, 1.0)
+                        val alpha = (1.0 - progress) * 0.7
+                        val color = Color(0, 220, 255, (alpha * 255).toInt().coerceIn(0, 255))
+                        overlay.color = color
+                        val ir = r
+                        overlay.draw(Arc2D.Double(cx - ir, cy - ir, ir * 2, ir * 2, 0.0, 360.0, Arc2D.OPEN))
+                    }
+                } catch (ex: Exception) {
+                    // ignore painting errors
+                } finally {
+                    overlay.dispose()
                 }
-
-                overlay.dispose()
-            } catch (ex: Exception) {
-                // ignore painting errors
             }
+        } finally {
+            gg2?.dispose()
         }
-
-        gg2!!.dispose()
     }
 
     override fun propertyChange(evt: PropertyChangeEvent) {
