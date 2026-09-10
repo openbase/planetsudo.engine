@@ -695,6 +695,8 @@ class ConfigurationPanel : JPanel() {
             }
             val level = getInstance()!!.loadLevel(levelName)
             gameManager.setLevel(level!!)
+            levelPreviewPanel!!.border =
+                BorderFactory.createTitledBorder("Nächstes Level: ${level.name} \tGröße: ${level.size.label}")
             levelPreviewDisplayPanel!!.setLevel(level)
             levelPreviewDisplayPanel!!.isOpaque = true
             levelPreviewDisplayPanel!!.background = level.color

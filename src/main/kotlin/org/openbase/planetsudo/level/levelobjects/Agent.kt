@@ -814,7 +814,6 @@ class Agent(
 
     override fun seeMarker(): Boolean = mothership.teamMarker.seeMarker(this)
 
-    @Suppress("OVERRIDE_DEPRECATION")
     override fun seeTower(): Boolean = mothership.tower.seeTower(this)
 
     @Suppress("OVERRIDE_DEPRECATION")
