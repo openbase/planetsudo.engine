@@ -10,6 +10,7 @@
 package org.openbase.planetsudo.view.configuration
 
 import org.apache.commons.io.FileUtils
+import org.apache.commons.lang3.time.TimeZones
 import org.openbase.jul.exception.CouldNotPerformException
 import org.openbase.jul.exception.printer.ExceptionPrinter
 import org.openbase.jul.visual.swing.image.ImageLoader
@@ -32,8 +33,10 @@ import java.awt.Color
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.swing.*
+import javax.swing.JSpinner.DateEditor
 import javax.swing.border.BevelBorder
 import javax.swing.border.SoftBevelBorder
 import javax.swing.event.ListSelectionEvent
@@ -157,6 +160,11 @@ class ConfigurationPanel : JPanel() {
         levelChooserPanel = JPanel()
         levelChooserComboBox = JComboBox<String>()
         startGameButton = JButton()
+        gameEndTimeSpinner = JSpinner()
+        gameEndCalcTimeSpinner = JSpinner()
+        gameEndTimeLabel = JLabel()
+        gameEndCalcTimeLabel = JLabel()
+        automaticEndPanel = JPanel()
         networkPanel = JPanel()
         networkTeamPanel = JPanel()
         defaultTeamComboBox = JComboBox()
@@ -217,6 +225,8 @@ class ConfigurationPanel : JPanel() {
         logoLabel!!.verticalTextPosition = SwingConstants.BOTTOM
 
         gameSettingsPanel!!.border = BorderFactory.createTitledBorder("Spiel Einstellungen")
+
+        automaticEndPanel!!.border = BorderFactory.createTitledBorder("Automatisches Ende")
 
         teamsPanel!!.border = BorderFactory.createTitledBorder("Teams")
 
@@ -418,6 +428,65 @@ class ConfigurationPanel : JPanel() {
         startGameButton!!.text = "Spiel Starten"
         startGameButton!!.addActionListener { _ -> startGameButtonActionPerformed() }
 
+        configureDateSpinner(gameEndTimeSpinner!!)
+        configureDateSpinner(gameEndCalcTimeSpinner!!)
+
+        gameEndTimeSpinner!!.addChangeListener { e -> gameManager.setGameEndTimer(((e.source as JSpinner).value as Date).time) }
+        gameEndCalcTimeSpinner!!.addChangeListener { e -> gameManager.setGameEndCalcTimer(((e.source as JSpinner).value as Date).time) }
+
+        gameEndTimeLabel!!.horizontalAlignment = SwingConstants.LEADING
+        gameEndTimeLabel!!.text = "Automatisches Spielende einleiten"
+
+        gameEndCalcTimeLabel!!.horizontalAlignment = SwingConstants.LEADING
+        gameEndCalcTimeLabel!!.text = "danach automatische Endabrechnung"
+
+        val automaticEndPanelLayout = GroupLayout(automaticEndPanel)
+        automaticEndPanel!!.layout = automaticEndPanelLayout
+        automaticEndPanelLayout.setHorizontalGroup(
+            automaticEndPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(
+                    automaticEndPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(gameEndTimeLabel)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(gameEndTimeSpinner)
+                        .addContainerGap(),
+                )
+                .addGroup(
+                    automaticEndPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(gameEndCalcTimeLabel)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(gameEndCalcTimeSpinner)
+                        .addContainerGap(),
+                ),
+        )
+
+        automaticEndPanelLayout.setVerticalGroup(
+            automaticEndPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(
+                    automaticEndPanelLayout.createSequentialGroup()
+                        .addGroup(
+                            automaticEndPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addComponent(
+                                    gameEndTimeSpinner,
+                                )
+                                .addComponent(
+                                    gameEndTimeLabel,
+                                ),
+                        )
+                        .addGroup(
+                            automaticEndPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addComponent(
+                                    gameEndCalcTimeSpinner,
+                                )
+                                .addComponent(
+                                    gameEndCalcTimeLabel,
+                                ),
+                        ),
+                ),
+        )
+
         val gameSettingsPanelLayout = GroupLayout(gameSettingsPanel)
         gameSettingsPanel!!.layout = gameSettingsPanelLayout
         gameSettingsPanelLayout.setHorizontalGroup(
@@ -435,6 +504,12 @@ class ConfigurationPanel : JPanel() {
                                 )
                                 .addComponent(
                                     levelChooserPanel,
+                                    GroupLayout.DEFAULT_SIZE,
+                                    GroupLayout.DEFAULT_SIZE,
+                                    Short.MAX_VALUE.toInt(),
+                                )
+                                .addComponent(
+                                    automaticEndPanel,
                                     GroupLayout.DEFAULT_SIZE,
                                     GroupLayout.DEFAULT_SIZE,
                                     Short.MAX_VALUE.toInt(),
@@ -458,6 +533,8 @@ class ConfigurationPanel : JPanel() {
                         .addComponent(teamsPanel, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(levelChooserPanel, GroupLayout.PREFERRED_SIZE, 62, GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(automaticEndPanel)
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(startGameButton)
                         .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE.toInt()),
@@ -668,6 +745,20 @@ class ConfigurationPanel : JPanel() {
         )
     } // </editor-fold>//GEN-END:initComponents
 
+    private fun configureDateSpinner(dateSpinner: JSpinner) {
+        val dateModel = SpinnerDateModel()
+        dateModel.calendarField = Calendar.MINUTE
+        dateSpinner.model = dateModel
+
+        dateSpinner.editor = DateEditor(dateSpinner)
+        val dateFormat: SimpleDateFormat = (dateSpinner.editor as DateEditor).format
+        dateFormat.timeZone = TimeZones.GMT
+        dateFormat.applyLocalizedPattern("mm:ss")
+
+        // Update value here because of https://stackoverflow.com/a/37444974
+        dateModel.value = Date(60 * 1000) // TODO keep last value as default?
+    }
+
     private fun levelChooserComboBoxActionPerformed() { // GEN-FIRST:event_levelChooserComboBoxActionPerformed
         object : SwingWorker<Any?, Any?>() {
             @Throws(Exception::class)
@@ -714,7 +805,7 @@ class ConfigurationPanel : JPanel() {
 
     private fun startGameButtonActionPerformed() { // GEN-FIRST:event_startGameButtonActionPerformed
         MainGUI.instance!!.showLoadingPanel()
-        gameManager.startGame()
+        gameManager.startGame { MainGUI.instance!!.finalizeGame() }
     } // GEN-LAST:event_startGameButtonActionPerformed
 
     private fun teamAComboBoxActionPerformed() { // GEN-FIRST:event_teamAComboBoxActionPerformed
@@ -792,6 +883,11 @@ class ConfigurationPanel : JPanel() {
     private var connectionStateLabel: JLabel? = null
     private var defaultTeamComboBox: JComboBox<TeamData>? = null
     private var startGameButton: JButton? = null
+    private var gameEndTimeSpinner: JSpinner? = null
+    private var gameEndCalcTimeSpinner: JSpinner? = null
+    private var gameEndTimeLabel: JLabel? = null
+    private var gameEndCalcTimeLabel: JLabel? = null
+    private var automaticEndPanel: JPanel? = null
     private var teamALabel: JLabel? = null
     private var teamBLabel: JLabel? = null
     private var versusLabel: JLabel? = null

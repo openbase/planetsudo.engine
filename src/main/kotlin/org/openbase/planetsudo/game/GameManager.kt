@@ -50,6 +50,11 @@ class GameManager : Runnable {
     private var gameSpeedFactor: Double
     var gameOverSoon: Boolean
 
+    private var gameEndDur: Long = 0
+    private var gameEndCalcDur: Long = 0
+    private var gameEnd: GameTimeout? = null
+    private var gameEndCalc: GameTimeout? = null
+
     init {
         LOGGER.info("Create $this.")
         this.gameThread = Thread(this, "GameThread")
@@ -116,7 +121,15 @@ class GameManager : Runnable {
         LOGGER.info("Set $level as new level.")
     }
 
-    fun startGame() {
+    fun setGameEndTimer(duration: Long) {
+        gameEndDur = duration
+    }
+
+    fun setGameEndCalcTimer(duration: Long) {
+        gameEndCalcDur = duration
+    }
+
+    fun startGame(gameEndFunction: () -> Unit) {
         val gameStartThread: Thread = object : Thread("Gamestart Thread") {
             override fun run() {
                 LOGGER.info("Init game start...")
@@ -143,11 +156,21 @@ class GameManager : Runnable {
                 level?.setTeamA(teamA)
                 level?.setTeamB(teamB)
                 level?.reset()
+
+                if (gameEndDur > 0) {
+                    gameEnd = GameTimeout(gameEndDur) { setGameOverSoon() }
+                    if (gameEndCalcDur > 0) {
+                        gameEndCalc = GameTimeout(gameEndDur + gameEndCalcDur) { gameEndFunction() }
+                    }
+                }
+
                 setGameState(GameState.Running)
                 Thread(level, "Levelrunner").start()
                 lock.withLock {
                     condition.signalAll()
                 }
+                gameEnd?.start()
+                gameEndCalc?.start()
                 LOGGER.info("Game is Running.")
             }
         }
@@ -168,7 +191,17 @@ class GameManager : Runnable {
     private fun setGameState(state: GameState) {
         GUIController.setEvent(PropertyChangeEvent(this, GUIController.GAME_STATE_CHANGE, gameState, state))
         this.gameState = state
-        isPause = state == GameState.Break
+
+        if (state == GameState.Break) {
+            isPause = true
+            gameEndCalc?.pause()
+            gameEnd?.pause()
+        } else {
+            isPause = false
+            gameEndCalc?.tryUnpause()
+            gameEnd?.tryUnpause()
+        }
+
         if (state == GameState.Running) {
             isGameOver = false
         } else if (state == GameState.Configuration) {
