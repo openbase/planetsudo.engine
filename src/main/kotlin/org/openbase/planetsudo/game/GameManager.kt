@@ -157,6 +157,9 @@ class GameManager : Runnable {
                 level?.setTeamB(teamB)
                 level?.reset()
 
+                gameEnd = null
+                gameEndCalc = null
+
                 if (gameEndDur > 0) {
                     gameEnd = GameTimeout(level!!, gameEndDur) { setGameOverSoon() }
                     if (gameEndCalcDur > 0) {
