@@ -796,7 +796,6 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
         Thread.sleep(BLINK_ANIMATION.toLong())
 
         if (!gameManager.isDraw()) {
-
             if (gameManager.isWinner(team!!)) {
                 Thread.sleep(BLINK_ANIMATION.toLong())
                 teamFinalStateLabel!!.text = "Gewinner"
