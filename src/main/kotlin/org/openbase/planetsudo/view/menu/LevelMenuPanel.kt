@@ -26,17 +26,29 @@ class LevelMenuPanel : JPanel(), ActionListener {
 
     fun setLevel(level: AbstractLevel) {
         levelName = level.name
-        timer.delay = (1000.0 * (1 / level.getGameSpeedFactor())).toInt()
+        updateDelay (level.getGameSpeedFactor())
+        timer.initialDelay = timer.delay
         level.addPropertyChangeListener {
             if (it.propertyName == AbstractLevel.GAME_SPEED_FACTOR_CHANGED) {
                 timer.isRunning.let { running ->
-                    timer.delay = (1000.0 * (1 / (it.newValue as Double))).toInt()
-                    timer.initialDelay = timer.delay
-                    if (running) timer.restart()
+                    updateDelay(it.newValue as Double)
+                    if (running) {
+                        timer.restart()
+                    }
                 }
             }
         }
         updateTitle()
+    }
+
+    private fun updateDelay(gameSpeed: Double) {
+        val delay = calcTimerDelay(gameSpeed)
+        timer.delay = delay
+        timer.initialDelay = delay
+    }
+
+    private fun calcTimerDelay(gameSpeed: Double): Int {
+        return (1000.0 / gameSpeed).toInt()
     }
 
     private var text: String? = null
@@ -54,7 +66,9 @@ class LevelMenuPanel : JPanel(), ActionListener {
     }
 
     fun startTimer() {
-        if (!timer.isRunning) timer.start()
+        if (!timer.isRunning) {
+            timer.start()
+        }
     }
 
     fun stopTimer() {
