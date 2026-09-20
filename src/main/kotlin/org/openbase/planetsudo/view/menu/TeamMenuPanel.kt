@@ -795,32 +795,40 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
         teamPointsNameLabel!!.isEnabled = true
         Thread.sleep(BLINK_ANIMATION.toLong())
 
-        if (gameManager.isWinner(team!!)) {
-            Thread.sleep(BLINK_ANIMATION.toLong())
-            teamFinalStateLabel!!.text = "Gewinner"
-            teamFinalStateLabel!!.foreground = Color.GREEN
-            Thread.sleep(BLINK_ANIMATION.toLong())
-            teamFinalStateLabel!!.isEnabled = true
-            Thread.sleep(BLINK_ANIMATION.toLong())
-            teamFinalStateLabel!!.isEnabled = false
-            Thread.sleep(BLINK_ANIMATION.toLong())
-            teamFinalStateLabel!!.isEnabled = true
-            Thread.sleep(BLINK_ANIMATION.toLong())
-            teamFinalStateLabel!!.isEnabled = false
-            Thread.sleep(BLINK_ANIMATION.toLong())
-            teamFinalStateLabel!!.isEnabled = true
-            Thread.sleep(BLINK_ANIMATION.toLong())
-            teamFinalStateLabel!!.isEnabled = false
-            Thread.sleep(BLINK_ANIMATION.toLong())
-            teamFinalStateLabel!!.isEnabled = true
-            Thread.sleep(BLINK_ANIMATION.toLong())
-            teamFinalStateLabel!!.isEnabled = false
-            Thread.sleep(BLINK_ANIMATION.toLong())
-            teamFinalStateLabel!!.isEnabled = true
+        if (!gameManager.isDraw()) {
+
+            if (gameManager.isWinner(team!!)) {
+                Thread.sleep(BLINK_ANIMATION.toLong())
+                teamFinalStateLabel!!.text = "Gewinner"
+                teamFinalStateLabel!!.foreground = Color.GREEN
+                Thread.sleep(BLINK_ANIMATION.toLong())
+                teamFinalStateLabel!!.isEnabled = true
+                Thread.sleep(BLINK_ANIMATION.toLong())
+                teamFinalStateLabel!!.isEnabled = false
+                Thread.sleep(BLINK_ANIMATION.toLong())
+                teamFinalStateLabel!!.isEnabled = true
+                Thread.sleep(BLINK_ANIMATION.toLong())
+                teamFinalStateLabel!!.isEnabled = false
+                Thread.sleep(BLINK_ANIMATION.toLong())
+                teamFinalStateLabel!!.isEnabled = true
+                Thread.sleep(BLINK_ANIMATION.toLong())
+                teamFinalStateLabel!!.isEnabled = false
+                Thread.sleep(BLINK_ANIMATION.toLong())
+                teamFinalStateLabel!!.isEnabled = true
+                Thread.sleep(BLINK_ANIMATION.toLong())
+                teamFinalStateLabel!!.isEnabled = false
+                Thread.sleep(BLINK_ANIMATION.toLong())
+                teamFinalStateLabel!!.isEnabled = true
+            } else {
+                teamFinalStateLabel!!.text = "Verlierer"
+                Thread.sleep(BLINK_ANIMATION.toLong())
+                teamFinalStateLabel!!.foreground = Color.RED
+                teamFinalStateLabel!!.isEnabled = true
+            }
         } else {
-            teamFinalStateLabel!!.text = "Verlierer"
+            teamFinalStateLabel!!.text = "Unentschieden"
             Thread.sleep(BLINK_ANIMATION.toLong())
-            teamFinalStateLabel!!.foreground = Color.RED
+            teamFinalStateLabel!!.foreground = Color.BLACK
             teamFinalStateLabel!!.isEnabled = true
         }
     }
