@@ -26,10 +26,12 @@ class LevelMenuPanel : JPanel(), ActionListener {
 
     fun setLevel(level: AbstractLevel) {
         levelName = level.name
+        timer.delay = (1000.0 * (1 / level.getGameSpeedFactor())).toInt()
         level.addPropertyChangeListener {
             if (it.propertyName == AbstractLevel.GAME_SPEED_FACTOR_CHANGED) {
                 timer.isRunning.let { running ->
                     timer.delay = (1000.0 * (1 / (it.newValue as Double))).toInt()
+                    timer.initialDelay = timer.delay
                     if (running) timer.restart()
                 }
             }

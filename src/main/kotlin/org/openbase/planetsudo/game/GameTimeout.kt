@@ -7,7 +7,7 @@ import javax.swing.Timer
 
 // TODO this currently de-syncs slightly from the timer in LevelMenuPanel
 class GameTimeout(level: AbstractLevel, duration: Long, val function: () -> Unit) : ActionListener {
-    private val timer: Timer = Timer(1000, this)
+    private val timer: Timer = Timer((1000.0 * (1 / level.getGameSpeedFactor())).toInt(), this)
     private var secondsRemaining = duration / 1000
     private var fired: Boolean = false
 
@@ -16,6 +16,7 @@ class GameTimeout(level: AbstractLevel, duration: Long, val function: () -> Unit
             if (it.propertyName == AbstractLevel.GAME_SPEED_FACTOR_CHANGED) {
                 timer.isRunning.let { running ->
                     timer.delay = (1000.0 * (1 / (it.newValue as Double))).toInt()
+                    timer.initialDelay = timer.delay
                     if (running) {
                         timer.restart()
                     }
