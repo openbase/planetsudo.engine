@@ -195,6 +195,10 @@ class GameManager : Runnable {
         return team.finalPoints == max(teamA!!.finalPoints, teamB!!.finalPoints)
     }
 
+    fun isDraw(): Boolean {
+        return teamA!!.finalPoints == teamB!!.finalPoints
+    }
+
     override fun toString(): String {
         return this.javaClass.simpleName
     }
