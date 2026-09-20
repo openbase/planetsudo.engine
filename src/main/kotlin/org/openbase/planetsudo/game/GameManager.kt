@@ -158,9 +158,9 @@ class GameManager : Runnable {
                 level?.reset()
 
                 if (gameEndDur > 0) {
-                    gameEnd = GameTimeout(gameEndDur) { setGameOverSoon() }
+                    gameEnd = GameTimeout(level!!, gameEndDur) { setGameOverSoon() }
                     if (gameEndCalcDur > 0) {
-                        gameEndCalc = GameTimeout(gameEndDur + gameEndCalcDur) { gameEndFunction() }
+                        gameEndCalc = GameTimeout(level!!, gameEndDur + gameEndCalcDur) { gameEndFunction() }
                     }
                 }
 
@@ -169,8 +169,8 @@ class GameManager : Runnable {
                 lock.withLock {
                     condition.signalAll()
                 }
-                gameEnd?.start()
-                gameEndCalc?.start()
+                gameEnd?.startTimer()
+                gameEndCalc?.startTimer()
                 LOGGER.info("Game is Running.")
             }
         }
@@ -194,18 +194,20 @@ class GameManager : Runnable {
 
         if (state == GameState.Break) {
             isPause = true
-            gameEndCalc?.pause()
-            gameEnd?.pause()
-        } else {
+            gameEndCalc?.stopTimer()
+            gameEnd?.stopTimer()
+        } else if (isPause && gameState == GameState.Running) {
             isPause = false
-            gameEndCalc?.tryUnpause()
-            gameEnd?.tryUnpause()
+            gameEndCalc?.startTimer()
+            gameEnd?.startTimer()
         }
 
         if (state == GameState.Running) {
             isGameOver = false
         } else if (state == GameState.Configuration) {
             isGameOver = true
+            gameEndCalc?.stopTimer()
+            gameEnd?.stopTimer()
         }
     }
 

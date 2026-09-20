@@ -1,25 +1,47 @@
 package org.openbase.planetsudo.game
 
-import org.openbase.jul.schedule.Timeout
+import org.openbase.planetsudo.level.AbstractLevel
+import java.awt.event.ActionEvent
+import java.awt.event.ActionListener
+import javax.swing.Timer
 
-// TODO this is currently not aware of game speed factor
-class GameTimeout(duration: Long, val function: () -> Unit) : Timeout(duration) {
+// TODO this currently de-syncs slightly from the timer in LevelMenuPanel
+class GameTimeout(level: AbstractLevel, duration: Long, val function: () -> Unit) : ActionListener {
+    private val timer: Timer = Timer(1000, this)
+    private var secondsRemaining = duration / 1000
+    private var fired: Boolean = false
 
-    private var pausedAt: Long? = null
-
-    override fun expired() {
-        function()
-    }
-
-    fun pause() {
-        pausedAt = timeLeftUntilTimeout
-        cancel()
-    }
-
-    fun tryUnpause() {
-        if (isActive || isExpired) {
-            return
+    init { //This is a blatant copy of LevelMenuPanel, thus knowingly violating single source of truth
+        level.addPropertyChangeListener {
+            if (it.propertyName == AbstractLevel.GAME_SPEED_FACTOR_CHANGED) {
+                timer.isRunning.let { running ->
+                    timer.delay = (1000.0 * (1 / (it.newValue as Double))).toInt()
+                    if (running) {
+                        timer.restart()
+                    }
+                }
+            }
         }
-        pausedAt?.let { restart(it) }
+    }
+
+    fun startTimer() {
+        if (!timer.isRunning && !fired) {
+            timer.start()
+        }
+    }
+
+    fun stopTimer() {
+        if (timer.isRunning) {
+            timer.stop()
+        }
+    }
+
+    override fun actionPerformed(ex: ActionEvent) {
+        secondsRemaining--
+        if (secondsRemaining <= 0 && !fired) {
+            function()
+            fired = true
+            stopTimer()
+        }
     }
 }
