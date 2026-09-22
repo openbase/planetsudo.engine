@@ -6,9 +6,9 @@ import java.awt.event.ActionListener
 import javax.swing.Timer
 
 // this still de-syncs slightly from the timer in LevelMenuPanel
-class GameTimeout(level: AbstractLevel, duration: Long, val function: () -> Unit) : ActionListener {
+class GameTimeout(level: AbstractLevel, durationInMs: Long, val function: () -> Unit) : ActionListener {
     private val timer: Timer = Timer(calcTimerDelay(level.getGameSpeedFactor()), this)
-    private var secondsRemaining = duration / 1000
+    private var secondsRemaining = durationInMs / 1000
     private var fired: Boolean = false
 
     init { //This is a blatant copy of LevelMenuPanel, thus knowingly violating single source of truth

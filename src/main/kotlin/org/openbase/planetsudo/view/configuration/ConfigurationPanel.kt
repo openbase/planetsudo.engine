@@ -431,8 +431,8 @@ class ConfigurationPanel : JPanel() {
         configureDateSpinner(gameEndTimeSpinner!!)
         configureDateSpinner(gameEndCalcTimeSpinner!!)
 
-        gameEndTimeSpinner!!.addChangeListener { e -> gameManager.setGameEndTimer(((e.source as JSpinner).value as Date).time) }
-        gameEndCalcTimeSpinner!!.addChangeListener { e -> gameManager.setGameEndCalcTimer(((e.source as JSpinner).value as Date).time) }
+        gameEndTimeSpinner!!.addChangeListener { e -> gameManager.setGameEndDuration(((e.source as JSpinner).value as Date).time) }
+        gameEndCalcTimeSpinner!!.addChangeListener { e -> gameManager.setGameEndCalcDuration(((e.source as JSpinner).value as Date).time) }
 
         gameEndTimeLabel!!.horizontalAlignment = SwingConstants.LEADING
         gameEndTimeLabel!!.text = "Automatisches Spielende einleiten"

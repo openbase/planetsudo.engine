@@ -50,10 +50,10 @@ class GameManager : Runnable {
     private var gameSpeedFactor: Double
     var gameOverSoon: Boolean
 
-    private var gameEndDur: Long = 0
-    private var gameEndCalcDur: Long = 0
-    private var gameEnd: GameTimeout? = null
-    private var gameEndCalc: GameTimeout? = null
+    private var gameEndDurationInMs: Long = 0
+    private var gameEndCalcDurationInMs: Long = 0
+    private var gameEndTimeout: GameTimeout? = null
+    private var gameEndCalcTimeout: GameTimeout? = null
 
     init {
         LOGGER.info("Create $this.")
@@ -121,12 +121,12 @@ class GameManager : Runnable {
         LOGGER.info("Set $level as new level.")
     }
 
-    fun setGameEndTimer(duration: Long) {
-        gameEndDur = duration
+    fun setGameEndDuration(durationInMs: Long) {
+        gameEndDurationInMs = durationInMs
     }
 
-    fun setGameEndCalcTimer(duration: Long) {
-        gameEndCalcDur = duration
+    fun setGameEndCalcDuration(durationInMs: Long) {
+        gameEndCalcDurationInMs = durationInMs
     }
 
     fun startGame(gameEndFunction: () -> Unit) {
@@ -157,13 +157,13 @@ class GameManager : Runnable {
                 level?.setTeamB(teamB)
                 level?.reset()
 
-                gameEnd = null
-                gameEndCalc = null
+                gameEndTimeout = null
+                gameEndCalcTimeout = null
 
-                if (gameEndDur > 0) {
-                    gameEnd = GameTimeout(level!!, gameEndDur) { setGameOverSoon() }
-                    if (gameEndCalcDur > 0) {
-                        gameEndCalc = GameTimeout(level!!, gameEndDur + gameEndCalcDur) { gameEndFunction() }
+                if (gameEndDurationInMs > 0) {
+                    gameEndTimeout = GameTimeout(level!!, gameEndDurationInMs) { setGameOverSoon() }
+                    if (gameEndCalcDurationInMs > 0) {
+                        gameEndCalcTimeout = GameTimeout(level!!, gameEndDurationInMs + gameEndCalcDurationInMs) { gameEndFunction() }
                     }
                 }
 
@@ -172,8 +172,8 @@ class GameManager : Runnable {
                 lock.withLock {
                     condition.signalAll()
                 }
-                gameEnd?.startTimer()
-                gameEndCalc?.startTimer()
+                gameEndTimeout?.startTimer()
+                gameEndCalcTimeout?.startTimer()
                 LOGGER.info("Game is Running.")
             }
         }
@@ -197,20 +197,20 @@ class GameManager : Runnable {
 
         if (state == GameState.Break) {
             isPause = true
-            gameEndCalc?.stopTimer()
-            gameEnd?.stopTimer()
+            gameEndCalcTimeout?.stopTimer()
+            gameEndTimeout?.stopTimer()
         } else if (isPause && gameState == GameState.Running) {
             isPause = false
-            gameEndCalc?.startTimer()
-            gameEnd?.startTimer()
+            gameEndCalcTimeout?.startTimer()
+            gameEndTimeout?.startTimer()
         }
 
         if (state == GameState.Running) {
             isGameOver = false
         } else if (state == GameState.Configuration) {
             isGameOver = true
-            gameEndCalc?.stopTimer()
-            gameEnd?.stopTimer()
+            gameEndCalcTimeout?.stopTimer()
+            gameEndTimeout?.stopTimer()
         }
     }
 
