@@ -260,7 +260,7 @@ class MainGUI : JFrame, PropertyChangeListener {
 
     private var finished = false
 
-    private fun finalizeGame() {
+    fun finalizeGame() {
         finished = true
 
         gameManager.switchGameState(GameState.Break)
@@ -460,7 +460,7 @@ class MainGUI : JFrame, PropertyChangeListener {
 
     private fun startPauseMenuItemActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_startPauseMenuItemActionPerformed
         when (gameManager.gameState) {
-            GameState.Configuration -> gameManager.startGame()
+            GameState.Configuration -> gameManager.startGame { finalizeGame() }
             GameState.Running -> gameManager.switchGameState(GameState.Break)
             GameState.Break -> gameManager.switchGameState(GameState.Running)
             else -> {}

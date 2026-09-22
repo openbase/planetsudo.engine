@@ -50,6 +50,11 @@ class GameManager : Runnable {
     private var gameSpeedFactor: Double
     var gameOverSoon: Boolean
 
+    private var gameEndDurationInMs: Long = 0
+    private var gameEndCalcDurationInMs: Long = 0
+    private var gameEndTimeout: GameTimeout? = null
+    private var gameEndCalcTimeout: GameTimeout? = null
+
     init {
         LOGGER.info("Create $this.")
         this.gameThread = Thread(this, "GameThread")
@@ -116,7 +121,15 @@ class GameManager : Runnable {
         LOGGER.info("Set $level as new level.")
     }
 
-    fun startGame() {
+    fun setGameEndDuration(durationInMs: Long) {
+        gameEndDurationInMs = durationInMs
+    }
+
+    fun setGameEndCalcDuration(durationInMs: Long) {
+        gameEndCalcDurationInMs = durationInMs
+    }
+
+    fun startGame(gameEndFunction: () -> Unit) {
         val gameStartThread: Thread = object : Thread("Gamestart Thread") {
             override fun run() {
                 LOGGER.info("Init game start...")
@@ -143,11 +156,24 @@ class GameManager : Runnable {
                 level?.setTeamA(teamA)
                 level?.setTeamB(teamB)
                 level?.reset()
+
+                gameEndTimeout = null
+                gameEndCalcTimeout = null
+
+                if (gameEndDurationInMs > 0) {
+                    gameEndTimeout = GameTimeout(level!!, gameEndDurationInMs) { setGameOverSoon() }
+                    if (gameEndCalcDurationInMs > 0) {
+                        gameEndCalcTimeout = GameTimeout(level!!, gameEndDurationInMs + gameEndCalcDurationInMs) { gameEndFunction() }
+                    }
+                }
+
                 setGameState(GameState.Running)
                 Thread(level, "Levelrunner").start()
                 lock.withLock {
                     condition.signalAll()
                 }
+                gameEndTimeout?.startTimer()
+                gameEndCalcTimeout?.startTimer()
                 LOGGER.info("Game is Running.")
             }
         }
@@ -168,11 +194,23 @@ class GameManager : Runnable {
     private fun setGameState(state: GameState) {
         GUIController.setEvent(PropertyChangeEvent(this, GUIController.GAME_STATE_CHANGE, gameState, state))
         this.gameState = state
-        isPause = state == GameState.Break
+
+        if (state == GameState.Break) {
+            isPause = true
+            gameEndCalcTimeout?.stopTimer()
+            gameEndTimeout?.stopTimer()
+        } else if (isPause && gameState == GameState.Running) {
+            isPause = false
+            gameEndCalcTimeout?.startTimer()
+            gameEndTimeout?.startTimer()
+        }
+
         if (state == GameState.Running) {
             isGameOver = false
         } else if (state == GameState.Configuration) {
             isGameOver = true
+            gameEndCalcTimeout?.stopTimer()
+            gameEndTimeout?.stopTimer()
         }
     }
 
