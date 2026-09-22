@@ -749,14 +749,16 @@ class ConfigurationPanel : JPanel() {
         val dateModel = SpinnerDateModel()
         dateModel.calendarField = Calendar.MINUTE
         dateSpinner.model = dateModel
+        dateModel.start = Date(0)
+        dateModel.end = Date(60 * 60 * 1000 - 1) //59:59 in ms
 
         dateSpinner.editor = DateEditor(dateSpinner)
         val dateFormat: SimpleDateFormat = (dateSpinner.editor as DateEditor).format
-        dateFormat.timeZone = TimeZones.GMT
         dateFormat.applyLocalizedPattern("mm:ss")
+        dateFormat.timeZone = TimeZones.GMT //GMT because that's where a displayed value of "00:00" is 0 ms
 
         // Update value here because of https://stackoverflow.com/a/37444974
-        dateModel.value = Date(60 * 1000) // TODO keep last value as default?
+        dateModel.value = Date(0) // TODO keep last value as default?
     }
 
     private fun levelChooserComboBoxActionPerformed() { // GEN-FIRST:event_levelChooserComboBoxActionPerformed
