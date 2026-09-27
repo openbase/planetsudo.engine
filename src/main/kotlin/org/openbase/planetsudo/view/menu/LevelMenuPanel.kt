@@ -26,7 +26,7 @@ class LevelMenuPanel : JPanel(), ActionListener {
 
     fun setLevel(level: AbstractLevel) {
         levelName = level.name
-        updateDelay (level.getGameSpeedFactor())
+        updateDelay(level.getGameSpeedFactor())
         level.addPropertyChangeListener {
             if (it.propertyName == AbstractLevel.GAME_SPEED_FACTOR_CHANGED) {
                 timer.isRunning.let { running ->
