@@ -33,6 +33,7 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
     private val RESOURCES_LOCK: Any = SyncObject("ResourcesLock")
     private val TOWER_LOCK: Any = SyncObject("TowerLock")
     private val base: Point2D
+    val size: LevelSize by lazy { LevelSize.fromLevel(this) }
 
     @JvmField
     val levelBorderPolygon: Polygon
@@ -102,11 +103,11 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
         this.base = calculateBasePosition(levelBorderPolygon)
 
         levelBorderPolygon.translate(-base.x.toInt(), -base.y.toInt())
-        if (levelWallPolygons != null) {
-            for (p in levelWallPolygons) {
-                p.translate(-base.x.toInt(), -base.y.toInt())
-            }
+
+        for (p in levelWallPolygons) {
+            p.translate(-base.x.toInt(), -base.y.toInt())
         }
+
         for (homepos in homePositions) {
             homepos.translateIntoBase(base)
         }

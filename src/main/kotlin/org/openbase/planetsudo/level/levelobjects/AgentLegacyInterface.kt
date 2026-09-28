@@ -9,7 +9,6 @@ interface AgentLegacyInterface : AgentSpecialInterface<AgentSpecialInterfaceGerm
      *
      * @return true oder false
      */
-    @Deprecated("NOT YET SUPPORTED")
     fun seeTower(): Boolean
 
     /**
@@ -17,7 +16,6 @@ interface AgentLegacyInterface : AgentSpecialInterface<AgentSpecialInterfaceGerm
      * Bedenke das nur Commander einen Turm trägt!
      * @return
      */
-    @Deprecated("NOT YET SUPPORTED")
     val hasTower: Boolean
 
     /**
@@ -30,14 +28,12 @@ interface AgentLegacyInterface : AgentSpecialInterface<AgentSpecialInterfaceGerm
      *
      * @param type Hier rüber kannst du den Turmtypen auswählen welcher errichtet werden soll.
      */
-    @Deprecated("NOT YET SUPPORTED")
     fun constructTower(type: Tower.TowerType)
 
     /**
      * Baut einen Turm wieder ab der zuvor aufgestellt wurde.
      * Diese Aktion kann nur vom Commander durchgeführt werden, und zwar nur dann, wenn er in unmittelbarer Nähe des Turms ist.
      */
-    @Deprecated("NOT YET SUPPORTED")
     fun deconstructTower()
 
     /**

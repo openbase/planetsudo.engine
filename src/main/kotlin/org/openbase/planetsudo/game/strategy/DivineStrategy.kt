@@ -1,6 +1,7 @@
 package org.openbase.planetsudo.game.strategy
 
 import org.openbase.planetsudo.game.SwatTeam
+import org.openbase.planetsudo.level.LevelSize
 import org.openbase.planetsudo.level.levelobjects.AgentInterface
 import org.openbase.planetsudo.level.levelobjects.Resource.ResourceType
 import org.openbase.planetsudo.level.levelobjects.Tower
@@ -37,18 +38,17 @@ class DivineStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
                 }
             },
         )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("Discover", SwatTeam.COMMANDER) {
-                override fun constraint(): Boolean {
-                    return true
-                }
 
-                override fun action() {
-                    agent.goRight(4)
-                }
-            },
-        )
+        "Discover" commander inCase { true } then { agent.goRight(4) }
+
+        "Scan" commander inCase { tower.type == Tower.TowerType.ObservationTower && tower.levelSize == LevelSize.UNKNOWN } then {
+            tower.scanLevelSize()
+        }
+
+        "Place Observation Tower" commander inCase { agent.hasTower } then {
+            agent.constructTower(Tower.TowerType.ObservationTower)
+        }
+
         // -------------------------------------------->
 //        createRule(
 //            object : Rule("Avoid Agents", SwatTeam.COMMANDER) {
@@ -498,19 +498,6 @@ class DivineStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
                 }
             },
         )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("Construct Tower", SwatTeam.COMMANDER) {
-                override fun constraint(): Boolean {
-                    return agent.hasTower && agent.seeResource
-                }
-
-                override fun action() {
-                    agent.constructTower(Tower.TowerType.DefenceTower)
-                }
-            },
-        )
-        // -------------------------------------------->
         createRule(
             object : Rule("Follow Wall", SwatTeam.ALPHA) {
                 override fun constraint(): Boolean {

@@ -29,6 +29,8 @@ abstract class AbstractStrategy<LEVEL : GlobalAgentInterface<*>>(val agent: Agen
 
     private val strategyOwner: Agent by lazy { agent as Agent }
     val mothership: MothershipInterface by lazy { strategyOwner.mothership }
+
+    val tower: TowerInterface by lazy { strategyOwner.mothership.tower }
     val enemyAgent get() = strategyOwner.enemyAgent
     val teamAgent get() = strategyOwner.teamAgent
     private val mothershipInternal: Mothership by lazy { strategyOwner.mothership }
