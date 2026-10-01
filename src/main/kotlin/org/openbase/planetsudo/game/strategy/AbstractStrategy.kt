@@ -24,12 +24,13 @@ typealias StrategyLevelLegacy = AbstractStrategy<AgentLegacyInterface>
  *
  * @author [Divine Threepwood](mailto:divine@openbase.org)
  */
-abstract class AbstractStrategy<LEVEL : GlobalAgentInterface<*>>(val agent: AgentInterface) : Runnable {
+abstract class AbstractStrategy<LEVEL : GlobalAgentInterface<*>>(agent: AgentInterface) : Runnable {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     private val strategyOwner: Agent by lazy { agent as Agent }
     val mothership: MothershipInterface by lazy { strategyOwner.mothership }
 
+    val agent: LEVEL by lazy { agent as LEVEL }
     val tower: TowerInterface by lazy { strategyOwner.mothership.tower }
     val enemyAgent get() = strategyOwner.enemyAgent
     val teamAgent get() = strategyOwner.teamAgent
