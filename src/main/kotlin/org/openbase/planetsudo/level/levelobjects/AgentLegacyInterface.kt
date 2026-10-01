@@ -9,7 +9,6 @@ interface AgentLegacyInterface : AgentSpecialInterface<AgentSpecialInterfaceGerm
      *
      * @return true oder false
      */
-    @Deprecated("NOT YET SUPPORTED")
     fun seeTower(): Boolean
 
     /**

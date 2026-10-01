@@ -28,16 +28,6 @@ package org.openbase.planetsudo.level.levelobjects
 class TowerInterfaceGermanWrapper(private val tower: TowerInterface) {
 
     /**
-     * Prüft ob der Agent den Turm sehen kann.
-     */
-    fun siehtTurm(agent: Agent) = tower.seeTower(agent)
-
-    /**
-     * Bestellt Treibstoff vom Turm.
-     */
-    fun bestelleTreibstoff(menge: Int, agent: Agent?) = tower.orderFuel(menge, agent)
-
-    /**
      * Gibt zurück, ob der Turm Treibstoff hat.
      */
     fun hatTreibstoff() = tower.hasFuel()
