@@ -162,15 +162,19 @@ class Agent(
     override fun isCollisionDetectedAtRight(beta: Int): Boolean =
         level.collisionDetected(computeFutureBoundsRight(beta))
 
-    override fun seeWallAtLeft(beta: Int, distance: WallDistance): Boolean {
-        val dir = Direction2D(direction.angle).also { it.angle -= beta }
-        return level.hitsWall(position.clone(), dir, distance.pixel)
-    }
+    override fun seeWallAtLeft(beta: Int, distance: WallDistance): Boolean =
+        level.hitsWall(
+            start = position.clone(),
+            direction = Direction2D(direction.angle).also { it.angle -= beta },
+            maxDistance = distance.pixel,
+        )
 
-    override fun seeWallAtRight(beta: Int, distance: WallDistance): Boolean {
-        val dir = Direction2D(direction.angle).also { it.angle += beta }
-        return level.hitsWall(position.clone(), dir, distance.pixel)
-    }
+    override fun seeWallAtRight(beta: Int, distance: WallDistance): Boolean =
+        level.hitsWall(
+            start = position.clone(),
+            direction = Direction2D(direction.angle).also { it.angle += beta },
+            maxDistance = distance.pixel,
+        )
 
     override val isShifting
         get(): Boolean = shiftTonic > 0.0
@@ -677,7 +681,7 @@ class Agent(
                     direction.turnTo(position, teamAgent.position)
                     ap.getActionPoint(value * 2)
                     teamAgent.spendFuel(useFuel(value)).also {
-                            // charge leftover back to origin
+                        // charge leftover back to origin
                             leftover ->
                         spendFuel(leftover)
                     }

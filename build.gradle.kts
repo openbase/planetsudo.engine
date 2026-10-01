@@ -13,7 +13,6 @@ plugins {
     `maven-publish`
     signing
     id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
-    kotlin("plugin.lombok") version "1.9.22"
 }
 
 group = "org.openbase"
