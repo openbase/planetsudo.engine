@@ -164,16 +164,12 @@ class Agent(
 
     override fun seeWallAtLeft(beta: Int, distance: WallDistance): Boolean {
         val dir = Direction2D(direction.angle).also { it.angle -= beta }
-        val front = position.clone()
-        front.translate(dir, (width / 2).toInt())
-        return level.hitsWall(front, dir, distance.pixel)
+        return level.hitsWall(position.clone(), dir, distance.pixel)
     }
 
     override fun seeWallAtRight(beta: Int, distance: WallDistance): Boolean {
         val dir = Direction2D(direction.angle).also { it.angle += beta }
-        val front = position.clone()
-        front.translate(dir, (width / 2).toInt())
-        return level.hitsWall(front, dir, distance.pixel)
+        return level.hitsWall(position.clone(), dir, distance.pixel)
     }
 
     override val isShifting
@@ -681,7 +677,7 @@ class Agent(
                     direction.turnTo(position, teamAgent.position)
                     ap.getActionPoint(value * 2)
                     teamAgent.spendFuel(useFuel(value)).also {
-                            // charge leftover back to origin
+                        // charge leftover back to origin
                             leftover ->
                         spendFuel(leftover)
                     }
@@ -788,7 +784,10 @@ class Agent(
             level.getAdversaryAgent(this)?.let { enemyAgent ->
                 // do not come too close to the adversary agents
                 if (enemyAgent.levelView!!.getDistance(this) >= (AGENT_SIZE / 2)) {
-                    goTo { turnTo(position, enemyAgent.position) }
+                    goTo {
+                        enemyAgent.levelView?.getRelativeDirection(this@Agent)
+                            ?.also { angle = it }
+                    }
                 } else {
                     performAction {
                         direction.turnTo(position, enemyAgent.position)
