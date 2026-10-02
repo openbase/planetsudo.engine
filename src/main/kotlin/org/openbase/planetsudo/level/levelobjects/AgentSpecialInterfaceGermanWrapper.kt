@@ -18,6 +18,24 @@ open class AgentSpecialInterfaceGermanWrapper(private val agent: AgentSpecialInt
     fun istKollisionRechtsErkannt(beta: Int) = agent.isCollisionDetectedAtRight(beta)
 
     /**
+     * Prüft, ob sich links vom Agenten innerhalb der angegebenen Distanz eine Wand befindet.
+     *
+     * @param beta Winkel in Grad (0 = vorne, 90 = links, 180 = hinten)
+     * @param distanz Maximale Suchdistanz
+     */
+    fun seheWandLinks(beta: Int, distanz: WallDistance = WallDistance.FAR) =
+        agent.seeWallAtLeft(beta, distanz)
+
+    /**
+     * Prüft, ob sich rechts vom Agenten innerhalb der angegebenen Distanz eine Wand befindet.
+     *
+     * @param beta Winkel in Grad (0 = vorne, 90 = rechts, 180 = hinten)
+     * @param distanz Maximale Suchdistanz
+     */
+    fun seheWandRechts(beta: Int, distanz: WallDistance = WallDistance.FAR) =
+        agent.seeWallAtRight(beta, distanz)
+
+    /**
      * Abfrage, ob der Agent aktuell unsichtbar ist.
      */
     val istUnsichtbar get() = agent.isInvisible
