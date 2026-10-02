@@ -133,4 +133,23 @@ interface AgentSpecialInterface<DE : AgentSpecialInterfaceGermanWrapper> : Agent
      * Der Agent läuft amok.
      */
     fun kill()
+
+    /**
+     * Überprüft, ob dieser Agent einen Turm aufbauen könnte.
+     * Bedenke das nur Commander einen Turm trägt!
+     * @return
+     */
+    val hasTower: Boolean
+
+    /**
+     * Errichtet den Turm an der Position des Commander.
+     * Diese Aktion kann nur durch den Commander durchgeführt werden!
+     *
+     * Es gibt hierbei zwei Arten von Türmen:
+     * - Einen Verteidigungsturm (DefenceTower) der feindliche Agenten für alle Agenten des Teams sichtbar macht und diese angreift.
+     * - Einen Beobachtungsturm (ObservationTower) der Ressourcen in Reichweite für alle Agenten des Teams sichtbar macht und zudem Agenten in Reichweite mit Energie beliefert.
+     *
+     * @param type Hier rüber kannst du den Turmtypen auswählen welcher errichtet werden soll.
+     */
+    fun constructTower(type: Tower.TowerType)
 }
