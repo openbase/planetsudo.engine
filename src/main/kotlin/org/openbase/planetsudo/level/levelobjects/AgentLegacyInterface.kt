@@ -12,25 +12,6 @@ interface AgentLegacyInterface : AgentSpecialInterface<AgentSpecialInterfaceGerm
     fun seeTower(): Boolean
 
     /**
-     * Überprüft, ob dieser Agent einen Turm aufbauen könnte.
-     * Bedenke das nur Commander einen Turm trägt!
-     * @return
-     */
-    val hasTower: Boolean
-
-    /**
-     * Errichtet den Turm an der Position des Commander.
-     * Diese Aktion kann nur durch den Commander durchgeführt werden!
-     *
-     * Es gibt hierbei zwei Arten von Türmen:
-     * - Einen Verteidigungsturm (DefenceTower) der feindliche Agenten für alle Agenten des Teams sichtbar macht und diese angreift.
-     * - Einen Beobachtungsturm (ObservationTower) der Ressourcen in Reichweite für alle Agenten des Teams sichtbar macht und zudem Agenten in Reichweite mit Energie beliefert.
-     *
-     * @param type Hier rüber kannst du den Turmtypen auswählen welcher errichtet werden soll.
-     */
-    fun constructTower(type: Tower.TowerType)
-
-    /**
      * Baut einen Turm wieder ab der zuvor aufgestellt wurde.
      * Diese Aktion kann nur vom Commander durchgeführt werden, und zwar nur dann, wenn er in unmittelbarer Nähe des Turms ist.
      */

@@ -131,6 +131,23 @@ open class AgentSpecialInterfaceGermanWrapper(private val agent: AgentSpecialInt
     fun shifte() = agent.shift()
 
     /**
+     * Gibt an, ob dieser Agent einen Turm errichten kann. Nur Commander können einen Turm tragen.
+     */
+    val hatTurm get() = agent.hasTower
+
+    /**
+     * Errichtet den angegebenen Turm an der Position des Commanders.
+     * Diese Aktion kann nur durch den Commander durchgeführt werden.
+     *
+     * Ein Verteidigungsturm macht feindliche Agenten für das Team sichtbar und greift sie an.
+     * Ein Beobachtungsturm macht Ressourcen in Reichweite für das Team sichtbar und versorgt
+     * Agenten in Reichweite mit Energie.
+     *
+     * @param typ Typ des zu errichtenden Turms
+     */
+    fun errichteTurm(typ: Tower.TowerType) = agent.constructTower(typ)
+
+    /**
      * Der Agent läuft amok.
      */
     fun toeteDich() = agent.kill()

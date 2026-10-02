@@ -38,7 +38,11 @@ class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership)
     ActionListener,
     TowerInterface {
     enum class TowerType {
-        Unknown, DefenceTower, ObservationTower
+        Unknown,
+
+        @Deprecated("Defence Tower not supported yet, use ObservationTower instead")
+        DefenceTower,
+        ObservationTower,
     }
 
     override var type: TowerType = TowerType.Unknown
