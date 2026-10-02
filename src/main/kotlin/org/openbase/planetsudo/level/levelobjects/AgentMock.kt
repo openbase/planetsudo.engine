@@ -83,6 +83,7 @@ class AgentMock : AgentInterface {
     override fun goToEnemyAgent() {
         error("Mock does not offer any functionality.")
     }
+
     override fun goToTeamAgent() {
         error("Mock does not offer any functionality.")
     }
@@ -247,6 +248,14 @@ class AgentMock : AgentInterface {
     }
 
     override fun isCollisionDetectedAtRight(beta: Int): Boolean {
+        error("Mock does not offer any functionality.")
+    }
+
+    override fun seeWallAtLeft(beta: Int, distance: WallDistance): Boolean {
+        error("Mock does not offer any functionality.")
+    }
+
+    override fun seeWallAtRight(beta: Int, distance: WallDistance): Boolean {
         error("Mock does not offer any functionality.")
     }
 

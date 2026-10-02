@@ -7,6 +7,7 @@ import org.openbase.planetsudo.game.GameManager
 import org.openbase.planetsudo.game.Team
 import org.openbase.planetsudo.game.strategy.AbstractStrategy
 import org.openbase.planetsudo.geometry.Base2D
+import org.openbase.planetsudo.geometry.Direction2D
 import org.openbase.planetsudo.geometry.Point2D
 import org.openbase.planetsudo.level.levelobjects.Agent
 import org.openbase.planetsudo.level.levelobjects.Mothership
@@ -177,6 +178,32 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
             }
         }
         return !levelBorderPolygon.contains(bounds)
+    }
+
+    /**
+     * Steps along a direction from start point and returns true when the first wall/border is hit.
+     * Uses a single reusable rectangle and incremental translation to reduce allocations.
+     */
+    fun hitsWall(start: org.openbase.planetsudo.geometry.Point2D, direction: org.openbase.planetsudo.geometry.Direction2D, maxDistance: Int): Boolean {
+        val p = start.clone()
+        val testRect = Rectangle2D.Double(0.0, 0.0, 2.0, 2.0)
+        val walls = levelWallPolygons
+        for (i in 1..maxDistance) {
+            p.translate(direction, 1)
+            testRect.x = p.xy[0] - 1.0
+            testRect.y = p.xy[1] - 1.0
+            if (walls != null) {
+                for (wall in walls) {
+                    if (wall.intersects(testRect) || wall.contains(testRect)) {
+                        return true
+                    }
+                }
+            }
+            if (!levelBorderPolygon.contains(testRect)) {
+                return true
+            }
+        }
+        return false
     }
 
     fun collisionDetected(bounds: Rectangle2D?): Boolean {

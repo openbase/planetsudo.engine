@@ -55,6 +55,7 @@ dependencies {
     testImplementation(libs.org.jetbrains.kotlin.test.junit5)
     testImplementation(libs.io.mockk)
     testImplementation(libs.org.amshove.kluent)
+    testImplementation(kotlin("test"))
 }
 
 nexusPublishing {

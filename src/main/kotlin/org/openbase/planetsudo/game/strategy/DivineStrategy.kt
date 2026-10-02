@@ -5,6 +5,7 @@ import org.openbase.planetsudo.level.LevelSize
 import org.openbase.planetsudo.level.levelobjects.AgentInterface
 import org.openbase.planetsudo.level.levelobjects.Resource.ResourceType
 import org.openbase.planetsudo.level.levelobjects.Tower
+import org.openbase.planetsudo.level.levelobjects.WallDistance
 
 /**
  *
@@ -40,6 +41,46 @@ class DivineStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         )
 
         "Discover" commander inCase { true } then { agent.goRight(4) }
+
+//        // Keep a bit of clearance from the wall while still following it. The distance parameter ensures the
+//        // agent does not hug the wall tightly when it is supposed to stay parallel to it.
+//        "Re-find Wall" commander inCase {
+//            !agent.seeWallAtRight(45, WallDistance.VERY_FAR) && !agent.seeWallAtRight(
+//                90,
+//                WallDistance.VERY_FAR,
+//            ) && !agent.seeWallAtRight(135, WallDistance.VERY_FAR)
+//        } then { agent.turnRight(2) }
+        "Follow Wall With Clearance" commander inCase {
+            (
+                agent.seeWallAtRight(45, WallDistance.CLOSE) &&
+                    agent.seeWallAtRight(135, WallDistance.CLOSE)
+                ) && !agent.seeWallAtRight(0, WallDistance.VERY_FAR)
+        } then { agent.goLeft(5) }
+        "Follow Wall Closer" commander inCase {
+            (
+                agent.seeWallAtRight(45, WallDistance.VERY_FAR) &&
+                    agent.seeWallAtRight(135, WallDistance.VERY_FAR)
+                ) && !agent.seeWallAtRight(0, WallDistance.VERY_FAR)
+        } then { agent.goRight(5) }
+        "Follow Wall" commander inCase {
+            (
+                agent.seeWallAtRight(45, WallDistance.FAR) &&
+                    agent.seeWallAtRight(135, WallDistance.FAR)
+                ) && !agent.seeWallAtRight(0, WallDistance.VERY_FAR)
+        } then { agent.go() }
+        "Follow Corner" commander inCase {
+            agent.seeWallAtRight(0, WallDistance.FAR) && (
+                agent.seeWallAtRight(
+                    45,
+                    WallDistance.VERY_FAR,
+                ) || agent.seeWallAtRight(90, WallDistance.VERY_FAR)
+                )
+        } then { agent.goLeft(20) }
+        "Follow Edge" commander inCase {
+            agent.seeWallAtRight(135, WallDistance.VERY_FAR) &&
+                !agent.seeWallAtRight(110, WallDistance.VERY_FAR) &&
+                !agent.seeWallAtRight(0, WallDistance.FAR)
+        } then { agent.turnRight(20) }
 
         "Scan" commander inCase { tower.type == Tower.TowerType.ObservationTower && tower.levelSize == LevelSize.UNKNOWN } then {
             tower.scanLevelSize()
@@ -352,7 +393,7 @@ class DivineStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         )
         // -------------------------------------------->
         createRule(
-            object : Rule("RepaireMothership") {
+            object : Rule("RepairMothership") {
                 override fun constraint(): Boolean {
                     return mothership.isDamaged && agent.isAtMothership
                 }
@@ -488,7 +529,7 @@ class DivineStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         )
         // -------------------------------------------->
         createRule(
-            object : Rule("Follow Wall", SwatTeam.COMMANDER) {
+            object : Rule("Avoid Wall Collision", SwatTeam.COMMANDER) {
                 override fun constraint(): Boolean {
                     return agent.isCollisionDetected
                 }
