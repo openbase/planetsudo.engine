@@ -82,7 +82,7 @@ class JodiKI(agent: AgentInterface) : StrategyLevel3(agent) {
      * Zudem können Swat Teams mit dem "NOT_" prefix von einer Regel ausgeschlossen werden.
      *
      * z.B. "Just Go" swat ALPHA inCase {true } then {agent.go()}
-     * oder "Just Go" swat ALPHA and FOXTROT inCase {true } then {agent.go()}
+     * od{er "Just Go" swat ALPHA and FOXTROT inCase {true } then agent.go()}
      */
     override fun loadRules() {
         // -------------------------------------------->
