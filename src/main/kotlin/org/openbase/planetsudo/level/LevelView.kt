@@ -11,6 +11,9 @@ import org.slf4j.LoggerFactory
 import java.awt.Color
 import java.awt.Graphics2D
 import java.util.*
+import java.util.concurrent.CancellationException
+import java.util.concurrent.CompletableFuture
+import java.util.concurrent.CompletionException
 import kotlin.math.max
 import kotlin.math.min
 
@@ -177,28 +180,63 @@ class LevelView(level: AbstractLevel, levelObject: AbstractLevelObject) {
     private fun distanceMapFor(destinationIndex: Int, compute: () -> IntArray): IntArray {
         val cache = synchronized(distanceMapCaches) {
             distanceMapCaches.getOrPut(levelObject.level) {
-                object : LinkedHashMap<Int, IntArray>(16, 0.75f, true) {
-                    override fun removeEldestEntry(eldest: MutableMap.MutableEntry<Int, IntArray>?): Boolean =
-                        size > DISTANCE_MAP_CACHE_SIZE
-                }
-            }
-        }
-        synchronized(cache) {
-            cache[destinationIndex]?.let {
-                logger.debug("Reuse cached distance map for raster cell {}.", destinationIndex)
-                return it
+                DistanceMapCache()
             }
         }
 
-        val distances = compute()
-        if (Thread.currentThread().isInterrupted) {
-            return distances
-        }
-        synchronized(cache) {
-            return cache[destinationIndex] ?: distances.also {
-                cache[destinationIndex] = it
+        while (!Thread.currentThread().isInterrupted) {
+            var shouldCompute = false
+            val computation = synchronized(cache) {
+                cache.completed[destinationIndex]?.let {
+                    logger.debug("Reuse cached distance map for raster cell {}.", destinationIndex)
+                    return it
+                }
+                cache.inFlight[destinationIndex] ?: CompletableFuture<IntArray>().also {
+                    cache.inFlight[destinationIndex] = it
+                    shouldCompute = true
+                }
+            }
+
+            if (!shouldCompute) {
+                try {
+                    return computation.join()
+                } catch (_: CancellationException) {
+                    continue
+                } catch (ex: CompletionException) {
+                    throw ex.cause ?: ex
+                }
+            }
+
+            try {
+                val distances = compute()
+                synchronized(cache) {
+                    cache.inFlight.remove(destinationIndex, computation)
+                    if (!Thread.currentThread().isInterrupted) {
+                        cache.completed[destinationIndex] = distances
+                    }
+                }
+                if (Thread.currentThread().isInterrupted) {
+                    computation.completeExceptionally(CancellationException("Distance-map computation interrupted"))
+                    return distances
+                }
+                computation.complete(distances)
+                return distances
+            } catch (ex: Throwable) {
+                synchronized(cache) {
+                    cache.inFlight.remove(destinationIndex, computation)
+                }
+                computation.completeExceptionally(ex)
+                throw ex
             }
         }
+    }
+
+    private class DistanceMapCache {
+        val completed = object : LinkedHashMap<Int, IntArray>(16, 0.75f, true) {
+            override fun removeEldestEntry(eldest: MutableMap.MutableEntry<Int, IntArray>?): Boolean =
+                size > DISTANCE_MAP_CACHE_SIZE
+        }
+        val inFlight = HashMap<Int, CompletableFuture<IntArray>>()
     }
 
     private fun AbstractLevelObject.toRasterElement() = calcLevelRasterElement(this)
@@ -206,7 +244,7 @@ class LevelView(level: AbstractLevel, levelObject: AbstractLevelObject) {
     companion object {
         const val RASTER_SIZE: Int = 10
         private const val DISTANCE_MAP_CACHE_SIZE = 128
-        private val distanceMapCaches = WeakHashMap<AbstractLevel, LinkedHashMap<Int, IntArray>>()
+        private val distanceMapCaches = WeakHashMap<AbstractLevel, DistanceMapCache>()
 
         fun clearDistanceMapCache(level: AbstractLevel) {
             synchronized(distanceMapCaches) {
