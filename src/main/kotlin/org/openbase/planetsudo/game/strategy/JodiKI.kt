@@ -114,13 +114,13 @@ class JodiKI(agent: AgentInterface) : StrategyLevel3(agent) {
         "Refuel" nonCommander inCase { agent.isAtMothership && agent.fuelInPercent < 95 && agent.actionPoints > 200 && mothership.hasFuel() } then { agent.orderFuel(100) }
         // "CounterSearch" nonCommander inCase { agent.isUnderAttack && agent.} then { agent.turnAround() }
         "CounterAttack" nonCommander inCase { agent.seeEnemyAgent } then { agent.fightWithEnemyAgent(); if (!agent.hasRequestedSupport) { agent.requestSupport() }; if (agent.isCarryingResource) { agent.releaseResource() } }
-        "EmergencyRefuel" commander inCase {agent.fuelInPercent < 5 && mothership.hasFuel()} then {agent.goToMothership()}
-        "EmergencyRefuelSupportCancel" commander inCase {agent.fuelInPercent < 5 && mothership.hasFuel() && agent.hasRequestedSupport} then {agent.cancelSupport()}
+        "EmergencyRefuel" commander inCase { agent.fuelInPercent < 5 && mothership.hasFuel() } then { agent.goToMothership() }
+        "EmergencyRefuelSupportCancel" commander inCase { agent.fuelInPercent < 5 && mothership.hasFuel() && agent.hasRequestedSupport } then { agent.cancelSupport() }
         "Invisible" nonCommander inCase { agent.hasTonicForInvisibility } then { agent.makeInvisible() }
         "Cry for Help" nonCommander inCase { agent.isUnderAttack && !agent.hasRequestedSupport } then { agent.releaseResource(); agent.requestSupport() }
         "GameOverSoon" nonCommander inCase { agent.isGameOverSoon && !agent.isAtMothership } then { agent.goToMothership() }
         "AvoidWall" nonCommander inCase { agent.isCollisionDetected } then { agent.turnRandom() }
-        //part of commander
+        // part of commander
         "Explore" commander inCase { !agent.isCollisionDetected } then { go() }
         "Correct far Straight" commander inCase { agent.seeWallAtRight(90, WallDistance.FAR) && agent.seeWallAtRight(45, WallDistance.FAR) } then { agent.goRight(2) }
         "Go Straight" commander inCase { agent.seeWallAtRight(90, WallDistance.CLOSE) } then { agent.go() }
@@ -147,8 +147,8 @@ class JodiKI(agent: AgentInterface) : StrategyLevel3(agent) {
         "Attack Mothership" commander inCase { agent.seeEnemyMothership } then { agent.fightWithEnemyMothership(); agent.go() }
         "Mark Mothership" commander inCase { agent.seeEnemyMothership && !agent.hasRequestedSupport } then { agent.requestSupport() }
         "CounterAttack" commander inCase { agent.seeEnemyAgent } then { agent.fightWithEnemyAgent(); if (!agent.hasRequestedSupport) { agent.requestSupport() }; if (agent.isCarryingResource) { agent.releaseResource() } }
-        "EmergencyRefuel" commander inCase {agent.fuelInPercent < 5 && mothership.hasFuel()} then {agent.goToMothership()}
-        "EmergencyRefuelSupportCancel" commander inCase {agent.fuelInPercent < 5 && mothership.hasFuel() && agent.hasRequestedSupport} then {agent.cancelSupport()}
+        "EmergencyRefuel" commander inCase { agent.fuelInPercent < 5 && mothership.hasFuel() } then { agent.goToMothership() }
+        "EmergencyRefuelSupportCancel" commander inCase { agent.fuelInPercent < 5 && mothership.hasFuel() && agent.hasRequestedSupport } then { agent.cancelSupport() }
         "Invisible" commander inCase { agent.hasTonicForInvisibility } then { agent.makeInvisible() }
         "GameOverSoon" commander inCase { agent.isGameOverSoon && !agent.isAtMothership } then { agent.goToMothership() }
         "Scan Map" commander inCase { !agent.hasTower && tower.levelSize == LevelSize.UNKNOWN } then { tower.scanLevelSize() }
