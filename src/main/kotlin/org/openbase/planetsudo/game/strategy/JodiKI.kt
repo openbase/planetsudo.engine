@@ -29,7 +29,7 @@ import org.openbase.planetsudo.level.levelobjects.WallDistance
 /**
  * Diese Klasse ist eine Vorlage für eine KI im Spiel: PlanetSudo
  * ============================================================
- * @author [Jodi_Pa]
+ * @author Jodi_Pa
  *
  * Insgesamt gibt es drei verschiedene Level für die KI-Strategy. Um so höher das Level,
  * um so mehr Funktionen stehen für die Entwicklung einer Strategie zur Verfügung.
@@ -105,20 +105,22 @@ class JodiKI(agent: AgentInterface) : StrategyLevel3(agent) {
         "GoToMarker" nonCommander inCase { mothership.isMarkerDeployed && !agent.seeMarker() && !agent.isCarryingResource } then { agent.goToMarker() }
         "IsAtMarker" nonCommander inCase { mothership.isMarkerDeployed && agent.seeMarker() && !agent.seeResource } then { mothership.clearMarker() }
         "DeliverResource" nonCommander inCase { agent.isCarryingResource && agent.isAtMothership } then { agent.transferResourceToMothership(); agent.turnAround(); agent.turnRandom(30) }
-        "Cancel Support" nonCommander inCase { agent.hasRequestedSupport } then {agent.cancelSupport()}
+        "Cancel Support" nonCommander inCase { agent.hasRequestedSupport } then { agent.cancelSupport() }
         "Attack Mothership" nonCommander inCase { agent.seeEnemyMothership } then { agent.fightWithEnemyMothership(); agent.go() }
         "Mark Mothership" nonCommander inCase { agent.seeEnemyMothership && !agent.hasRequestedSupport } then { agent.requestSupport() }
-        "HelpAgent" nonCommander inCase { mothership.needSomeoneSupport() && !agent.hasRequestedSupport } then { agent.releaseResource(); agent.goToSupportAgent()}
+        "HelpAgent" nonCommander inCase { mothership.needSomeoneSupport() && !agent.hasRequestedSupport } then { agent.releaseResource(); agent.goToSupportAgent() }
         "Help Stranded" nonCommander inCase { agent.seeLostTeamAgent() && agent.fuelInPercent > 60 } then { agent.spendTeamAgentFuel(300) }
-        "GoToRefuel" nonCommander inCase { agent.fuelInPercent < 30 && !agent.isAtMothership && mothership.hasFuel()} then { agent.cancelSupport(); agent.goToMothership() }
-        "Refuel" nonCommander inCase { agent.isAtMothership && agent.fuelInPercent < 95 && agent.actionPoints > 100 && mothership.hasFuel()} then { agent.orderFuel(100) }
+        "GoToRefuel" nonCommander inCase { agent.fuelInPercent < 30 && !agent.isAtMothership && mothership.hasFuel() } then { agent.cancelSupport(); agent.goToMothership() }
+        "Refuel" nonCommander inCase { agent.isAtMothership && agent.fuelInPercent < 95 && agent.actionPoints > 200 && mothership.hasFuel() } then { agent.orderFuel(100) }
         // "CounterSearch" nonCommander inCase { agent.isUnderAttack && agent.} then { agent.turnAround() }
         "CounterAttack" nonCommander inCase { agent.seeEnemyAgent } then { agent.fightWithEnemyAgent(); if (!agent.hasRequestedSupport) { agent.requestSupport() }; if (agent.isCarryingResource) { agent.releaseResource() } }
+        "EmergencyRefuel" commander inCase {agent.fuelInPercent < 5 && mothership.hasFuel()} then {agent.goToMothership()}
+        "EmergencyRefuelSupportCancel" commander inCase {agent.fuelInPercent < 5 && mothership.hasFuel() && agent.hasRequestedSupport} then {agent.cancelSupport()}
         "Invisible" nonCommander inCase { agent.hasTonicForInvisibility } then { agent.makeInvisible() }
         "Cry for Help" nonCommander inCase { agent.isUnderAttack && !agent.hasRequestedSupport } then { agent.releaseResource(); agent.requestSupport() }
         "GameOverSoon" nonCommander inCase { agent.isGameOverSoon && !agent.isAtMothership } then { agent.goToMothership() }
         "AvoidWall" nonCommander inCase { agent.isCollisionDetected } then { agent.turnRandom() }
-
+        //part of commander
         "Explore" commander inCase { !agent.isCollisionDetected } then { go() }
         "Correct far Straight" commander inCase { agent.seeWallAtRight(90, WallDistance.FAR) && agent.seeWallAtRight(45, WallDistance.FAR) } then { agent.goRight(2) }
         "Go Straight" commander inCase { agent.seeWallAtRight(90, WallDistance.CLOSE) } then { agent.go() }
@@ -137,14 +139,16 @@ class JodiKI(agent: AgentInterface) : StrategyLevel3(agent) {
         "IsAtMarker" commander inCase { mothership.isMarkerDeployed && agent.seeMarker() && !agent.seeResource } then { mothership.clearMarker() }
         "GoToRefuel" commander inCase { agent.fuelInPercent < 20 && mothership.hasFuel() } then { agent.goToMothership() }
         "Help Stranded" commander inCase { agent.seeLostTeamAgent() && agent.fuelInPercent > 50 } then { agent.spendTeamAgentFuel(300) }
-        "Cancel Support" commander inCase { agent.hasRequestedSupport } then {agent.cancelSupport()}
+        "Cancel Support" commander inCase { agent.hasRequestedSupport } then { agent.cancelSupport() }
         "CounterSearch" commander inCase { agent.isUnderAttack } then { agent.turnAround() }
-        "Cry for Help" commander inCase { agent.isUnderAttack && !agent.hasRequestedSupport } then { agent.releaseResource(); agent.requestSupport()}
-        "Refuel" commander inCase { agent.isAtMothership && agent.fuelInPercent < 95 && agent.actionPoints > 100 && mothership.hasFuel()} then { agent.orderFuel(100) }
+        "Cry for Help" commander inCase { agent.isUnderAttack && !agent.hasRequestedSupport } then { agent.releaseResource(); agent.requestSupport() }
+        "Refuel" commander inCase { agent.isAtMothership && agent.fuelInPercent < 95 && agent.actionPoints > 200 && mothership.hasFuel() } then { agent.orderFuel(100) }
         "HelpAgent" commander inCase { mothership.needSomeoneSupport() && !agent.hasRequestedSupport } then { agent.releaseResource(); agent.goToSupportAgent() }
         "Attack Mothership" commander inCase { agent.seeEnemyMothership } then { agent.fightWithEnemyMothership(); agent.go() }
         "Mark Mothership" commander inCase { agent.seeEnemyMothership && !agent.hasRequestedSupport } then { agent.requestSupport() }
         "CounterAttack" commander inCase { agent.seeEnemyAgent } then { agent.fightWithEnemyAgent(); if (!agent.hasRequestedSupport) { agent.requestSupport() }; if (agent.isCarryingResource) { agent.releaseResource() } }
+        "EmergencyRefuel" commander inCase {agent.fuelInPercent < 5 && mothership.hasFuel()} then {agent.goToMothership()}
+        "EmergencyRefuelSupportCancel" commander inCase {agent.fuelInPercent < 5 && mothership.hasFuel() && agent.hasRequestedSupport} then {agent.cancelSupport()}
         "Invisible" commander inCase { agent.hasTonicForInvisibility } then { agent.makeInvisible() }
         "GameOverSoon" commander inCase { agent.isGameOverSoon && !agent.isAtMothership } then { agent.goToMothership() }
         "Scan Map" commander inCase { !agent.hasTower && tower.levelSize == LevelSize.UNKNOWN } then { tower.scanLevelSize() }
