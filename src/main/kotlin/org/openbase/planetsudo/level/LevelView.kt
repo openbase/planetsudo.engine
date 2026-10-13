@@ -184,7 +184,7 @@ class LevelView(level: AbstractLevel, levelObject: AbstractLevelObject) {
             }
         }
 
-        while (!Thread.currentThread().isInterrupted) {
+        while (true) {
             var shouldCompute = false
             val computation = synchronized(cache) {
                 cache.completed[destinationIndex]?.let {
