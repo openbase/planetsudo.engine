@@ -13,6 +13,7 @@ interface AgentBattleInterface<DE : AgentBasicInterfaceGermanWrapper> : AgentBas
 
     /**
      * Liefert Informationen über einen feindlichen Agenten in der Nähe.
+     * ACHTUNG: Vorher muss seeEnemyAgent geprüft werden, ansonsten kann es sein, dass der Agent explodiert, wenn er keinen EnemyAgent findet!
      */
     val enemyAgent: GlobalAgentInterface<GlobalAgentInterfaceGermanWrapper>
 

@@ -160,6 +160,7 @@ open class AgentBasicInterfaceGermanWrapper(private val agent: AgentBasicInterfa
 
     /**
      * Liefert Informationen über einen Agenten deines Teams in der Nähe.
+     * ACHTUNG: Vorher muss seheTeamAgent geprüft werden, ansonsten kann es sein, dass der Agent explodiert, wenn er keinen teamAgent findet!
      */
     val teamAgent get() = agent.teamAgent
 
