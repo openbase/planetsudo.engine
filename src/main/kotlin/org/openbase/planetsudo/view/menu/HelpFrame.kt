@@ -49,6 +49,8 @@ class HelpFrame : JFrame() {
         jLabel11 = JLabel()
         jLabel14 = JLabel()
         jLabel15 = JLabel()
+        jLabel16 = JLabel()
+        jLabel17 = JLabel()
 
         defaultCloseOperation = DISPOSE_ON_CLOSE
         title = "Über PlanetSudo"
@@ -59,12 +61,12 @@ class HelpFrame : JFrame() {
 
         jLabel2!!.font = Font("Dialog", 1, 14) // NOI18N
         jLabel2!!.icon = ImageIcon("res/img/agent.png")
-        jLabel2!!.text = "PlanetSudo 3"
+        jLabel2!!.text = "PlanetSudo 5"
 
         jLabel3!!.text = "Entwickler:"
 
         jLabel4!!.font = Font("Dialog", 0, 12) // NOI18N
-        jLabel4!!.text = "Divine [Marian Pohling] divine@openbase.org"
+        jLabel4!!.text = "<html>Divine [Marian Pohling] divine@openbase.org<br>Tommy</html>"
 
         jLabel5!!.font = Font("Dialog", 0, 12) // NOI18N
         jLabel5!!.text = "Noxus [Marco Wellmann] Marco.Wellmann@gmx.de"
@@ -72,7 +74,7 @@ class HelpFrame : JFrame() {
         jLabel6!!.text = "Veröffentlichung:"
 
         jLabel7!!.font = Font("Dialog", 0, 12) // NOI18N
-        jLabel7!!.text = "<html>PlanetSudo 1 (2010)<br>PlanetSudo 2 (2013)<br>PlanetSudo 3 (2016)</html>"
+        jLabel7!!.text = "<html>PlanetSudo 1 (2010)<br>PlanetSudo 2 (2013)<br>PlanetSudo 3 (2016)<br>PlanetSudo 4 (2024)<br>PlanteSudo 5 (2026)</html>"
 
         jLabel8!!.text = "Entwicklungszeit:"
 
@@ -81,7 +83,7 @@ class HelpFrame : JFrame() {
 
         jLabel10!!.font = Font("Dialog", 2, 14) // NOI18N
         jLabel10!!.text =
-            "<html><div align=\"justify\"><b>PlanetSudo</b> wurde im Rahmen des 26. 32. & 38. Computerwochenendes der ev. Jugendarbeit in Halle (Westf.) entwickelt. Das Lernziel besteht darin den Teilnehmern zwischen 16 und 25 Jahren einen Einblick in das Design und die Implementierung primitiver Verhaltensweisen zu geben welche im Zusammenspiel ein komplexes Verhalten erzeugen. Das Projekt endet mit einer kurzen Präsentation der erstellten Regeln und einer Reflexion der entwickelten Verhaltensweisen anhand eines Turniers.</dev></html>"
+            "<html><div align=\"justify\"><b>PlanetSudo</b> wurde im Rahmen des 26., 32., 38., 53. & 58. Computerwochenendes der ev. Jugendarbeit in Halle (Westf.) entwickelt. Das Lernziel besteht darin den Teilnehmern ab 14 Jahren einen Einblick in das Design und die Implementierung primitiver Verhaltensweisen zu geben welche im Zusammenspiel ein komplexes Verhalten erzeugen. Das Projekt endet mit einer kurzen Präsentation der erstellten Regeln und einer Reflexion der entwickelten Verhaltensweisen anhand eines Turniers.</dev></html>"
         jLabel10!!.verticalAlignment = SwingConstants.TOP
         jLabel10!!.verticalTextPosition = SwingConstants.TOP
 
@@ -101,7 +103,12 @@ class HelpFrame : JFrame() {
         jLabel14!!.text = "Copyright:"
 
         jLabel15!!.font = Font("Dialog", 0, 12) // NOI18N
-        jLabel15!!.text = "<html>&copy; 2009 - 2016 openbase.org</html>"
+        jLabel15!!.text = "<html>&copy; 2009 - 2026 openbase.org</html>"
+
+        jLabel16!!.text = "Tester:"
+
+        jLabel17!!.font = Font("Dialog", 0, 12) // NOI18N
+        jLabel17!!.text = "<html>MrSteak [Maxi Brune]<br>Jodi_Pa [Jonas Patzer]</html>"
 
         val layout = GroupLayout(contentPane)
         contentPane.layout = layout
@@ -157,6 +164,13 @@ class HelpFrame : JFrame() {
                                                             GroupLayout.DEFAULT_SIZE,
                                                             GroupLayout.DEFAULT_SIZE,
                                                             Short.MAX_VALUE.toInt(),
+                                                        )
+                                                        .addComponent(
+                                                            jLabel16,
+                                                            GroupLayout.Alignment.TRAILING,
+                                                            GroupLayout.DEFAULT_SIZE,
+                                                            GroupLayout.DEFAULT_SIZE,
+                                                            Short.MAX_VALUE.toInt(),
                                                         ),
                                                 )
                                                 .addComponent(jLabel12)
@@ -204,6 +218,12 @@ class HelpFrame : JFrame() {
                                                                     GroupLayout.DEFAULT_SIZE,
                                                                     GroupLayout.DEFAULT_SIZE,
                                                                     Short.MAX_VALUE.toInt(),
+                                                                )
+                                                                .addComponent(
+                                                                    jLabel17,
+                                                                    GroupLayout.DEFAULT_SIZE,
+                                                                    GroupLayout.DEFAULT_SIZE,
+                                                                    Short.MAX_VALUE.toInt(),
                                                                 ),
                                                         )
                                                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
@@ -245,6 +265,12 @@ class HelpFrame : JFrame() {
                                             layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                                 .addComponent(jLabel5)
                                                 .addComponent(jLabel11),
+                                        )
+                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(
+                                            layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                                .addComponent(jLabel16)
+                                                .addComponent(jLabel17),
                                         )
                                         .addGap(18, 18, 18)
                                         .addGroup(
@@ -305,6 +331,8 @@ class HelpFrame : JFrame() {
     private var jLabel13: JLabel? = null
     private var jLabel14: JLabel? = null
     private var jLabel15: JLabel? = null
+    private var jLabel16: JLabel? = null
+    private var jLabel17: JLabel? = null
     private var jLabel2: JLabel? = null
     private var jLabel3: JLabel? = null
     private var jLabel4: JLabel? = null

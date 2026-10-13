@@ -12,6 +12,7 @@ open class AgentBattleInterfaceGermanWrapper(private val agent: AgentBattleInter
 
     /**
      * Liefert Informationen über einen feindlichen Agenten in der Nähe.
+     * ACHTUNG: Vorher muss seheGegerischenAgent geprüft werden, ansonsten kann es sein, dass der Agent explodiert, wenn er keinen gegerischerAgent findet!
      */
     val gegnerischerAgent get() = agent.enemyAgent
 
