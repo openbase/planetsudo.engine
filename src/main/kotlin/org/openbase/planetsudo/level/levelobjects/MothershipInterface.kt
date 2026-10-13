@@ -30,7 +30,7 @@ interface MothershipInterface {
     val de get() = MothershipInterfaceGermanWrapper(this)
 
     /**
-     * Löscht den Marker sofern dieser gesetzt wurde.
+     * Löscht den Marker, sofern dieser gesetzt wurde.
      */
     fun clearMarker()
 
@@ -41,8 +41,8 @@ interface MothershipInterface {
     val agentCount: Int
 
     /**
-     * Gibt die Schildstrke des Mutterschiffs wieder.
-     * @return Schildstrke von 0 - 100 als ganze Zahl.
+     * Gibt die Schildstärke des Mutterschiffs wieder.
+     * @return Schildstärke von 0 bis 100 als ganze Zahl.
      */
     val shieldForce: Int
 
@@ -77,7 +77,7 @@ interface MothershipInterface {
     val isBurning: Boolean
 
     /**
-     * Gibt zurück, ob das Mutterschiff und somit der Schutzschild beschdigt ist.
+     * Gibt zurück, ob das Mutterschiff und somit der Schutzschild beschädigt ist.
      * @return true oder false.
      */
     val isDamaged: Boolean
@@ -89,13 +89,13 @@ interface MothershipInterface {
     val isMarkerDeployed: Boolean
 
     /**
-     * Gibt zurück, ob das Mutterschiff maximal beschdigt wurde. (Das Schutzschild is komplett zerstrt)
+     * Gibt zurück, ob das Mutterschiff maximal beschädigt wurde. (Das Schutzschild is komplett zerstört)
      * @return true oder false.
      */
     val isMaxDamaged: Boolean
 
     /**
-     * Gibt zurück ob ein Agent des eigenen Teams Hilfe benötigt.
+     * Gibt zurück, ob ein Agent des eigenen Teams Hilfe benötigt.
      * @return true oder false.
      */
     fun needSomeoneSupport(): Boolean
