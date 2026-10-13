@@ -130,7 +130,7 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
 
     @Synchronized
     fun reset() {
-        LevelView.clearDistanceMapCache(this)
+        LevelView.clearDistanceMapCache()
         mineCounter = if (teams[0] != null && teams[1] != null) {
             (min(teams[0]!!.agentCount.toDouble(), teams[1]!!.agentCount.toDouble()) - 1).toInt()
         } else {
@@ -185,7 +185,11 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
      * Steps along a direction from start point and returns true when the first wall/border is hit.
      * Uses a single reusable rectangle and incremental translation to reduce allocations.
      */
-    fun hitsWall(start: org.openbase.planetsudo.geometry.Point2D, direction: org.openbase.planetsudo.geometry.Direction2D, maxDistance: Int): Boolean {
+    fun hitsWall(
+        start: org.openbase.planetsudo.geometry.Point2D,
+        direction: org.openbase.planetsudo.geometry.Direction2D,
+        maxDistance: Int,
+    ): Boolean {
         val p = start.clone()
         val testRect = Rectangle2D.Double(0.0, 0.0, 2.0, 2.0)
         val walls = levelWallPolygons

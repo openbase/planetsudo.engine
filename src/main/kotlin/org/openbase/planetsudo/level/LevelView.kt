@@ -123,9 +123,6 @@ class LevelView(level: AbstractLevel, levelObject: AbstractLevelObject) {
             ?.angle
     }
 
-    private fun stablePosition(): Boolean =
-        lastDestinationIndex == calcLevelRasterElement(levelObject).index
-
     fun updateObjectMovement() {
         logger.debug("UpdateObjectMovement")
         updateLevelView(calcLevelRasterElement(levelObject))
@@ -246,9 +243,9 @@ class LevelView(level: AbstractLevel, levelObject: AbstractLevelObject) {
         private const val DISTANCE_MAP_CACHE_SIZE = 128
         private val distanceMapCaches = WeakHashMap<AbstractLevel, DistanceMapCache>()
 
-        fun clearDistanceMapCache(level: AbstractLevel) {
+        fun clearDistanceMapCache() {
             synchronized(distanceMapCaches) {
-                distanceMapCaches.remove(level)
+                distanceMapCaches.clear()
             }
         }
     }
