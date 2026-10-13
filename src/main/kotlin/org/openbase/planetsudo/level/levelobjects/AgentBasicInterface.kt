@@ -162,6 +162,7 @@ interface AgentBasicInterface<DE : AgentBasicInterfaceGermanWrapper> : GlobalAge
 
     /**
      * Liefert Informationen über einen Agenten deines Teams in der Nähe.
+     * ACHTUNG: Vorher muss seeTeamAgent geprüft werden, ansonsten kann es sein, dass der Agent explodiert, wenn er keinen teamAgent findet!
      */
     val teamAgent: GlobalAgentInterface<GlobalAgentInterfaceGermanWrapper>
 
