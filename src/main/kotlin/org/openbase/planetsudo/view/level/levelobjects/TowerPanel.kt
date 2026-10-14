@@ -36,7 +36,7 @@ class TowerPanel(tower: Tower, parentPanel: LevelPanel) :
         LOGGER.info("Create $this")
         tower.addPropertyChangeListener(this)
         this.towerDirection2D = Direction2D(0)
-        this.teamColor = tower.mothership.team.teamColor
+        this.teamColor = tower.level.getTeamColor(tower.mothership.team)
     }
 
     override fun paintComponent(g2: Graphics2D, gl: Graphics2D) {

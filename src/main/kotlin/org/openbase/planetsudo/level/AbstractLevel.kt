@@ -5,6 +5,7 @@ import org.openbase.jul.schedule.SyncObject
 import org.openbase.planetsudo.game.AbstractGameObject
 import org.openbase.planetsudo.game.GameManager
 import org.openbase.planetsudo.game.Team
+import org.openbase.planetsudo.game.TeamColors
 import org.openbase.planetsudo.game.strategy.AbstractStrategy
 import org.openbase.planetsudo.geometry.Base2D
 import org.openbase.planetsudo.geometry.Direction2D
@@ -61,6 +62,7 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
     val y: Int
     private var resourceKeyCounter = 0
     private val teams = arrayOfNulls<Team>(2)
+    private val teamDisplayColors = arrayOfNulls<Color>(2)
 
     override fun run() {
         logger.info("Start Level $this")
@@ -160,12 +162,23 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
 
     fun setTeamA(team: Team?) {
         teams[0] = team
+        teamDisplayColors[0] = team?.teamColor
         motherships[0] = Mothership(0, team!!, this)
     }
 
     fun setTeamB(team: Team?) {
         teams[1] = team
         motherships[1] = Mothership(1, team!!, this)
+        teamDisplayColors[0] = teams[0]?.teamColor
+        teamDisplayColors[1] = team.teamColor?.let { teamColor ->
+            TeamColors.contrastingColor(teamColor, teams[0]?.teamColor)
+        }
+    }
+
+    fun getTeamColor(team: Team): Color? = when (team) {
+        teams[0] -> teamDisplayColors[0]
+        teams[1] -> teamDisplayColors[1]
+        else -> team.teamColor
     }
 
     fun containsWall(bounds: Rectangle2D?): Boolean {
