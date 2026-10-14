@@ -106,8 +106,9 @@ class PlanetSudoClient private constructor() {
     private fun transferData() {
         uploadDefaultTeam()
         uploadDefaultStrategy()
-        val downloadedTeams = downloadTeams()
-        downloadStrategies(downloadedTeams)
+        downloadTeams().also { teams ->
+            downloadStrategies(teams)
+        }
         setConnectionState(ConnectionState.SyncSuccessful)
     }
 
