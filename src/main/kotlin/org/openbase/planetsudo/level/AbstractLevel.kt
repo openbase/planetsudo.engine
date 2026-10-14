@@ -329,11 +329,10 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
                 .findAvailableResource(agent, agent.bounds)
         }
 
-
     private fun Resource.matchType(resourceType: ResourceType?, agent: Agent): Boolean =
-        resourceType == null
-                || type == resourceType
-                || resourceType == ResourceType.ExtremPoint && type == ResourceType.Mine && wasPlacedByTeam() != agent.team
+        resourceType == null ||
+            type == resourceType ||
+            resourceType == ResourceType.ExtremPoint && type == ResourceType.Mine && wasPlacedByTeam() != agent.team
 
     private fun List<Resource>.findAvailableResource(agent: Agent, area: Rectangle2D) = this
         .filter { !it.isUsed }
