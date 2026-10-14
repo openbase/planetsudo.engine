@@ -119,6 +119,7 @@ interface GlobalAgentInterface<DE : GlobalAgentInterfaceGermanWrapper> {
      *
      * @return Den Ressourcenwert
      */
+    @Deprecated("Use isTouchingResource() instead")
     val resourceType: Resource.ResourceType
 
     /**
@@ -132,10 +133,10 @@ interface GlobalAgentInterface<DE : GlobalAgentInterfaceGermanWrapper> {
     /**
      * Gibt zurück, ob der Agent eine Resource vom Typ `type` berührt und diese somit aufheben kann.
      *
-     * @param type
+     * @param type wenn kein Argument gegeben wird, dann wird geprüft, ob der Agent irgendeine Resource berührt.
      * @return true oder false.
      */
-    fun isTouchingResource(type: Resource.ResourceType): Boolean
+    fun isTouchingResource(type: Resource.ResourceType?): Boolean
 
     /**
      * Gibt die Art der Resource an, die der Agent aktuell trägt.
@@ -156,7 +157,7 @@ interface GlobalAgentInterface<DE : GlobalAgentInterfaceGermanWrapper> {
      * @param type
      * @return true oder false.
      */
-    fun isCarryingResource(type: Resource.ResourceType): Boolean
+    fun isCarryingResource(type: Resource.ResourceType? = null): Boolean
 
     /**
      * Abfrage, ob der Agent sich aktuell im Kampf befindet oder nicht.

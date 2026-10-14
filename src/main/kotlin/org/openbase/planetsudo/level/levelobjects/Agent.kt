@@ -452,9 +452,9 @@ class Agent(
         isAlive = true
     }
 
-    override fun isCarryingResource(type: ResourceType): Boolean {
+    override fun isCarryingResource(type: ResourceType?): Boolean {
         if (isCarryingResource) {
-            return resource?.type == type
+            return resource?.type == type || type == null
         }
         return false
     }
@@ -636,9 +636,8 @@ class Agent(
         }
     }
 
-    override fun isTouchingResource(type: ResourceType): Boolean {
-        return resourceType == type
-    }
+    override fun isTouchingResource(type: ResourceType?): Boolean =
+        level.getTouchableResource(this, type) != null
 
     override fun searchResources() {
         for (i in 0..17) {
@@ -681,7 +680,7 @@ class Agent(
                     direction.turnTo(position, teamAgent.position)
                     ap.getActionPoint(value * 2)
                     teamAgent.spendFuel(useFuel(value)).also {
-                            // charge leftover back to origin
+                        // charge leftover back to origin
                             leftover ->
                         spendFuel(leftover)
                     }
