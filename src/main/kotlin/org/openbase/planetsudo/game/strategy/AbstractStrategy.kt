@@ -120,7 +120,7 @@ abstract class AbstractStrategy<LEVEL : GlobalAgentInterface<*>>(agent: AgentInt
             if (rule.constraint() && strategyOwner.isMemberOfSwatTeam(rule.swatTeams)) {
                 strategyOwner.lastAction = rule.name
                 rule.action()
-                strategyOwner.resetActionCounter()
+                strategyOwner.resetAfterRule()
                 break
             }
         }

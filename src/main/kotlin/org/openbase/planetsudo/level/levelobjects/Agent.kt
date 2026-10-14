@@ -180,11 +180,7 @@ class Agent(
         get(): Boolean = shiftTonic > 0.0
 
     override val isUnderAttack: Boolean
-        get() {
-            val oldattackedValue = attacked
-            attacked = false
-            return oldattackedValue
-        }
+        get() = attacked
 
     override val resourceType: ResourceType
         get() {
@@ -937,8 +933,9 @@ class Agent(
         block()
     }
 
-    fun resetActionCounter() {
+    fun resetAfterRule() {
         actionCounter = 0
+        attacked = false
     }
 
     fun getActionCounterAndReset() = actionCounter.also { actionCounter = 0 }
