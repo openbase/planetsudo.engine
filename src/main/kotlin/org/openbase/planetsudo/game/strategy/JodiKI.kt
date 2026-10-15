@@ -86,7 +86,7 @@ class JodiKI(agent: AgentInterface) : StrategyLevel3(agent) {
      * od{er "Just Go" swat ALPHA and FOXTROT inCase {true } then agent.go()}
      */
     override fun loadRules() {
-        //part of nonCommander
+        // part of nonCommander
         "Just Go" nonCommander inCase { true } then { agent.go() }
         "LowResourceFound" nonCommander inCase { agent.seeResource(Resource.ResourceType.Normal) or agent.seeResource(Resource.ResourceType.DoublePoints) } then { agent.goToResource() }
         "AFuelResourceFound" nonCommander inCase { agent.seeResource(Resource.ResourceType.ExtraAgentFuel) && agent.fuelInPercent < 60 } then { agent.goToResource() }
@@ -132,7 +132,7 @@ class JodiKI(agent: AgentInterface) : StrategyLevel3(agent) {
         "Explore" commander inCase { !agent.isCollisionDetected } then { go() }
         "Correct far Straight" commander inCase { agent.seeWallAtRight(90, WallDistance.FAR) && agent.seeWallAtRight(45, WallDistance.FAR) } then { agent.goRight(2) }
         "Go Straight" commander inCase { agent.seeWallAtRight(90, WallDistance.CLOSE) } then { agent.go() }
-        "Correct near Straight" commander inCase { agent.seeWallAtRight(60, WallDistance.VERY_CLOSE) && !agent.seeWallAtLeft(60, WallDistance.VERY_CLOSE)} then { agent.goLeft(2) }
+        "Correct near Straight" commander inCase { agent.seeWallAtRight(60, WallDistance.VERY_CLOSE) && !agent.seeWallAtLeft(60, WallDistance.VERY_CLOSE) } then { agent.goLeft(2) }
         "Turn Right" commander inCase { !agent.seeWallAtRight(70, WallDistance.CLOSE) && agent.seeWallAtRight(110, WallDistance.VERY_FAR) } then { agent.goRight(5) }
         "Turn Sharp Right" commander inCase { !agent.seeWallAtRight(110, WallDistance.CLOSE) && !agent.seeWallAtRight(90, WallDistance.FAR) && !agent.seeWallAtRight(45, WallDistance.FAR) && agent.seeWallAtRight(135, WallDistance.VERY_FAR) } then { agent.goRight(45) }
         "Turn Left" commander inCase { agent.seeWallAtRight(0, WallDistance.FAR) } then { agent.goLeft(15) }
@@ -140,7 +140,7 @@ class JodiKI(agent: AgentInterface) : StrategyLevel3(agent) {
         "AFuelResourcePickUp" commander inCase { agent.isTouchingResource(Resource.ResourceType.ExtraAgentFuel) && agent.fuelInPercent < 60 } then { agent.pickupResource() }
         "TResourceFound" commander inCase { agent.seeResource(Resource.ResourceType.Tonic) && !agent.isTonicAtLimit && !agent.seeTeamAgent } then { agent.goToResource(Resource.ResourceType.Tonic) }
         "TResourceFound" commander inCase { agent.seeResource(Resource.ResourceType.Tonic) && !agent.isTonicAtLimit && agent.seeTeamAgent && !teamAgent.isTouchingResource(Resource.ResourceType.Tonic) } then { agent.goToResource(Resource.ResourceType.Tonic) }
-        "TResourcePickUp" commander inCase { agent.isTouchingResource(Resource.ResourceType.Tonic) && !agent.isTonicAtLimit} then { agent.pickupResource() }
+        "TResourcePickUp" commander inCase { agent.isTouchingResource(Resource.ResourceType.Tonic) && !agent.isTonicAtLimit } then { agent.pickupResource() }
         "MineLaying" commander inCase { agent.seeResource(Resource.ResourceType.ExtremPoint) && agent.hasMine && !agent.isInvisible } then { agent.deployMine() }
         "TResourceMarking" commander inCase { agent.isTouchingResource(Resource.ResourceType.Tonic) && !mothership.isMarkerDeployed } then { agent.deployMarker() }
         "IsAtMarker" commander inCase { mothership.isMarkerDeployed && agent.seeMarker() && !agent.seeResource } then { mothership.clearMarker() }
@@ -157,7 +157,7 @@ class JodiKI(agent: AgentInterface) : StrategyLevel3(agent) {
         "CounterAttack" commander inCase { agent.seeEnemyAgent } then { agent.fightWithEnemyAgent() }
         "Drop Ressource" commander inCase { agent.seeEnemyAgent && agent.isCarryingResource } then { agent.releaseResource() }
         "Request Support" commander inCase { agent.seeEnemyAgent && !agent.hasRequestedSupport } then { agent.requestSupport() }
-        "EmergencyRefuel" commander inCase { agent.fuelInPercent < 10 && mothership.hasFuel() && !agent.isAtMothership} then { agent.goToMothership() }
+        "EmergencyRefuel" commander inCase { agent.fuelInPercent < 10 && mothership.hasFuel() && !agent.isAtMothership } then { agent.goToMothership() }
         "Invisible" commander inCase { agent.hasTonicForInvisibility && !agent.isInvisible } then { agent.makeInvisible() }
         "GameOverSoon" commander inCase { agent.isGameOverSoon && !agent.isAtMothership } then { agent.goToMothership() }
         "Scan Map" commander inCase { !agent.hasTower && tower.levelSize == LevelSize.UNKNOWN } then { tower.scanLevelSize() }
@@ -177,7 +177,7 @@ class JodiKI(agent: AgentInterface) : StrategyLevel3(agent) {
      * ACHTUNG: Die default Swats ALL und COMMANDER können anhand dieser Methode nicht modifiziert werden!
      */
     override fun loadSwatTeams() {
-        createSwat(SwatTeam.ALPHA, 1,2)
+        createSwat(SwatTeam.ALPHA, 1, 2)
         createSwat(SwatTeam.SIERRA, 3)
     }
 }
