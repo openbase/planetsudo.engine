@@ -43,6 +43,7 @@ class AgentMock : AgentInterface {
         get() = error("Mock does not offer any functionality.")
     override val fuelVolume: Int
         get() = error("Mock does not offer any functionality.")
+
     override val resourceType: Resource.ResourceType
         get() = error("Mock does not offer any functionality.")
     override val teamPoints: Int
@@ -107,7 +108,7 @@ class AgentMock : AgentInterface {
     override val isCarryingResource: Boolean
         get() = error("Mock does not offer any functionality.")
 
-    override fun isCarryingResource(type: Resource.ResourceType): Boolean {
+    override fun isCarryingResource(type: Resource.ResourceType?): Boolean {
         error("Mock does not offer any functionality.")
     }
 
@@ -128,7 +129,7 @@ class AgentMock : AgentInterface {
     override val isTouchingResource: Boolean
         get() = error("Mock does not offer any functionality.")
 
-    override fun isTouchingResource(type: Resource.ResourceType): Boolean {
+    override fun isTouchingResource(type: Resource.ResourceType?): Boolean {
         error("Mock does not offer any functionality.")
     }
 
