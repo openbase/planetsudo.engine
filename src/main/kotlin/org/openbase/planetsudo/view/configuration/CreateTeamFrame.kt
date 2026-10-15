@@ -12,6 +12,7 @@ package org.openbase.planetsudo.view.configuration
 import org.openbase.jul.exception.CouldNotPerformException
 import org.openbase.jul.visual.swing.component.ColorChooserFrame
 import org.openbase.planetsudo.game.Team.Companion.save
+import org.openbase.planetsudo.game.TeamColors.withoutAlpha
 import org.openbase.planetsudo.game.TeamData
 import org.openbase.planetsudo.game.strategy.AbstractStrategy
 import org.openbase.planetsudo.game.strategy.StrategyClassLoader.loadStrategy
@@ -46,13 +47,6 @@ class CreateTeamFrame : JFrame() {
         }
         val color = colorChooserButton!!.background
 
-        // 			logger.info("try to load "+ AbstractStrategy.class.getPackage().getName()+"."+strategyTextField.getText());
-// 			strategy = (Class<AbstractStrategy>) getClass().getClassLoader().loadClass(AbstractStrategy.class.getPackage().getName()+"."+strategyTextField.getText());
-// 		} catch (ClassNotFoundException ex) {
-// 			strategyTextField.setForeground(Color.RED);
-// 			logger.error("Could not find strategy!", ex);
-// 			return;
-// 		}
         try {
             strategy = loadStrategy(strategyTextField!!.text)
         } catch (ex: CouldNotPerformException) {
@@ -63,7 +57,7 @@ class CreateTeamFrame : JFrame() {
         members.add(member1TextField!!.text)
         members.add(member2TextField!!.text)
 
-        val teamData = TeamData(name, color, strategy.simpleName, members)
+        val teamData = TeamData(name, color.withoutAlpha(), strategy.simpleName, members)
 
         try {
             save(teamData)
