@@ -30,7 +30,7 @@ internal object TeamColors {
         val greenDifference = first.green - second.green
         val blueDifference = first.blue - second.blue
         return redDifference * redDifference +
-                greenDifference * greenDifference +
-                blueDifference * blueDifference
+            greenDifference * greenDifference +
+            blueDifference * blueDifference
     }
 }
