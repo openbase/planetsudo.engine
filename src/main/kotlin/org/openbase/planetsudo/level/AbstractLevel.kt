@@ -8,7 +8,6 @@ import org.openbase.planetsudo.game.Team
 import org.openbase.planetsudo.game.TeamColors
 import org.openbase.planetsudo.game.strategy.AbstractStrategy
 import org.openbase.planetsudo.geometry.Base2D
-import org.openbase.planetsudo.geometry.Direction2D
 import org.openbase.planetsudo.geometry.Point2D
 import org.openbase.planetsudo.level.levelobjects.Agent
 import org.openbase.planetsudo.level.levelobjects.Mothership
@@ -197,7 +196,11 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
      * Steps along a direction from start point and returns true when the first wall/border is hit.
      * Uses a single reusable rectangle and incremental translation to reduce allocations.
      */
-    fun hitsWall(start: org.openbase.planetsudo.geometry.Point2D, direction: org.openbase.planetsudo.geometry.Direction2D, maxDistance: Int): Boolean {
+    fun hitsWall(
+        start: org.openbase.planetsudo.geometry.Point2D,
+        direction: org.openbase.planetsudo.geometry.Direction2D,
+        maxDistance: Int,
+    ): Boolean {
         val p = start.clone()
         val testRect = Rectangle2D.Double(0.0, 0.0, 2.0, 2.0)
         val walls = levelWallPolygons
@@ -308,7 +311,7 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
     fun getCloseResource(agent: Agent, resourceType: ResourceType): Resource? =
         synchronized(RESOURCES_LOCK) {
             resources
-                .filter { it.type == resourceType }
+                .filter { it.matchType(resourceType, agent) }
                 .filter { it.isSaveFor(agent) }
                 .findAvailableResource(agent, agent.viewBounds)
         }
@@ -332,10 +335,17 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
      * @param agent
      * @return
      */
-    fun getTouchableResource(agent: Agent): Resource? =
+    fun getTouchableResource(agent: Agent, resourceType: ResourceType? = null): Resource? =
         synchronized(RESOURCES_LOCK) {
-            resources.findAvailableResource(agent, agent.bounds)
+            resources
+                .filter { it.matchType(resourceType, agent) }
+                .findAvailableResource(agent, agent.bounds)
         }
+
+    private fun Resource.matchType(resourceType: ResourceType?, agent: Agent): Boolean =
+        resourceType == null ||
+            type == resourceType ||
+            resourceType == ResourceType.ExtremPoint && type == ResourceType.Mine && wasPlacedByTeam() != agent.team
 
     private fun List<Resource>.findAvailableResource(agent: Agent, area: Rectangle2D) = this
         .filter { !it.isUsed }

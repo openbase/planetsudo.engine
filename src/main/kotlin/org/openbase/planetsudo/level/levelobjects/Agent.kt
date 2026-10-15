@@ -448,9 +448,9 @@ class Agent(
         isAlive = true
     }
 
-    override fun isCarryingResource(type: ResourceType): Boolean {
+    override fun isCarryingResource(type: ResourceType?): Boolean {
         if (isCarryingResource) {
-            return resource?.type == type
+            return resource?.type == type || type == null
         }
         return false
     }
@@ -632,9 +632,8 @@ class Agent(
         }
     }
 
-    override fun isTouchingResource(type: ResourceType): Boolean {
-        return resourceType == type
-    }
+    override fun isTouchingResource(type: ResourceType?): Boolean =
+        level.getTouchableResource(this, type) != null
 
     override fun searchResources() {
         for (i in 0..17) {
