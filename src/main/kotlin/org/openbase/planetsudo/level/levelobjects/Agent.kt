@@ -50,6 +50,8 @@ class Agent(
     private val ap: ActionPoints = ActionPoints(this)
     private var actionCounter = 0
     private val swatTeamSet: MutableSet<SwatTeam>
+    private val fuelLock = ReentrantLock()
+    private val mineDeploymentLock = ReentrantLock()
 
     private var attacked: Boolean
     private var resource: Resource? = null
@@ -111,6 +113,8 @@ class Agent(
         private set
     override var hasTower = false
         private set
+
+    @Volatile
     override var fuel: Int = 0
         private set
     override var tonic: Int = 0
@@ -286,22 +290,17 @@ class Agent(
         isHelping = false
     }
 
-    @Synchronized
     private fun useFuel(value: Int): Int {
-        var value = value
         ap.getActionPoint(1)
-        if (fuel == 0) {
-            disable()
-            return 0
-        } else if (fuel < value) {
-            value = fuel
-            fuel = 0
-            disable()
-            return value
-        } else {
-            fuel -= value
-            return value
+        val (fuelUsed, shouldDisable) = fuelLock.withLock {
+            when {
+                fuel == 0 -> 0 to true
+                fuel < value -> fuel.also { fuel = 0 } to true
+                else -> value.also { fuel -= value } to false
+            }
         }
+        if (shouldDisable) disable()
+        return fuelUsed
     }
 
     private fun goTo(directionController: Direction2D.() -> Unit) {
@@ -409,8 +408,6 @@ class Agent(
         return tmp2Resource
     }
 
-    private val fuelLock = ReentrantLock()
-
     /**
      * Refill the fuel of the agent and returns the leftover that did not fit into the tank.
      */
@@ -435,10 +432,10 @@ class Agent(
     }
 
     override fun reset() {
-        fuel = fuelVolume
+        fuelLock.withLock { fuel = fuelVolume }
         isGameOverSoon = false
         position = mothership.agentHomePosition
-        hasMine = mothership.orderMine()
+        mineDeploymentLock.withLock { hasMine = mothership.orderMine() }
         hasTower = isCommander
         try {
             direction = Direction2D(mothership.base.direction.angle.plus(Random.nextInt(-90, 91)))
@@ -455,19 +452,21 @@ class Agent(
         return false
     }
 
-    @Synchronized
     override fun deployMine() {
         invisible = false
         performAction(50) {
-            if (useFuel(5) == 5 && hasMine) {
-                val newMine = Resource(
-                    level.generateNewResourceID(),
-                    level,
-                    this,
-                )
-                level.addResource(newMine)
-                hasMine = false
-                GameSound.DeployMine.play()
+            if (useFuel(5) == 5) {
+                val deployed = mineDeploymentLock.withLock {
+                    if (!hasMine) {
+                        false
+                    } else {
+                        val newMine = Resource(level.generateNewResourceID(), level, this)
+                        level.addResource(newMine)
+                        hasMine = false
+                        true
+                    }
+                }
+                if (deployed) GameSound.DeployMine.play()
             }
         }
     }
@@ -487,7 +486,7 @@ class Agent(
         LOGGER.info("Kill $name")
         mothership.removeAgent(this)
         isAlive = false
-        fuel = 0
+        fuelLock.withLock { fuel = 0 }
         if (hasRequestedSupport) {
             mothership.cancelSupport(this)
         }

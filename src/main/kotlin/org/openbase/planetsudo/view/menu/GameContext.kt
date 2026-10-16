@@ -113,13 +113,10 @@ class GameContext : JFrame() {
     companion object {
         private var instance: GameContext? = null
 
-        @Synchronized
         fun display() {
-            if (instance == null) {
-                EventQueue.invokeLater { GameContext().isVisible = true }
-                Thread.sleep(500)
-            } else {
-                instance!!.isVisible = true
+            EventQueue.invokeLater {
+                val frame = instance?.takeIf { it.isDisplayable } ?: GameContext()
+                frame.isVisible = true
             }
         }
 

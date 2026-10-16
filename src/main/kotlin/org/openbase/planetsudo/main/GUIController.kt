@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory
 import java.beans.PropertyChangeEvent
 import java.beans.PropertyChangeListener
 import java.beans.PropertyChangeSupport
+import java.util.concurrent.locks.ReentrantLock
+import kotlin.concurrent.withLock
 
 /**
  * @author [Divine Threepwood](mailto:divine@openbase.org)
@@ -19,6 +21,7 @@ class GUIController {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     val propertyChangeSupport: PropertyChangeSupport?
+    private val guiStartLock = ReentrantLock()
     private var started = false
 
     init {
@@ -26,8 +29,7 @@ class GUIController {
         this.propertyChangeSupport = PropertyChangeSupport(this)
     }
 
-    @Synchronized
-    fun startGUI() {
+    fun startGUI() = guiStartLock.withLock {
         if (started) {
             logger.warn("Gui already started! Ignore...")
             return
