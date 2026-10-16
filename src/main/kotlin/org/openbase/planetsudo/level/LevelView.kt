@@ -175,10 +175,8 @@ class LevelView(level: AbstractLevel, levelObject: AbstractLevelObject) {
         distanceMapFor(destination.index) { calculateDistanceMap(destination) }
 
     private fun distanceMapFor(destinationIndex: Int, compute: () -> IntArray): IntArray {
-        val cache = synchronized(distanceMapCaches) {
-            distanceMapCaches.getOrPut(levelObject.level) {
-                DistanceMapCache()
-            }
+        val cache = synchronized(distanceMapCacheLock) {
+            distanceMapCache
         }
 
         while (true) {
@@ -241,11 +239,12 @@ class LevelView(level: AbstractLevel, levelObject: AbstractLevelObject) {
     companion object {
         const val RASTER_SIZE: Int = 10
         private const val DISTANCE_MAP_CACHE_SIZE = 128
-        private val distanceMapCaches = WeakHashMap<AbstractLevel, DistanceMapCache>()
+        private val distanceMapCacheLock = Any()
+        private var distanceMapCache = DistanceMapCache()
 
         fun clearDistanceMapCache() {
-            synchronized(distanceMapCaches) {
-                distanceMapCaches.clear()
+            synchronized(distanceMapCacheLock) {
+                distanceMapCache = DistanceMapCache()
             }
         }
     }
