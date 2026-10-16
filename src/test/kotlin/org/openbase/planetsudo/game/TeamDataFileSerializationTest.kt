@@ -1,7 +1,6 @@
 package org.openbase.planetsudo.game
 
 import org.junit.jupiter.api.io.TempDir
-import org.openbase.jul.processing.json.JSonObjectFileProcessor
 import java.awt.Color
 import java.nio.file.Files
 import java.nio.file.Path
@@ -19,7 +18,7 @@ class TeamDataFileSerializationTest {
 
         Team.writeTeamData(teamData, teamFile.toFile())
 
-        val loadedTeamData = JSonObjectFileProcessor(TeamData::class.java).deserialize(teamFile.toFile())
+        val loadedTeamData = Team.readTeamData(teamFile.toFile())
 
         assertEquals(teamData, loadedTeamData)
         Files.delete(teamFile)
