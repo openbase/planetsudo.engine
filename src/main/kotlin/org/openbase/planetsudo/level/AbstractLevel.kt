@@ -159,18 +159,14 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
         return resourceKeyCounter++
     }
 
-    fun setTeamA(team: Team?) {
-        teams[0] = team
-        teamDisplayColors[0] = team?.teamColor
-        motherships[0] = Mothership(0, team!!, this)
-    }
-
-    fun setTeamB(team: Team?) {
-        teams[1] = team
-        motherships[1] = Mothership(1, team!!, this)
-        teamDisplayColors[0] = teams[0]?.teamColor
-        teamDisplayColors[1] = team.teamColor?.let { teamColor ->
-            TeamColors.contrastingColor(teamColor, teams[0]?.teamColor)
+    fun setTeams(teamA: Team, teamB: Team) {
+        teams[0] = teamA
+        teams[1] = teamB
+        motherships[0] = Mothership(0, teamA, this)
+        motherships[1] = Mothership(1, teamB, this)
+        teamDisplayColors[0] = teamA.teamColor
+        teamDisplayColors[1] = teamB.teamColor?.let { teamColor ->
+            TeamColors.contrastingColor(teamColor, teamA.teamColor)
         }
     }
 
