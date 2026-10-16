@@ -4,12 +4,15 @@
  */
 package org.openbase.planetsudo.game
 
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
 import org.apache.commons.io.FileUtils
 import org.openbase.jps.core.JPService
 import org.openbase.jps.exception.JPNotAvailableException
 import org.openbase.jul.exception.CouldNotPerformException
 import org.openbase.jul.exception.printer.ExceptionPrinter
-import org.openbase.jul.processing.json.JSonObjectFileProcessor
 import org.openbase.planetsudo.deprication.ObjectFileController
 import org.openbase.planetsudo.game.strategy.AbstractStrategy
 import org.openbase.planetsudo.game.strategy.StrategyClassLoader.loadStrategy
@@ -115,7 +118,10 @@ class Team(data: TeamData) {
 
         private val logger: Logger = LoggerFactory.getLogger(Team::class.java)
 
-        private val TEAM_DATA_PROCESSOR = JSonObjectFileProcessor(TeamData::class.java)
+        private val TEAM_DATA_MAPPER = ObjectMapper()
+            .enableDefaultTyping(ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT)
+            .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
 
         @Throws(CouldNotPerformException::class)
         fun saveDefaultTeam(data: TeamData, force: Boolean = false) {
@@ -131,13 +137,29 @@ class Team(data: TeamData) {
                 if (!force && File(fileURL).exists()) {
                     throw CouldNotPerformException("File already exist!")
                 }
-                TEAM_DATA_PROCESSOR.serialize(data, File(fileURL))
+                writeTeamData(data, File(fileURL))
                 //            final ObjectFileController<TeamData> fileWriter = new ObjectFileController<TeamData>(fileURL);
 //            fileWriter.writeObject(data);
             } catch (ex: JPNotAvailableException) {
                 throw CouldNotPerformException("Could not save TeamData[" + data.name + "] as default team!", ex)
             } catch (ex: CouldNotPerformException) {
                 throw CouldNotPerformException("Could not save TeamData[" + data.name + "] as default team!", ex)
+            } catch (ex: IOException) {
+                throw CouldNotPerformException("Could not save TeamData[" + data.name + "] as default team!", ex)
+            }
+        }
+
+        @Throws(IOException::class)
+        internal fun writeTeamData(data: TeamData, file: File) {
+            TEAM_DATA_MAPPER.writer(DefaultPrettyPrinter()).writeValue(file, data)
+        }
+
+        @Throws(CouldNotPerformException::class)
+        internal fun readTeamData(file: File): TeamData {
+            try {
+                return TEAM_DATA_MAPPER.readValue(file, TeamData::class.java)
+            } catch (ex: IOException) {
+                throw CouldNotPerformException("Could not read TeamData from file[${file.absolutePath}]!", ex)
             }
         }
 
@@ -159,11 +181,9 @@ class Team(data: TeamData) {
         @Throws(CouldNotPerformException::class)
         fun load(teamName: String): TeamData? {
             try {
-                return TEAM_DATA_PROCESSOR.deserialize(
+                return readTeamData(
                     File(
-                        JPService.getProperty(
-                            JPTeamPath::class.java,
-                        ).value.absolutePath + "/" + teamName + ".team",
+                        JPService.getProperty(JPTeamPath::class.java).value.absolutePath + "/" + teamName + ".team",
                     ),
                 )
             } catch (ex: CouldNotPerformException) {

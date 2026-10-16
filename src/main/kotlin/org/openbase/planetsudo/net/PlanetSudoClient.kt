@@ -10,14 +10,17 @@ import org.openbase.jps.core.JPService
 import org.openbase.jps.exception.JPNotAvailableException
 import org.openbase.jul.exception.CouldNotPerformException
 import org.openbase.jul.exception.printer.ExceptionPrinter
+import org.openbase.planetsudo.game.Team
 import org.openbase.planetsudo.game.Team.Companion.loadDefaultTeam
 import org.openbase.planetsudo.game.Team.Companion.save
 import org.openbase.planetsudo.game.TeamData
+import org.openbase.planetsudo.game.strategy.StrategyClassLoader.loadStrategy
 import org.openbase.planetsudo.game.strategy.StrategyClassLoader.revalidate
 import org.openbase.planetsudo.jp.JPExternalStrategyJar
 import org.openbase.planetsudo.jp.JPServerHostname
 import org.openbase.planetsudo.jp.JPServerPort
 import org.openbase.planetsudo.jp.JPStrategySourceDirectory
+import org.openbase.planetsudo.jp.JPTeamPath
 import org.openbase.planetsudo.view.MainGUI
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -103,8 +106,9 @@ class PlanetSudoClient private constructor() {
     private fun transferData() {
         uploadDefaultTeam()
         uploadDefaultStrategy()
-        downloadTeams()
-        downloadStrategies()
+        downloadTeams().also { teams ->
+            downloadStrategies(teams)
+        }
         setConnectionState(ConnectionState.SyncSuccessful)
     }
 
@@ -115,13 +119,56 @@ class PlanetSudoClient private constructor() {
     }
 
     @Throws(IOException::class, ClassNotFoundException::class, CouldNotPerformException::class)
-    private fun downloadTeams() {
+    private fun downloadTeams(): List<TeamData> {
         setConnectionState(ConnectionState.DownloadTeams)
         val teamCounter = `in`!!.readInt()
-        var teamData: TeamData
+        val downloadedTeams = ArrayList<TeamData>(teamCounter)
         for (i in 0 until teamCounter) {
-            teamData = `in`!!.readObject() as TeamData
+            val teamData = `in`!!.readObject() as TeamData
+            if (teamData.name == Team.DEFAULT_ID) {
+                continue
+            }
             save(teamData)
+            downloadedTeams.add(teamData)
+        }
+        removeTeamsNotFromServer(downloadedTeams.mapTo(mutableSetOf()) { "${it.name}.team" })
+        return downloadedTeams
+    }
+
+    @Throws(CouldNotPerformException::class)
+    private fun removeTeamsNotFromServer(serverTeamFiles: Set<String>) {
+        try {
+            val teamFolder = JPService.getProperty(JPTeamPath::class.java).value
+            val strategySourceDirectory = JPService.getProperty(JPStrategySourceDirectory::class.java).value
+            val teamFiles = teamFolder.listFiles()
+                ?: throw CouldNotPerformException("Could not list team folder[${teamFolder.absolutePath}]!")
+
+            for (teamFile in teamFiles) {
+                if (!isTeamFileEligibleForDeletion(teamFile, teamFolder)) {
+                    continue
+                }
+                if (teamFile.name !in serverTeamFiles) {
+                    val teamData = try {
+                        Team.load(teamFile.nameWithoutExtension)
+                    } catch (ex: CouldNotPerformException) {
+                        logger.warn("Keeping team[${teamFile.name}] because its strategy could not be checked.", ex)
+                        continue
+                    }
+                    if (teamData == null) {
+                        logger.warn("Keeping team[${teamFile.name}] because its strategy could not be checked.")
+                        continue
+                    }
+                    if (shouldPreserveTeam(teamData, strategySourceDirectory)) {
+                        logger.info("Keeping team[${teamData.name}] because it uses a local strategy[${teamData.strategy}].")
+                        continue
+                    }
+                    FileUtils.delete(teamFile)
+                }
+            }
+        } catch (ex: JPNotAvailableException) {
+            throw CouldNotPerformException("Could not synchronize teams!", ex)
+        } catch (ex: IOException) {
+            throw CouldNotPerformException("Could not delete teams not provided by the server!", ex)
         }
     }
 
@@ -152,19 +199,54 @@ class PlanetSudoClient private constructor() {
     }
 
     @Throws(CouldNotPerformException::class)
-    private fun downloadStrategies() {
+    private fun downloadStrategies(downloadedTeams: List<TeamData>) {
         try {
             setConnectionState(ConnectionState.DownloadStrategies)
             val jarFile = JPService.getProperty(JPExternalStrategyJar::class.java).value
+            val strategySourceDirectory = JPService.getProperty(JPStrategySourceDirectory::class.java).value
             val fileByteLenght = `in`!!.readInt()
             val fileBytes = ByteArray(fileByteLenght)
             IOUtils.readFully(`in`, fileBytes)
             FileUtils.writeByteArrayToFile(jarFile, fileBytes)
             revalidate()
+            removeTeamsWithUnavailableStrategies(downloadedTeams, strategySourceDirectory)
         } catch (ex: JPNotAvailableException) {
             throw CouldNotPerformException("Could not download stradegies!", ex)
         } catch (ex: IOException) {
             throw CouldNotPerformException("Could not download stradegies!", ex)
+        }
+    }
+
+    private fun removeTeamsWithUnavailableStrategies(teams: List<TeamData>, strategySourceDirectory: File) {
+        for (team in teams) {
+            if (shouldPreserveTeam(team, strategySourceDirectory)) {
+                continue
+            }
+            try {
+                loadStrategy(team.strategy)
+            } catch (ex: CouldNotPerformException) {
+                logger.warn("Removing team[${team.name}] because its strategy[${team.strategy}] cannot be loaded.", ex)
+                deleteTeamFile(team.name)
+            } catch (ex: LinkageError) {
+                logger.warn("Removing team[${team.name}] because its strategy[${team.strategy}] cannot be loaded.", ex)
+                deleteTeamFile(team.name)
+            }
+        }
+    }
+
+    @Throws(CouldNotPerformException::class)
+    private fun deleteTeamFile(teamName: String) {
+        try {
+            val teamFolder = JPService.getProperty(JPTeamPath::class.java).value.canonicalFile
+            val teamFile = File(teamFolder, "$teamName.team").canonicalFile
+            if (!isTeamFileEligibleForDeletion(teamFile, teamFolder)) {
+                throw CouldNotPerformException("Refusing to delete an ineligible team file.")
+            }
+            FileUtils.delete(teamFile)
+        } catch (ex: JPNotAvailableException) {
+            throw CouldNotPerformException("Could not access team folder while removing team[$teamName]!", ex)
+        } catch (ex: IOException) {
+            throw CouldNotPerformException("Could not remove team[$teamName]!", ex)
         }
     }
 
@@ -200,3 +282,20 @@ class PlanetSudoClient private constructor() {
             private set
     }
 }
+
+private fun isTeamFileEligibleForDeletion(teamFile: File, teamFolder: File): Boolean {
+    if (!teamFile.isFile || !teamFile.name.endsWith(".team") || teamFile.name == "default.team") {
+        return false
+    }
+
+    val canonicalTeamFolder = teamFolder.canonicalFile
+    val canonicalTeamFile = teamFile.canonicalFile
+    return canonicalTeamFile.parentFile == canonicalTeamFolder && canonicalTeamFile.name != "default.team"
+}
+
+internal fun shouldPreserveTeam(teamData: TeamData, strategySourceDirectory: File): Boolean {
+    return teamData.strategy in PROTECTED_STRATEGIES ||
+        File(strategySourceDirectory, "${teamData.strategy}.kt").isFile
+}
+
+private val PROTECTED_STRATEGIES = setOf("LevelOne", "LevelTwo")
