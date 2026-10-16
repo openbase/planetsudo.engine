@@ -12,6 +12,7 @@ package org.openbase.planetsudo.view.configuration
 import org.openbase.jul.exception.CouldNotPerformException
 import org.openbase.jul.visual.swing.component.ColorChooserFrame
 import org.openbase.planetsudo.game.Team.Companion.save
+import org.openbase.planetsudo.game.TeamColors.withoutAlpha
 import org.openbase.planetsudo.game.TeamData
 import org.openbase.planetsudo.game.strategy.AbstractStrategy
 import org.openbase.planetsudo.game.strategy.StrategyClassLoader.loadStrategy
@@ -22,7 +23,9 @@ import java.awt.Color
 import java.awt.EventQueue
 import java.awt.GridBagConstraints
 import java.awt.event.ActionEvent
+import java.util.concurrent.ExecutionException
 import javax.swing.*
+import javax.swing.plaf.basic.BasicButtonUI
 
 /**
  * @author [Divine Threepwood](mailto:divine@openbase.org)
@@ -46,13 +49,6 @@ class CreateTeamFrame : JFrame() {
         }
         val color = colorChooserButton!!.background
 
-        // 			logger.info("try to load "+ AbstractStrategy.class.getPackage().getName()+"."+strategyTextField.getText());
-// 			strategy = (Class<AbstractStrategy>) getClass().getClassLoader().loadClass(AbstractStrategy.class.getPackage().getName()+"."+strategyTextField.getText());
-// 		} catch (ClassNotFoundException ex) {
-// 			strategyTextField.setForeground(Color.RED);
-// 			logger.error("Could not find strategy!", ex);
-// 			return;
-// 		}
         try {
             strategy = loadStrategy(strategyTextField!!.text)
         } catch (ex: CouldNotPerformException) {
@@ -109,7 +105,11 @@ class CreateTeamFrame : JFrame() {
         strategyTextField = JTextField()
         nameTextField = JTextField()
         jLabel2 = JLabel()
-        colorChooserButton = JButton()
+        colorChooserButton = TeamColorButton()
+        colorChooserButton!!.border = BorderFactory.createEmptyBorder()
+        colorChooserButton!!.isOpaque = true
+        colorChooserButton!!.isContentAreaFilled = true
+        colorChooserButton!!.background = Color(220, 220, 220)
 
         defaultCloseOperation = DISPOSE_ON_CLOSE
         title = "Erstelle Team"
@@ -155,7 +155,13 @@ class CreateTeamFrame : JFrame() {
         colorChooserButton!!.text = "Klicken um Farbe zu wählen"
         colorChooserButton!!.addActionListener { evt -> colorChooserButtonActionPerformed(evt) }
         jPanel1!!.add(colorChooserButton)
-        colorChooserButton!!.setBounds(10, 100, 347, 29)
+        val inputInsets = nameTextField!!.insets
+        colorChooserButton!!.setBounds(
+            10 + inputInsets.left,
+            100 + inputInsets.top,
+            347 - inputInsets.left - inputInsets.right,
+            27 - inputInsets.top - inputInsets.bottom,
+        )
 
         val layout = GroupLayout(contentPane)
         contentPane.layout = layout
@@ -192,13 +198,20 @@ class CreateTeamFrame : JFrame() {
     } // GEN-LAST:event_createButtonActionPerformed
 
     private fun colorChooserButtonActionPerformed(evt: ActionEvent) { // GEN-FIRST:event_colorChooserButtonActionPerformed
-        val worker: SwingWorker<*, *> = object : SwingWorker<Any?, Any?>() {
-            @Throws(Exception::class)
-            override fun doInBackground(): Any? {
-                val color = ColorChooserFrame.getColor()
-                colorChooserButton!!.background = color
-                colorChooserButton!!.text = ""
-                return null
+        val worker = object : SwingWorker<Color, Void>() {
+            override fun doInBackground(): Color = ColorChooserFrame.getColor()
+
+            override fun done() {
+                try {
+                    colorChooserButton!!.background = get().withoutAlpha()
+                    colorChooserButton!!.text = ""
+                    colorChooserButton!!.repaint()
+                } catch (ex: InterruptedException) {
+                    Thread.currentThread().interrupt()
+                    logger.warn("Interrupted while applying selected team color.", ex)
+                } catch (ex: ExecutionException) {
+                    logger.warn("Could not apply selected team color.", ex.cause ?: ex)
+                }
             }
         }
         worker.execute()
@@ -221,6 +234,12 @@ class CreateTeamFrame : JFrame() {
     private var member2TextField: JTextField? = null
     private var nameTextField: JTextField? = null
     private var strategyTextField: JTextField? = null // End of variables declaration//GEN-END:variables
+
+    private class TeamColorButton : JButton() {
+        override fun updateUI() {
+            setUI(BasicButtonUI())
+        }
+    }
 
     /**
      * Creates new form CreateTeamFrame

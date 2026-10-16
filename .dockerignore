@@ -1,0 +1,8 @@
+.git
+.gradle
+.idea
+build
+doc
+teams
+teams_disabled
+testdoc

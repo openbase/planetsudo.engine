@@ -1,0 +1,9 @@
+services:
+  javadocs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: planetsudo-engine-javadocs
+    ports:
+      - "8080:80"
+    restart: unless-stopped
