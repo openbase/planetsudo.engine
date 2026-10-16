@@ -42,7 +42,7 @@ class LevelResourcePanel(resource: Resource, parentResourcePanel: LevelPanel) :
         resource.addPropertyChangeListener(this)
         this.mine = resource.type == ResourceType.Mine
         if (mine && resource.wasPlacedByTeam() != null) {
-            this.mineColor = resource.wasPlacedByTeam()!!.teamColor
+            this.mineColor = resource.level.getTeamColor(resource.wasPlacedByTeam()!!)
         } else {
             this.mineColor = Color.BLACK
         }
