@@ -39,7 +39,7 @@ class Pentagon : AbstractLevel() {
         ResourceRandomRectangle(0, 1100, 3000, 1500, 150, ResourceType.Tonic),
     )
 
-    override fun loadLevelColor() = Color(0, 0, 210)
+    override fun loadLevelColor() = Color(100, 100, 255)
 
     override fun loadLevelWallPolygons() = listOf(
         Polygon().apply {

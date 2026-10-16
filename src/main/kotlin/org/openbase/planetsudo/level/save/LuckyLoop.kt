@@ -80,7 +80,7 @@ class LuckyLoop : AbstractLevel() {
     )
 
     override fun loadLevelColor(): Color {
-        return Color(0, 102, 102)
+        return Color(0, 150, 150)
     }
 
     override fun loadLevelWallPolygons() = listOf(
