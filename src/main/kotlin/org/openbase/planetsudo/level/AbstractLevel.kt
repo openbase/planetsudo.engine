@@ -131,6 +131,7 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
 
     @Synchronized
     fun reset() {
+        LevelView.clearDistanceMapCache()
         mineCounter = if (teams[0] != null && teams[1] != null) {
             (min(teams[0]!!.agentCount.toDouble(), teams[1]!!.agentCount.toDouble()) - 1).toInt()
         } else {
