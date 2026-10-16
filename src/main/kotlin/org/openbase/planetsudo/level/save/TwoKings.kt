@@ -50,7 +50,7 @@ class TwoKings : AbstractLevel() {
         ResourceRandomRectangle(1400, 0, 100, 1500, 20, ResourceType.Tonic),
     )
 
-    override fun loadLevelColor() = Color(37, 67, 162)
+    override fun loadLevelColor() = Color(64, 109, 255)
 
     override fun loadLevelWallPolygons() = listOf(
         Polygon().apply {

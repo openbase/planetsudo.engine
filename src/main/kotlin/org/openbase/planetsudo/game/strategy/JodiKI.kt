@@ -20,6 +20,7 @@ package org.openbase.planetsudo.game.strategy /*-
  * #L%
  */
 
+import org.openbase.planetsudo.game.SwatTeam
 import org.openbase.planetsudo.level.LevelSize
 import org.openbase.planetsudo.level.levelobjects.AgentInterface
 import org.openbase.planetsudo.level.levelobjects.Resource
@@ -85,74 +86,83 @@ class JodiKI(agent: AgentInterface) : StrategyLevel3(agent) {
      * od{er "Just Go" swat ALPHA and FOXTROT inCase {true } then agent.go()}
      */
     override fun loadRules() {
-        // -------------------------------------------->
+        // part of nonCommander
         "Just Go" nonCommander inCase { true } then { agent.go() }
         "LowResourceFound" nonCommander inCase { agent.seeResource(Resource.ResourceType.Normal) or agent.seeResource(Resource.ResourceType.DoublePoints) } then { agent.goToResource() }
-        "LowResourcePickUp" nonCommander inCase { agent.isTouchingResource(Resource.ResourceType.Normal) or agent.isTouchingResource(Resource.ResourceType.DoublePoints) } then { agent.pickupResource() }
-        "AFuelResourceFound" nonCommander inCase { agent.seeResource(Resource.ResourceType.ExtraAgentFuel) && agent.fuelInPercent < 90 } then { agent.goToResource() }
-        "AFuelResourcePickUp" nonCommander inCase { agent.isTouchingResource(Resource.ResourceType.ExtraAgentFuel) && agent.fuelInPercent < 90 } then { agent.pickupResource() }
+        "AFuelResourceFound" nonCommander inCase { agent.seeResource(Resource.ResourceType.ExtraAgentFuel) && agent.fuelInPercent < 60 } then { agent.goToResource() }
         "MFuelResourceFound" nonCommander inCase { agent.seeResource(Resource.ResourceType.ExtraMothershipFuel) && mothership.fuelInPercent < 80 } then { agent.goToResource() }
-        "MFuelResourcePickUp" nonCommander inCase { agent.isTouchingResource(Resource.ResourceType.ExtraMothershipFuel) && mothership.fuelInPercent < 80 } then { agent.pickupResource() }
+        "5ResourceFound" nonCommander inCase { agent.seeResource(Resource.ResourceType.ExtremPoint) && !agent.isCarryingResource(Resource.ResourceType.ExtremPoint) && agent.seeTeamAgent && !teamAgent.isTouchingResource(Resource.ResourceType.ExtremPoint) } then { agent.goToResource() }
+        "GoToMarker" nonCommander inCase { mothership.isMarkerDeployed && !agent.seeMarker() && !agent.isCarryingResource } then { agent.goToMarker() }
         "TResourceFound1" nonCommander inCase { agent.seeResource(Resource.ResourceType.Tonic) && !agent.isTonicAtLimit && !agent.seeTeamAgent } then { agent.goToResource(Resource.ResourceType.Tonic) }
         "TResourceFound2" nonCommander inCase { agent.seeResource(Resource.ResourceType.Tonic) && !agent.isTonicAtLimit && agent.seeTeamAgent && !teamAgent.isTouchingResource(Resource.ResourceType.Tonic) } then { agent.goToResource(Resource.ResourceType.Tonic) }
-        "TResourcePickUp1" nonCommander inCase { agent.isTouchingResource(Resource.ResourceType.Tonic) && mothership.isMarkerDeployed && !agent.isTonicAtLimit && !agent.seeTeamAgent } then { agent.pickupResource() }
-        "TResourcePickUp2" nonCommander inCase { agent.isTouchingResource(Resource.ResourceType.Tonic) && mothership.isMarkerDeployed && !agent.isTonicAtLimit && agent.seeTeamAgent && !teamAgent.isTouchingResource(Resource.ResourceType.Tonic) } then { agent.pickupResource() }
-        "TResourcePickUp3" nonCommander inCase { agent.isTouchingResource(Resource.ResourceType.Tonic) && !mothership.isMarkerDeployed && !agent.isTonicAtLimit && !agent.seeTeamAgent } then { agent.pickupResource() }
-        "TResourcePickUp4" nonCommander inCase { agent.isTouchingResource(Resource.ResourceType.Tonic) && !mothership.isMarkerDeployed && !agent.isTonicAtLimit && agent.seeTeamAgent && !teamAgent.isTouchingResource(Resource.ResourceType.Tonic) } then { agent.pickupResource() }
-        "CarryingResource" nonCommander inCase { agent.isCarryingResource } then { agent.goToMothership() }
-        "5ResourceFound" nonCommander inCase { agent.seeResource(Resource.ResourceType.ExtremPoint) && !agent.isCarryingResource(Resource.ResourceType.ExtremPoint) && agent.seeTeamAgent && !teamAgent.isTouchingResource(Resource.ResourceType.ExtremPoint) } then { agent.goToResource() }
+        "LowResourcePickUp" nonCommander inCase { agent.isTouchingResource(Resource.ResourceType.Normal) or agent.isTouchingResource(Resource.ResourceType.DoublePoints) } then { agent.pickupResource() }
+        "AFuelResourcePickUp" nonCommander inCase { agent.isTouchingResource(Resource.ResourceType.ExtraAgentFuel) && agent.fuelInPercent < 90 } then { agent.pickupResource() }
+        "MFuelResourcePickUp" nonCommander inCase { agent.isTouchingResource(Resource.ResourceType.ExtraMothershipFuel) && mothership.fuelInPercent < 80 } then { agent.pickupResource() }
         "5ResourcePickUp" nonCommander inCase { agent.isTouchingResource(Resource.ResourceType.ExtremPoint) && !agent.isCarryingResource(Resource.ResourceType.ExtremPoint) && agent.seeTeamAgent && !teamAgent.isTouchingResource(Resource.ResourceType.ExtremPoint) } then { agent.pickupResource() }
-        "GoToMarker" nonCommander inCase { mothership.isMarkerDeployed && !agent.seeMarker() && !agent.isCarryingResource } then { agent.goToMarker() }
+        "TResourcePickUp1" nonCommander inCase { agent.isTouchingResource(Resource.ResourceType.Tonic) && !agent.isTonicAtLimit && !agent.seeTeamAgent } then { agent.pickupResource() }
+        "TResourcePickUp2" nonCommander inCase { agent.isTouchingResource(Resource.ResourceType.Tonic) && !agent.isTonicAtLimit && agent.seeTeamAgent && !teamAgent.isTouchingResource(Resource.ResourceType.Tonic) } then { agent.pickupResource() }
+        "MineLaying" nonCommander inCase { agent.seeResource(Resource.ResourceType.ExtremPoint) && agent.hasMine && !agent.isInvisible } then { agent.deployMine() }
+        "Place Marker" nonCommander inCase { agent.isTouchingResource(Resource.ResourceType.Tonic) && !mothership.isMarkerDeployed && !agent.seeTeamAgent } then { agent.deployMarker() }
         "IsAtMarker" nonCommander inCase { mothership.isMarkerDeployed && agent.seeMarker() && !agent.seeResource } then { mothership.clearMarker() }
-        "DeliverResource" nonCommander inCase { agent.isCarryingResource && agent.isAtMothership } then { agent.transferResourceToMothership(); agent.turnAround(); agent.turnRandom(30) }
+        "CarryingResource" nonCommander inCase { agent.isCarryingResource } then { agent.goToMothership() }
+        "DeliverResource" nonCommander inCase { agent.isCarryingResource && agent.isAtMothership } then { agent.transferResourceToMothership() }
         "Cancel Support" nonCommander inCase { agent.hasRequestedSupport } then { agent.cancelSupport() }
+        "HelpMothership" nonCommander inCase { mothership.isDamaged } then { agent.goToMothership() }
+        "RepairMothership" nonCommander inCase { mothership.isDamaged && agent.isAtMothership } then { agent.repairMothership() }
         "Attack Mothership" nonCommander inCase { agent.seeEnemyMothership } then { agent.fightWithEnemyMothership(); agent.go() }
         "Mark Mothership" nonCommander inCase { agent.seeEnemyMothership && !agent.hasRequestedSupport } then { agent.requestSupport() }
         "HelpAgent" nonCommander inCase { mothership.needSomeoneSupport() && !agent.hasRequestedSupport } then { agent.releaseResource(); agent.goToSupportAgent() }
         "Help Stranded" nonCommander inCase { agent.seeLostTeamAgent() && agent.fuelInPercent > 60 } then { agent.spendTeamAgentFuel(300) }
-        "GoToRefuel" nonCommander inCase { agent.fuelInPercent < 30 && !agent.isAtMothership && mothership.hasFuel() } then { agent.cancelSupport(); agent.goToMothership() }
-        "Refuel" nonCommander inCase { agent.isAtMothership && agent.fuelInPercent < 95 && agent.actionPoints > 200 && mothership.hasFuel() } then { agent.orderFuel(100) }
-        // "CounterSearch" nonCommander inCase { agent.isUnderAttack && agent.} then { agent.turnAround() }
-        "CounterAttack" nonCommander inCase { agent.seeEnemyAgent } then { agent.fightWithEnemyAgent(); if (!agent.hasRequestedSupport) { agent.requestSupport() }; if (agent.isCarryingResource) { agent.releaseResource() } }
-        "EmergencyRefuel" commander inCase { agent.fuelInPercent < 5 && mothership.hasFuel() } then { agent.goToMothership() }
-        "EmergencyRefuelSupportCancel" commander inCase { agent.fuelInPercent < 5 && mothership.hasFuel() && agent.hasRequestedSupport } then { agent.cancelSupport() }
-        "Invisible" nonCommander inCase { agent.hasTonicForInvisibility } then { agent.makeInvisible() }
-        "Cry for Help" nonCommander inCase { agent.isUnderAttack && !agent.hasRequestedSupport } then { agent.releaseResource(); agent.requestSupport() }
+        "GoToRefuel" nonCommander inCase { agent.fuelInPercent < 30 && !agent.isAtMothership && mothership.hasFuel() } then { agent.goToMothership() }
+        "GoToRefuelLarge" nonCommander inCase { tower.levelSize == LevelSize.LARGE && agent.fuelInPercent < 40 && mothership.hasFuel() } then { agent.goToMothership() }
+        "Refuel" nonCommander inCase { agent.isAtMothership && agent.fuelInPercent < 95 && mothership.hasFuel() && !agent.isUnderAttack } then { agent.orderFuel(100) }
+        "RefuelUnderAttack" nonCommander inCase { agent.isAtMothership && agent.fuelInPercent < 25 && mothership.hasFuel() } then { agent.orderFuel(100) }
+        "CounterSearch" nonCommander inCase { agent.isUnderAttack && !agent.seeEnemyAgent } then { agent.turnAround() }
+        "CounterAttack" nonCommander inCase { agent.seeEnemyAgent } then { agent.fightWithEnemyAgent() }
+        "Drop Ressource" nonCommander inCase { agent.seeEnemyAgent && agent.isCarryingResource } then { agent.releaseResource() }
+        "Request Support" nonCommander inCase { agent.seeEnemyAgent && !agent.hasRequestedSupport } then { agent.requestSupport() }
+        "EmergencyRefuel" nonCommander inCase { agent.fuelInPercent < 15 && mothership.hasFuel() && !agent.isAtMothership } then { agent.goToMothership() }
+        "Invisible" nonCommander inCase { agent.hasTonicForInvisibility && !agent.isInvisible } then { agent.makeInvisible() }
+        "LetResourceGo" nonCommander inCase { agent.isUnderAttack && agent.isCarryingResource } then { agent.releaseResource() }
+        "Cry for Help" nonCommander inCase { agent.isUnderAttack && !agent.hasRequestedSupport } then { agent.requestSupport() }
         "GameOverSoon" nonCommander inCase { agent.isGameOverSoon && !agent.isAtMothership } then { agent.goToMothership() }
         "AvoidWall" nonCommander inCase { agent.isCollisionDetected } then { agent.turnRandom() }
+
         // part of commander
         "Explore" commander inCase { !agent.isCollisionDetected } then { go() }
         "Correct far Straight" commander inCase { agent.seeWallAtRight(90, WallDistance.FAR) && agent.seeWallAtRight(45, WallDistance.FAR) } then { agent.goRight(2) }
         "Go Straight" commander inCase { agent.seeWallAtRight(90, WallDistance.CLOSE) } then { agent.go() }
-        "Correct near Straight" commander inCase { agent.seeWallAtRight(60, WallDistance.VERY_CLOSE) } then { agent.goLeft(2) }
+        "Correct near Straight" commander inCase { agent.seeWallAtRight(60, WallDistance.VERY_CLOSE) && !agent.seeWallAtLeft(60, WallDistance.VERY_CLOSE) } then { agent.goLeft(2) }
         "Turn Right" commander inCase { !agent.seeWallAtRight(70, WallDistance.CLOSE) && agent.seeWallAtRight(110, WallDistance.VERY_FAR) } then { agent.goRight(5) }
         "Turn Sharp Right" commander inCase { !agent.seeWallAtRight(110, WallDistance.CLOSE) && !agent.seeWallAtRight(90, WallDistance.FAR) && !agent.seeWallAtRight(45, WallDistance.FAR) && agent.seeWallAtRight(135, WallDistance.VERY_FAR) } then { agent.goRight(45) }
         "Turn Left" commander inCase { agent.seeWallAtRight(0, WallDistance.FAR) } then { agent.goLeft(15) }
         "Turn Sharp Left" commander inCase { agent.seeWallAtRight(0, WallDistance.FAR) && !agent.seeWallAtLeft(45, WallDistance.FAR) } then { agent.goLeft(30) }
-        // "Go Straight Narrow" commander inCase { agent.seeWallAtRight(90, WallDistance.CLOSE) && agent.seeWallAtLeft(60, WallDistance.CLOSE) } then {agent.goRight(10)}
-        "AFuelResourcePickUp" commander inCase { agent.isTouchingResource(Resource.ResourceType.ExtraAgentFuel) && agent.fuelInPercent < 90 } then { agent.pickupResource() }
-        // "TResourceFound" commander inCase { agent.seeResource(Resource.ResourceType.Tonic) && !agent.isTonicAtLimit && !agent.seeTeamAgent } then { agent.goToResource(Resource.ResourceType.Tonic) }
-        // "TResourceFound" commander inCase { agent.seeResource(Resource.ResourceType.Tonic) && !agent.isTonicAtLimit && agent.seeTeamAgent && !teamAgent.isTouchingResource(Resource.ResourceType.Tonic) } then { agent.goToResource(Resource.ResourceType.Tonic) }
-        "TResourceNotice" commander inCase { agent.seeResource(Resource.ResourceType.Tonic) && !mothership.isMarkerDeployed } then { agent.deployMarker() }
-        "TResourcePickUp1" commander inCase { agent.isTouchingResource(Resource.ResourceType.Tonic) && !agent.isTonicAtLimit && !agent.hasTower } then { agent.pickupResource(); agent.deployMarker() }
-        "TResourcePickUp2" commander inCase { agent.isTouchingResource(Resource.ResourceType.Tonic) && !agent.isTonicAtLimit && !agent.hasTower && mothership.isMarkerDeployed } then { agent.pickupResource() }
+        "AFuelResourcePickUp" commander inCase { agent.isTouchingResource(Resource.ResourceType.ExtraAgentFuel) && agent.fuelInPercent < 60 } then { agent.pickupResource() }
+        "TResourceFound" commander inCase { agent.seeResource(Resource.ResourceType.Tonic) && !agent.isTonicAtLimit && !agent.seeTeamAgent } then { agent.goToResource(Resource.ResourceType.Tonic) }
+        "TResourceFound" commander inCase { agent.seeResource(Resource.ResourceType.Tonic) && !agent.isTonicAtLimit && agent.seeTeamAgent && !teamAgent.isTouchingResource(Resource.ResourceType.Tonic) } then { agent.goToResource(Resource.ResourceType.Tonic) }
+        "TResourcePickUp" commander inCase { agent.isTouchingResource(Resource.ResourceType.Tonic) && !agent.isTonicAtLimit } then { agent.pickupResource() }
+        "MineLaying" commander inCase { agent.seeResource(Resource.ResourceType.ExtremPoint) && agent.hasMine && !agent.isInvisible } then { agent.deployMine() }
+        "TResourceMarking" commander inCase { agent.isTouchingResource(Resource.ResourceType.Tonic) && !mothership.isMarkerDeployed } then { agent.deployMarker() }
         "IsAtMarker" commander inCase { mothership.isMarkerDeployed && agent.seeMarker() && !agent.seeResource } then { mothership.clearMarker() }
         "GoToRefuel" commander inCase { agent.fuelInPercent < 20 && mothership.hasFuel() } then { agent.goToMothership() }
+        "GoToRefuelLarge" commander inCase { tower.levelSize == LevelSize.LARGE && agent.fuelInPercent < 40 && mothership.hasFuel() } then { agent.goToMothership() }
         "Help Stranded" commander inCase { agent.seeLostTeamAgent() && agent.fuelInPercent > 50 } then { agent.spendTeamAgentFuel(300) }
         "Cancel Support" commander inCase { agent.hasRequestedSupport } then { agent.cancelSupport() }
         "CounterSearch" commander inCase { agent.isUnderAttack } then { agent.turnAround() }
-        "Cry for Help" commander inCase { agent.isUnderAttack && !agent.hasRequestedSupport } then { agent.releaseResource(); agent.requestSupport() }
-        "Refuel" commander inCase { agent.isAtMothership && agent.fuelInPercent < 95 && agent.actionPoints > 200 && mothership.hasFuel() } then { agent.orderFuel(100) }
+        "Refuel" commander inCase { agent.isAtMothership && agent.fuelInPercent < 95 && mothership.hasFuel() && !agent.isUnderAttack } then { agent.orderFuel(100) }
+        "RefuelUnderAttack" commander inCase { agent.isAtMothership && agent.fuelInPercent < 25 && mothership.hasFuel() } then { agent.orderFuel(100) }
         "HelpAgent" commander inCase { mothership.needSomeoneSupport() && !agent.hasRequestedSupport } then { agent.releaseResource(); agent.goToSupportAgent() }
         "Attack Mothership" commander inCase { agent.seeEnemyMothership } then { agent.fightWithEnemyMothership(); agent.go() }
         "Mark Mothership" commander inCase { agent.seeEnemyMothership && !agent.hasRequestedSupport } then { agent.requestSupport() }
-        "CounterAttack" commander inCase { agent.seeEnemyAgent } then { agent.fightWithEnemyAgent(); if (!agent.hasRequestedSupport) { agent.requestSupport() }; if (agent.isCarryingResource) { agent.releaseResource() } }
-        "EmergencyRefuel" commander inCase { agent.fuelInPercent < 5 && mothership.hasFuel() } then { agent.goToMothership() }
-        "EmergencyRefuelSupportCancel" commander inCase { agent.fuelInPercent < 5 && mothership.hasFuel() && agent.hasRequestedSupport } then { agent.cancelSupport() }
-        "Invisible" commander inCase { agent.hasTonicForInvisibility } then { agent.makeInvisible() }
+        "CounterAttack" commander inCase { agent.seeEnemyAgent } then { agent.fightWithEnemyAgent() }
+        "Drop Ressource" commander inCase { agent.seeEnemyAgent && agent.isCarryingResource } then { agent.releaseResource() }
+        "Request Support" commander inCase { agent.seeEnemyAgent && !agent.hasRequestedSupport } then { agent.requestSupport() }
+        "EmergencyRefuel" commander inCase { agent.fuelInPercent < 10 && mothership.hasFuel() && !agent.isAtMothership } then { agent.goToMothership() }
+        "Invisible" commander inCase { agent.hasTonicForInvisibility && !agent.isInvisible } then { agent.makeInvisible() }
         "GameOverSoon" commander inCase { agent.isGameOverSoon && !agent.isAtMothership } then { agent.goToMothership() }
         "Scan Map" commander inCase { !agent.hasTower && tower.levelSize == LevelSize.UNKNOWN } then { tower.scanLevelSize() }
         "Place Tower" commander inCase { agent.hasTower && agent.actionPoints > 1500 } then { agent.constructTower(Tower.TowerType.ObservationTower) }
+        "RequestSupportIfAttacked" commander inCase { agent.isUnderAttack && !agent.hasRequestedSupport } then { agent.requestSupport() }
         "Not Die" commander inCase { agent.isCollisionDetected } then { agent.turnLeft(5) }
     }
 
@@ -167,5 +177,7 @@ class JodiKI(agent: AgentInterface) : StrategyLevel3(agent) {
      * ACHTUNG: Die default Swats ALL und COMMANDER können anhand dieser Methode nicht modifiziert werden!
      */
     override fun loadSwatTeams() {
+        createSwat(SwatTeam.ALPHA, 1, 2)
+        createSwat(SwatTeam.SIERRA, 3)
     }
 }
