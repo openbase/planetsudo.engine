@@ -144,7 +144,7 @@ class PlanetSudoClient private constructor() {
                 ?: throw CouldNotPerformException("Could not list team folder[${teamFolder.absolutePath}]!")
 
             for (teamFile in teamFiles) {
-                if (!teamFile.isFile || !teamFile.name.endsWith(".team") || teamFile.name == "default.team") {
+                if (!isTeamFileEligibleForDeletion(teamFile, teamFolder)) {
                     continue
                 }
                 if (teamFile.name !in serverTeamFiles) {
@@ -239,8 +239,8 @@ class PlanetSudoClient private constructor() {
         try {
             val teamFolder = JPService.getProperty(JPTeamPath::class.java).value.canonicalFile
             val teamFile = File(teamFolder, "$teamName.team").canonicalFile
-            if (teamFile.parentFile != teamFolder || teamFile.name == "default.team") {
-                throw CouldNotPerformException("Refusing to delete team file outside the team folder.")
+            if (!isTeamFileEligibleForDeletion(teamFile, teamFolder)) {
+                throw CouldNotPerformException("Refusing to delete an ineligible team file.")
             }
             FileUtils.delete(teamFile)
         } catch (ex: JPNotAvailableException) {
@@ -281,6 +281,16 @@ class PlanetSudoClient private constructor() {
             }
             private set
     }
+}
+
+private fun isTeamFileEligibleForDeletion(teamFile: File, teamFolder: File): Boolean {
+    if (!teamFile.isFile || !teamFile.name.endsWith(".team") || teamFile.name == "default.team") {
+        return false
+    }
+
+    val canonicalTeamFolder = teamFolder.canonicalFile
+    val canonicalTeamFile = teamFile.canonicalFile
+    return canonicalTeamFile.parentFile == canonicalTeamFolder && canonicalTeamFile.name != "default.team"
 }
 
 internal fun shouldPreserveTeam(teamData: TeamData, strategySourceDirectory: File): Boolean {
