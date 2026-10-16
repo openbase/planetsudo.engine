@@ -41,6 +41,7 @@ class TowerTopPanel(tower: Tower, parentPanel: TowerPanel) :
     private var scanMaxRadius: Double = 0.0
     private val ringSpeed: Double = 12.0 // pixels per tick
     private val ringSpacing: Double = 40.0 // spacing between consecutive rings
+    private val teamColor: Color = tower.level.getTeamColor(tower.mothership.team) ?: Color(0, 220, 255)
 
     init {
         LOGGER.info("Create $this")
@@ -98,7 +99,12 @@ class TowerTopPanel(tower: Tower, parentPanel: TowerPanel) :
                         if (r <= 0) continue
                         val progress = (r / scanMaxRadius).coerceIn(0.0, 1.0)
                         val alpha = (1.0 - progress) * 0.7
-                        val color = Color(0, 220, 255, (alpha * 255).toInt().coerceIn(0, 255))
+                        val color = Color(
+                            teamColor.red,
+                            teamColor.green,
+                            teamColor.blue,
+                            (alpha * 255).toInt().coerceIn(0, 255),
+                        )
                         overlay.color = color
                         val ir = r
                         overlay.draw(Arc2D.Double(cx - ir, cy - ir, ir * 2, ir * 2, 0.0, 360.0, Arc2D.OPEN))

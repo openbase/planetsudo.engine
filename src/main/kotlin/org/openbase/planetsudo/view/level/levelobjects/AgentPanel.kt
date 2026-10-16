@@ -28,7 +28,7 @@ class AgentPanel(resource: Agent, parentResourcePanel: MothershipPanel) :
     ) {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-    val teamColor: Color? = resource.team.teamColor
+    val teamColor: Color? = resource.level.getTeamColor(resource.team)
 
     private var levelObject: AbstractLevelObject? = null
     private var g22: Graphics2D? = null

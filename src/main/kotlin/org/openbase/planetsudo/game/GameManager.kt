@@ -153,8 +153,11 @@ class GameManager : Runnable {
                 gameOverSoon = false
                 teamA!!.reset()
                 teamB!!.reset()
-                level?.setTeamA(teamA)
-                level?.setTeamB(teamB)
+                teamA?.let { teamA ->
+                    teamB?.let { teamB ->
+                        level?.setTeams(teamA = teamA, teamB = teamB)
+                    }
+                }
                 level?.reset()
 
                 gameEndTimeout = null
