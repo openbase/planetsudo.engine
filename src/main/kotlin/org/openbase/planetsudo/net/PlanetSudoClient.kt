@@ -139,6 +139,7 @@ class PlanetSudoClient private constructor() {
     private fun removeTeamsNotFromServer(serverTeamFiles: Set<String>) {
         try {
             val teamFolder = JPService.getProperty(JPTeamPath::class.java).value
+            val strategySourceDirectory = JPService.getProperty(JPStrategySourceDirectory::class.java).value
             val teamFiles = teamFolder.listFiles()
                 ?: throw CouldNotPerformException("Could not list team folder[${teamFolder.absolutePath}]!")
 
@@ -147,6 +148,20 @@ class PlanetSudoClient private constructor() {
                     continue
                 }
                 if (teamFile.name !in serverTeamFiles) {
+                    val teamData = try {
+                        Team.load(teamFile.nameWithoutExtension)
+                    } catch (ex: CouldNotPerformException) {
+                        logger.warn("Keeping team[${teamFile.name}] because its strategy could not be checked.", ex)
+                        continue
+                    }
+                    if (teamData == null) {
+                        logger.warn("Keeping team[${teamFile.name}] because its strategy could not be checked.")
+                        continue
+                    }
+                    if (shouldPreserveTeam(teamData, strategySourceDirectory)) {
+                        logger.info("Keeping team[${teamData.name}] because it uses a local strategy[${teamData.strategy}].")
+                        continue
+                    }
                     FileUtils.delete(teamFile)
                 }
             }
@@ -188,12 +203,13 @@ class PlanetSudoClient private constructor() {
         try {
             setConnectionState(ConnectionState.DownloadStrategies)
             val jarFile = JPService.getProperty(JPExternalStrategyJar::class.java).value
+            val strategySourceDirectory = JPService.getProperty(JPStrategySourceDirectory::class.java).value
             val fileByteLenght = `in`!!.readInt()
             val fileBytes = ByteArray(fileByteLenght)
             IOUtils.readFully(`in`, fileBytes)
             FileUtils.writeByteArrayToFile(jarFile, fileBytes)
             revalidate()
-            removeTeamsWithUnavailableStrategies(downloadedTeams)
+            removeTeamsWithUnavailableStrategies(downloadedTeams, strategySourceDirectory)
         } catch (ex: JPNotAvailableException) {
             throw CouldNotPerformException("Could not download stradegies!", ex)
         } catch (ex: IOException) {
@@ -201,8 +217,11 @@ class PlanetSudoClient private constructor() {
         }
     }
 
-    private fun removeTeamsWithUnavailableStrategies(teams: List<TeamData>) {
+    private fun removeTeamsWithUnavailableStrategies(teams: List<TeamData>, strategySourceDirectory: File) {
         for (team in teams) {
+            if (shouldPreserveTeam(team, strategySourceDirectory)) {
+                continue
+            }
             try {
                 loadStrategy(team.strategy)
             } catch (ex: CouldNotPerformException) {
@@ -263,3 +282,10 @@ class PlanetSudoClient private constructor() {
             private set
     }
 }
+
+internal fun shouldPreserveTeam(teamData: TeamData, strategySourceDirectory: File): Boolean {
+    return teamData.strategy in PROTECTED_STRATEGIES ||
+        File(strategySourceDirectory, "${teamData.strategy}.kt").isFile
+}
+
+private val PROTECTED_STRATEGIES = setOf("LevelOne", "LevelTwo")
