@@ -12,6 +12,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.awt.Color
 import java.awt.Dimension
+import java.awt.EventQueue
 import java.awt.Font
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
@@ -864,14 +865,22 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
 
     // End of variables declaration//GEN-END:variables
     override fun propertyChange(evt: PropertyChangeEvent) {
-        if (evt.propertyName == Mothership.MOTHERSHIP_FUEL_STATE_CHANGE) {
-            mothershipFuelProgressBar!!.value = (evt.newValue as Int)
-            updateMothershipFuelProgressBar()
-        } else if (evt.propertyName == Mothership.MOTHERSHIP_SHIELD_STATE_CHANGE) {
-            mothershipShieldProgressBar!!.value = (evt.newValue as Int)
-            updateMothershipShieldProgressBar()
-        } else if (evt.propertyName == Team.POINT_STATE_CHANGE) {
-            resourcePointsLabel!!.text = evt.newValue.toString() + "P"
+        EventQueue.invokeLater {
+            when {
+                evt.propertyName == Mothership.MOTHERSHIP_FUEL_STATE_CHANGE && evt.source === team?.mothership -> {
+                    mothershipFuelProgressBar!!.value = team!!.mothership!!.fuel
+                    updateMothershipFuelProgressBar()
+                }
+
+                evt.propertyName == Mothership.MOTHERSHIP_SHIELD_STATE_CHANGE && evt.source === team?.mothership -> {
+                    mothershipShieldProgressBar!!.value = team!!.mothership!!.shieldForce
+                    updateMothershipShieldProgressBar()
+                }
+
+                evt.propertyName == Team.POINT_STATE_CHANGE && evt.source === team -> {
+                    resourcePointsLabel!!.text = evt.newValue.toString() + "P"
+                }
+            }
         }
     }
 
