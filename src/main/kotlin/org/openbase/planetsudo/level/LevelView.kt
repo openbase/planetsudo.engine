@@ -5,14 +5,15 @@
 package org.openbase.planetsudo.level
 
 import org.openbase.jul.exception.CouldNotPerformException
-import org.openbase.planetsudo.geometry.Point2D
 import org.openbase.planetsudo.level.levelobjects.AbstractLevelObject
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.awt.Color
 import java.awt.Graphics2D
 import java.util.*
-import kotlin.collections.HashMap
+import java.util.concurrent.CancellationException
+import java.util.concurrent.CompletableFuture
+import java.util.concurrent.CompletionException
 import kotlin.math.max
 import kotlin.math.min
 
@@ -30,7 +31,7 @@ class LevelView(level: AbstractLevel, levelObject: AbstractLevelObject) {
     var width: Int = 0
     var height: Int = 0
     val rasterSize: Int
-    private var lastPosition: Point2D? = null
+    private var lastDestinationIndex: Int? = null
 
     constructor(levelObject: AbstractLevelObject) : this(levelObject.level, levelObject)
 
@@ -108,133 +109,143 @@ class LevelView(level: AbstractLevel, levelObject: AbstractLevelObject) {
         )
     }
 
-    fun getDistance(otherLevelObject: AbstractLevelObject): Int = this
-        .run { updateLevelView() }
-        .let { otherLevelObject.toRasterElement().distance }
+    fun getDistance(otherLevelObject: AbstractLevelObject): Int {
+        val destination = calcLevelRasterElement(levelObject)
+        val distances = distanceMapFor(destination)
+        return distances[otherLevelObject.toRasterElement().index]
+    }
 
-    fun getRelativeDirection(otherLevelObject: AbstractLevelObject): Int? =
-        getAngle(calcLevelRasterElement(otherLevelObject))
-
-    private fun getAngle(position: LevelRasterElement): Int? =
-        position.neigbours
-            .minByOrNull { it.element.distance }
+    fun getRelativeDirection(otherLevelObject: AbstractLevelObject): Int? {
+        val destination = calcLevelRasterElement(levelObject)
+        val distances = distanceMapFor(destination)
+        return calcLevelRasterElement(otherLevelObject).neigbours
+            .minByOrNull { distances[it.element.index] }
             ?.angle
+    }
 
     fun updateObjectMovement() {
         logger.debug("UpdateObjectMovement")
         updateLevelView(calcLevelRasterElement(levelObject))
     }
 
-    private fun dijkstra2(position: LevelRasterElement, destination: LevelRasterElement, force: Boolean) {
-        if (!force && stablePosition()) {
-            logger.debug("Skip dijkstra.")
-            return
-        }
-        assert(!destination.isPartOfWall)
-        // Initialisation
-        val distanceQueue = TreeMap<Int, ArrayList<LevelRasterElement?>>()
-        for (element in levelRepresentation) {
-            element!!.reset(destination)
-        }
-        // find shortest distance
-        var element: LevelRasterElement? = destination
-        do {
-            element?.isVisited = true
-            for (neigbour in element!!.neigbours) {
-                if (!neigbour.element.isVisited) {
-                    neigbour.element.setDistance(element.distance + neigbour.weight)
-                    if (!distanceQueue.containsKey(neigbour.element.distance)) {
-                        distanceQueue[neigbour.element.distance] = ArrayList()
-                    }
-                    if (!distanceQueue[neigbour.element.distance]!!.contains(neigbour.element)) {
-                        distanceQueue[neigbour.element.distance]!!.add(neigbour.element)
-                    }
-                }
-            }
-
-            if (!distanceQueue.isEmpty()) {
-                element = distanceQueue.firstEntry().value.removeAt(0)
-                if (distanceQueue.firstEntry().value.isEmpty()) {
-                    distanceQueue.pollFirstEntry()
-                }
-            }
-        } while (element !== position && element != null) //
-    }
-
-    private fun stablePosition(): Boolean = !changedPosition()
-
-    private fun changedPosition(): Boolean =
-        lastPosition?.let { last ->
-            levelObject.position.x != last.x || levelObject.position.y != last.y
-        } ?: true
-
-    //    @Synchronized
-//    private fun dijkstra(position: LevelRasterElement?, destination: LevelRasterElement, force: Boolean) {
-//        if (!force && stablePosition()) {
-//            logger.debug("Skip dijkstra.")
-//            return
-//        }
-//        this.lastPosition = levelObject.position
-//        // Initialisation
-//        val distanceQueue = PriorityQueue<LevelRasterElement?>()
-//        for (element in levelRepresentation) {
-//            element!!.reset(destination)
-//        }
-//        // find next element with closed distance
-//        var element: LevelRasterElement? = destination
-//        do {
-//            element?.isVisited = true
-//            for (neigbour in element!!.neigbours) {
-//                if (!neigbour.element.isVisited) {
-//                    neigbour.element.setDistance(element.distance + neigbour.weight)
-//
-//                    if (!distanceQueue.contains(neigbour.element)) {
-//                        distanceQueue.add(neigbour.element)
-//                    }
-//                }
-//            }
-//            element = distanceQueue.poll()
-// //        } while (element != null && element != position);
-//        } while (element != null)
-//    }
-
-    /**
-     * Generates a new distance map by using parts of the dijkstra algorithm.
-     */
+    /** Updates the view's distance field for the object's current raster cell. */
     @Synchronized
     private fun updateLevelView(destination: LevelRasterElement = calcLevelRasterElement(levelObject)) {
-        if (stablePosition()) {
-            logger.debug("Skip update since position has not changed.")
+        if (lastDestinationIndex == destination.index) {
+            logger.debug("Skip update since destination raster cell has not changed.")
             return
         }
-        this.lastPosition = levelObject.position.clone()
+        lastDestinationIndex = destination.index
 
-        // Initialisation
-        val distanceQueue = HashMap<Int, LevelRasterElement>()
+        val distances = distanceMapFor(destination)
+
         for (element in levelRepresentation) {
             element!!.reset(destination)
+            element.setDistance(distances[element.index])
+        }
+    }
+
+    private fun calculateDistanceMap(destination: LevelRasterElement): IntArray {
+        val distances = IntArray(levelRepresentation.size) { Int.MAX_VALUE }
+        val distanceQueue = PriorityQueue(compareBy<DistanceEntry> { it.distance })
+        distances[destination.index] = 0
+        distanceQueue.add(DistanceEntry(destination.index, 0))
+
+        while (!distanceQueue.isEmpty() && !Thread.currentThread().isInterrupted) {
+            val current = distanceQueue.remove()
+            if (current.distance != distances[current.index]) {
+                continue
+            }
+
+            for (neighbour in levelRepresentation[current.index]!!.neigbours) {
+                val neighbourIndex = neighbour.element.index
+                val candidateDistance = current.distance + neighbour.weight
+                if (candidateDistance < distances[neighbourIndex]) {
+                    distances[neighbourIndex] = candidateDistance
+                    distanceQueue.add(DistanceEntry(neighbourIndex, candidateDistance))
+                }
+            }
+        }
+        return distances
+    }
+
+    private data class DistanceEntry(val index: Int, val distance: Int)
+
+    private fun distanceMapFor(destination: LevelRasterElement): IntArray =
+        distanceMapFor(destination.index) { calculateDistanceMap(destination) }
+
+    private fun distanceMapFor(destinationIndex: Int, compute: () -> IntArray): IntArray {
+        val cache = synchronized(distanceMapCacheLock) {
+            distanceMapCache
         }
 
-        // find next element with closed distance
-        var element: LevelRasterElement? = destination
-        while (!Thread.currentThread().isInterrupted) {
-            element?.isVisited = true
-            element?.neigbours
-                ?.filter { !it.element.isVisited }
-                ?.forEach { neighbour ->
-                    neighbour.element.setDistance(element?.distance?.plus(neighbour.weight) ?: neighbour.weight)
-                    if (!distanceQueue.contains(neighbour.element.index)) {
-                        distanceQueue[neighbour.element.index] = neighbour.element
+        while (true) {
+            var shouldCompute = false
+            val computation = synchronized(cache) {
+                cache.completed[destinationIndex]?.let {
+                    logger.debug("Reuse cached distance map for raster cell {}.", destinationIndex)
+                    return it
+                }
+                cache.inFlight[destinationIndex] ?: CompletableFuture<IntArray>().also {
+                    cache.inFlight[destinationIndex] = it
+                    shouldCompute = true
+                }
+            }
+
+            if (!shouldCompute) {
+                try {
+                    return computation.join()
+                } catch (_: CancellationException) {
+                    continue
+                } catch (ex: CompletionException) {
+                    throw ex.cause ?: ex
+                }
+            }
+
+            try {
+                val distances = compute()
+                synchronized(cache) {
+                    cache.inFlight.remove(destinationIndex, computation)
+                    if (!Thread.currentThread().isInterrupted) {
+                        cache.completed[destinationIndex] = distances
                     }
                 }
-            element = distanceQueue.values.minByOrNull { it.distance }.also { distanceQueue.remove(it?.index) }
-                ?: return
+                if (Thread.currentThread().isInterrupted) {
+                    computation.completeExceptionally(CancellationException("Distance-map computation interrupted"))
+                    return distances
+                }
+                computation.complete(distances)
+                return distances
+            } catch (ex: Throwable) {
+                synchronized(cache) {
+                    cache.inFlight.remove(destinationIndex, computation)
+                }
+                computation.completeExceptionally(ex)
+                throw ex
+            }
         }
+    }
+
+    private class DistanceMapCache {
+        val completed = object : LinkedHashMap<Int, IntArray>(16, 0.75f, true) {
+            override fun removeEldestEntry(eldest: MutableMap.MutableEntry<Int, IntArray>?): Boolean =
+                size > DISTANCE_MAP_CACHE_SIZE
+        }
+        val inFlight = HashMap<Int, CompletableFuture<IntArray>>()
     }
 
     private fun AbstractLevelObject.toRasterElement() = calcLevelRasterElement(this)
 
     companion object {
         const val RASTER_SIZE: Int = 10
+        private const val DISTANCE_MAP_CACHE_SIZE = 128
+        private val distanceMapCacheLock = Any()
+        private var distanceMapCache = DistanceMapCache()
+
+        fun clearDistanceMapCache() {
+            synchronized(distanceMapCacheLock) {
+                distanceMapCache = DistanceMapCache()
+            }
+        }
     }
 }
