@@ -221,6 +221,9 @@ node_modules
 www/.vuepress/dist
 jspm_packages
 
+### Support team images
+!./src/main/resources/img/teams
+
 ### Custom
 teams
 teams_disabled
