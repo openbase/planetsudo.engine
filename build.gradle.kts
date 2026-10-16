@@ -9,6 +9,7 @@ plugins {
     `java-library`
     application
     kotlin("jvm") version "1.9.22"
+    id("org.jetbrains.dokka") version "1.9.20"
     id("org.jlleitschuh.gradle.ktlint") version "11.6.1"
     `maven-publish`
     signing
@@ -56,6 +57,7 @@ dependencies {
     testImplementation(libs.io.mockk)
     testImplementation(libs.org.amshove.kluent)
     testImplementation(kotlin("test"))
+    dokkaPlugin("org.jetbrains.dokka:javadoc-plugin:1.9.20")
 }
 
 nexusPublishing {
@@ -153,8 +155,21 @@ signing {
     sign(publishing.publications["mavenJava"])
 }
 
-tasks.javadoc {
-    include("**/AgentBasicInterface.kt", "**/MothershipInterface.kt")
+tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
+    dokkaSourceSets.named("main") {
+        sourceRoots.setFrom(
+            files(
+                "src/main/kotlin/org/openbase/planetsudo/level/levelobjects/AgentBasicInterface.kt",
+                "src/main/kotlin/org/openbase/planetsudo/level/levelobjects/AgentBasicInterfaceGermanWrapper.kt",
+                "src/main/kotlin/org/openbase/planetsudo/level/levelobjects/AgentBattleInterface.kt",
+                "src/main/kotlin/org/openbase/planetsudo/level/levelobjects/AgentBattleInterfaceGermanWrapper.kt",
+                "src/main/kotlin/org/openbase/planetsudo/level/levelobjects/AgentSpecialInterface.kt",
+                "src/main/kotlin/org/openbase/planetsudo/level/levelobjects/AgentSpecialInterfaceGermanWrapper.kt",
+                "src/main/kotlin/org/openbase/planetsudo/level/levelobjects/MothershipInterface.kt",
+                "src/main/kotlin/org/openbase/planetsudo/level/levelobjects/TowerInterface.kt",
+            ),
+        )
+    }
 }
 
 tasks.build {
