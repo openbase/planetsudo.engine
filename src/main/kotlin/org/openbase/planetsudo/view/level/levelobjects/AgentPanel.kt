@@ -169,7 +169,7 @@ class AgentPanel(resource: Agent, parentResourcePanel: MothershipPanel) :
                 TONIC_BAR_STATIC_HEIGHT,
             )
 
-            gl.color = Color.WHITE
+            gl.color = Color(0, 129, 255)
             gl.fillRect(
                 (x - TONIC_BAR_STATIC_WIDTH / 2).toInt(),
                 (y - TONIC_BAR_STATIC_POSITION_Y).toInt(),
@@ -201,7 +201,7 @@ class AgentPanel(resource: Agent, parentResourcePanel: MothershipPanel) :
     }
 
     companion object {
-        val TONIC_BACKGROUND: Color = Color(0, 129, 255)
+        val TONIC_BACKGROUND: Color = Color(255, 255, 255)
         val FUEL_BACKGROUND: Color = Color(255, 20, 20)
         val COLOR_DISABLED: Color = Color(154, 154, 154)
         const val FUEL_BAR_STATIC_WIDTH: Double = 40.0
