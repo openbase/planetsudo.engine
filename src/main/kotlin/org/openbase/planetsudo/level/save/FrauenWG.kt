@@ -91,7 +91,7 @@ class FrauenWG : AbstractLevel() {
         ResourceRandomRectangle(2350, 0, 100, 1650, 30, ResourceType.Tonic),
     )
 
-    override fun loadLevelColor() = Color(0, 0, 0)
+    override fun loadLevelColor() = Color(100, 100, 100)
 
     override fun loadLevelWallPolygons() = emptyList<Polygon>()
 }

@@ -62,7 +62,7 @@ class QuadratischPraktischGut : AbstractLevel() {
         ResourceRandomRectangle(1500, 700, 100, 200, 30, ResourceType.Tonic),
     )
 
-    override fun loadLevelColor() = Color(93, 0, 0)
+    override fun loadLevelColor() = Color(200, 60, 60)
 
     override fun loadLevelWallPolygons() = emptyList<Polygon>()
 }
