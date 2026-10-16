@@ -45,20 +45,20 @@ class TeamMarkerPanel(resource: TeamMarker, parentResourcePanel: LevelPanel) :
             g2.stroke = BasicStroke(5f)
             when (animationCounter) {
                 0 -> {
-                    g2.color = resource.team.teamColor
+                    g2.color = resource.level.getTeamColor(resource.team)
                     g2.fillOval(boundingBox.centerX.toInt() - 4, boundingBox.centerY.toInt() - 4, 8, 8)
                     g2.color = Color.WHITE
                 }
 
                 1 -> {
-                    g2.color = resource.team.teamColor
+                    g2.color = resource.level.getTeamColor(resource.team)
                     g2.drawOval(boundingBox.centerX.toInt() - 8, boundingBox.centerY.toInt() - 8, 16, 16)
                     g2.color = Color.WHITE
                     g2.fillOval(boundingBox.centerX.toInt() - 4, boundingBox.centerY.toInt() - 4, 8, 8)
                 }
 
                 2 -> {
-                    g2.color = resource.team.teamColor
+                    g2.color = resource.level.getTeamColor(resource.team)
                     g2.drawOval(boundingBox.centerX.toInt() - 16, boundingBox.centerY.toInt() - 16, 32, 32)
                     g2.fillOval(boundingBox.centerX.toInt() - 4, boundingBox.centerY.toInt() - 4, 8, 8)
                     g2.color = Color.WHITE

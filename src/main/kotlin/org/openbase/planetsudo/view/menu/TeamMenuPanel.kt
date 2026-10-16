@@ -29,7 +29,7 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
     private val timer: Timer
 
     private fun updateComponents() {
-        teamColorPanel!!.background = team!!.teamColor
+        teamColorPanel!!.background = team!!.mothership!!.level.getTeamColor(team!!)
         teamNameLabel!!.text = team!!.name
         mothershipFuelProgressBar!!.foreground = Color.BLACK
         mothershipFuelProgressBar!!.value = team!!.mothership!!.fuel
