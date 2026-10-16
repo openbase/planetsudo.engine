@@ -83,7 +83,7 @@ open class AgentBasicInterfaceGermanWrapper(private val agent: AgentBasicInterfa
      *
      * @param percent Der anzufordernde Treibstoffwert in Prozent als ganze Zahl
      * zwischen 0 - 100.
-     * Aktionspunkte: 20 + 2 für jeden getankten Treibstoff.
+     * Aktionspunkte: 20 + 1 für jeden getankten Treibstoff.
      */
     fun bestelleTreibstoff(percent: Int) = agent.orderFuel(percent)
 

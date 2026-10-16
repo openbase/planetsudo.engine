@@ -381,6 +381,18 @@ class DivineStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
         )
         // -------------------------------------------->
         createRule(
+            object : Rule("SaveMothership Fast") {
+                override fun constraint(): Boolean {
+                    return mothership.isDamaged && !agent.isAtMothership && agent.hasTonic && !agent.isShifting
+                }
+
+                override fun action() {
+                    agent.shift()
+                }
+            },
+        )
+        // -------------------------------------------->
+        createRule(
             object : Rule("SaveMothership") {
                 override fun constraint(): Boolean {
                     return mothership.isDamaged && !agent.isAtMothership

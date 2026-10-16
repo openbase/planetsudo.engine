@@ -591,7 +591,7 @@ class Agent(
             if (mothership.hasFuel()) {
                 for (toOrder in ((fuelVolume * percent) / 100) - fuel downTo 1) {
                     spendFuel(mothership.orderFuel(1, this))
-                    ap.getActionPoint(2)
+                    ap.getActionPoint(1)
                 }
                 GameSound.RechargeFuel.play()
             }
@@ -948,7 +948,7 @@ class Agent(
         /** Default see distance (in pixels) for agent line-of-sight checks */
         const val DEFAULT_AGENT_SPEED: Int = 6
         const val SHIFT_EXTRA_SPEED: Int = 3
-        const val SHIFT_TONIC_CONSUMPTION: Double = 0.01
+        const val SHIFT_TONIC_CONSUMPTION: Double = 0.003
         const val NO_SHIFT_TONIC: Double = 0.0
         const val RESOURCE_SPEED_FACTOR: Double = 0.5
 
