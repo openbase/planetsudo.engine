@@ -590,6 +590,7 @@ class Agent(
 
             if (mothership.hasFuel()) {
                 for (toOrder in ((fuelVolume * percent) / 100) - fuel downTo 1) {
+                    if (!mothership.hasFuel()) { break }
                     spendFuel(mothership.orderFuel(1, this))
                     ap.getActionPoint(1)
                 }
