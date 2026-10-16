@@ -4,6 +4,10 @@
  */
 package org.openbase.planetsudo.game
 
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
 import org.apache.commons.io.FileUtils
 import org.openbase.jps.core.JPService
 import org.openbase.jps.exception.JPNotAvailableException
@@ -116,6 +120,10 @@ class Team(data: TeamData) {
         private val logger: Logger = LoggerFactory.getLogger(Team::class.java)
 
         private val TEAM_DATA_PROCESSOR = JSonObjectFileProcessor(TeamData::class.java)
+        private val TEAM_DATA_MAPPER = ObjectMapper()
+            .enableDefaultTyping(ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT)
+            .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
 
         @Throws(CouldNotPerformException::class)
         fun saveDefaultTeam(data: TeamData, force: Boolean = false) {
@@ -131,14 +139,21 @@ class Team(data: TeamData) {
                 if (!force && File(fileURL).exists()) {
                     throw CouldNotPerformException("File already exist!")
                 }
-                TEAM_DATA_PROCESSOR.serialize(data, File(fileURL))
+                writeTeamData(data, File(fileURL))
                 //            final ObjectFileController<TeamData> fileWriter = new ObjectFileController<TeamData>(fileURL);
 //            fileWriter.writeObject(data);
             } catch (ex: JPNotAvailableException) {
                 throw CouldNotPerformException("Could not save TeamData[" + data.name + "] as default team!", ex)
             } catch (ex: CouldNotPerformException) {
                 throw CouldNotPerformException("Could not save TeamData[" + data.name + "] as default team!", ex)
+            } catch (ex: IOException) {
+                throw CouldNotPerformException("Could not save TeamData[" + data.name + "] as default team!", ex)
             }
+        }
+
+        @Throws(IOException::class)
+        internal fun writeTeamData(data: TeamData, file: File) {
+            TEAM_DATA_MAPPER.writer(DefaultPrettyPrinter()).writeValue(file, data)
         }
 
         @JvmStatic
