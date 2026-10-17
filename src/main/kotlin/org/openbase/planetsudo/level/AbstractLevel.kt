@@ -12,8 +12,8 @@ import org.openbase.planetsudo.geometry.Point2D
 import org.openbase.planetsudo.level.levelobjects.Agent
 import org.openbase.planetsudo.level.levelobjects.Mothership
 import org.openbase.planetsudo.level.levelobjects.Resource
-import org.openbase.planetsudo.level.levelobjects.Tower
 import org.openbase.planetsudo.level.levelobjects.Resource.ResourceType
+import org.openbase.planetsudo.level.levelobjects.Tower
 import org.openbase.planetsudo.main.GUIController
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

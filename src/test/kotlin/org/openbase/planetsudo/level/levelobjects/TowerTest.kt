@@ -74,7 +74,6 @@ class TowerTest {
         } finally {
             tower.reset()
         }
-
     }
 
     private fun createTeam() = Team(

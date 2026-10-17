@@ -1054,8 +1054,10 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
         }
 
         val towerNeedsBlinking = team?.mothership?.tower?.isConstructed == true &&
-            (towerFuelProgressBar!!.percentComplete <= 0.25 ||
-                towerShieldProgressBar!!.percentComplete <= Mothership.BURNING_TOWER / 100)
+            (
+                towerFuelProgressBar!!.percentComplete <= 0.25 ||
+                    towerShieldProgressBar!!.percentComplete <= Mothership.BURNING_TOWER / 100
+                )
         val mothershipNeedsBlinking =
             mothershipFuelProgressBar!!.percentComplete <= 0.25 ||
                 mothershipShieldProgressBar!!.percentComplete <= Mothership.BURNING_MOTHERSHIP / 100
