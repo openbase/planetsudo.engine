@@ -327,23 +327,18 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
 
     @Throws(CouldNotPerformException::class)
     fun getAgentToSupport(helper: Agent): Agent? {
-        supportChannelLock.read {
-            if (supportChannel.isEmpty()) {
-                return null
-            }
-
-            val supportCaller: Agent = supportChannel
+        val supportCaller = supportChannelLock.read {
+            supportChannel
                 .filterNot { it === helper } // do not help yourself
                 .minByOrNull { helper.levelView?.getDistance(it) ?: Int.MAX_VALUE }
-                ?: return null
+        } ?: return null
 
-            // remove caller from support channel if support is possible
-            if (supportCaller.bounds.intersects(helper.viewBounds)) {
-                cancelSupport(supportCaller)
-            }
-            supportCaller.levelView?.updateObjectMovement()
-            return supportCaller
+        // Never acquire the write lock while holding the read lock.
+        if (supportCaller.bounds.intersects(helper.viewBounds)) {
+            cancelSupport(supportCaller)
         }
+        supportCaller.levelView?.updateObjectMovement()
+        return supportCaller
     }
 
     fun cancelSupport(agent: Agent) {
