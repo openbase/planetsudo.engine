@@ -12,6 +12,7 @@ import org.openbase.planetsudo.geometry.Point2D
 import org.openbase.planetsudo.level.levelobjects.Agent
 import org.openbase.planetsudo.level.levelobjects.Mothership
 import org.openbase.planetsudo.level.levelobjects.Resource
+import org.openbase.planetsudo.level.levelobjects.Tower
 import org.openbase.planetsudo.level.levelobjects.Resource.ResourceType
 import org.openbase.planetsudo.main.GUIController
 import org.slf4j.Logger
@@ -314,7 +315,7 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
             resources
                 .filter { it.matchType(resourceType, agent) }
                 .filter { it.isSaveFor(agent) }
-                .findAvailableResource(agent, agent.viewBounds)
+                .findAvailableResource(agent, agent.viewBounds, allowObservationTowerVision = true)
         }
 
     /**
@@ -327,7 +328,7 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
         synchronized(RESOURCES_LOCK) {
             resources
                 .filter { it.isSaveFor(agent) }
-                .findAvailableResource(agent, agent.viewBounds)
+                .findAvailableResource(agent, agent.viewBounds, allowObservationTowerVision = true)
         }
 
     /**
@@ -348,10 +349,17 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
             type == resourceType ||
             resourceType == ResourceType.ExtremPoint && type == ResourceType.Mine && wasPlacedByTeam() != agent.team
 
-    private fun List<Resource>.findAvailableResource(agent: Agent, area: Rectangle2D) = this
+    private fun List<Resource>.findAvailableResource(
+        agent: Agent,
+        area: Rectangle2D,
+        allowObservationTowerVision: Boolean = false,
+    ) = this
         .filter { !it.isUsed }
         .filter { it.isNotOwnedByTeamMember(agent) }
-        .find { it.bounds.intersects(area) }
+        .find {
+            it.bounds.intersects(area) ||
+                (allowObservationTowerVision && agent.team.mothership?.tower?.revealsResources == true)
+        }
 
     fun getAdversaryMothership(agent: Agent): Mothership? {
         for (mothership in motherships) {
@@ -364,6 +372,22 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
         }
         return null
     }
+
+    fun getAdversaryTower(agent: Agent): Tower? =
+        motherships
+            .filterNotNull()
+            .firstOrNull { it.team != agent.team }
+            ?.tower
+            ?.takeIf { it.isOperational && it.bounds.intersects(agent.viewBounds) }
+
+    fun getAdversaryAgent(team: Team, area: Rectangle2D): Agent? =
+        motherships
+            .filterNotNull()
+            .asSequence()
+            .filter { it.team != team }
+            .flatMap { it.agents.asSequence() }
+            .filter { it.isAlive && it.hasFuel && !it.isInvisible }
+            .firstOrNull { it.bounds.intersects(area) }
 
     fun getAdversaryAgent(agent: Agent): Agent? = motherships
         .find { mothership -> mothership?.team != agent.team }

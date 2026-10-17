@@ -32,6 +32,11 @@ interface TowerInterface {
     val de get() = TowerInterfaceGermanWrapper(this)
 
     /**
+     * Whether the tower is currently constructed.
+     */
+    val isConstructed: Boolean
+
+    /**
      * Returns whether the tower has any fuel left.
      */
     fun hasFuel(): Boolean
@@ -72,7 +77,8 @@ interface TowerInterface {
     val shieldPoints: Int
 
     /**
-     * Returns whether the tower is completely destroyed (no shield left).
+     * Returns whether the tower has no shield left. A destroyed tower remains
+     * constructed and can be brought back online by repairing it.
      */
     val isMaxDamaged: Boolean
 
@@ -83,6 +89,9 @@ interface TowerInterface {
 
     /**
      * Current tower type (DefenceTower or ObservationTower). Unknown if no tower is constructed.
+     * A defence tower automatically attacks visible enemy agents in range.
+     * An observation tower reveals resources to its team and supplies nearby
+     * team agents with fuel.
      */
     val type: Tower.TowerType
 

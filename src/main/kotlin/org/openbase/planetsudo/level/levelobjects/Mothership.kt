@@ -105,6 +105,7 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
             shieldForce = 100
             if (timer.isRunning) timer.stop()
         }
+        tower.reset()
     }
 
     fun orderMine(): Boolean = mineCounterLock.withLock {

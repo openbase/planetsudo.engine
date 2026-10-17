@@ -64,6 +64,25 @@ interface AgentBattleInterface<DE : AgentBasicInterfaceGermanWrapper> : AgentBas
     fun fightWithEnemyMothership()
 
     /**
+     * Shows whether the agent can see an enemy tower.
+     */
+    val seeEnemyTower: Boolean
+
+    /**
+     * Attacks an enemy tower within sight.
+     * Action points: 30
+     * Fuel: 1
+     */
+    fun fightWithEnemyTower()
+
+    /**
+     * Repairs the team's tower while close to it.
+     * Action points: 30
+     * Fuel: 1
+     */
+    fun repairTower()
+
+    /**
      * Gibt zurück, ob der Agent seine Mine noch trägt.
      *
      * @return true oder false.

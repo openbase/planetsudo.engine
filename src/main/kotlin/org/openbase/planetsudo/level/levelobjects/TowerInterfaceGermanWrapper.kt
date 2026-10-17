@@ -28,6 +28,11 @@ package org.openbase.planetsudo.level.levelobjects
 class TowerInterfaceGermanWrapper(private val tower: TowerInterface) {
 
     /**
+     * Gibt zurück, ob der Turm errichtet wurde.
+     */
+    val istErrichtet get() = tower.isConstructed
+
+    /**
      * Gibt zurück, ob der Turm Treibstoff hat.
      */
     fun hatTreibstoff() = tower.hasFuel()

@@ -218,6 +218,9 @@ class Agent(
     override val seeEnemyMothership: Boolean
         get() = level.getAdversaryMothership(this) != null
 
+    override val seeEnemyTower: Boolean
+        get() = level.getAdversaryTower(this) != null
+
     private fun computeFutureBoundsLeft(beta: Int): Rectangle2D =
         Direction2D(direction.angle)
             .also { it.angle -= beta }
@@ -423,6 +426,15 @@ class Agent(
                 throw InvalidStateException("Agent has more fuel than possible!")
             }
         }
+    }
+
+    internal fun attackByTower() {
+        attacked = true
+        val shouldDisable = fuelLock.withLock {
+            fuel = max(0, fuel - TOWER_ATTACK_FUEL_DAMAGE)
+            fuel == 0
+        }
+        if (shouldDisable) disable()
     }
 
     fun addActionPoint() = ap.addActionPoint()
@@ -730,6 +742,30 @@ class Agent(
         }
     }
 
+    override fun fightWithEnemyTower() {
+        invisible = false
+        performAction(1) {
+            if (useFuel()) {
+                val enemyTower = level.getAdversaryTower(this)
+                enemyObject = enemyTower
+                if (enemyTower != null) {
+                    ap.getActionPoint(30)
+                    direction.turnTo(position, enemyTower.position)
+                    enemyTower.attack()
+                    GameSound.Laser.play()
+                }
+            }
+        }
+    }
+
+    override fun repairTower() {
+        performAction(30) {
+            if (useFuel() && mothership.tower.seeTower(this)) {
+                mothership.tower.repair()
+            }
+        }
+    }
+
     override fun seeLostTeamAgent(): Boolean =
         level.getLostTeamAgent(this)
             .also { lastTeamAgent = it }
@@ -958,6 +994,7 @@ class Agent(
         const val SHIFT_TONIC_CONSUMPTION: Double = 0.003
         const val NO_SHIFT_TONIC: Double = 0.0
         const val RESOURCE_SPEED_FACTOR: Double = 0.5
+        const val TOWER_ATTACK_FUEL_DAMAGE: Int = (Mothership.AGENT_FUEL_VOLUME / 500) * 2
 
         private val LOGGER: Logger = LoggerFactory.getLogger(Agent::class.java)
     }

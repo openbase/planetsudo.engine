@@ -21,8 +21,8 @@ enum class GameObjectImages(imagesURL: String) {
     ResourceMine("mine.png"),
     ResourceTonic("resource-tonic.png"),
     Tower("tower.png"),
-    DefenceTowerTop("observation-tower-top.png"),
-    ObservationTowerTop("defence-tower-top.png"),
+    DefenceTowerTop("defence-tower-top.png"),
+    ObservationTowerTop("observation-tower-top.png"),
     ;
 
     @JvmField

@@ -3,7 +3,6 @@ package org.openbase.planetsudo.view.level.levelobjects
 import org.openbase.planetsudo.game.GameObjectImages
 import org.openbase.planetsudo.geometry.Direction2D
 import org.openbase.planetsudo.level.levelobjects.Tower
-import org.openbase.planetsudo.level.levelobjects.Tower.TowerType
 import org.openbase.planetsudo.view.level.LevelPanel
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -20,7 +19,7 @@ class TowerPanel(tower: Tower, parentPanel: LevelPanel) :
     AbstractLevelObjectPanel<Tower, LevelPanel>(
         tower,
         tower.polygon,
-        getImageURI(tower.type),
+        getImageURI(),
         parentPanel,
         DrawLayer.BACKGROUND,
     ),
@@ -57,6 +56,9 @@ class TowerPanel(tower: Tower, parentPanel: LevelPanel) :
             boundingBox.height.toInt(),
         )
         paintImageRotated(towerDirection2D, gg2!!)
+        if (resource.isBurning) {
+            paintExplosion(gg2!!)
+        }
         gg2!!.dispose()
     }
 
@@ -70,10 +72,15 @@ class TowerPanel(tower: Tower, parentPanel: LevelPanel) :
         } else if (evt.propertyName == Tower.TOWER_DECONSTRUCT) {
             if ((evt.newValue as Tower) == resource) {
                 if (towerTopPanel != null) {
+                    towerTopPanel!!.dispose()
                     removeChild(towerTopPanel!!)
                     towerTopPanel = null
                 }
             }
+        } else if (evt.propertyName == Tower.TOWER_SHIELD_STATE_CHANGE ||
+            evt.propertyName == Tower.TOWER_FUEL_STATE_CHANGE
+        ) {
+            parentPanel.repaint()
         }
     }
 
@@ -83,8 +90,6 @@ class TowerPanel(tower: Tower, parentPanel: LevelPanel) :
     companion object {
         private val LOGGER: Logger = LoggerFactory.getLogger(TowerPanel::class.java)
 
-        private fun getImageURI(type: TowerType?): String {
-            return GameObjectImages.Tower.imagesURL
-        }
+        private fun getImageURI() = GameObjectImages.Tower.imagesURL
     }
 }

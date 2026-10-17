@@ -53,6 +53,25 @@ open class AgentBattleInterfaceGermanWrapper(private val agent: AgentBattleInter
     fun kaempfeMitGegnerischemMutterschiff() = agent.fightWithEnemyMothership()
 
     /**
+     * Zeigt an, ob der Agent einen gegnerischen Turm sehen kann.
+     */
+    val seheGegnerischenTurm get() = agent.seeEnemyTower
+
+    /**
+     * Greift einen gegnerischen Turm in Sichtweite an.
+     * Aktionspunkte: 30
+     * Treibstoff: 1
+     */
+    fun kaempfeMitGegnerischemTurm() = agent.fightWithEnemyTower()
+
+    /**
+     * Repariert den Turm des eigenen Teams, wenn sich der Agent in seiner Nähe befindet.
+     * Aktionspunkte: 30
+     * Treibstoff: 1
+     */
+    fun repariereTurm() = agent.repairTower()
+
+    /**
      * Gibt zurück, ob der Agent seine Mine noch trägt.
      *
      * @return true oder false.

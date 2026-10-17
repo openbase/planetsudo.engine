@@ -27,6 +27,14 @@ class AgentMock : AgentInterface {
         error("Mock does not offer any functionality.")
     }
 
+    override fun fightWithEnemyTower() {
+        error("Mock does not offer any functionality.")
+    }
+
+    override fun repairTower() {
+        error("Mock does not offer any functionality.")
+    }
+
     override val actionPoints: Int
         get() = error("Mock does not offer any functionality.")
     override val angle: Int
@@ -179,6 +187,11 @@ class AgentMock : AgentInterface {
         }
 
     override val seeEnemyMothership: Boolean
+        get() {
+            error("Mock does not offer any functionality.")
+        }
+
+    override val seeEnemyTower: Boolean
         get() {
             error("Mock does not offer any functionality.")
         }

@@ -51,15 +51,14 @@ class TowerTopPanel(tower: Tower, parentPanel: TowerPanel) :
         // Timer advances rings outward
         scanTimer = Timer(40) {
             if (!scanning) return@Timer
-            val it = scanRings.listIterator()
-            while (it.hasNext()) {
-                val idx = it.nextIndex()
-                val v = it.next()
+            val iterator = scanRings.listIterator()
+            while (iterator.hasNext()) {
+                val v = iterator.next()
                 val nv = v + ringSpeed
-                it.set(nv)
+                iterator.set(nv)
                 // remove ring if beyond max radius + spacing
                 if (nv > scanMaxRadius + ringSpacing * 2) {
-                    it.remove()
+                    iterator.remove()
                 }
             }
             // stop when no rings left
@@ -121,12 +120,11 @@ class TowerTopPanel(tower: Tower, parentPanel: TowerPanel) :
     }
 
     override fun propertyChange(evt: PropertyChangeEvent) {
-        //        if (evt.getPropertyName().equals(Tower.REMOVE_TOWER)) {
-        //            if (((Tower) evt.getNewValue()).equals(resource)) {
-        //                parentResourcePanel.removeChild(this);
-        //            }
-        //        }
         if (evt.propertyName == Tower.TOWER_SCAN_LEVEL && tower != null) {
+            if (tower.levelSize == org.openbase.planetsudo.level.LevelSize.UNKNOWN) {
+                stopScanning()
+                return
+            }
             // start wave animation: compute max radius to level borders
             val levelBounds = tower.level.levelBorderPolygon.bounds2D
             val cx = tower.position.x
@@ -156,7 +154,22 @@ class TowerTopPanel(tower: Tower, parentPanel: TowerPanel) :
             scanTimer?.restart()
             return
         }
-        // other property changes can be handled here
+        if (evt.propertyName == Tower.TOWER_SHIELD_STATE_CHANGE && tower?.isMaxDamaged == true) {
+            stopScanning()
+        }
+    }
+
+    fun dispose() {
+        stopScanning()
+        scanTimer?.stop()
+        tower?.removePropertyChangeListener(this)
+    }
+
+    private fun stopScanning() {
+        scanning = false
+        scanRings.clear()
+        scanTimer?.stop()
+        parentPanel.repaint()
     }
 
     override val isFocusable: Boolean

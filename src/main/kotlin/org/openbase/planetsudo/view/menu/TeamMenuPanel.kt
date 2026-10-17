@@ -703,10 +703,12 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
         this.team?.let { previousTeam ->
             previousTeam.removePropertyChangeListener(this)
             previousTeam.mothership?.removePropertyChangeListener(this)
+            previousTeam.mothership?.tower?.removePropertyChangeListener(this)
         }
         this.team = team
         team!!.addPropertyChangeListener(this)
         team.mothership!!.addPropertyChangeListener(this)
+        team.mothership!!.tower.addPropertyChangeListener(this)
         updateComponents()
         timer.stop()
         teamFinalStateLabel!!.text = ""
@@ -873,6 +875,12 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
                 evt.propertyName == Mothership.MOTHERSHIP_FUEL_STATE_CHANGE ||
                     evt.propertyName == Mothership.MOTHERSHIP_SHIELD_STATE_CHANGE
 
+            evt.source === currentTeam.mothership?.tower ->
+                evt.propertyName == Tower.TOWER_FUEL_STATE_CHANGE ||
+                    evt.propertyName == Tower.TOWER_SHIELD_STATE_CHANGE ||
+                    evt.propertyName == Tower.TOWER_CONSTRUCT ||
+                    evt.propertyName == Tower.TOWER_DECONSTRUCT
+
             evt.source === currentTeam -> evt.propertyName == Team.POINT_STATE_CHANGE
             else -> false
         }
@@ -887,6 +895,10 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
                     updateMothershipFuelProgressBar()
                     mothershipShieldProgressBar!!.value = mothership.shieldForce
                     updateMothershipShieldProgressBar()
+                    towerFuelProgressBar!!.value = mothership.tower.fuel
+                    towerShieldProgressBar!!.value = mothership.tower.shieldForce
+                    updateTowerFuelProgressBar()
+                    updateTowerShieldProgressBar()
                 }
                 resourcePointsLabel!!.text = displayedTeam.points.toString() + "P"
             }
@@ -930,6 +942,11 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
     }
 
     private fun updateTowerFuelProgressBar() {
+        if (team?.mothership?.tower?.isConstructed != true) {
+            towerFuelProgressBar!!.string = "Kein Turm"
+            towerFuelProgressBar!!.foreground = Color.GRAY
+            return
+        }
         towerFuelProgressBar!!.string = "Treibstoff " + (towerFuelProgressBar!!.percentComplete * 100).toInt() + "%"
         if (towerFuelProgressBar!!.percentComplete < 0.25) {
             timer.start()
@@ -947,9 +964,16 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
     }
 
     private fun updateTowerShieldProgressBar() {
+        if (team?.mothership?.tower?.isConstructed != true) {
+            towerShieldProgressBar!!.string = "Kein Turm"
+            towerShieldProgressBar!!.foreground = Color.GRAY
+            return
+        }
         towerShieldProgressBar!!.string =
             "Schutzschild " + (towerShieldProgressBar!!.percentComplete * 100).toInt() + "%"
-        if (towerShieldProgressBar!!.percentComplete < Mothership.BURNING_TOWER / 100) {
+        if (team?.mothership?.tower?.isConstructed == true &&
+            towerShieldProgressBar!!.percentComplete < Mothership.BURNING_TOWER / 100
+        ) {
             timer.start()
         }
         val blue: Int
@@ -1005,7 +1029,9 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
             }
         }
 
-        if (towerFuelProgressBar!!.percentComplete < 0.25) {
+        if (team?.mothership?.tower?.isConstructed == true &&
+            towerFuelProgressBar!!.percentComplete < 0.25
+        ) {
             if (blinkTower) {
                 towerFuelProgressBar!!.foreground = Color.BLACK
             } else {
@@ -1019,12 +1045,21 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
             updateMothershipFuelProgressBar()
         }
 
-        if (towerFuelProgressBar!!.percentComplete > 0.25 && towerShieldProgressBar!!.percentComplete > Mothership.BURNING_TOWER / 100) {
+        if (team?.mothership?.tower?.isConstructed == true &&
+            towerFuelProgressBar!!.percentComplete > 0.25 &&
+            towerShieldProgressBar!!.percentComplete > Mothership.BURNING_TOWER / 100
+        ) {
             updateTowerShieldProgressBar()
             updateTowerFuelProgressBar()
         }
 
-        if (mothershipFuelProgressBar!!.percentComplete > 0.25 && mothershipShieldProgressBar!!.percentComplete > Mothership.BURNING_MOTHERSHIP / 100 && towerFuelProgressBar!!.percentComplete > 0.25 && towerShieldProgressBar!!.percentComplete > Mothership.BURNING_TOWER / 100) {
+        val towerNeedsBlinking = team?.mothership?.tower?.isConstructed == true &&
+            (towerFuelProgressBar!!.percentComplete <= 0.25 ||
+                towerShieldProgressBar!!.percentComplete <= Mothership.BURNING_TOWER / 100)
+        val mothershipNeedsBlinking =
+            mothershipFuelProgressBar!!.percentComplete <= 0.25 ||
+                mothershipShieldProgressBar!!.percentComplete <= Mothership.BURNING_MOTHERSHIP / 100
+        if (!towerNeedsBlinking && !mothershipNeedsBlinking) {
             timer.stop()
         }
     }

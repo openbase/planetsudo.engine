@@ -1,8 +1,6 @@
 package org.openbase.planetsudo.level.levelobjects
 
 import org.openbase.jul.exception.CouldNotPerformException
-import org.openbase.jul.exception.InvalidStateException
-import org.openbase.jul.exception.printer.ExceptionPrinter
 import org.openbase.jul.visual.swing.engine.draw2d.AbstractResourcePanel
 import org.openbase.planetsudo.game.GameManager
 import org.openbase.planetsudo.game.GameSound
@@ -15,6 +13,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
+import java.awt.geom.Rectangle2D
 import java.util.concurrent.locks.ReentrantLock
 import javax.swing.Timer
 import kotlin.concurrent.withLock
@@ -39,8 +38,6 @@ class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership)
     TowerInterface {
     enum class TowerType {
         Unknown,
-
-        @Deprecated("Defence Tower not supported yet, use ObservationTower instead")
         DefenceTower,
         ObservationTower,
     }
@@ -53,8 +50,12 @@ class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership)
     private val shieldLock = ReentrantLock()
     private val placement: ResourcePlacement? = null
     private val timer: Timer
+    private val effectTimer: Timer
+    private val rotationTimer: Timer
 
-    override var levelSize: LevelSize = LevelSize.UNKNOWN
+    private var scannedLevelSize: LevelSize = LevelSize.UNKNOWN
+    override val levelSize: LevelSize
+        get() = if (isOperational) scannedLevelSize else LevelSize.UNKNOWN
 
     @Volatile
     var shieldForce: Int = 0
@@ -62,6 +63,23 @@ class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership)
 
     override var fuel: Int = 0
         private set
+
+    override var isConstructed: Boolean = false
+        private set
+
+    val isOperational: Boolean
+        get() = isConstructed && shieldForce > 0
+
+    val revealsResources: Boolean
+        get() = isOperational && type == TowerType.ObservationTower
+
+    private val effectBounds: Rectangle2D.Double
+        get() = Rectangle2D.Double(
+            position.x - TOWER_EFFECT_RANGE,
+            position.y - TOWER_EFFECT_RANGE,
+            TOWER_EFFECT_RANGE * 2.0,
+            TOWER_EFFECT_RANGE * 2.0,
+        )
 
     override val fuelVolume: Int
         get() = TOWER_FUEL_VOLUME
@@ -72,31 +90,14 @@ class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership)
     @JvmField
     val direction: Direction2D = Direction2D(0)
     val isAttacked: Boolean = false
-    var isConstructed: Boolean = false
-        private set
 
     init {
         this.position = Point2D()
         this.timer = Timer(50, this)
+        this.effectTimer = Timer(TOWER_EFFECT_INTERVAL_MILLIS) { performTowerEffect() }
+        this.rotationTimer = Timer(TOWER_ROTATION_INTERVAL_MILLIS) { direction.angle += 10 }
         this.reset()
         logger.info("Create $this")
-
-        Thread {
-            try {
-                while (!Thread.interrupted()) {
-                    if (!isConstructed) {
-                        Thread.sleep(1000)
-                        continue
-                    }
-                    direction.angle += 10
-                    Thread.sleep(100)
-                }
-            } catch (ex: InterruptedException) {
-                Thread.currentThread().interrupt()
-            } catch (ex: Exception) {
-                ExceptionPrinter.printHistory(InvalidStateException("TowerRotationThread crashed.", ex), logger)
-            }
-        }.start()
     }
 
     @Throws(CouldNotPerformException::class)
@@ -105,13 +106,24 @@ class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership)
             commander.kill()
             throw CouldNotPerformException("Only the commander can construct a tower!")
         }
+        if (type == TowerType.Unknown) {
+            throw CouldNotPerformException("Cannot construct a tower with an unknown type!")
+        }
         if (isConstructed) {
             throw CouldNotPerformException("Tower is already constructed!")
         }
         position.setLocation(commander.position)
         this.type = type
         isConstructed = true
+        shieldLock.withLock { shieldForce = 100 }
+        scannedLevelSize = LevelSize.UNKNOWN
+        rotationTimer.start()
+        effectTimer.start()
         changes.firePropertyChange(TOWER_CONSTRUCT, null, this)
+        changes.firePropertyChange(TOWER_SHIELD_STATE_CHANGE, null, shieldForce)
+        if (type == TowerType.ObservationTower) {
+            scanLevelSize()
+        }
     }
 
     @Throws(CouldNotPerformException::class)
@@ -124,12 +136,32 @@ class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership)
             throw CouldNotPerformException("Could not deconstruct the tower! The tower was never constructed!!")
         }
         isConstructed = false
+        rotationTimer.stop()
+        effectTimer.stop()
+        timer.stop()
+        shieldLock.withLock { shieldForce = 0 }
+        scannedLevelSize = LevelSize.UNKNOWN
+        changes.firePropertyChange(TOWER_SHIELD_STATE_CHANGE, null, shieldForce)
+        changes.firePropertyChange(TOWER_SCAN_LEVEL, null, LevelSize.UNKNOWN)
         changes.firePropertyChange(TOWER_DECONSTRUCT, null, this)
     }
 
     public override fun reset() {
+        val wasConstructed = isConstructed
+        val oldFuel = fuel
+        val hadScannedLevelSize = scannedLevelSize != LevelSize.UNKNOWN
         fuel = 100
         isConstructed = false
+        rotationTimer.stop()
+        effectTimer.stop()
+        timer.stop()
+        shieldLock.withLock { shieldForce = 0 }
+        scannedLevelSize = LevelSize.UNKNOWN
+        type = TowerType.Unknown
+        if (oldFuel != fuel) changes.firePropertyChange(TOWER_FUEL_STATE_CHANGE, oldFuel, fuel)
+        changes.firePropertyChange(TOWER_SHIELD_STATE_CHANGE, null, shieldForce)
+        if (hadScannedLevelSize) changes.firePropertyChange(TOWER_SCAN_LEVEL, null, LevelSize.UNKNOWN)
+        if (wasConstructed) changes.firePropertyChange(TOWER_DECONSTRUCT, null, this)
     }
 
     fun seeTower(agent: Agent): Boolean {
@@ -137,33 +169,22 @@ class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership)
             return false
         }
 
-        return bounds.intersects(agent.bounds)
+        return isOperational && bounds.intersects(agent.bounds)
     }
 
     fun orderFuel(fuel: Int, agent: Agent?): Int {
-        var fuel = fuel
-        if (agent == null || bounds.contains(agent.bounds)) {
-            try {
-                val oldFuel = this.fuel
-                if (fuel <= 0) { // fuel empty
-                    fuel = 0
-                } else if (this.fuel < fuel) { // use last fuel
-                    fuel = this.fuel
-                    this.fuel = 0
-                    lock.withLock {
-                        condition.signalAll()
-                    }
-                } else {
-                    this.fuel -= fuel
-                }
-                changes.firePropertyChange(TOWER_FUEL_STATE_CHANGE, oldFuel, this.fuel)
-            } catch (ex: CouldNotPerformException) {
-                logger.error("Could not order fuel!", ex)
-            }
-        } else {
+        if (agent != null && !effectBounds.intersects(agent.bounds)) {
             return 0
         }
-        return fuel
+        val (orderedFuel, oldFuel, newFuel) = lock.withLock {
+            val ordered = minOf(max(0, fuel), this.fuel)
+            val oldFuel = this.fuel
+            this.fuel -= ordered
+            if (this.fuel == 0) condition.signalAll()
+            Triple(ordered, oldFuel, this.fuel)
+        }
+        changes.firePropertyChange(TOWER_FUEL_STATE_CHANGE, oldFuel, newFuel)
+        return orderedFuel
     }
 
     override fun hasFuel(): Boolean {
@@ -171,49 +192,55 @@ class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership)
     }
 
     protected fun spendFuel(value: Int) {
-        if (value + fuel > TOWER_FUEL_VOLUME) {
-            fuel = TOWER_FUEL_VOLUME
-        } else {
-            fuel += value
+        val newFuel = lock.withLock {
+            fuel = minOf(TOWER_FUEL_VOLUME, fuel + value)
+            condition.signalAll()
+            fuel
         }
-        changes.firePropertyChange(TOWER_FUEL_STATE_CHANGE, null, this.fuel)
+        changes.firePropertyChange(TOWER_FUEL_STATE_CHANGE, null, newFuel)
     }
 
     override fun attack() {
-        logger.debug("Attack Mothership")
         val result = shieldLock.withLock {
-            if (shieldForce == 0) return
+            if (!isConstructed || shieldForce == 0) return
             shieldForce--
             val shouldStartBurning = shieldForce <= Mothership.BURNING_TOWER && !timer.isRunning
             if (shouldStartBurning) timer.start()
-            shieldForce to shouldStartBurning
+            Triple(shieldForce, shouldStartBurning, shieldForce == 0)
         }
         if (result.second) {
             GameSound.MothershipExplosion.play()
+        }
+        if (result.third) {
+            clearScannedLevelSize()
+            effectTimer.stop()
         }
         changes.firePropertyChange(TOWER_SHIELD_STATE_CHANGE, null, result.first)
     }
 
     override fun repair() {
         val newShieldForce = shieldLock.withLock {
-            if (shieldForce >= 100) return
+            if (!isConstructed || shieldForce >= 100) return
             (++shieldForce).also {
-                if (it > Mothership.BURNING_TOWER && timer.isRunning) timer.stop()
+                if (it >= Mothership.BURNING_TOWER && timer.isRunning) timer.stop()
             }
+        }
+        if (newShieldForce > 0) {
+            effectTimer.start()
         }
         changes.firePropertyChange(TOWER_SHIELD_STATE_CHANGE, null, newShieldForce)
     }
 
     override fun scanLevelSize() {
-        if (!isConstructed || levelSize != LevelSize.UNKNOWN) {
+        if (!isOperational || scannedLevelSize != LevelSize.UNKNOWN) {
             return
         }
-        levelSize = level.size
-        changes.firePropertyChange(TOWER_SCAN_LEVEL, null, null)
+        scannedLevelSize = level.size
+        changes.firePropertyChange(TOWER_SCAN_LEVEL, null, scannedLevelSize)
     }
 
     override val isBurning: Boolean
-        get() = shieldForce < Mothership.BURNING_TOWER && hasFuel()
+        get() = isConstructed && shieldForce < Mothership.BURNING_TOWER && hasFuel()
 
     override val shieldPoints: Int
         get() = shieldForce / 2
@@ -222,17 +249,57 @@ class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership)
         get() = shieldForce == 0
 
     override val isDamaged: Boolean
-        get() = shieldForce < 100
+        get() = isConstructed && shieldForce < 100
 
     override fun actionPerformed(ex: ActionEvent) {
-        if (!GameManager.gameManager.isPause) {
+        if (isConstructed && !GameManager.gameManager.isPause) {
             orderFuel(max(0.0, (Mothership.BURNING_TOWER - shieldForce).toDouble()).toInt(), null)
+        }
+    }
+
+    private fun performTowerEffect() {
+        if (!isOperational || GameManager.gameManager.isPause) {
+            return
+        }
+        when (type) {
+            TowerType.DefenceTower -> {
+                val enemyAgent = level.getAdversaryAgent(mothership.team, effectBounds) ?: return
+                if (orderFuel(1, null) == 1) {
+                    direction.turnTo(position, enemyAgent.position)
+                    enemyAgent.attackByTower()
+                    GameSound.Laser.play()
+                }
+            }
+
+            TowerType.ObservationTower -> {
+                val agent = mothership.agents
+                    .filter { it.isAlive && it.fuel < it.fuelVolume && effectBounds.intersects(it.bounds) }
+                    .minByOrNull { it.fuel.toDouble() / it.fuelVolume }
+                    ?: return
+                val fuelSupplied = orderFuel(OBSERVATION_FUEL_PER_TICK, agent)
+                if (fuelSupplied > 0) {
+                    spendFuel(agent.spendFuel(fuelSupplied))
+                }
+            }
+
+            TowerType.Unknown -> Unit
+        }
+    }
+
+    private fun clearScannedLevelSize() {
+        if (scannedLevelSize != LevelSize.UNKNOWN) {
+            scannedLevelSize = LevelSize.UNKNOWN
+            changes.firePropertyChange(TOWER_SCAN_LEVEL, null, LevelSize.UNKNOWN)
         }
     }
 
     companion object {
         const val SIZE: Int = 50
         const val TOWER_FUEL_VOLUME: Int = 500
+        const val TOWER_EFFECT_RANGE: Int = 300
+        const val TOWER_EFFECT_INTERVAL_MILLIS: Int = 1000
+        const val TOWER_ROTATION_INTERVAL_MILLIS: Int = 100
+        const val OBSERVATION_FUEL_PER_TICK: Int = 10
         const val TOWER_FUEL_STATE_CHANGE: String = "FuelStateChange"
         const val TOWER_SHIELD_STATE_CHANGE: String = "ShieldStateChange"
         const val TOWER_SCAN_LEVEL: String = "ScanLevel"
