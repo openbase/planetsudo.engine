@@ -376,7 +376,7 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
         const val MOTHERSHIP_FUEL_VOLUME: Int = 15000
         const val AGENT_FUEL_VOLUME: Int = 12000
         const val COMMANDER_BONUS_FUEL_VOLUME: Int = 1000
-        const val MAX_AGENT_COUNT: Int = 10 // range 0-9999
+        const val MAX_AGENT_COUNT: Int = 25
         const val BURNING_MOTHERSHIP: Int = 20
         const val BURNING_TOWER: Int = 20
     }
