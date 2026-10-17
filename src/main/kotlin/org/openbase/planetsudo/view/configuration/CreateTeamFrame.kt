@@ -254,14 +254,11 @@ class CreateTeamFrame : JFrame() {
         private var instance: CreateTeamFrame? = null
 
         @JvmStatic
-        @Synchronized
         fun display() {
-            if (instance == null) {
-                EventQueue.invokeLater { CreateTeamFrame().isVisible = true }
-                Thread.sleep(500)
-            } else {
-                instance!!.reset()
-                instance!!.isVisible = true
+            EventQueue.invokeLater {
+                val frame = instance?.takeIf { it.isDisplayable } ?: CreateTeamFrame()
+                frame.reset()
+                frame.isVisible = true
             }
         }
     }

@@ -13,8 +13,10 @@ import org.openbase.jul.visual.swing.engine.draw2d.ResourceDisplayPanel
 import org.openbase.planetsudo.level.AbstractLevel
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.util.concurrent.locks.ReentrantLock
 import javax.swing.GroupLayout
 import javax.swing.JLabel
+import kotlin.concurrent.withLock
 
 /**
  *
@@ -28,7 +30,12 @@ class LevelDisplayPanel : ResourceDisplayPanel<LevelPanel>(), Runnable {
     }
 
     private var videoThread: Thread? = null
+    private val videoThreadLock = ReentrantLock()
+
+    @Volatile
     private var isRunning: Boolean
+
+    @Volatile
     private var stop = false
 
     /** Creates new form LevelDisplayPanel  */
@@ -50,8 +57,7 @@ class LevelDisplayPanel : ResourceDisplayPanel<LevelPanel>(), Runnable {
         }
     }
 
-    @Synchronized
-    fun setVideoThreadCommand(command: VideoThreadCommand?) {
+    fun setVideoThreadCommand(command: VideoThreadCommand?) = videoThreadLock.withLock {
         when (command) {
             VideoThreadCommand.Start, VideoThreadCommand.Resume -> if (!isRunning) {
                 isRunning = true
@@ -105,7 +111,7 @@ class LevelDisplayPanel : ResourceDisplayPanel<LevelPanel>(), Runnable {
             }
             Thread.sleep(50)
         }
-        isRunning = false
+        videoThreadLock.withLock { isRunning = false }
         logger.info("VideoThread stopped.")
     } // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

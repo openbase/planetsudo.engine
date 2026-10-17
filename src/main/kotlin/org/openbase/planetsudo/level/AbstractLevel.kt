@@ -22,6 +22,8 @@ import java.awt.geom.Rectangle2D
 import java.beans.PropertyChangeEvent
 import java.beans.PropertyChangeListener
 import java.beans.PropertyChangeSupport
+import java.util.concurrent.locks.ReentrantLock
+import kotlin.concurrent.withLock
 import kotlin.math.min
 
 /**
@@ -33,6 +35,9 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
 
     private val RESOURCES_LOCK: Any = SyncObject("ResourcesLock")
     private val TOWER_LOCK: Any = SyncObject("TowerLock")
+    private val resetLock = ReentrantLock()
+    private val resourceIdLock = ReentrantLock()
+    private val mineCounterLock = ReentrantLock()
     private val base: Point2D
     val size: LevelSize by lazy { LevelSize.fromLevel(this) }
 
@@ -129,13 +134,15 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
 
     override fun getName(): String = name
 
-    @Synchronized
-    fun reset() {
+    fun reset() = resetLock.withLock {
         LevelView.clearDistanceMapCache()
-        mineCounter = if (teams[0] != null && teams[1] != null) {
+        val initialMineCounter = if (teams[0] != null && teams[1] != null) {
             (min(teams[0]!!.agentCount.toDouble(), teams[1]!!.agentCount.toDouble()) - 1).toInt()
         } else {
             0
+        }
+        mineCounterLock.withLock {
+            mineCounter = initialMineCounter
         }
 
         logger.info("Load default values.")
@@ -149,16 +156,13 @@ abstract class AbstractLevel : AbstractGameObject, Runnable {
         synchronized(RESOURCES_LOCK) {
             resources.clear()
         }
-        resourceKeyCounter = 0
+        resourceIdLock.withLock { resourceKeyCounter = 0 }
         logger.info("Place resources in $this")
         placeResources()
         logger.info("Add " + resources.size + " Resources")
     }
 
-    @Synchronized
-    fun generateNewResourceID(): Int {
-        return resourceKeyCounter++
-    }
+    fun generateNewResourceID(): Int = resourceIdLock.withLock { resourceKeyCounter++ }
 
     fun setTeams(teamA: Team, teamB: Team) {
         teams[0] = teamA

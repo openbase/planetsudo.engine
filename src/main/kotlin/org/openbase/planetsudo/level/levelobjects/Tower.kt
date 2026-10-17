@@ -50,11 +50,13 @@ class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership)
 
     private val lock = ReentrantLock()
     private val condition = lock.newCondition()
+    private val shieldLock = ReentrantLock()
     private val placement: ResourcePlacement? = null
     private val timer: Timer
 
     override var levelSize: LevelSize = LevelSize.UNKNOWN
 
+    @Volatile
     var shieldForce: Int = 0
         private set
 
@@ -177,30 +179,29 @@ class Tower(id: Int, level: AbstractLevel, @JvmField val mothership: Mothership)
         changes.firePropertyChange(TOWER_FUEL_STATE_CHANGE, null, this.fuel)
     }
 
-    @Synchronized
     override fun attack() {
         logger.debug("Attack Mothership")
-        if (shieldForce > 0) {
+        val result = shieldLock.withLock {
+            if (shieldForce == 0) return
             shieldForce--
-            if (shieldForce <= Mothership.Companion.BURNING_TOWER) {
-                if (!timer.isRunning) {
-                    timer.start()
-                    GameSound.MothershipExplosion.play()
-                }
-            }
-            changes.firePropertyChange(TOWER_SHIELD_STATE_CHANGE, null, shieldForce)
+            val shouldStartBurning = shieldForce <= Mothership.BURNING_TOWER && !timer.isRunning
+            if (shouldStartBurning) timer.start()
+            shieldForce to shouldStartBurning
         }
+        if (result.second) {
+            GameSound.MothershipExplosion.play()
+        }
+        changes.firePropertyChange(TOWER_SHIELD_STATE_CHANGE, null, result.first)
     }
 
-    @Synchronized
     override fun repair() {
-        if (shieldForce < 100) {
-            shieldForce++
-            if (shieldForce > Mothership.Companion.BURNING_TOWER && timer.isRunning) {
-                timer.stop()
+        val newShieldForce = shieldLock.withLock {
+            if (shieldForce >= 100) return
+            (++shieldForce).also {
+                if (it > Mothership.BURNING_TOWER && timer.isRunning) timer.stop()
             }
-            changes.firePropertyChange(TOWER_SHIELD_STATE_CHANGE, null, shieldForce)
         }
+        changes.firePropertyChange(TOWER_SHIELD_STATE_CHANGE, null, newShieldForce)
     }
 
     override fun scanLevelSize() {
