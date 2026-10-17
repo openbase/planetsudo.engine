@@ -8,6 +8,8 @@ import org.openbase.jul.exception.CouldNotPerformException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.util.*
+import java.util.concurrent.locks.ReentrantLock
+import kotlin.concurrent.withLock
 
 /**
  *
@@ -64,6 +66,7 @@ class LevelLoader {
 
     companion object {
         private var instance: LevelLoader? = null
+        private val instanceLock = ReentrantLock()
 
         private val levelClasses = arrayOf(
             "SimpleWorld",
@@ -103,12 +106,6 @@ class LevelLoader {
         )
 
         @JvmStatic
-        @Synchronized
-        fun getInstance(): LevelLoader? {
-            if (instance == null) {
-                LevelLoader()
-            }
-            return instance
-        }
+        fun getInstance(): LevelLoader? = instanceLock.withLock { instance ?: LevelLoader() }
     }
 }

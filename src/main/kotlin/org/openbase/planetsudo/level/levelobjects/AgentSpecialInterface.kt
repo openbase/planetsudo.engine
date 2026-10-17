@@ -96,6 +96,17 @@ interface AgentSpecialInterface<DE : AgentSpecialInterfaceGermanWrapper> : Agent
     fun goToMarker()
 
     /**
+     * The agent moves towards the tower using the shortest path and automatically
+     * navigates around obstacles.
+     *
+     * Attention: The agent moves straight ahead first and turns afterwards.
+     *
+     * Action points: 4 (+ 4 when carrying a resource)
+     * Fuel: 1
+     */
+    fun goToTower()
+
+    /**
      * Befehl zum Aussenden des Hilferufs.
      * Treibstoff: 0
      * Aktionspunkte: 5

@@ -14,6 +14,8 @@ import java.util.*
 import java.util.concurrent.CancellationException
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.CompletionException
+import java.util.concurrent.locks.ReentrantLock
+import kotlin.concurrent.withLock
 import kotlin.math.max
 import kotlin.math.min
 
@@ -32,6 +34,7 @@ class LevelView(level: AbstractLevel, levelObject: AbstractLevelObject) {
     var height: Int = 0
     val rasterSize: Int
     private var lastDestinationIndex: Int? = null
+    private val viewUpdateLock = ReentrantLock()
 
     constructor(levelObject: AbstractLevelObject) : this(levelObject.level, levelObject)
 
@@ -129,19 +132,23 @@ class LevelView(level: AbstractLevel, levelObject: AbstractLevelObject) {
     }
 
     /** Updates the view's distance field for the object's current raster cell. */
-    @Synchronized
-    private fun updateLevelView(destination: LevelRasterElement = calcLevelRasterElement(levelObject)) {
-        if (lastDestinationIndex == destination.index) {
-            logger.debug("Skip update since destination raster cell has not changed.")
-            return
-        }
-        lastDestinationIndex = destination.index
-
+    private fun updateLevelView(destination: LevelRasterElement) {
         val distances = distanceMapFor(destination)
 
-        for (element in levelRepresentation) {
-            element!!.reset(destination)
-            element.setDistance(distances[element.index])
+        viewUpdateLock.withLock {
+            if (calcLevelRasterElement(levelObject).index != destination.index) {
+                return
+            }
+            if (lastDestinationIndex == destination.index) {
+                logger.debug("Skip update since destination raster cell has not changed.")
+                return
+            }
+            lastDestinationIndex = destination.index
+
+            for (element in levelRepresentation) {
+                element!!.reset(destination)
+                element.setDistance(distances[element.index])
+            }
         }
     }
 
@@ -175,13 +182,13 @@ class LevelView(level: AbstractLevel, levelObject: AbstractLevelObject) {
         distanceMapFor(destination.index) { calculateDistanceMap(destination) }
 
     private fun distanceMapFor(destinationIndex: Int, compute: () -> IntArray): IntArray {
-        val cache = synchronized(distanceMapCacheLock) {
+        val cache = distanceMapCacheLock.withLock {
             distanceMapCache
         }
 
         while (true) {
             var shouldCompute = false
-            val computation = synchronized(cache) {
+            val computation = cache.lock.withLock {
                 cache.completed[destinationIndex]?.let {
                     logger.debug("Reuse cached distance map for raster cell {}.", destinationIndex)
                     return it
@@ -204,7 +211,7 @@ class LevelView(level: AbstractLevel, levelObject: AbstractLevelObject) {
 
             try {
                 val distances = compute()
-                synchronized(cache) {
+                cache.lock.withLock {
                     cache.inFlight.remove(destinationIndex, computation)
                     if (!Thread.currentThread().isInterrupted) {
                         cache.completed[destinationIndex] = distances
@@ -217,7 +224,7 @@ class LevelView(level: AbstractLevel, levelObject: AbstractLevelObject) {
                 computation.complete(distances)
                 return distances
             } catch (ex: Throwable) {
-                synchronized(cache) {
+                cache.lock.withLock {
                     cache.inFlight.remove(destinationIndex, computation)
                 }
                 computation.completeExceptionally(ex)
@@ -227,6 +234,7 @@ class LevelView(level: AbstractLevel, levelObject: AbstractLevelObject) {
     }
 
     private class DistanceMapCache {
+        val lock = ReentrantLock()
         val completed = object : LinkedHashMap<Int, IntArray>(16, 0.75f, true) {
             override fun removeEldestEntry(eldest: MutableMap.MutableEntry<Int, IntArray>?): Boolean =
                 size > DISTANCE_MAP_CACHE_SIZE
@@ -239,11 +247,11 @@ class LevelView(level: AbstractLevel, levelObject: AbstractLevelObject) {
     companion object {
         const val RASTER_SIZE: Int = 10
         private const val DISTANCE_MAP_CACHE_SIZE = 128
-        private val distanceMapCacheLock = Any()
+        private val distanceMapCacheLock = ReentrantLock()
         private var distanceMapCache = DistanceMapCache()
 
         fun clearDistanceMapCache() {
-            synchronized(distanceMapCacheLock) {
+            distanceMapCacheLock.withLock {
                 distanceMapCache = DistanceMapCache()
             }
         }

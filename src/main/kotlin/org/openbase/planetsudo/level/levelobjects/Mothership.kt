@@ -16,9 +16,11 @@ import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
 import java.beans.PropertyChangeEvent
 import java.util.*
+import java.util.concurrent.locks.ReentrantLock
 import java.util.concurrent.locks.ReentrantReadWriteLock
 import javax.swing.Timer
 import kotlin.concurrent.read
+import kotlin.concurrent.withLock
 import kotlin.concurrent.write
 import kotlin.math.max
 
@@ -43,6 +45,10 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
 
     private val agentLock = ReentrantReadWriteLock()
     private val supportChannelLock = ReentrantReadWriteLock()
+    private val mineCounterLock = ReentrantLock()
+    private val fuelLock = ReentrantLock()
+    private val fuelDepleted = fuelLock.newCondition()
+    private val shieldLock = ReentrantLock()
     val base: Base2D = level.getMothershipBase(id)
 
     @JvmField
@@ -50,9 +56,13 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
 
     override val fuelVolume: Int
         get() = MOTHERSHIP_FUEL_VOLUME
+
+    @Volatile
     override var fuel: Int = 0
         private set
     private var strategyAgentCount = 0
+
+    @Volatile
     override var shieldForce: Int = 0
         private set
     private val timer: Timer
@@ -81,23 +91,29 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
                 "Lade " + team.name + " Mutterschiff",
             ),
         )
-        fuel = MOTHERSHIP_FUEL_VOLUME
-        mineCounter = level.mineCounter
+        fuelLock.withLock {
+            fuel = MOTHERSHIP_FUEL_VOLUME
+            fuelDepleted.signalAll()
+        }
+        mineCounterLock.withLock { mineCounter = level.mineCounter }
         agentLock.write {
             agents.forEach { it.kill() }
             strategyAgentCount = team.agentCount
             loadAgents()
         }
-        this.shieldForce = 100
+        shieldLock.withLock {
+            shieldForce = 100
+            if (timer.isRunning) timer.stop()
+        }
     }
 
-    @Synchronized
-    fun orderMine(): Boolean {
+    fun orderMine(): Boolean = mineCounterLock.withLock {
         if (mineCounter > 0) {
             mineCounter--
-            return true
+            true
+        } else {
+            false
         }
-        return false
     }
 
     private fun loadAgents() {
@@ -126,29 +142,22 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
     }
 
     fun orderFuel(fuel: Int, agent: Agent?): Int {
-        var fuel = fuel
-        if (agent == null || bounds.contains(agent.bounds)) {
-            try {
-                val oldFuel = this.fuel
-                if (fuel <= 0) { // fuel emty
-                    fuel = 0
-                } else if (this.fuel < fuel) { // use last fuel
-                    fuel = this.fuel
-                    this.fuel = 0
-                    synchronized(this) {
-                        (this as Object).notifyAll()
-                    }
-                } else {
-                    this.fuel -= fuel
-                }
-                changes.firePropertyChange(MOTHERSHIP_FUEL_STATE_CHANGE, oldFuel, this.fuel)
-            } catch (ex: CouldNotPerformException) {
-                logger.error("Could not order fuel!", ex)
-            }
-        } else {
+        if (agent != null && !bounds.contains(agent.bounds)) {
             return 0
         }
-        return fuel
+        val (fuelOrdered, oldFuel, newFuel) = fuelLock.withLock {
+            val ordered = when {
+                fuel <= 0 -> 0
+                this.fuel < fuel -> this.fuel
+                else -> fuel
+            }
+            val oldFuel = this.fuel
+            this.fuel -= ordered
+            if (this.fuel == 0) fuelDepleted.signalAll()
+            Triple(ordered, oldFuel, this.fuel)
+        }
+        changes.firePropertyChange(MOTHERSHIP_FUEL_STATE_CHANGE, oldFuel, newFuel)
+        return fuelOrdered
     }
 
     override val fuelInPercent: Int
@@ -159,21 +168,22 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
     }
 
     fun spendFuel(value: Int) {
-        if (value + fuel > MOTHERSHIP_FUEL_VOLUME) {
-            fuel = MOTHERSHIP_FUEL_VOLUME
-        } else {
-            fuel += value
+        val newFuel = fuelLock.withLock {
+            if (value + fuel > MOTHERSHIP_FUEL_VOLUME) {
+                fuel = MOTHERSHIP_FUEL_VOLUME
+            } else {
+                fuel += value
+            }
+            fuelDepleted.signalAll()
+            fuel
         }
-        changes.firePropertyChange(MOTHERSHIP_FUEL_STATE_CHANGE, null, this.fuel)
+        changes.firePropertyChange(MOTHERSHIP_FUEL_STATE_CHANGE, null, newFuel)
     }
 
     fun waitTillGameEnd() {
-        synchronized(this) {
-            if (fuel == 0) {
-                return
-            }
-            synchronized(TILL_END_WAITER) {
-                (TILL_END_WAITER as Object).wait()
+        fuelLock.withLock {
+            while (fuel > 0) {
+                fuelDepleted.await()
             }
         }
     }
@@ -236,34 +246,30 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
         }
     }
 
-    @Synchronized
     fun attack() {
         logger.debug("Attack Mothership")
-        if (shieldForce > 0) {
-            if (shieldForce == 100) {
-                GameSound.MothershipUnderAttack.play()
-            }
-
+        val result = shieldLock.withLock {
+            if (shieldForce == 0) return
             shieldForce--
-            if (shieldForce <= BURNING_MOTHERSHIP) {
-                if (!timer.isRunning) {
-                    timer.start()
-                    GameSound.MothershipExplosion.play()
-                }
-            }
-            changes.firePropertyChange(MOTHERSHIP_SHIELD_STATE_CHANGE, null, shieldForce)
+            val shouldStartBurning = shieldForce <= BURNING_MOTHERSHIP && !timer.isRunning
+            if (shouldStartBurning) timer.start()
+            Triple(shieldForce, shieldForce == 99, shouldStartBurning)
         }
+        if (result.second) GameSound.MothershipUnderAttack.play()
+        if (result.third) {
+            GameSound.MothershipExplosion.play()
+        }
+        changes.firePropertyChange(MOTHERSHIP_SHIELD_STATE_CHANGE, null, result.first)
     }
 
-    @Synchronized
     fun repair() {
-        if (shieldForce < 100) {
-            shieldForce++
-            if (shieldForce > BURNING_MOTHERSHIP && timer.isRunning) {
-                timer.stop()
+        val newShieldForce = shieldLock.withLock {
+            if (shieldForce >= 100) return
+            (++shieldForce).also {
+                if (it > BURNING_MOTHERSHIP && timer.isRunning) timer.stop()
             }
-            changes.firePropertyChange(MOTHERSHIP_SHIELD_STATE_CHANGE, null, shieldForce)
         }
+        changes.firePropertyChange(MOTHERSHIP_SHIELD_STATE_CHANGE, null, newShieldForce)
     }
 
     override val isBurning: Boolean
@@ -321,23 +327,18 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
 
     @Throws(CouldNotPerformException::class)
     fun getAgentToSupport(helper: Agent): Agent? {
-        supportChannelLock.read {
-            if (supportChannel.isEmpty()) {
-                return null
-            }
-
-            val supportCaller: Agent = supportChannel
+        val supportCaller = supportChannelLock.read {
+            supportChannel
                 .filterNot { it === helper } // do not help yourself
                 .minByOrNull { helper.levelView?.getDistance(it) ?: Int.MAX_VALUE }
-                ?: return null
+        } ?: return null
 
-            // remove caller from support channel if support is possible
-            if (supportCaller.bounds.intersects(helper.viewBounds)) {
-                cancelSupport(supportCaller)
-            }
-            supportCaller.levelView?.updateObjectMovement()
-            return supportCaller
+        // Never acquire the write lock while holding the read lock.
+        if (supportCaller.bounds.intersects(helper.viewBounds)) {
+            cancelSupport(supportCaller)
         }
+        supportCaller.levelView?.updateObjectMovement()
+        return supportCaller
     }
 
     fun cancelSupport(agent: Agent) {
@@ -373,7 +374,5 @@ class Mothership(id: Int, team: Team, level: AbstractLevel) :
         const val MAX_AGENT_COUNT: Int = 25
         const val BURNING_MOTHERSHIP: Int = 20
         const val BURNING_TOWER: Int = 20
-
-        val TILL_END_WAITER: Any = Any()
     }
 }

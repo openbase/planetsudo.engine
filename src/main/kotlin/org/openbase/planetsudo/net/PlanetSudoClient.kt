@@ -28,7 +28,9 @@ import java.beans.PropertyChangeListener
 import java.beans.PropertyChangeSupport
 import java.io.*
 import java.net.Socket
+import java.util.concurrent.locks.ReentrantLock
 import javax.swing.SwingWorker
+import kotlin.concurrent.withLock
 
 /**
  * @author Divine Threepwood
@@ -47,6 +49,7 @@ class PlanetSudoClient private constructor() {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     private val change = PropertyChangeSupport(this)
+    private val syncLock = ReentrantLock()
     private var state: ConnectionState? = null
     private var out: ObjectOutputStream? = null
     private var `in`: ObjectInputStream? = null
@@ -62,8 +65,7 @@ class PlanetSudoClient private constructor() {
         worker.execute()
     }
 
-    @Synchronized
-    private fun sync() {
+    private fun sync() = syncLock.withLock {
         try {
             connecting()
             transferData()
@@ -270,15 +272,11 @@ class PlanetSudoClient private constructor() {
     companion object {
         const val CONNECTION_STATE_UPDATE: String = "ConnectionStateUpdate"
 
+        private val instanceLock = ReentrantLock()
+
         @JvmStatic
-        @get:Synchronized
         var instance: PlanetSudoClient? = null
-            get() {
-                if (field == null) {
-                    field = PlanetSudoClient()
-                }
-                return field
-            }
+            get() = instanceLock.withLock { field ?: PlanetSudoClient().also { field = it } }
             private set
     }
 }

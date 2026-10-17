@@ -97,6 +97,18 @@ open class AgentSpecialInterfaceGermanWrapper(private val agent: AgentSpecialInt
     fun geheZuMarkierung() = agent.goToMarker()
 
     /**
+     * Der Agent bewegt sich zum Turm. Hierbei wird ein Weg berechnet,
+     * welcher auf kürzester Distanz zum Turm fährt. Um Hindernisse bewegt
+     * sich der Agent hierbei automatisch herum.
+     *
+     * Achtung: Der Agent bewegt sich erst geradeaus und dreht sich danach.
+     *
+     * Aktionspunkte: 4 (+ 4 wenn resource geladen)
+     * Treibstoff: 1
+     */
+    fun geheZuTurm() = agent.goToTower()
+
+    /**
      * Befehl zum Aussenden des Hilferufs.
      * Treibstoff: 0
      * Aktionspunkte: 5
