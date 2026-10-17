@@ -14,6 +14,8 @@ import java.io.IOException
 import java.time.Duration
 import java.time.Instant
 import java.util.*
+import java.util.concurrent.locks.ReentrantLock
+import kotlin.concurrent.withLock
 
 /**
  *
@@ -43,6 +45,7 @@ enum class GameSound(uri: String) {
 
     private val audioData: AudioDataImpl?
     private val disabled: Boolean
+    private val playbackLock = ReentrantLock()
 
     init {
         val tmpData: AudioDataImpl? = try {
@@ -70,8 +73,7 @@ enum class GameSound(uri: String) {
         this.disabled = (audioData == null)
     }
 
-    @Synchronized
-    fun play() {
+    fun play() = playbackLock.withLock {
         if (disabled || audioData == null) {
             return
         }
@@ -79,16 +81,20 @@ enum class GameSound(uri: String) {
         val now = Instant.now()
 
         // low pass filter
-        if (Duration.between(soundHistory[this], now).minus(Duration.ofMillis(250)).isNegative) {
+        val shouldPlay = soundHistoryLock.withLock {
+            !Duration.between(soundHistory[this], now).minus(Duration.ofMillis(250)).isNegative
+        }
+        if (!shouldPlay) {
             return
         }
 
         AUDIO_SERVER.playAudio(audioData)
-        soundHistory[this] = Instant.now()
+        soundHistoryLock.withLock { soundHistory[this] = Instant.now() }
     }
 
     companion object {
         private val AUDIO_SERVER = AudioPlayer(20)
+        private val soundHistoryLock = ReentrantLock()
 
         val soundHistory: TreeMap<GameSound, Instant> = TreeMap()
 

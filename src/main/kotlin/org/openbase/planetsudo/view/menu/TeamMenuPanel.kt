@@ -12,11 +12,13 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.awt.Color
 import java.awt.Dimension
+import java.awt.EventQueue
 import java.awt.Font
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
 import java.beans.PropertyChangeEvent
 import java.beans.PropertyChangeListener
+import java.util.concurrent.atomic.AtomicBoolean
 import javax.swing.*
 
 /**
@@ -27,6 +29,7 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
 
     private var team: Team? = null
     private val timer: Timer
+    private val refreshQueued = AtomicBoolean(false)
 
     private fun updateComponents() {
         teamColorPanel!!.background = team!!.mothership!!.level.getTeamColor(team!!)
@@ -697,9 +700,9 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
     } // </editor-fold>//GEN-END:initComponents
 
     fun setTeam(team: Team?) {
-        if (team != null) {
-            team.removePropertyChangeListener(this)
-            team.mothership!!.removePropertyChangeListener(this)
+        this.team?.let { previousTeam ->
+            previousTeam.removePropertyChangeListener(this)
+            previousTeam.mothership?.removePropertyChangeListener(this)
         }
         this.team = team
         team!!.addPropertyChangeListener(this)
@@ -864,14 +867,28 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
 
     // End of variables declaration//GEN-END:variables
     override fun propertyChange(evt: PropertyChangeEvent) {
-        if (evt.propertyName == Mothership.MOTHERSHIP_FUEL_STATE_CHANGE) {
-            mothershipFuelProgressBar!!.value = (evt.newValue as Int)
-            updateMothershipFuelProgressBar()
-        } else if (evt.propertyName == Mothership.MOTHERSHIP_SHIELD_STATE_CHANGE) {
-            mothershipShieldProgressBar!!.value = (evt.newValue as Int)
-            updateMothershipShieldProgressBar()
-        } else if (evt.propertyName == Team.POINT_STATE_CHANGE) {
-            resourcePointsLabel!!.text = evt.newValue.toString() + "P"
+        val currentTeam = team ?: return
+        val relevant = when {
+            evt.source === currentTeam.mothership ->
+                evt.propertyName == Mothership.MOTHERSHIP_FUEL_STATE_CHANGE ||
+                    evt.propertyName == Mothership.MOTHERSHIP_SHIELD_STATE_CHANGE
+            evt.source === currentTeam -> evt.propertyName == Team.POINT_STATE_CHANGE
+            else -> false
+        }
+        if (!relevant || !refreshQueued.compareAndSet(false, true)) return
+
+        EventQueue.invokeLater {
+            // Permit a new refresh if the model changes while this update runs.
+            refreshQueued.set(false)
+            team?.let { displayedTeam ->
+                displayedTeam.mothership?.let { mothership ->
+                    mothershipFuelProgressBar!!.value = mothership.fuel
+                    updateMothershipFuelProgressBar()
+                    mothershipShieldProgressBar!!.value = mothership.shieldForce
+                    updateMothershipShieldProgressBar()
+                }
+                resourcePointsLabel!!.text = displayedTeam.points.toString() + "P"
+            }
         }
     }
 

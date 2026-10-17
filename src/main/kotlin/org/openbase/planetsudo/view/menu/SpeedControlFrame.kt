@@ -157,18 +157,16 @@ class SpeedControlFrame : JFrame() {
      */
     init {
         initComponents()
+        instance = this
     }
 
     companion object {
-        private val instance: SpeedControlFrame? = null
+        private var instance: SpeedControlFrame? = null
 
-        @Synchronized
         fun display() {
-            if (instance == null) {
-                EventQueue.invokeLater { SpeedControlFrame().isVisible = true }
-                Thread.sleep(500)
-            } else {
-                instance.isVisible = true
+            EventQueue.invokeLater {
+                val frame = instance?.takeIf { it.isDisplayable } ?: SpeedControlFrame()
+                frame.isVisible = true
             }
         }
     }

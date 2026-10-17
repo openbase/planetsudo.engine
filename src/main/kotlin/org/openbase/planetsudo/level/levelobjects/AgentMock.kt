@@ -69,6 +69,10 @@ class AgentMock : AgentInterface {
         error("Mock does not offer any functionality.")
     }
 
+    override fun goToTower() {
+        error("Mock does not offer any functionality.")
+    }
+
     override fun goToResource() {
         error("Mock does not offer any functionality.")
     }

@@ -360,13 +360,10 @@ class HelpFrame : JFrame() {
     companion object {
         private var instance: HelpFrame? = null
 
-        @Synchronized
         fun display() {
-            if (instance == null) {
-                EventQueue.invokeLater { HelpFrame().isVisible = true }
-                Thread.sleep(500)
-            } else {
-                instance!!.isVisible = true
+            EventQueue.invokeLater {
+                val frame = instance?.takeIf { it.isDisplayable } ?: HelpFrame()
+                frame.isVisible = true
             }
         }
 
