@@ -72,7 +72,7 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
 
         if (members.size > 1) {
             teamMemberBLabel!!.text = members[1]
-            val imageUriB = GameObjectImages.IMAGE_DIRECTORY + "/teams/team_" + team!!.name + "_A.jpg"
+            val imageUriB = GameObjectImages.IMAGE_DIRECTORY + "/teams/team_" + team!!.name + "_B.jpg"
             try {
                 teamMemberB!!.setImage(imageUriB)
                 teamMemberB!!.isVisible = true
@@ -872,6 +872,7 @@ class TeamMenuPanel : JPanel(), PropertyChangeListener, ActionListener {
             evt.source === currentTeam.mothership ->
                 evt.propertyName == Mothership.MOTHERSHIP_FUEL_STATE_CHANGE ||
                     evt.propertyName == Mothership.MOTHERSHIP_SHIELD_STATE_CHANGE
+
             evt.source === currentTeam -> evt.propertyName == Team.POINT_STATE_CHANGE
             else -> false
         }
