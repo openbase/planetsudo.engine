@@ -579,6 +579,13 @@ class Agent(
         }
     }
 
+    override fun goToTower() {
+        goTo {
+            mothership.tower.levelView?.getRelativeDirection(this@Agent)
+                ?.also { angle = it }
+        }
+    }
+
     override fun orderFuel(percent: Int) {
         performAction(20) {
             if (percent < 0 || percent > 100) {
