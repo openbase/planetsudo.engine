@@ -5,6 +5,7 @@ import org.openbase.planetsudo.game.GameManager.Companion.gameManager
 import org.openbase.planetsudo.game.GameManager.GameState
 import org.openbase.planetsudo.game.GameSound
 import org.openbase.planetsudo.game.Team.Companion.resetDefaultTeam
+import org.openbase.planetsudo.game.strategy.ManualControlInput
 import org.openbase.planetsudo.level.LevelView
 import org.openbase.planetsudo.main.GUIController
 import org.openbase.planetsudo.view.configuration.ConfigurationPanel
@@ -75,6 +76,7 @@ class MainGUI : JFrame, PropertyChangeListener {
     fun initialize() {
         SwingUtilities.invokeLater {
             initComponents()
+            ManualControlInput.install(this)
             configurationPanel = ConfigurationPanel()
             levelLoadingPanel = LevelLoadingPanel()
             gamePanel = GamePanel()
