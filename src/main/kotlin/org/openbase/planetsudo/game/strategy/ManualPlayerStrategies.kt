@@ -2,7 +2,6 @@ package org.openbase.planetsudo.game.strategy
 
 import org.openbase.planetsudo.game.SwatTeam
 import org.openbase.planetsudo.level.levelobjects.AgentInterface
-import org.openbase.planetsudo.level.levelobjects.Resource.ResourceType
 
 abstract class ManualPlayerStrategy(
     agent: AgentInterface,
