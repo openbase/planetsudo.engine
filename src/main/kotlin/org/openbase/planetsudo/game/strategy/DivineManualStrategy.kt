@@ -93,16 +93,10 @@ class DivineManualStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
             agent.turnAround()
         }
         "Commander move left" commander inCase { manualControl(KeyEvent.VK_LEFT) } then {
-            agent.goLeft(5)
+            agent.turnLeft(5)
         }
         "Commander move right" commander inCase { manualControl(KeyEvent.VK_RIGHT) } then {
-            agent.goRight(5)
-        }
-        "Commander turn left" commander inCase { manualControl(KeyEvent.VK_A) } then {
-            agent.turnLeft(15)
-        }
-        "Commander turn right" commander inCase { manualControl(KeyEvent.VK_D) } then {
-            agent.turnRight(15)
+            agent.turnRight(5)
         }
         "Commander shift" commander inCase { manualControl(KeyEvent.VK_SPACE) && agent.hasTonic } then {
             agent.shift()
