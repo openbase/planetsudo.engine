@@ -221,6 +221,13 @@ abstract class AbstractStrategy<LEVEL : GlobalAgentInterface<*>>(agent: AgentInt
                 else -> Unit
             }
         }
+        addManualCommanderRule("Manual order support", { manualControl(player, ManualAction.ORDER_SUPPORT) }) {
+            if (strategyOwner.hasRequestedSupport) {
+                strategyOwner.cancelSupport()
+            } else {
+                strategyOwner.requestSupport()
+            }
+        }
         addManualCommanderRule(
             "Manual shift",
             { manualControl(player, ManualAction.SHIFT) && strategyOwner.hasTonic },

@@ -161,6 +161,14 @@ class AbstractStrategyTest {
             verify(exactly = 1) { commander.go() }
             assertEquals(0, aiCommanderActions)
 
+            ManualControlInput.setGamepadActions(ManualPlayer.PLAYER_1, setOf(ManualAction.ORDER_SUPPORT))
+            commanderStrategy.executeRule()
+            verify(exactly = 1) { commander.requestSupport() }
+
+            every { commander.hasRequestedSupport } returns true
+            commanderStrategy.executeRule()
+            verify(exactly = 1) { commander.cancelSupport() }
+
             val teammate = mockk<Agent>(relaxed = true)
             every { teammate.isCommander } returns false
             every { teammate.isMemberOfSwatTeam(any()) } returns true
