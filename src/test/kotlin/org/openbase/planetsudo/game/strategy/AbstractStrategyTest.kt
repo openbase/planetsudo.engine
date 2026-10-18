@@ -9,6 +9,7 @@ import org.openbase.planetsudo.game.SwatTeam
 import org.openbase.planetsudo.level.levelobjects.Agent
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertEquals
 
 class AbstractStrategyTest {
 
@@ -160,6 +161,14 @@ class AbstractStrategyTest {
             commanderStrategy.executeRule()
             verify(exactly = 1) { commander.go() }
             assertEquals(0, aiCommanderActions)
+
+            ManualControlInput.setGamepadActions(ManualPlayer.PLAYER_1, setOf(ManualAction.ORDER_SUPPORT))
+            commanderStrategy.executeRule()
+            verify(exactly = 1) { commander.requestSupport() }
+
+            every { commander.hasRequestedSupport } returns true
+            commanderStrategy.executeRule()
+            verify(exactly = 1) { commander.cancelSupport() }
 
             val teammate = mockk<Agent>(relaxed = true)
             every { teammate.isCommander } returns false

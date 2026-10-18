@@ -221,22 +221,18 @@ abstract class AbstractStrategy<LEVEL : GlobalAgentInterface<*>>(agent: AgentInt
                 else -> Unit
             }
         }
+        addManualCommanderRule("Manual order support", { manualControl(player, ManualAction.ORDER_SUPPORT) }) {
+            if (strategyOwner.hasRequestedSupport) {
+                strategyOwner.cancelSupport()
+            } else {
+                strategyOwner.requestSupport()
+            }
+        }
         addManualCommanderRule(
             "Manual shift",
             { manualControl(player, ManualAction.SHIFT) && strategyOwner.hasTonic },
         ) {
             shift()
-        }
-        "Order Support" commander inCase {
-            manualControl(player, ManualAction.ORDER_SUPPORT) // does not work :(
-        } then {
-            if (agent is AgentSpecialInterface<*>) {
-                if (agent.hasRequestedSupport) {
-                    (agent as AgentSpecialInterface<*>).cancelSupport()
-                } else {
-                    (agent as AgentSpecialInterface<*>).requestSupport()
-                }
-            }
         }
     }
 
