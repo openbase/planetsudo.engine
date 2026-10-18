@@ -8,6 +8,7 @@ import java.awt.Window
 import java.awt.event.KeyEvent
 import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
+import java.util.Locale
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -23,11 +24,17 @@ enum class ManualAction {
     SHIFT,
     FIGHT_ENEMY,
     SET_MARKER,
+    ORDER_SUPPORT,
     PLACE_MINE,
     PRIMARY_ACTION,
 }
 
 data class ManualGamepadDevice(val id: String, val name: String)
+
+internal fun manualGamepadId(
+    controllerName: String,
+    occurrence: Int,
+): String = "controller:${controllerName.trim().lowercase(Locale.ROOT)}#$occurrence"
 
 internal object ManualControlInput {
     private val pressedKeys = ConcurrentHashMap.newKeySet<Int>()
@@ -128,17 +135,33 @@ internal object ManualControlInput {
                 }
                 val connectedGamepads = mutableListOf<ManualGamepadDevice>()
                 val currentActions = ManualPlayer.entries.associateWith { mutableSetOf<ManualAction>() }
+                val controllerNameOccurrences = mutableMapOf<String, Int>()
                 for (controllerIndex in 0 until MAX_GAMEPADS) {
                     val state = manager.getState(controllerIndex)
                     if (!state.isConnected) continue
 
+                    val controllerName =
+                        try {
+                            manager.getControllerIndex(controllerIndex).name
+                        } catch (_: com.studiohartman.jamepad.ControllerUnpluggedException) {
+                            continue
+                        }
+                    val normalizedName = controllerName.trim().lowercase(Locale.ROOT)
+                    val occurrence = controllerNameOccurrences.merge(normalizedName, 1, Int::plus)!!
+                    val deviceId = manualGamepadId(controllerName, occurrence)
                     connectedGamepads.add(
                         ManualGamepadDevice(
-                            id = controllerIndex.toString(),
-                            name = "${state.controllerType} (Gamepad ${controllerIndex + 1})",
+                            id = deviceId,
+                            name =
+                            if (occurrence == 1) {
+                                controllerName
+                            } else {
+                                "$controllerName ($occurrence)"
+                            },
                         ),
                     )
-                    readPlayerInput(controllerIndex, state, currentActions)
+                    migrateLegacySelection(controllerIndex, deviceId)
+                    readPlayerInput(deviceId, state, currentActions)
                 }
                 updateGamepads(connectedGamepads)
                 currentActions.forEach { (player, actions) -> setGamepadActions(player, actions) }
@@ -178,20 +201,30 @@ internal object ManualControlInput {
     }
 
     private fun readPlayerInput(
-        controllerIndex: Int,
+        deviceId: String,
         state: ControllerState,
         actionsByPlayer: Map<ManualPlayer, MutableSet<ManualAction>>,
     ) {
-        val player = selectedGamepads.entries.firstOrNull { it.value == controllerIndex.toString() }?.key ?: return
+        val player = selectedGamepads.entries.firstOrNull { it.value == deviceId }?.key ?: return
         val actions = actionsByPlayer[player] ?: return
         if (state.leftTrigger > 0) actions.add(ManualAction.GO_FORWARD)
-        if (state.leftStickX < -0.1) actions.add(ManualAction.TURN_LEFT)
-        if (state.leftStickX > 0.1) actions.add(ManualAction.TURN_RIGHT)
+        if (state.leftStickX < -0.2) actions.add(ManualAction.TURN_LEFT)
+        if (state.leftStickX > 0.2) actions.add(ManualAction.TURN_RIGHT)
         if (state.leftStickClick) actions.add(ManualAction.SHIFT)
         if (state.rightTrigger > 0) actions.add(ManualAction.FIGHT_ENEMY)
         if (state.y) actions.add(ManualAction.SET_MARKER)
         if (state.rb) actions.add(ManualAction.PLACE_MINE)
         if (state.a) actions.add(ManualAction.PRIMARY_ACTION)
+        if (state.b) actions.add(ManualAction.ORDER_SUPPORT)
+    }
+
+    private fun migrateLegacySelection(
+        controllerIndex: Int,
+        deviceId: String,
+    ) {
+        val legacyPlayer =
+            selectedGamepads.entries.firstOrNull { it.value == controllerIndex.toString() }?.key ?: return
+        selectedGamepads[legacyPlayer] = deviceId
     }
 
     internal fun keyPressed(keyCode: Int) {

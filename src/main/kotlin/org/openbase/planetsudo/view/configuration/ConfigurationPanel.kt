@@ -37,6 +37,7 @@ import java.awt.GridLayout
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
+import java.io.IOException
 import java.util.*
 import javax.swing.*
 import javax.swing.border.BevelBorder
@@ -114,7 +115,7 @@ class ConfigurationPanel : JPanel() {
                 defaultTeamComboBox!!.removeAllItems()
             }
 
-            val teams = loadAll()
+            val teams = loadAll().filterNotNull().sortedBy { it.name.lowercase(Locale.ROOT) }
             for (teamData in teams) {
                 teamAComboBox!!.addItem(teamData)
                 teamBComboBox!!.addItem(teamData)
@@ -244,18 +245,22 @@ class ConfigurationPanel : JPanel() {
         manualGamepadPanel!!.border = BorderFactory.createTitledBorder("Lokale Gamepad-Steuerung")
         manualGamepadPanel!!.add(
             JPanel(BorderLayout(8, 0)).apply {
-                add(JLabel("Player 1"), BorderLayout.WEST)
+                add(JLabel("Team A (Player 1)"), BorderLayout.WEST)
                 add(gamepadPlayer1ComboBox, BorderLayout.CENTER)
             },
         )
         manualGamepadPanel!!.add(
             JPanel(BorderLayout(8, 0)).apply {
-                add(JLabel("Player 2"), BorderLayout.WEST)
+                add(JLabel("Team B (Player 2)"), BorderLayout.WEST)
                 add(gamepadPlayer2ComboBox, BorderLayout.CENTER)
             },
         )
         manualGamepadPanel!!.add(
-            JLabel("<html>Belegung: D-Pad Go/Turn, A Resource,<br>X Gegner, Y Marker, RB Mine</html>"),
+            JLabel(
+                """
+                <html>Das Gamepad steuert ausschließlich den Commander.</html>
+                """.trimIndent(),
+            ),
         )
         gamepadRefreshButton!!.text = "Suchen"
         gamepadRefreshButton!!.addActionListener { _ ->
@@ -874,8 +879,12 @@ class ConfigurationPanel : JPanel() {
         }
 
         ManualControlInput.selectGamepad(player, selection?.id)
-        val key = if (player == ManualPlayer.PLAYER_1) PROPERTY_GAMEPAD_PLAYER_1 else PROPERTY_GAMEPAD_PLAYER_2
+        val key = if (player == ManualPlayer.PLAYER_1) PROPERTY_GAMEPAD_TEAM_A else PROPERTY_GAMEPAD_TEAM_B
         selection?.id?.let { stateProperties.setProperty(key, it) } ?: stateProperties.remove(key)
+        stateProperties.remove(
+            if (player == ManualPlayer.PLAYER_1) PROPERTY_GAMEPAD_PLAYER_1 else PROPERTY_GAMEPAD_PLAYER_2,
+        )
+        persistStateProperties()
         gamepadStatusLabel?.text = gamepadStatusText()
     }
 
@@ -889,6 +898,8 @@ class ConfigurationPanel : JPanel() {
         lastGamepadDevices = devices
         val player1Selection = ManualControlInput.selectedGamepad(ManualPlayer.PLAYER_1)
         val player2Selection = ManualControlInput.selectedGamepad(ManualPlayer.PLAYER_2)
+        persistMigratedGamepadSelection(ManualPlayer.PLAYER_1, player1Selection)
+        persistMigratedGamepadSelection(ManualPlayer.PLAYER_2, player2Selection)
         updatingGamepadChoices = true
         try {
             listOf(
@@ -919,6 +930,23 @@ class ConfigurationPanel : JPanel() {
     }
 
     private fun gamepadStatusText(): String = ManualControlInput.gamepadStatus()
+
+    private fun persistMigratedGamepadSelection(
+        player: ManualPlayer,
+        selectedId: String?,
+    ) {
+        if (selectedId == null || !selectedId.startsWith("controller:")) return
+
+        val propertyKey = if (player == ManualPlayer.PLAYER_1) PROPERTY_GAMEPAD_TEAM_A else PROPERTY_GAMEPAD_TEAM_B
+        val legacyPropertyKey =
+            if (player == ManualPlayer.PLAYER_1) PROPERTY_GAMEPAD_PLAYER_1 else PROPERTY_GAMEPAD_PLAYER_2
+        val storedId = stateProperties.getProperty(propertyKey) ?: stateProperties.getProperty(legacyPropertyKey)
+        if (storedId?.toIntOrNull() == null) return
+
+        stateProperties.setProperty(propertyKey, selectedId)
+        stateProperties.remove(legacyPropertyKey)
+        persistStateProperties()
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private var levelChooserComboBox: JComboBox<String>? = null
@@ -995,10 +1023,20 @@ class ConfigurationPanel : JPanel() {
             ExceptionPrinter.printHistory("Could not load gui properties!", ex, logger)
         }
 
-        val player1Gamepad = stateProperties.getProperty(PROPERTY_GAMEPAD_PLAYER_1)
-        val player2Gamepad = stateProperties.getProperty(PROPERTY_GAMEPAD_PLAYER_2)
+        val player1Gamepad =
+            stateProperties.getProperty(PROPERTY_GAMEPAD_TEAM_A)
+                ?: stateProperties.getProperty(PROPERTY_GAMEPAD_PLAYER_1)
+        val player2Gamepad =
+            stateProperties.getProperty(PROPERTY_GAMEPAD_TEAM_B)
+                ?: stateProperties.getProperty(PROPERTY_GAMEPAD_PLAYER_2)
+        player1Gamepad?.let { stateProperties.setProperty(PROPERTY_GAMEPAD_TEAM_A, it) }
+        stateProperties.remove(PROPERTY_GAMEPAD_PLAYER_1)
         ManualControlInput.selectGamepad(ManualPlayer.PLAYER_1, player1Gamepad)
         if (player2Gamepad != null && player2Gamepad == player1Gamepad) {
+            stateProperties.remove(PROPERTY_GAMEPAD_TEAM_B)
+            stateProperties.remove(PROPERTY_GAMEPAD_PLAYER_2)
+        } else {
+            player2Gamepad?.let { stateProperties.setProperty(PROPERTY_GAMEPAD_TEAM_B, it) }
             stateProperties.remove(PROPERTY_GAMEPAD_PLAYER_2)
         }
         ManualControlInput.selectGamepad(
@@ -1014,25 +1052,31 @@ class ConfigurationPanel : JPanel() {
         Runtime.getRuntime().addShutdownHook(
             object : Thread() {
                 override fun run() {
-                    try {
-                        val propertiesFile = File(FileUtils.getTempDirectory(), "planetsudo.properties")
-                        logger.info("Store GUI Properties to " + propertiesFile.absolutePath)
-                        if (!propertiesFile.exists()) {
-                            logger.info("Create: " + propertiesFile.createNewFile())
-                        }
-                        stateProperties.store(FileOutputStream(propertiesFile), "PlanetSudo GUI Properties")
-                    } catch (ex: CouldNotPerformException) {
-                        ExceptionPrinter.printHistory("Could not store gui properties!", ex, logger)
-                    }
+                    persistStateProperties()
                 }
             },
         )
+    }
+
+    private fun persistStateProperties() {
+        try {
+            val propertiesFile = File(FileUtils.getTempDirectory(), "planetsudo.properties")
+            FileOutputStream(propertiesFile).use { output ->
+                stateProperties.store(output, "PlanetSudo GUI Properties")
+            }
+        } catch (ex: IOException) {
+            logger.error("Could not store GUI properties!", ex)
+        } catch (ex: CouldNotPerformException) {
+            ExceptionPrinter.printHistory("Could not store GUI properties!", ex, logger)
+        }
     }
 
     companion object {
         const val PROPERTY_SELECTED_TEAM_A: String = "TEAM_A"
         const val PROPERTY_SELECTED_TEAM_B: String = "TEAM_B"
         const val PROPERTY_SELECTED_LEVEL: String = "org.openbase.planetsudo.level"
+        const val PROPERTY_GAMEPAD_TEAM_A: String = "GAMEPAD_TEAM_A"
+        const val PROPERTY_GAMEPAD_TEAM_B: String = "GAMEPAD_TEAM_B"
         const val PROPERTY_GAMEPAD_PLAYER_1: String = "GAMEPAD_PLAYER_1"
         const val PROPERTY_GAMEPAD_PLAYER_2: String = "GAMEPAD_PLAYER_2"
     }

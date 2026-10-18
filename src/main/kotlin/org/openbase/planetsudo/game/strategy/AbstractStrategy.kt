@@ -4,6 +4,7 @@
  */
 package org.openbase.planetsudo.game.strategy
 
+import org.apache.commons.lang3.ArrayUtils.shift
 import org.openbase.jps.core.JPService
 import org.openbase.planetsudo.game.GameManager
 import org.openbase.planetsudo.game.SwatTeam
@@ -36,6 +37,8 @@ abstract class AbstractStrategy<LEVEL : GlobalAgentInterface<*>>(agent: AgentInt
     val teamAgent get() = strategyOwner.teamAgent
     private val mothershipInternal: Mothership by lazy { strategyOwner.mothership }
     private val rules: TreeMap<Int, Rule> = TreeMap()
+    private val manualCommanderRules = mutableListOf<Rule>()
+    private var manualCommanderPlayer: ManualPlayer? = null
     private val gameManager: GameManager = GameManager.gameManager
 
     @JvmField
@@ -48,6 +51,9 @@ abstract class AbstractStrategy<LEVEL : GlobalAgentInterface<*>>(agent: AgentInt
 
         if (agent is Agent && !JPService.testMode()) {
             this.loadRules()
+            if (agent.isCommander) {
+                configureManualCommanderControl()
+            }
             this.loadSwatTeams()
             connectToMothership()
             bindGameSpeed()
@@ -115,8 +121,14 @@ abstract class AbstractStrategy<LEVEL : GlobalAgentInterface<*>>(agent: AgentInt
         return -rule.priority // invert priority to swap list order.
     }
 
-    private fun executeRule() {
-        for (rule in rules.values) {
+    internal fun executeRule() {
+        val applicableRules =
+            if (manualCommanderPlayer != null) {
+                manualCommanderRules.asReversed()
+            } else {
+                rules.values
+            }
+        for (rule in applicableRules) {
             if (rule.constraint() && strategyOwner.isMemberOfSwatTeam(rule.swatTeams)) {
                 strategyOwner.lastAction = rule.name
                 rule.action()
@@ -124,6 +136,122 @@ abstract class AbstractStrategy<LEVEL : GlobalAgentInterface<*>>(agent: AgentInt
                 break
             }
         }
+    }
+
+    private fun manualPlayerForTeam(): ManualPlayer? =
+        when (strategyOwner.mothership.id) {
+            0 -> ManualPlayer.PLAYER_1
+            1 -> ManualPlayer.PLAYER_2
+            else -> null
+        }
+
+    internal fun configureManualCommanderControl() {
+        if (!strategyOwner.isCommander) return
+        val player = manualPlayerForTeam() ?: return
+        enableManualCommanderControl(player)
+    }
+
+    private fun enableManualCommanderControl(player: ManualPlayer) {
+        if (manualCommanderPlayer != null ||
+            !strategyOwner.isCommander ||
+            ManualControlInput.selectedGamepad(player) == null
+        ) {
+            return
+        }
+
+        manualCommanderPlayer = player
+        addManualCommanderRule("Manual go forward", { manualControl(player, ManualAction.GO_FORWARD) }) {
+            go()
+        }
+        addManualCommanderRule("Manual turn left", { manualControl(player, ManualAction.TURN_LEFT) }) {
+            turnLeft(5)
+        }
+        addManualCommanderRule("Manual turn right", { manualControl(player, ManualAction.TURN_RIGHT) }) {
+            turnRight(5)
+        }
+        addManualCommanderRule(
+            "Manual go left",
+            { manualControl(player, ManualAction.GO_FORWARD) && manualControl(player, ManualAction.TURN_LEFT) },
+        ) {
+            goLeft(10)
+        }
+        addManualCommanderRule(
+            "Manual go right",
+            { manualControl(player, ManualAction.GO_FORWARD) && manualControl(player, ManualAction.TURN_RIGHT) },
+        ) {
+            goRight(10)
+        }
+        addManualCommanderRule(
+            "Manual fight enemy mothership",
+            { manualControl(player, ManualAction.FIGHT_ENEMY) && strategyOwner.seeEnemyMothership },
+        ) {
+            fightWithEnemyMothership()
+        }
+        addManualCommanderRule(
+            "Manual fight enemy agent",
+            { manualControl(player, ManualAction.FIGHT_ENEMY) && strategyOwner.seeEnemyAgent },
+        ) {
+            fightWithEnemyAgent()
+        }
+        addManualCommanderRule(
+            "Manual set marker",
+            { manualControl(player, ManualAction.SET_MARKER) },
+        ) {
+            if (mothership.isMarkerDeployed) {
+                mothership.clearMarker()
+            } else {
+                deployMarker()
+            }
+        }
+        addManualCommanderRule(
+            "Manual place mine",
+            { manualControl(player, ManualAction.PLACE_MINE) && strategyOwner.hasMine },
+        ) {
+            deployMine()
+        }
+        addManualCommanderRule("Manual primary action", { manualControl(player, ManualAction.PRIMARY_ACTION) }) {
+            when {
+                isCarryingResource && isAtMothership -> transferResourceToMothership()
+                mothership.isDamaged && isAtMothership -> repairMothership()
+                isAtMothership && fuelInPercent < 100 && mothership.hasFuel() -> orderFuel(100)
+                seeLostTeamAgent() -> spendTeamAgentFuel(10)
+                isTouchingResource -> pickupResource()
+                seeResource -> goToResource()
+                isCarryingResource -> releaseResource()
+                else -> Unit
+            }
+        }
+        addManualCommanderRule(
+            "Manual shift",
+            { manualControl(player, ManualAction.SHIFT) && strategyOwner.hasTonic },
+        ) {
+            shift()
+        }
+        "Order Support" commander inCase {
+            manualControl(player, ManualAction.ORDER_SUPPORT) // does not work :(
+        } then {
+            if (agent is AgentSpecialInterface<*>) {
+                if (agent.hasRequestedSupport) {
+                    (agent as AgentSpecialInterface<*>).cancelSupport()
+                } else {
+                    (agent as AgentSpecialInterface<*>).requestSupport()
+                }
+            }
+        }
+    }
+
+    private fun addManualCommanderRule(
+        name: String,
+        condition: () -> Boolean,
+        action: Agent.() -> Unit,
+    ) {
+        manualCommanderRules.add(
+            RuleBuilder(name = name)
+                .swat(COMMANDER)
+                .inCase(condition)
+                .action { action(strategyOwner) }
+                .build(),
+        )
     }
 
     /**

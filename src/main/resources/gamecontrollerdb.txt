@@ -1,0 +1,2 @@
+# Jamepad expects this classpath resource. SDL continues to use its built-in
+# controller mappings when this file contains no additional device mappings.

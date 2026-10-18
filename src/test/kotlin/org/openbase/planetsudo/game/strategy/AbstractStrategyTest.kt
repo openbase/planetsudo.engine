@@ -1,5 +1,6 @@
 package org.openbase.planetsudo.game.strategy
 
+import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import org.amshove.kluent.`should be equal to`
@@ -7,6 +8,7 @@ import org.openbase.jps.core.JPService
 import org.openbase.planetsudo.game.SwatTeam
 import org.openbase.planetsudo.level.levelobjects.Agent
 import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class AbstractStrategyTest {
 
@@ -124,5 +126,64 @@ class AbstractStrategyTest {
             action()
         }
         verify { agent.requestSupport() }
+    }
+
+    @Test
+    fun `selected gamepad overrides commander rules without changing other agents`() {
+        ManualControlInput.selectGamepad(ManualPlayer.PLAYER_1, "0")
+        ManualControlInput.clear()
+
+        try {
+            val commander = mockk<Agent>(relaxed = true)
+            every { commander.isCommander } returns true
+            every { commander.mothership.id } returns 0
+            every { commander.isMemberOfSwatTeam(any()) } returns true
+            var aiCommanderActions = 0
+            val commanderStrategy =
+                object : StrategyLevelLegacy(commander) {
+                    init {
+                        loadRules()
+                        configureManualCommanderControl()
+                    }
+
+                    override fun loadAgentCount() = 1
+
+                    override fun loadRules() {
+                        "AI commander rule" commander inCase { true } then { aiCommanderActions++ }
+                    }
+                }
+
+            commanderStrategy.executeRule()
+            assertEquals(0, aiCommanderActions)
+
+            ManualControlInput.setGamepadActions(ManualPlayer.PLAYER_1, setOf(ManualAction.GO_FORWARD))
+            commanderStrategy.executeRule()
+            verify(exactly = 1) { commander.go() }
+            assertEquals(0, aiCommanderActions)
+
+            val teammate = mockk<Agent>(relaxed = true)
+            every { teammate.isCommander } returns false
+            every { teammate.isMemberOfSwatTeam(any()) } returns true
+            var aiTeammateActions = 0
+            val teammateStrategy =
+                object : StrategyLevelLegacy(teammate) {
+                    init {
+                        loadRules()
+                        configureManualCommanderControl()
+                    }
+
+                    override fun loadAgentCount() = 1
+
+                    override fun loadRules() {
+                        "AI teammate rule" all inCase { true } then { aiTeammateActions++ }
+                    }
+                }
+
+            teammateStrategy.executeRule()
+            assertEquals(1, aiTeammateActions)
+        } finally {
+            ManualControlInput.clear()
+            ManualControlInput.selectGamepad(ManualPlayer.PLAYER_1, null)
+        }
     }
 }

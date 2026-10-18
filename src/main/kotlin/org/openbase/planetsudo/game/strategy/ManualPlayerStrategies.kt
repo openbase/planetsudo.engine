@@ -80,6 +80,15 @@ abstract class ManualPlayerStrategy(
                 else -> {}
             }
         }
+        "Order Support" commander inCase {
+            manualControl(player, ManualAction.ORDER_SUPPORT)
+        } then {
+            if (agent.hasRequestedSupport) {
+                agent.cancelSupport()
+            } else {
+                agent.requestSupport()
+            }
+        }
         "Shift" commander inCase { manualControl(player, ManualAction.SHIFT) && agent.hasTonic } then {
             agent.shift()
         }

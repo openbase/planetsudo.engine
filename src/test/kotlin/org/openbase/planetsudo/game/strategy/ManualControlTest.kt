@@ -6,6 +6,7 @@ import org.openbase.planetsudo.level.levelobjects.Agent
 import java.awt.event.KeyEvent
 import kotlin.test.Test
 import kotlin.test.assertFalse
+import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class ManualControlTest {
@@ -33,5 +34,17 @@ class ManualControlTest {
         } finally {
             ManualControlInput.clear()
         }
+    }
+
+    @Test
+    fun `Jamepad default mapping resource is available on the classpath`() {
+        assertNotNull(ManualControlInput::class.java.getResource("/gamecontrollerdb.txt"))
+    }
+
+    @Test
+    fun `gamepad identity does not depend on its SDL slot`() {
+        assertTrue(manualGamepadId(" Example Controller ", 1) == manualGamepadId("example controller", 1))
+        assertFalse(manualGamepadId("Example Controller", 1) == manualGamepadId("Other Controller", 1))
+        assertFalse(manualGamepadId("Example Controller", 1) == manualGamepadId("Example Controller", 2))
     }
 }
