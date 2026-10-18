@@ -5,609 +5,199 @@ import org.openbase.planetsudo.level.LevelSize
 import org.openbase.planetsudo.level.levelobjects.AgentInterface
 import org.openbase.planetsudo.level.levelobjects.Resource.ResourceType
 import org.openbase.planetsudo.level.levelobjects.Tower
-import org.openbase.planetsudo.level.levelobjects.WallDistance
 import java.awt.event.KeyEvent
-import javax.swing.text.Keymap
 
-/**
- *
- * @author [Divine Threepwood](mailto:divine@openbase.org)
- */
 class DivineManualStrategy(agent: AgentInterface) : StrategyLevelLegacy(agent) {
 
-    /**
-     * Hier wird angegeben wie viele Agenten dem Team zur Verfügung stehen sollen.
-     *
-     * @return Anzahl der Agenten
-     */
-    override fun loadAgentCount(): Int {
-        return 7
-    }
+    override fun loadAgentCount(): Int = 7
 
     override fun loadSwatTeams() {
         createSwat(SwatTeam.ALPHA, 1)
     }
 
     override fun loadRules() {
-        // -------------------------------------------->
-        createRule(
-            object : Rule("Just Go", SwatTeam.ALL) {
-                override fun constraint(): Boolean {
-                    return true
-                }
-
-                override fun action() {
-                    agent.go()
-                }
-            },
-        )
-
-        "Discover" commander inCase { true } then { agent.goRight(4) }
-
-//        // Keep a bit of clearance from the wall while still following it. The distance parameter ensures the
-//        // agent does not hug the wall tightly when it is supposed to stay parallel to it.
-//        "Re-find Wall" commander inCase {
-//            !agent.seeWallAtRight(45, WallDistance.VERY_FAR) && !agent.seeWallAtRight(
-//                90,
-//                WallDistance.VERY_FAR,
-//            ) && !agent.seeWallAtRight(135, WallDistance.VERY_FAR)
-//        } then { agent.turnRight(2) }
-        "Follow Wall With Clearance" commander inCase {
-            (
-                    agent.seeWallAtRight(45, WallDistance.CLOSE) &&
-                            agent.seeWallAtRight(135, WallDistance.CLOSE)
-                    ) && !agent.seeWallAtRight(0, WallDistance.VERY_FAR)
-        } then { agent.goLeft(5) }
-        "Follow Wall Closer" commander inCase {
-            (
-                    agent.seeWallAtRight(45, WallDistance.VERY_FAR) &&
-                            agent.seeWallAtRight(135, WallDistance.VERY_FAR)
-                    ) && !agent.seeWallAtRight(0, WallDistance.VERY_FAR)
-        } then { agent.goRight(5) }
-        "Follow Wall" commander inCase {
-            (
-                    agent.seeWallAtRight(45, WallDistance.FAR) &&
-                            agent.seeWallAtRight(135, WallDistance.FAR)
-                    ) && !agent.seeWallAtRight(0, WallDistance.VERY_FAR)
-        } then { agent.go() }
-        "Follow Corner" commander inCase {
-            agent.seeWallAtRight(0, WallDistance.FAR) && (
-                    agent.seeWallAtRight(
-                        45,
-                        WallDistance.VERY_FAR,
-                    ) || agent.seeWallAtRight(90, WallDistance.VERY_FAR)
-                    )
-        } then { agent.goLeft(20) }
-        "Follow Edge" commander inCase {
-            agent.seeWallAtRight(135, WallDistance.VERY_FAR) &&
-                    !agent.seeWallAtRight(110, WallDistance.VERY_FAR) &&
-                    !agent.seeWallAtRight(0, WallDistance.FAR)
-        } then { agent.turnRight(20) }
-
-        "Scan" commander inCase { tower.type == Tower.TowerType.ObservationTower && tower.levelSize == LevelSize.UNKNOWN } then {
-            tower.scanLevelSize()
+        "Workers explore" nonCommander inCase { true } then {
+            agent.go()
         }
-
-        "Place Observation Tower" commander inCase { agent.hasTower } then {
-            agent.constructTower(Tower.TowerType.ObservationTower)
+        "Workers return resources" nonCommander inCase {
+            agent.isCarryingResource && !agent.isAtMothership
+        } then {
+            agent.goToMothership()
         }
-
-        // -------------------------------------------->
-//        createRule(
-//            object : Rule("Avoid Agents", SwatTeam.COMMANDER) {
-//                override fun constraint(): Boolean {
-//                    return agent.seeTeamAgent
-//                }
-//
-//                override fun action() {
-//                    agent.turnRandom()
-//                }
-//            },
-//        )
-        // -------------------------------------------->
-        "See Resources" swat SwatTeam.NOT_COMMANDER inCase {
-            agent.seeResource &&
-                    (agent.isTonicAtLimit && agent.seeResource(ResourceType.Tonic)).not()
+        "Workers deliver resources" nonCommander inCase {
+            agent.isCarryingResource && agent.isAtMothership
+        } then {
+            agent.transferResourceToMothership()
+        }
+        "Workers collect resources" nonCommander inCase {
+            !agent.isCarryingResource && agent.seeResource && !agent.isTouchingResource(ResourceType.Mine)
         } then {
             agent.goToResource()
         }
-        // -------------------------------------------->
-        createRule(
-            object : Rule("PickUp 1P Resource") {
-                override fun constraint(): Boolean {
-                    return !agent.isCommander && agent.isTouchingResource(ResourceType.Normal)
-                }
-
-                override fun action() {
-                    agent.pickupResource()
-                }
-            },
-        )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("Go to Marker") {
-                override fun constraint(): Boolean {
-                    return !agent.isCommander && mothership.isMarkerDeployed
-                }
-
-                override fun action() {
-                    agent.goToMarker()
-                }
-            },
-        )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("Search") {
-                override fun constraint(): Boolean {
-                    return !agent.isCommander && agent.seeMarker()
-                }
-
-                override fun action() {
-                    mothership.clearMarker()
-                    agent.searchResources()
-                }
-            },
-        )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("PickUp") {
-                override fun constraint(): Boolean {
-                    return !agent.isCommander && (
-                            agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(
-                                ResourceType.ExtraMothershipFuel,
-                            )
-                            )
-                }
-
-                override fun action() {
-                    agent.pickupResource()
-                }
-            },
-        )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("PickUp and Place") {
-                override fun constraint(): Boolean {
-                    return !agent.isCommander && agent.isTouchingResource(ResourceType.ExtremPoint)
-                }
-
-                override fun action() {
-                    if (!mothership.isMarkerDeployed) {
-                        agent.deployMarker()
-                    }
-                    agent.pickupResource()
-                }
-            },
-        )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("PickUp and Place") {
-                override fun constraint(): Boolean {
-                    return agent.isCommander && (
-                            agent.isTouchingResource(ResourceType.DoublePoints) || agent.isTouchingResource(
-                                ResourceType.ExtraMothershipFuel,
-                            )
-                            ) && !mothership.isMarkerDeployed && !agent.seeMarker()
-                }
-
-                override fun action() {
-                    agent.deployMarker()
-                }
-            },
-        )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("PickUp 5P and Place") {
-                override fun constraint(): Boolean {
-                    return !agent.isCommander && agent.isTouchingResource(ResourceType.ExtremPoint)
-                }
-
-                override fun action() {
-                    agent.deployMarker()
-                    agent.pickupResource()
-                }
-            },
-        )
-        // -------------------------------------------->
-        "PickUp Tonic" all inCase { agent.isTouchingResource(ResourceType.Tonic) && !agent.isTonicAtLimit } then {
+        "Workers pick up resources" nonCommander inCase {
+            !agent.isCarryingResource && agent.isTouchingResource(ResourceType.Normal)
+        } then {
             agent.pickupResource()
         }
-        // -------------------------------------------->
-        createRule(
-            object : Rule("Discover 5P and Place Marker", SwatTeam.COMMANDER) {
-                override fun constraint(): Boolean {
-                    return agent.isTouchingResource(ResourceType.ExtremPoint) && !agent.seeMarker()
-                }
-
-                override fun action() {
-                    agent.deployMarker()
-                }
-            },
-        )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("Place Tower", SwatTeam.COMMANDER) {
-                override fun constraint(): Boolean {
-                    return agent.isTouchingResource(ResourceType.ExtremPoint) && agent.hasTower
-                }
-
-                override fun action() {
-                    agent.constructTower(Tower.TowerType.ObservationTower)
-                }
-            },
-        )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("Ignore") {
-                override fun constraint(): Boolean {
-                    return agent.isTouchingResource(ResourceType.Mine) || agent.isTouchingResource(ResourceType.ExtraAgentFuel)
-                }
-
-                override fun action() {
-                    agent.go()
-                }
-            },
-        )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("Secure") {
-                override fun constraint(): Boolean {
-                    return agent.isGameOverSoon && !agent.isAtMothership
-                }
-
-                override fun action() {
-                    agent.shift()
-                    agent.goToMothership()
-                }
-            },
-        )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("Mark Resource") {
-                override fun constraint(): Boolean {
-                    return agent.isCarryingResource && !mothership.isMarkerDeployed && agent.seeResource
-                }
-
-                override fun action() {
-                    agent.deployMarker()
-                }
-            },
-        )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("Saved") {
-                override fun constraint(): Boolean {
-                    return agent.isGameOverSoon && agent.isAtMothership
-                }
-
-                override fun action() {
-                }
-            },
-        )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("Order Fuel") {
-                override fun constraint(): Boolean {
-                    return agent.isAtMothership && !agent.isGameOverSoon && mothership.hasFuel() && agent.fuelInPercent < 90
-                }
-
-                override fun action() {
-                    agent.orderFuel(100)
-                }
-            },
-        )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("Support Agent") {
-                override fun constraint(): Boolean {
-                    return mothership.needSomeoneSupport() && !agent.hasRequestedSupport
-                }
-
-                override fun action() {
-                    agent.goToSupportAgent()
-                }
-            },
-        )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("Save Resource") {
-                override fun constraint(): Boolean {
-                    return agent.isCarryingResource && !agent.isAtMothership
-                }
-
-                override fun action() {
-                    agent.goToMothership()
-                }
-            },
-        )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("Shift for Extra Resource") {
-                override fun constraint(): Boolean {
-                    return agent.isCarryingResource(ResourceType.ExtremPoint) && agent.hasTonic && !agent.isShifting && !agent.isAtMothership
-                }
-
-                override fun action() {
-                    agent.shift()
-                }
-            },
-        )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("HelpLostAgent") {
-                override fun constraint(): Boolean {
-                    return agent.seeLostTeamAgent() && !teamAgent.isAtMothership
-                }
-
-                override fun action() {
-                    agent.spendTeamAgentFuel(300)
-                }
-            },
-        )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("FightAgainstMothership") {
-                override fun constraint(): Boolean {
-                    return agent.seeEnemyMothership
-                }
-
-                override fun action() {
-                    agent.fightWithEnemyMothership()
-                }
-            },
-        )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("FightAgainstMothership & Order Support") {
-                override fun constraint(): Boolean {
-                    return !agent.hasRequestedSupport && agent.seeEnemyMothership
-                }
-
-                override fun action() {
-                    agent.fightWithEnemyMothership()
-                    agent.requestSupport()
-                }
-            },
-        )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("TurnToAdversaryAgent") {
-                override fun constraint(): Boolean {
-                    return agent.isUnderAttack
-                }
-
-                override fun action() {
-                    agent.turnLeft(60)
-                }
-            },
-        )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("SaveMothership Fast") {
-                override fun constraint(): Boolean {
-                    return mothership.isDamaged && !agent.isAtMothership && agent.hasTonic && !agent.isShifting
-                }
-
-                override fun action() {
-                    agent.shift()
-                }
-            },
-        )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("SaveMothership") {
-                override fun constraint(): Boolean {
-                    return mothership.isDamaged && !agent.isAtMothership
-                }
-
-                override fun action() {
-                    agent.goToMothership()
-                }
-            },
-        )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("RepairMothership") {
-                override fun constraint(): Boolean {
-                    return mothership.isDamaged && agent.isAtMothership
-                }
-
-                override fun action() {
-                    agent.repairMothership()
-                }
-            },
-        )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("FightAgainstAgent") {
-                override fun constraint(): Boolean {
-                    return agent.seeEnemyAgent
-                }
-
-                override fun action() {
-                    agent.fightWithEnemyAgent()
-                }
-            },
-        )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("PlaceMine") {
-                override fun constraint(): Boolean {
-                    return agent.hasMine && agent.isUnderAttack
-                }
-
-                override fun action() {
-                    agent.deployMine()
-                    agent.goLeft(180)
-                }
-            },
-        )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("GoBackToMothership") {
-                override fun constraint(): Boolean {
-                    return agent.fuel < 300 && !agent.isAtMothership
-                }
-
-                override fun action() {
-                    agent.goToMothership()
-                }
-            },
-        )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("OrderFuel") {
-                override fun constraint(): Boolean {
-                    return mothership.hasFuel() && (agent.fuelInPercent < 90) && (agent.isAtMothership)
-                }
-
-                override fun action() {
-                    agent.orderFuel(100)
-                }
-            },
-        )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("OrderFuelDuringFight") {
-                override fun constraint(): Boolean {
-                    return mothership.hasFuel() && (agent.fuel < 100) && agent.isUnderAttack && agent.isAtMothership
-                }
-
-                override fun action() {
-                    agent.orderFuel(5)
-                    agent.goLeft(10)
-                }
-            },
-        )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("OrderFuelDuringFight") {
-                override fun constraint(): Boolean {
-                    return mothership.hasFuel() && (agent.fuel < 100) && agent.seeEnemyAgent && agent.isAtMothership
-                }
-
-                override fun action() {
-                    agent.orderFuel(5)
-                    agent.fightWithEnemyAgent()
-                }
-            },
-        )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("Pass Resource") {
-                override fun constraint(): Boolean {
-                    return agent.isCarryingResource && agent.isAtMothership
-                }
-
-                override fun action() {
-                    agent.transferResourceToMothership()
-                    agent.turnAround()
-                }
-            },
-        )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("CallForHelpDuringFight") {
-                override fun constraint(): Boolean {
-                    return !agent.hasRequestedSupport && agent.isUnderAttack
-                }
-
-                override fun action() {
-                    agent.requestSupport()
-                }
-            },
-        )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("CallForHelp") {
-                override fun constraint(): Boolean {
-                    return !agent.hasRequestedSupport && !agent.isAtMothership && agent.fuel < 5
-                }
-
-                override fun action() {
-                    agent.requestSupport()
-                }
-            },
-        )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("PickUp Fuel") {
-                override fun constraint(): Boolean {
-                    return agent.fuelInPercent < 50 && agent.isTouchingResource(ResourceType.ExtraAgentFuel)
-                }
-
-                override fun action() {
-                    agent.pickupResource()
-                }
-            },
-        )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("Avoid Wall Collision", SwatTeam.COMMANDER) {
-                override fun constraint(): Boolean {
-                    return agent.isCollisionDetected
-                }
-
-                override fun action() {
-                    agent.turnLeft(4)
-                }
-            },
-        )
-        createRule(
-            object : Rule("Follow Wall", SwatTeam.ALPHA) {
-                override fun constraint(): Boolean {
-                    return agent.isCollisionDetected
-                }
-
-                override fun action() {
-                    agent.turnRight(4)
-                }
-            },
-        )
-        // -------------------------------------------->
-        "Spy" all inCase { agent.isInvisible && agent.seeEnemyAgent } then {
-            agent.goToEnemyAgent()
+        "Workers pick up double points" nonCommander inCase {
+            !agent.isCarryingResource && agent.isTouchingResource(ResourceType.DoublePoints)
+        } then {
+            agent.pickupResource()
         }
-        "Attack Mothership" all inCase { agent.isInvisible && agent.seeEnemyMothership } then {
-            agent.fightWithEnemyMothership()
+        "Workers pick up extreme points" nonCommander inCase {
+            !agent.isCarryingResource && agent.isTouchingResource(ResourceType.ExtremPoint)
+        } then {
+            agent.pickupResource()
         }
-        "Attack Agent" all inCase { agent.isInvisible && agent.seeEnemyAgent && agent.seeEnemyMothership } then {
+        "Workers pick up mothership fuel" nonCommander inCase {
+            !agent.isCarryingResource && agent.isTouchingResource(ResourceType.ExtraMothershipFuel)
+        } then {
+            agent.pickupResource()
+        }
+        "Workers collect tonic" nonCommander inCase {
+            !agent.isTonicAtLimit && agent.isTouchingResource(ResourceType.Tonic)
+        } then {
+            agent.pickupResource()
+        }
+        "Workers collect fuel" nonCommander inCase {
+            agent.fuelInPercent < 100 && agent.isTouchingResource(ResourceType.ExtraAgentFuel)
+        } then {
+            agent.pickupResource()
+        }
+        "Workers fight enemies" nonCommander inCase { agent.seeEnemyAgent } then {
             agent.fightWithEnemyAgent()
         }
-        "Prepare for Attack" all inCase { agent.isInvisible && agent.seeEnemyMothership && agent.actionPoints < 10000 } then {
-            // wait for APs
-        }
-        "Call Force" all inCase { agent.isInvisible && agent.seeEnemyMothership && !agent.hasRequestedSupport } then {
+        "Workers request help" nonCommander inCase {
+            !agent.hasRequestedSupport && (agent.isUnderAttack || (!agent.isAtMothership && agent.fuel < 5))
+        } then {
             agent.requestSupport()
         }
-        // -------------------------------------------->
-        "Make invisible" all inCase { agent.tonicInPercent == 100 && agent.isVisible && agent.isFighting } then {
+        "Workers refill at mothership" nonCommander inCase {
+            agent.isAtMothership && agent.fuelInPercent < 90 && mothership.hasFuel()
+        } then {
+            agent.orderFuel(100)
+        }
+        "Workers become invisible in combat" nonCommander inCase {
+            agent.tonicInPercent == 100 && agent.isVisible && agent.isFighting
+        } then {
             agent.makeInvisible()
         }
-        // -------------------------------------------->
-        createRule(
-            object : Rule("AvoidWall", SwatTeam.NOT_ALPHA, SwatTeam.NOT_COMMANDER) {
-                override fun constraint(): Boolean {
-                    return agent.isCollisionDetected
-                }
+        "Workers avoid walls" nonCommander inCase { agent.isCollisionDetected } then {
+            agent.turnRandom(150)
+        }
 
-                override fun action() {
-                    agent.turnRandom(150)
-                }
-            },
-        )
-        // -------------------------------------------->
-        createRule(
-            object : Rule("Cancel Support") {
-                override fun constraint(): Boolean {
-                    return agent.hasRequestedSupport && !agent.seeEnemyMothership && agent.fuel > 10 && !agent.isUnderAttack && !agent.seeEnemyAgent
-                }
-
-                override fun action() {
-                    agent.cancelSupport()
-                }
-            },
-        )
-        // -------------------------------------------->
+        "Commander move forward" commander inCase { manualControl(KeyEvent.VK_UP) } then {
+            agent.go()
+        }
+        "Commander turn around" commander inCase { manualControl(KeyEvent.VK_DOWN) } then {
+            agent.turnAround()
+        }
+        "Commander move left" commander inCase { manualControl(KeyEvent.VK_LEFT) } then {
+            agent.turnLeft(5)
+        }
+        "Commander move right" commander inCase { manualControl(KeyEvent.VK_RIGHT) } then {
+            agent.turnRight(5)
+        }
+        "Commander shift" commander inCase { manualControl(KeyEvent.VK_SPACE) && agent.hasTonic } then {
+            agent.shift()
+        }
+        "Commander go to marker" commander inCase { manualControl(KeyEvent.VK_G) && agent.seeMarker() } then {
+            agent.goToMarker()
+        }
+        "Commander deploy marker" commander inCase {
+            manualControl(KeyEvent.VK_M) && !mothership.isMarkerDeployed
+        } then {
+            agent.deployMarker()
+        }
+        "Commander clear marker" commander inCase {
+            manualControl(KeyEvent.VK_X) && mothership.isMarkerDeployed
+        } then {
+            mothership.clearMarker()
+        }
+        "Commander request support" commander inCase {
+            manualControl(KeyEvent.VK_H) && !agent.hasRequestedSupport
+        } then {
+            agent.requestSupport()
+        }
+        "Commander cancel support" commander inCase {
+            manualControl(KeyEvent.VK_J) && agent.hasRequestedSupport
+        } then {
+            agent.cancelSupport()
+        }
+        "Commander seek support" commander inCase {
+            manualControl(KeyEvent.VK_K) && mothership.needSomeoneSupport()
+        } then {
+            agent.goToSupportAgent()
+        }
+        "Commander order fuel" commander inCase {
+            manualControl(KeyEvent.VK_F) && agent.isAtMothership && agent.fuelInPercent < 100 && mothership.hasFuel()
+        } then {
+            agent.orderFuel(100)
+        }
+        "Commander collect resource" commander inCase {
+            manualControl(KeyEvent.VK_R) && agent.seeResource
+        } then {
+            agent.goToResource()
+        }
+        "Commander pick up resource" commander inCase {
+            manualControl(KeyEvent.VK_P) && agent.isTouchingResource
+        } then {
+            agent.pickupResource()
+        }
+        "Commander release resource" commander inCase {
+            manualControl(KeyEvent.VK_O) && agent.isCarryingResource
+        } then {
+            agent.releaseResource()
+        }
+        "Commander fight enemy agent" commander inCase {
+            manualControl(KeyEvent.VK_E) && agent.seeEnemyAgent
+        } then {
+            agent.fightWithEnemyAgent()
+        }
+        "Commander fight enemy mothership" commander inCase {
+            manualControl(KeyEvent.VK_Q) && agent.seeEnemyMothership
+        } then {
+            agent.fightWithEnemyMothership()
+        }
+        "Commander turn to enemy" commander inCase {
+            manualControl(KeyEvent.VK_B) && agent.seeEnemyAgent
+        } then {
+            agent.turnToEnemyAgent()
+        }
+        "Commander make invisible" commander inCase {
+            manualControl(KeyEvent.VK_I) && agent.isVisible && agent.tonicInPercent >= 30
+        } then {
+            agent.makeInvisible()
+        }
+        "Commander deploy mine" commander inCase { manualControl(KeyEvent.VK_N) && agent.hasMine } then {
+            agent.deployMine()
+        }
+        "Commander build observation tower" commander inCase {
+            manualControl(KeyEvent.VK_1) && agent.hasTower
+        } then {
+            agent.constructTower(Tower.TowerType.ObservationTower)
+        }
+        "Commander deconstruct tower" commander inCase {
+            manualControl(KeyEvent.VK_2) && agent.seeTower()
+        } then {
+            agent.deconstructTower()
+        }
+        "Commander repair mothership" commander inCase {
+            manualControl(KeyEvent.VK_3) && agent.isAtMothership
+        } then {
+            agent.repairMothership()
+        }
+        "Commander navigate to tower" commander inCase {
+            manualControl(KeyEvent.VK_T) && agent.seeTower()
+        } then {
+            agent.goToTower()
+        }
+        "Commander scan tower" commander inCase {
+            manualControl(KeyEvent.VK_S) &&
+                tower.type == Tower.TowerType.ObservationTower &&
+                tower.levelSize == LevelSize.UNKNOWN
+        } then {
+            tower.scanLevelSize()
+        }
     }
 }

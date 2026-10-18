@@ -1,0 +1,13 @@
+{
+  "name" : "Manual Player 2",
+  "teamColor" : {
+    "red" : 255,
+    "green" : 102,
+    "blue" : 0,
+    "alpha" : 255,
+    "rgb" : -39424,
+    "transparency" : 1
+  },
+  "strategy" : "ManualPlayer2",
+  "members" : [ "Player 2" ]
+}

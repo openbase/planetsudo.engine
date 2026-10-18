@@ -47,6 +47,7 @@ dependencies {
     api(libs.org.openbase.jul.schedule)
     api(libs.org.openbase.jul.audio)
     api(libs.org.openbase.jul.`interface`)
+    implementation(libs.com.badlogicgames.jamepad)
     api(libs.org.jdesktop.beansbinding)
     api(libs.tomcat.tomcat.util)
     api(libs.commons.io.commons.io)
