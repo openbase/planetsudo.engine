@@ -9,7 +9,6 @@ import org.openbase.planetsudo.game.SwatTeam
 import org.openbase.planetsudo.level.levelobjects.Agent
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertEquals
 
 class AbstractStrategyTest {
 
